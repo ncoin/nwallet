@@ -28,6 +28,7 @@ import { SupportPage } from '../pages/support/support';
 
 import { ConferenceData } from '../providers/conference-data';
 import { UserData } from '../providers/user-data';
+import { Logger } from '../providers/logger';
 
 
 @NgModule({
@@ -90,6 +91,7 @@ import { UserData } from '../providers/user-data';
   ],
   providers: [
     { provide: ErrorHandler, useClass: IonicErrorHandler },
+    Logger,
     ConferenceData,
     UserData,
     InAppBrowser,
