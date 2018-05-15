@@ -29,6 +29,7 @@ import { SupportPage } from '../pages/support/support';
 import { ConferenceData } from '../providers/conference-data';
 import { UserData } from '../providers/user-data';
 import { Logger } from '../providers/logger';
+import { ProvidersModule } from '../providers/providers.module';
 
 
 @NgModule({
@@ -69,7 +70,8 @@ import { Logger } from '../providers/logger';
         { component: SignupPage, name: 'SignupPage', segment: 'signup' }
       ]
     }),
-    IonicStorageModule.forRoot()
+    IonicStorageModule.forRoot(),
+    ProvidersModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -91,7 +93,6 @@ import { Logger } from '../providers/logger';
   ],
   providers: [
     { provide: ErrorHandler, useClass: IonicErrorHandler },
-    Logger,
     ConferenceData,
     UserData,
     InAppBrowser,
