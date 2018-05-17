@@ -19,14 +19,14 @@
       "dom",
       "es2015"
     ],
-    "paths": {
-        "$providers/*" : ["./src/providers/*"]
-    }
+    "baseUrl": ".",
   },
   "include": [
     "src/**/*.ts"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "src/pages/0.entrance",
+    "src/pages/1.security"
   ]
 }
