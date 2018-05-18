@@ -9,8 +9,11 @@
   },
   "scripts": {
     "build": "ionic build",
-    "serve": "ionic build",
-    "start": "npm run serve"
+    "serve": "ionic serve",
+    "start": "npm run serve",
+    "env:dev": "node ./src/environments/env_apply.js src/environments/dev.ts src/environments/index.ts \n\n# Environment set to: dev\n\n",
+    "env:stage": "node ./src/environments/env_apply.js src/environments/stage.ts src/environments/index.ts \n\n# Environment set to: e2e\n\n",
+    "env:prod": "node ./src/environments/env_apply.js src/environments/prod.ts src/environments/index.ts \n\n# Environment set to: prod\n\n"
   },
   "dependencies": {
     "@angular/common": "5.0.0",
