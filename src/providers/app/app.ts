@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 
 @Injectable()
-export class AppProvider {
+export class AppConfigProvider {
 
 }
