@@ -55,7 +55,7 @@
   },
   "config": {
     "ionic_aot_write_to_disk": true,
-    "ionic_source_map" : "source_map"
+    "ionic_source_map": "source_map"
   },
   "cordova": {
     "platforms": [

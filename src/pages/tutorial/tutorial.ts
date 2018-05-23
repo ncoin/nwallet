@@ -4,46 +4,46 @@ import { MenuController, NavController, Slides } from 'ionic-angular';
 
 import { Storage } from '@ionic/storage';
 
-import { TabsPage } from '../tabs-page/tabs-page';
 
 @Component({
-  selector: 'page-tutorial',
-  templateUrl: 'tutorial.html'
+    selector: 'page-tutorial',
+    templateUrl: 'tutorial.html',
 })
-
 export class TutorialPage {
-  showSkip = true;
+    showSkip = true;
 
-	@ViewChild('slides') slides: Slides;
+    @ViewChild('slides') slides: Slides;
 
-  constructor(
-    public navCtrl: NavController,
-    public menu: MenuController,
-    public storage: Storage
-  ) { }
+    constructor(
+        public navCtrl: NavController,
+        public menu: MenuController,
+        public storage: Storage,
+    ) {}
 
-  startApp() {
-    this.navCtrl.push(TabsPage).then(() => {
-      this.storage.set('hasSeenTutorial', 'true');
-    })
-  }
+    async startApp() {
+        await this.navCtrl.pop();
 
-  onSlideChangeStart(slider: Slides) {
-    this.showSkip = !slider.isEnd();
-  }
+        //
+        // this.navCtrl.push(TabsPage).then(() => {
+        //   this.storage.set('hasSeenTutorial', 'true');
+        // })
+    }
 
-  ionViewWillEnter() {
-    this.slides.update();
-  }
+    onSlideChangeStart(slider: Slides) {
+        this.showSkip = !slider.isEnd();
+    }
 
-  ionViewDidEnter() {
-    // the root left menu should be disabled on the tutorial page
-    this.menu.enable(false);
-  }
+    ionViewWillEnter() {
+        this.slides.update();
+    }
 
-  ionViewDidLeave() {
-    // enable the root left menu when leaving the tutorial page
-    this.menu.enable(true);
-  }
+    ionViewDidEnter() {
+        // the root left menu should be disabled on the tutorial page
+        this.menu.enable(false);
+    }
 
+    ionViewDidLeave() {
+        // enable the root left menu when leaving the tutorial page
+        this.menu.enable(true);
+    }
 }

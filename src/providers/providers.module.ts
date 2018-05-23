@@ -1,17 +1,19 @@
 import { NgModule } from '@angular/core';
 import { Logger } from './common/logger/logger';
-import { AppConfigProvider } from './app/app';
+import { AppServiceProvider } from './app/app.service';
 import { ConfigProvider } from './app/config';
 import { AccountProvider } from './account/account';
-import { StorageProvider } from './common/storage/storage';
+import { PreferenceProvider } from './common/preference/preference';
+import { ConnectProvider } from './nsus/connector';
 
 @NgModule({
     providers: [
         Logger,
-        AppConfigProvider,
+        AppServiceProvider,
         ConfigProvider,
         AccountProvider,
-        StorageProvider,
+        PreferenceProvider,
+        ConnectProvider
     ],
 })
 export class ProvidersModule {}

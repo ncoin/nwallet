@@ -26,6 +26,14 @@
             "script": "env:prod",
             "problemMatcher": [],
             "isBackground": true,
+        },
+        {
+            "group": "build",
+            "type": "npm",
+            "label": "nwallet - start",
+            "script": "start",
+            "problemMatcher": [],
+            "isBackground": true,
         }
     ]
 }
