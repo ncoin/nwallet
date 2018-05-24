@@ -6,7 +6,7 @@
         {
             "group": "build",
             "type": "npm",
-            "label": "nwallet - set to dev environment",
+            "label": "nwallet environment - set to dev environment",
             "script": "env:dev",
             "problemMatcher": [],
             "isBackground": true,
@@ -14,7 +14,7 @@
         {
             "group": "build",
             "type": "npm",
-            "label": "nwallet - set to stage environment",
+            "label": "nwallet environment - set to stage environment",
             "script": "env:stage",
             "problemMatcher": [],
             "isBackground": true,
@@ -22,8 +22,24 @@
         {
             "group": "build",
             "type": "npm",
-            "label": "nwallet - set to product environment",
+            "label": "nwallet environment - set to product environment",
             "script": "env:prod",
+            "problemMatcher": [],
+            "isBackground": true,
+        },
+        {
+            "group": "build",
+            "type": "npm",
+            "label": "nwallet network - set to test network",
+            "script": "network:test",
+            "problemMatcher": [],
+            "isBackground": true,
+        },
+        {
+            "group": "build",
+            "type": "npm",
+            "label": "nwallet network - set to public network",
+            "script": "network:public",
             "problemMatcher": [],
             "isBackground": true,
         },

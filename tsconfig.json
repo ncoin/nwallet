@@ -25,6 +25,8 @@
   ],
   "exclude": [
     "node_modules",
-    "src/pages/1.security"
+    "src/pages/1.security",
+    "src/environments/environments.*.ts",
+    "src/environments/schema.*.ts",
   ]
 }

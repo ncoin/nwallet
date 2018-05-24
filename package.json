@@ -11,9 +11,11 @@
     "build": "ionic build",
     "serve": "ionic serve",
     "start": "npm run serve",
-    "env:dev": "node ./src/environments/env_apply.js src/environments/dev.ts src/environments/index.ts \n\n# Environment set to: dev\n\n",
-    "env:stage": "node ./src/environments/env_apply.js src/environments/stage.ts src/environments/index.ts \n\n# Environment set to: e2e\n\n",
-    "env:prod": "node ./src/environments/env_apply.js src/environments/prod.ts src/environments/index.ts \n\n# Environment set to: prod\n\n"
+    "env:dev": "node ./src/environments/env_apply.js src/environments/environment.dev.ts src/environments/environment.ts \n\n# Environment set to: dev\n\n",
+    "env:stage": "node ./src/environments/env_apply.js src/environments/environment.stage.ts src/environments/environment.ts \n\n# Environment set to: e2e\n\n",
+    "env:prod": "node ./src/environments/env_apply.js src/environments/environment.prod.ts src/environments/environment.ts \n\n# Environment set to: prod\n\n",
+    "network:test": "node ./src/environments/env_apply.js src/environments/schema.test.ts src/environments/schema.ts \n\n# Network set to: test network\n\n",
+    "network:public": "node ./src/environments/env_apply.js src/environments/schema.public.ts src/environments/schema.ts \n\n# Network set to: public network\n\n"
   },
   "dependencies": {
     "@angular/common": "5.0.0",
