@@ -28,6 +28,7 @@
     "src/pages/1.security",
     "src/environments/environments.*.ts",
     "src/environments/schema.*.ts",
-    ".tmp"
+    ".tmp",
+    "src/legacy**"
   ]
 }

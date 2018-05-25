@@ -17,6 +17,7 @@ export class ConnectProvider {
     private server: Stellar.Server;
     constructor(private logger: Logger) {
         this.init();
+        nSky;
     }
 
     async init(): Promise<void> {

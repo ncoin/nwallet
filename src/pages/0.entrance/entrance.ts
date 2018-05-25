@@ -1,5 +1,4 @@
 import { CreateAccountPage } from './../createaccount/createaccount';
-import { WalletPage } from './../0.main/wallet';
 import { Component } from '@angular/core';
 import { App, NavController, NavOptions } from 'ionic-angular';
 import { ConnectProvider } from '../../providers/nsus/connector';

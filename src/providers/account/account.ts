@@ -1,4 +1,4 @@
-import { Events, App } from 'ionic-angular';
+import { Events } from 'ionic-angular';
 import { NWallet } from './../../interfaces/nwallet';
 import { Injectable } from "@angular/core";
 import { PreferenceProvider, Preference } from '../common/preference/preference';
@@ -13,6 +13,7 @@ export class AccountProvider {
     }
 
     private async init(): Promise<void> {
+        this.event;
         this.account = await this.preference.get(Preference.Nwallet.walletAccount);
     }
 
