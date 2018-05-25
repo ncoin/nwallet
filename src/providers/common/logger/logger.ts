@@ -1,6 +1,6 @@
-import { Injectable, isDevMode } from "@angular/core";
+import { Injectable, isDevMode } from '@angular/core';
 
-import * as _ from "lodash";
+import * as _ from 'lodash';
 
 @Injectable()
 export class Logger {
@@ -12,10 +12,10 @@ export class Logger {
     constructor() {
         this.logs = [];
         this.levels = [
-            { level: "error", weight: 1, label: "Error" },
-            { level: "warn", weight: 2, label: "Warning" },
-            { level: "info", weight: 3, label: "Info", default: true },
-            { level: "debug", weight: 4, label: "Debug" }
+            { level: 'error', weight: 1, label: 'Error' },
+            { level: 'warn', weight: 2, label: 'Warning' },
+            { level: 'info', weight: 3, label: 'Info', default: true },
+            { level: 'debug', weight: 4, label: 'Debug' },
         ];
 
         // Create an array of level weights for performant filtering.
@@ -27,38 +27,38 @@ export class Logger {
 
     public error(message?: any, ...optionalParams: any[]): void {
         let msg =
-            "[error] " +
+            '[error] ' +
             (_.isString(message) ? message : JSON.stringify(message));
         console.log(msg, ...optionalParams);
         let args = this.processingArgs(arguments);
-        this.add("error", args);
+        this.add('error', args);
     }
 
     public debug(message?: any, ...optionalParams: any[]): void {
         let msg =
-            "[debug] " +
+            '[debug] ' +
             (_.isString(message) ? message : JSON.stringify(message));
         if (isDevMode()) console.log(msg, ...optionalParams);
         let args = this.processingArgs(arguments);
-        this.add("debug", args);
+        this.add('debug', args);
     }
 
     public info(message?: any, ...optionalParams: any[]): void {
         let msg =
-            "[info] " +
+            '[info] ' +
             (_.isString(message) ? message : JSON.stringify(message));
         if (isDevMode()) console.log(msg, ...optionalParams);
         let args = this.processingArgs(arguments);
-        this.add("info", args);
+        this.add('info', args);
     }
 
     public warn(message?: any, ...optionalParams: any[]): void {
         let msg =
-            "[warn] " +
+            '[warn] ' +
             (_.isString(message) ? message : JSON.stringify(message));
         if (isDevMode()) console.log(msg, ...optionalParams);
         let args = this.processingArgs(arguments);
-        this.add("warn", args);
+        this.add('warn', args);
     }
 
     public getLevels(): any {
@@ -78,12 +78,12 @@ export class Logger {
     }
 
     public add(level, msg): any {
-        msg = msg.replace("/xpriv.*/", "[...]");
-        msg = msg.replace("/walletPrivKey.*/", "walletPrivKey:[...]");
+        msg = msg.replace('/xpriv.*/', '[...]');
+        msg = msg.replace('/walletPrivKey.*/', 'walletPrivKey:[...]');
         this.logs.push({
             timestamp: new Date().toISOString(),
             level,
-            msg
+            msg,
         });
     }
 
@@ -105,18 +105,18 @@ export class Logger {
         var args = Array.prototype.slice.call(argsValues);
         args = args.map(v => {
             try {
-                if (typeof v == "undefined") v = "undefined";
-                if (!v) v = "null";
-                if (typeof v == "object") {
+                if (typeof v == 'undefined') v = 'undefined';
+                if (!v) v = 'null';
+                if (typeof v == 'object') {
                     v = v.message ? v.message : JSON.stringify(v);
                 }
             } catch (e) {
                 // tslint:disable-next-line:no-console
-                console.log("Error at log decorator:", e);
-                v = "undefined";
+                console.log('Error at log decorator:', e);
+                v = 'undefined';
             }
             return v;
         });
-        return args.join(" ");
+        return args.join(' ');
     }
 }

@@ -4,7 +4,6 @@ import { MenuController, NavController, Slides } from 'ionic-angular';
 
 import { Storage } from '@ionic/storage';
 
-
 @Component({
     selector: 'page-tutorial',
     templateUrl: 'tutorial.html',
@@ -42,8 +41,10 @@ export class TutorialPage {
         this.menu.enable(false);
     }
 
-    ionViewDidLeave() {
+    ionViewWillLeave() {
         // enable the root left menu when leaving the tutorial page
         this.menu.enable(true);
     }
+
+    ionViewDidLeave() {}
 }

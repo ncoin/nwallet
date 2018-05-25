@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
-import { NWallet } from '../../../interfaces/nwallet/account';
+import { NWallet } from '../../../interfaces/nwallet';
 
 export namespace Preference {
 
-    export class Item<T> {
+    export interface Item<T> {
         name: string;
         type? : T;
     }
@@ -21,6 +21,7 @@ export namespace Preference.Nwallet{
 }
 
 @Injectable()
+/** Storage strict type proxy */
 export class PreferenceProvider {
     constructor(private storage: Storage) {
     }

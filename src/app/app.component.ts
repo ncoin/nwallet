@@ -6,6 +6,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { EntrancePage } from '../pages/0.entrance/entrance';
 import { PreferenceProvider, Preference } from '../providers/common/preference/preference';
 import { TutorialPage } from '../pages/tutorial/tutorial';
+import { AppServiceProvider } from '../providers/app/app.service';
 
 export interface PageInterface {
     title: string;
@@ -34,24 +35,29 @@ export class NWalletApp {
         public menu: MenuController,
         public platform: Platform,
         private splashScreen: SplashScreen,
-        private preference: PreferenceProvider
+        private preference: PreferenceProvider,
+        private appService: AppServiceProvider,
     ) {
+
         this.initialize();
     }
 
     private async initialize(): Promise<void> {
-
         this.rootPage = EntrancePage;
 
-        if (await this.preference.get(Preference.App.hasSeenTutorial)) {
-            TutorialPage;
+        const hasSeenTutorial = await this.preference.get(Preference.App.hasSeenTutorial);
+        if (!hasSeenTutorial) {
+            this.nav.push(TutorialPage, undefined, undefined, () => {
+                this.platformReady();
+            });
+
+            return;
         }
 
         const account = await this.preference.get(Preference.Nwallet.walletAccount);
         if (account){
-
+            this.appService.login();
         }
-
 
         this.platformReady();
     }
@@ -65,6 +71,10 @@ export class NWalletApp {
     openPage(page: PageInterface) {
         page;
         this;
+    }
+
+    openTutorial():void {
+        this.nav.push(TutorialPage);
     }
 }
 

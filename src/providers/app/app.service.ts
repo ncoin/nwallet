@@ -6,10 +6,10 @@ import { TutorialPage } from '../../pages/tutorial/tutorial';
 import { Logger } from '../common/logger/logger';
 // import { TutorialPage } from '../../pages/tutorial/tutorial';
 
-@Injectable()
 /**
  * common config provider
  */
+@Injectable()
 export class AppServiceProvider {
     constructor(private preference: PreferenceProvider, private app:App, private logger: Logger, private event:Events) {
         console.log(app.getRootNav());

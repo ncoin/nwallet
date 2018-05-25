@@ -1,37 +1,36 @@
 <ion-header>
-	<ion-navbar>
-		<button ion-button menuToggle>
-      <ion-icon name="menu"></ion-icon>
-    </button>
-		<ion-title>Entrance</ion-title>
-	</ion-navbar>
+    <ion-navbar>
+        <button ion-button menuToggle>
+            <ion-icon name="menu"></ion-icon>
+        </button>
+        <ion-title>Entrance</ion-title>
+    </ion-navbar>
 </ion-header>
 
 <ion-content>
-	<div class="logo">
-		<img src="assets/img/appicon.svg" alt="Ionic logo">
-	</div>
+    <div class="logo">
+        <img src="assets/img/appicon.svg" alt="Ionic logo">
+    </div>
 
-	<ion-card>
+    <ion-card>
         <ion-card-header>
-            <button ion-item detail-none (click)="onClickCreateAccount()">
-              <ion-avatar item-start>
-        		<img src="assets/img/appicon.svg" alt="Ionic logo">
-              </ion-avatar>
-              Create Account
+            <button ion-item detail-none (click)="onCreateAccount()">
+                <ion-avatar item-start>
+                    <img src="assets/img/appicon.svg" alt="Ionic logo">
+                </ion-avatar>
+                Create Account
             </button>
-          </ion-card-header>
+        </ion-card-header>
 
-          <ion-card-content class="outer-content">
+        <ion-card-content class="outer-content">
             <ion-list>
-              <button ion-item (click)="onClickCreateAccount()">
-                <h3>Import</h3>
-              </button>
-
-              <button ion-item (click)="onClickCreateAccount()">
-                <h3>Create</h3>
-              </button>
+                <button ion-item (click)="onImportAccount()">
+                    <h3>Import</h3>
+                </button>
+                <button ion-item (click)="onCreateAccount()">
+                    <h3>Create</h3>
+                </button>
             </ion-list>
-          </ion-card-content>
+        </ion-card-content>
     </ion-card>
 </ion-content>
