@@ -17,16 +17,17 @@ import { TutorialPage } from '../pages/tutorial/tutorial';
 
 import { ProvidersModule } from '../providers/providers.module';
 import { EntrancePage } from '../pages/0.entrance/entrance';
-import { CreateAccountPage } from '../pages/createaccount/createaccount';
+import { CreateAccountPage } from '../pages/1.account/createaccount';
+import { ImportAccountPage } from '../pages/1.account/importaccount';
 
 @NgModule({
     declarations: [
         NWalletApp,
-
         TutorialPage,
         EntrancePage,
         CreateAccountPage,
         WalletPage,
+        ImportAccountPage,
     ],
     imports: [
         BrowserModule,
@@ -47,6 +48,11 @@ import { CreateAccountPage } from '../pages/createaccount/createaccount';
                         segment: 'createaccount',
                     },
                     {
+                        component: ImportAccountPage,
+                        name: 'ImportAccountPage',
+                        segment: 'importaccount',
+                    },
+                    {
                         component: WalletPage,
                         name: 'WalletPage',
                         segment: 'wallet'
@@ -63,7 +69,8 @@ import { CreateAccountPage } from '../pages/createaccount/createaccount';
         TutorialPage,
         EntrancePage,
         WalletPage,
-        CreateAccountPage
+        CreateAccountPage,
+        ImportAccountPage
     ],
     providers: [
         { provide: ErrorHandler, useClass: IonicErrorHandler },

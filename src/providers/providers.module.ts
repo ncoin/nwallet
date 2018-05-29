@@ -9,11 +9,11 @@ import { ConnectProvider } from './nsus/connector';
 @NgModule({
     providers: [
         Logger,
+        ConnectProvider,
+        PreferenceProvider,
+        AccountProvider,
         AppServiceProvider,
         ConfigProvider,
-        AccountProvider,
-        PreferenceProvider,
-        ConnectProvider
     ],
 })
 export class ProvidersModule {}
