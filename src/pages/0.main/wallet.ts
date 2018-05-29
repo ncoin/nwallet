@@ -1,7 +1,10 @@
+import { AppServiceProvider } from './../../providers/app/app.service';
 import { Logger } from './../../providers/common/logger/logger';
 import { EntrancePage } from './../0.entrance/entrance';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { NWallet } from '../../interfaces/nwallet';
+import { AccountProvider } from '../../providers/account/account';
 
 /**
  * Generated class for the WalletPage page.
@@ -10,17 +13,34 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
  * Ionic pages and navigation.
  */
 
-@IonicPage()
 @Component({
     selector: 'page-wallet',
     templateUrl: 'wallet.html',
 })
 export class WalletPage {
+
+    account: NWallet.Account = <NWallet.Account> {
+        signature : { public : '', secret: ''},
+        wallets : [{ asset : { code: ' ' }, amount : ' ' }]
+    }
+
+    destination: string;
+    amount: string;
+
     constructor(
         public navCtrl: NavController,
         public navParams: NavParams,
         private logger: Logger,
-    ) {}
+        private accountProvider: AccountProvider,
+        private appService: AppServiceProvider
+    ) {
+        this.init();
+    }
+
+    private async init(): Promise<void> {
+        this.account = await this.accountProvider.getAccount();
+        await this.appService.login(this.account);
+    }
 
     ionViewDidLoad() {
         this.logger.debug('ionViewDidLoad WalletPage');
@@ -43,10 +63,16 @@ export class WalletPage {
         this.logger.debug('onClear');
     }
 
-    public onLogOut(): void {
+    public onLogout(): void {
+
+        this.appService.logout(this.account);
         this.navCtrl.setRoot(EntrancePage, undefined, {
             animate: true,
             animation: 'ios-transition',
         });
+    }
+
+    public onSendPayment(): void {
+        this.appService.sendPayment(this.account.signature, this.destination, this.account.wallets[1], this.amount);
     }
 }

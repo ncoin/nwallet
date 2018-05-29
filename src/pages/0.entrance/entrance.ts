@@ -1,13 +1,7 @@
-import { CreateAccountPage } from './../createaccount/createaccount';
+import { ImportAccountPage } from './../1.account/importaccount';
+import { CreateAccountPage } from './../1.account/createaccount';
 import { Component } from '@angular/core';
-import { App, NavController, NavOptions } from 'ionic-angular';
-import { ConnectProvider } from '../../providers/nsus/connector';
-import { AppServiceProvider } from '../../providers/app/app.service';
-
-export interface Client {
-    username: string;
-    password: string;
-}
+import { NavController, NavOptions } from 'ionic-angular';
 
 @Component({
     selector: 'entrance',
@@ -17,19 +11,16 @@ export interface Client {
  * create account
  */
 export class EntrancePage {
-    public login: Client;
     constructor(
-        private app: App,
         private nav: NavController,
-        private stellar: ConnectProvider,
-        private appService: AppServiceProvider,
-    ) {}
+    ) {
+    }
 
-    public onImportAccount(): void {
-        this.app;
-        this.nav;
-        this.stellar;
-        this.appService.login;
+    public async onImportAccount(): Promise<void> {
+        await this.nav.push(ImportAccountPage, undefined, <NavOptions> {
+            animate: true,
+            animation : 'wp-transition'
+        });
     }
 
     public async onCreateAccount(): Promise<void> {
