@@ -1,3 +1,4 @@
+import { App } from 'ionic-angular';
 // steller sdk wrapper
 import Stellar, { TransactionBuilder, Asset, Keypair } from 'stellar-sdk';
 import { Injectable } from '@angular/core';
@@ -48,9 +49,8 @@ function StellarServer(): Stellar.Server {
 export class ConnectProvider {
     private issuer = issueAccount;
     private distributer = distributeAccount;
-    constructor() {
+    constructor(app: App) {
         Stellar.Network.useTestNetwork();
-        this.init();
     }
 
     async init(): Promise<void> {

@@ -1,9 +1,12 @@
+import { ConnectProvider } from './../nsus/connector';
 import { Injectable } from '@angular/core';
-import { PreferenceProvider, Preference } from '../common/preference/preference';
-import { NavController, App, Events } from 'ionic-angular';
-import { EntrancePage } from '../../pages/0.entrance/entrance';
-import { TutorialPage } from '../../pages/tutorial/tutorial';
+import {
+    PreferenceProvider,
+    Preference,
+} from '../common/preference/preference';
+import { App } from 'ionic-angular';
 import { Logger } from '../common/logger/logger';
+import { NWallet } from '../../interfaces/nwallet';
 // import { TutorialPage } from '../../pages/tutorial/tutorial';
 
 /**
@@ -11,11 +14,13 @@ import { Logger } from '../common/logger/logger';
  */
 @Injectable()
 export class AppServiceProvider {
-    constructor(private preference: PreferenceProvider, private app:App, private logger: Logger, private event:Events) {
+    constructor(
+        private preference: PreferenceProvider,
+        private app: App,
+        private logger: Logger,
+        private connector: ConnectProvider
+    ) {
         console.log(app.getRootNav());
-    }
-    private get nav(): NavController {
-        return this.app.getRootNav();
     }
 
     public async walkThrough(processFunc: () => void): Promise<void> {
@@ -23,20 +28,27 @@ export class AppServiceProvider {
         this.preference;
         this.app;
         processFunc();
-        EntrancePage;
-        TutorialPage;
     }
 
-    public async login(): Promise<void> {
-        const account = await this.preference.get(Preference.Nwallet.walletAccount);
-        if (account) {
-            this.event.publish('login', account);
-        } else{
-            this.logger.error('invalid nwallet account', account);
-        }
+    public async flushApplication(): Promise<void> {
+        await this.preference.clear();
     }
 
-    public async logout(): Promise<void> {
+    public async tutorialRead(): Promise<void> {
+        await this.preference.set(Preference.App.hasSeenTutorial, true);
+    }
+
+    public async login(account: NWallet.Account): Promise<void> {
+        await this.connector.fetchJobs(account);
+    }
+
+    public async logout(account: NWallet.Account): Promise<void> {
         await this.preference.remove(Preference.Nwallet.walletAccount);
+        await this.connector.unSubscribe(account);
+        this.logger.debug('logout', account.signature.public);
+    }
+
+    public async sendPayment(signature: NWallet.Signature, destination: string, wallet: NWallet.WalletItem, amount: string): Promise<void> {
+        this.connector.sendPayment(signature, destination, wallet, amount);
     }
 }

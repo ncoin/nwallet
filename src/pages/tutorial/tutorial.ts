@@ -1,8 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 
-import { MenuController, NavController, Slides } from 'ionic-angular';
-
-import { Storage } from '@ionic/storage';
+import { MenuController, NavController, Slides, NavParams, NavOptions } from 'ionic-angular';
+import { AppServiceProvider } from '../../providers/app/app.service';
 
 @Component({
     selector: 'page-tutorial',
@@ -13,19 +12,14 @@ export class TutorialPage {
 
     @ViewChild('slides') slides: Slides;
 
-    constructor(
-        public navCtrl: NavController,
-        public menu: MenuController,
-        public storage: Storage,
-    ) {}
+    constructor(public navCtrl: NavController, public navParams: NavParams, public menu: MenuController, private appService: AppServiceProvider) {}
 
     async startApp() {
-        await this.navCtrl.pop();
-
-        //
-        // this.navCtrl.push(TabsPage).then(() => {
-        //   this.storage.set('hasSeenTutorial', 'true');
-        // })
+        await this.navCtrl.pop(<NavOptions>{
+            animate : true,
+            animation : 'ios-transition'
+        });
+        this.appService.tutorialRead();
     }
 
     onSlideChangeStart(slider: Slides) {
@@ -34,12 +28,11 @@ export class TutorialPage {
 
     ionViewWillEnter() {
         this.slides.update();
-    }
-
-    ionViewDidEnter() {
         // the root left menu should be disabled on the tutorial page
         this.menu.enable(false);
     }
+
+    ionViewDidEnter() {}
 
     ionViewWillLeave() {
         // enable the root left menu when leaving the tutorial page

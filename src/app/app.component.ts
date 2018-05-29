@@ -1,3 +1,5 @@
+import { WalletPage } from './../pages/0.main/wallet';
+import { Logger } from './../providers/common/logger/logger';
 import { Component, ViewChild } from '@angular/core';
 
 import { MenuController, Nav, Platform } from 'ionic-angular';
@@ -6,7 +8,6 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { EntrancePage } from '../pages/0.entrance/entrance';
 import { PreferenceProvider, Preference } from '../providers/common/preference/preference';
 import { TutorialPage } from '../pages/tutorial/tutorial';
-import { AppServiceProvider } from '../providers/app/app.service';
 
 export interface PageInterface {
     title: string;
@@ -36,14 +37,21 @@ export class NWalletApp {
         public platform: Platform,
         private splashScreen: SplashScreen,
         private preference: PreferenceProvider,
-        private appService: AppServiceProvider,
+        private logger: Logger
     ) {
-
+        this.logger.debug('app start');
         this.initialize();
     }
 
     private async initialize(): Promise<void> {
-        this.rootPage = EntrancePage;
+
+        const account = await this.preference.get(Preference.Nwallet.walletAccount);
+        if (account){
+            this.rootPage = WalletPage;
+        } else{
+            this.rootPage = EntrancePage;
+        }
+
 
         const hasSeenTutorial = await this.preference.get(Preference.App.hasSeenTutorial);
         if (!hasSeenTutorial) {
@@ -52,11 +60,6 @@ export class NWalletApp {
             });
 
             return;
-        }
-
-        const account = await this.preference.get(Preference.Nwallet.walletAccount);
-        if (account){
-            this.appService.login();
         }
 
         this.platformReady();
@@ -74,7 +77,10 @@ export class NWalletApp {
     }
 
     openTutorial():void {
-        this.nav.push(TutorialPage);
+        this.nav.push(TutorialPage, undefined, {
+            animate : true,
+            animation : 'ios-transition'
+        });
     }
 }
 
