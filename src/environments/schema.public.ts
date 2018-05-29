@@ -4,9 +4,9 @@ type EnvironmentType = 'dev' | 'stage' | 'prod';
 export interface Environments {
     name: EnvironmentType;
     /** public network */
-    isTestNetwork: NetworkType;
+    network: NetworkType;
 }
 
 export const Schema = {
-    isTestNetwork : <NetworkType> 'public'
+    network : <NetworkType> 'public'
 }
