@@ -1,3 +1,4 @@
+import { Asset } from 'stellar-sdk';
 import { AppServiceProvider } from './../../providers/app/app.service';
 import { Logger } from './../../providers/common/logger/logger';
 import { EntrancePage } from './../0.entrance/entrance';
@@ -5,6 +6,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { NWallet } from '../../interfaces/nwallet';
 import { AccountProvider } from '../../providers/account/account';
+import { WalletDetailPage } from '../wallet-detail/wallet-detail';
 
 /**
  * Generated class for the WalletPage page.
@@ -18,12 +20,12 @@ import { AccountProvider } from '../../providers/account/account';
     templateUrl: 'wallet.html',
 })
 export class WalletPage {
+    account: NWallet.Account = <NWallet.Account>{
+        signature: { public: '', secret: '' },
+        wallets: [{ asset: { code: ' ' }, amount: ' ' }],
+    };
 
-    account: NWallet.Account = <NWallet.Account> {
-        signature : { public : '', secret: ''},
-        wallets : [{ asset : { code: ' ' }, amount : ' ' }]
-    }
-
+    asset: Asset = Asset.native();
     destination: string;
     amount: string;
 
@@ -32,7 +34,7 @@ export class WalletPage {
         public navParams: NavParams,
         private logger: Logger,
         private accountProvider: AccountProvider,
-        private appService: AppServiceProvider
+        private appService: AppServiceProvider,
     ) {
         this.init();
     }
@@ -47,12 +49,12 @@ export class WalletPage {
         this.navCtrl.getActive().showBackButton(false);
     }
 
-    public onClick(): void {
-        this.navCtrl.setRoot(EntrancePage, undefined, {
-            animate: true,
-            animation: 'wp-transition',
+    public onSelectWallet(wallet: NWallet.WalletItem) {
+        this.asset = wallet.asset;
+        this.navCtrl.push(WalletDetailPage, { wallet: wallet}, {
+            animate : true,
+            animation : 'ios-transition'
         });
-        this.logger.debug('onClick');
     }
 
     public onClear(): void {
@@ -64,7 +66,6 @@ export class WalletPage {
     }
 
     public onLogout(): void {
-
         this.appService.logout(this.account);
         this.navCtrl.setRoot(EntrancePage, undefined, {
             animate: true,
@@ -73,6 +74,6 @@ export class WalletPage {
     }
 
     public onSendPayment(): void {
-        this.appService.sendPayment(this.account.signature, this.destination, this.account.wallets[1], this.amount);
+        this.appService.sendPayment(this.account.signature, this.destination, this.asset, this.amount);
     }
 }

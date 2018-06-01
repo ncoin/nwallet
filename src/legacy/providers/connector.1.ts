@@ -3,19 +3,24 @@ import { App } from 'ionic-angular';
 import Stellar, { TransactionBuilder, Asset, Keypair } from 'stellar-sdk';
 import { Injectable } from '@angular/core';
 
-// 토큰 발행자
 const issueAccount = {
     type: 'ed25519',
     Key: 'GCOXH4BOXGPKYA62LOT4F4BRVKR2U2DFKTCOQ6JBMJDBLWK3ARMRJDKK',
     secretKey: 'SDNFVSYIJ4HZLDWIOJBMZXUAW2E2HWDQCEBB4UOMRKYF4IVKGIQ5SLOX',
 };
 
-// 토큰 배포자
 const distributeAccount = {
     type: 'ed25519',
     Key: 'GAI2X4RPAQU3NXYCAFWRF37B2J4ZEYUCKN5SUJR2TR65SPSZWWC3NAEI',
     secretKey: 'SCNQ23LX3GST3IV3NRQWZDAADPHDMIQJDGMU6RHMLARFD76QLUJ5HX2X',
 };
+
+const distributeAccount2 = {
+    type: 'ed25519',
+    Key: 'GCUOWC2EFGVGDPIV7Z7EY37T7GYZBILGE3ZDMFLT6MKPIZS5VAQKIWCT',
+    secretKey: 'SCR3JV2TX6SL4GURE3XV6UAUKW5BZL4UET2ALTWF227H655VGAU2PDJB',
+};
+
 
 const serverAddress = {
     live: 'https://horizon.stellar.org',

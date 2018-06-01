@@ -1,6 +1,6 @@
 import { PreferenceProvider } from './../../providers/common/preference/preference';
 import { AccountProvider } from './../../providers/account/account';
-import { WalletPage } from './../0.main/wallet';
+import { WalletPage } from './../wallet/wallet';
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { Logger } from '../../providers/common/logger/logger';

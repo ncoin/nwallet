@@ -1,5 +1,5 @@
 import { PreferenceProvider, Preference } from './../../providers/common/preference/preference';
-import { WalletPage } from './../0.main/wallet';
+import { WalletPage } from './../wallet/wallet';
 import { Component } from '@angular/core';
 import { IonicPage, NavController } from 'ionic-angular';
 import { Logger } from '../../providers/common/logger/logger';

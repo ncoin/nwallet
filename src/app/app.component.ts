@@ -1,4 +1,4 @@
-import { WalletPage } from './../pages/0.main/wallet';
+import { WalletPage } from './../pages/wallet/wallet';
 import { Logger } from './../providers/common/logger/logger';
 import { Component, ViewChild } from '@angular/core';
 

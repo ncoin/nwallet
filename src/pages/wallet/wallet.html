@@ -12,10 +12,13 @@
     <p>{{account.signature.secret}}</p>
 
     <ion-list>
-        <div *ngFor="let wallet of account.wallets">
-            <p>{{wallet.asset.code}}</p>
-            <p>{{wallet.amount}}</p>
-        </div>
+        <ion-card *ngFor="let wallet of account.wallets">
+            <ion-card-content >
+                <button ion-item style="text-align: right" (click)="onSelectWallet(wallet)">
+                        {{wallet.amount}} {{wallet.asset.code}}
+                </button>
+            </ion-card-content>
+        </ion-card>
     </ion-list>
     <button ion-item (click)="onLogout()">
         <h3>logout</h3>
@@ -27,8 +30,8 @@
         </ion-input>
     </ion-item>
     <ion-item>
-        <ion-label stacked color="primary">amount</ion-label>
-        <ion-input [(ngModel)]="amount" name="amount" type="text" spellcheck="false" autocapitalize="off" required>
+        <ion-label stacked color="primary">amount ({{asset.code}})</ion-label>
+        <ion-input [(ngModel)]="amount" name="amounts" type="text" spellcheck="false" autocapitalize="off" required>
         </ion-input>
     </ion-item>
 

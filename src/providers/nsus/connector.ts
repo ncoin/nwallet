@@ -19,7 +19,7 @@ export class ConnectProvider {
     /** <public key, eventSource> */
     private paymentSubscriptions: Map<string, any>;
 
-    constructor(private zone:NgZone, private logger: Logger) {
+    constructor(private zone: NgZone, private logger: Logger) {
         this.init();
         this.paymentSubscriptions = new Map<string, any>();
         nSky;
@@ -39,6 +39,7 @@ export class ConnectProvider {
             .loadAccount(accountId)
             .then(account => {
                 return account.balances.map<NWallet.WalletItem>(asset => {
+                    this.logger.debug('asset', asset);
                     if (asset.asset_type === 'native') {
                         return {
                             asset: Asset.native(),
@@ -74,7 +75,7 @@ export class ConnectProvider {
     }
 
     //todo: transaction refactoring --sky
-    public async sendPayment(signature: NWallet.Signature, destination: string, walletItem: NWallet.WalletItem, amount: string) {
+    public async sendPayment(signature: NWallet.Signature, destination: string, asset: Asset, amount: string) {
         const source = await this.server.loadAccount(signature.public);
         const transaction = new TransactionBuilder(source);
         //todo: change trust
@@ -82,7 +83,7 @@ export class ConnectProvider {
             transaction.addOperation(
                 Stellar.Operation.payment({
                     destination: destination,
-                    asset: walletItem.asset,
+                    asset: asset,
                     amount: amount,
                 }),
             );
@@ -102,7 +103,6 @@ export class ConnectProvider {
 
     public async refreshWallets(account: NWallet.Account): Promise<void> {
         this.getAssets(account.signature.public).then(wallets => {
-
             this.logger.debug('refresh Wallets');
             //todo check equality then zone run --sky`
 
@@ -113,7 +113,6 @@ export class ConnectProvider {
     }
 
     public async fetchJobs(account: NWallet.Account): Promise<void> {
-
         this.logger.debug('fetch jobs start');
         const subscribe = this.subscribe(account);
         const setAsset = this.refreshWallets(account);
@@ -128,14 +127,12 @@ export class ConnectProvider {
         this.paymentSubscriptions.set(
             account.signature.public,
             //todo get lastest paging token --sky`
-            payment.limit(1).stream({
+            payment.stream({
                 onmessage: function() {
-
                     //argument[0] => payment transactions
                     self.logger.debug('subscibe', arguments[0]);
 
-                    if (self.isFetched)
-                        self.refreshWallets(account);
+                    if (self.isFetched) self.refreshWallets(account);
                 },
                 onerror: function() {
                     self.logger.debug('subscribe error, maybe account not activate yet');
@@ -176,21 +173,27 @@ export class ConnectProvider {
     //     console.log(response);
     // }
 
-    // async createTokenTrust(): Promise<void> {
-    //     const distributer = await this.server.loadAccount(this.distributer.Key);
-    //     const transaction = new TransactionBuilder(distributer)
-    //         .addOperation(
-    //             Stellar.Operation.changeTrust({
-    //                 asset: nSky,
-    //                 limit: '1000000',
-    //             }),
-    //         )
-    //         .build();
+    async createTokenTrust(account: NWallet.Account): Promise<void> {
+        this.server
+            .loadAccount(account.signature.public)
+            .then(async distributer => {
+                const transaction = new TransactionBuilder(distributer)
+                    .addOperation(
+                        Stellar.Operation.changeTrust({
+                            asset: nSky,
+                            limit: '1000000',
+                        }),
+                    )
+                    .build();
 
-    //     transaction.sign(Keypair.fromSecret(this.distributer.secretKey));
-    //     const response = await this.server.submitTransaction(transaction);
-    //     console.log(response);
-    // }
+                transaction.sign(Keypair.fromSecret(account.signature.secret));
+                const response = await this.server.submitTransaction(transaction);
+                console.log(response);
+            })
+            .catch(err => {
+                this.logger.debug('create trust error : ', err);
+            });
+    }
 
     // async issueToken(): Promise<void> {
     //     const issuer = await this.server.loadAccount(this.issuer.Key);

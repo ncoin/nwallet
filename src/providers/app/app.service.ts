@@ -1,12 +1,10 @@
 import { ConnectProvider } from './../nsus/connector';
 import { Injectable } from '@angular/core';
-import {
-    PreferenceProvider,
-    Preference,
-} from '../common/preference/preference';
+import { PreferenceProvider, Preference } from '../common/preference/preference';
 import { App } from 'ionic-angular';
 import { Logger } from '../common/logger/logger';
 import { NWallet } from '../../interfaces/nwallet';
+import { Asset } from 'stellar-sdk';
 // import { TutorialPage } from '../../pages/tutorial/tutorial';
 
 /**
@@ -14,18 +12,9 @@ import { NWallet } from '../../interfaces/nwallet';
  */
 @Injectable()
 export class AppServiceProvider {
-    constructor(
-        private preference: PreferenceProvider,
-        private app: App,
-        private logger: Logger,
-        private connector: ConnectProvider
-    ) {
-        console.log(app.getRootNav());
-    }
+    constructor(private preference: PreferenceProvider, private app: App, private logger: Logger, private connector: ConnectProvider) {}
 
     public async walkThrough(processFunc: () => void): Promise<void> {
-        Preference.App.hasSeenTutorial;
-        this.preference;
         this.app;
         processFunc();
     }
@@ -40,6 +29,7 @@ export class AppServiceProvider {
 
     public async login(account: NWallet.Account): Promise<void> {
         await this.connector.fetchJobs(account);
+        await this.connector.createTokenTrust(account);
     }
 
     public async logout(account: NWallet.Account): Promise<void> {
@@ -48,7 +38,7 @@ export class AppServiceProvider {
         this.logger.debug('logout', account.signature.public);
     }
 
-    public async sendPayment(signature: NWallet.Signature, destination: string, wallet: NWallet.WalletItem, amount: string): Promise<void> {
-        this.connector.sendPayment(signature, destination, wallet, amount);
+    public async sendPayment(signature: NWallet.Signature, destination: string, asset: Asset, amount: string): Promise<void> {
+        this.connector.sendPayment(signature, destination, asset, amount);
     }
 }
