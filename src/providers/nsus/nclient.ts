@@ -1,4 +1,4 @@
-import { CurrencyProvider } from './../currency/currency';
+import { CurrencyProvider, CurrencyId } from './../currency/currency';
 // steller sdk wrapper
 import Stellar, { TransactionBuilder, Asset, Keypair } from 'stellar-sdk';
 import { Injectable, NgZone } from '@angular/core';
@@ -20,11 +20,9 @@ export class NClientProvider {
     /** <public key, eventSource> */
     private paymentSubscriptions: Map<string, any>;
 
-    constructor(private zone: NgZone, private logger: Logger, currency: CurrencyProvider) {
+    constructor(private zone: NgZone, private logger: Logger, private currency: CurrencyProvider) {
         this.init();
         this.paymentSubscriptions = new Map<string, any>();
-        nSky;
-        currency;
     }
 
     async init(): Promise<void> {
@@ -46,12 +44,29 @@ export class NClientProvider {
                         return {
                             asset: Asset.native(),
                             amount: asset.balance,
+                            price: this.currency.getCurrencyInfo(CurrencyId.XLM).getValue().price,
                         };
+                    }
+
+                    const isEqual = (dest: Asset) => {
+                        return asset.asset_code === dest.getCode() && asset.asset_issuer === dest.getIssuer() && asset.asset_type === NWallet.NCH.getAssetType();
+                    };
+
+                    let price: number = 0;
+
+                    //poc code
+                    if (isEqual(NWallet.NCN)) {
+                        price = this.currency.getCurrencyInfo("-2").getValue().price;
+                    }
+
+                    if (isEqual(NWallet.NCH)) {
+                        price = this.currency.getCurrencyInfo("-1").getValue().price;
                     }
 
                     return {
                         asset: new Asset(asset.asset_code, asset.asset_issuer),
                         amount: asset.balance,
+                        price: 0,
                     };
                 });
             })

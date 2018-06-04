@@ -1,3 +1,4 @@
+import { CurrencyProvider } from './../../../providers/currency/currency';
 import { Component, ViewChild, NgZone } from '@angular/core';
 import { IonicPage, NavController, NavParams, Navbar, List } from 'ionic-angular';
 import { Asset } from 'stellar-sdk';
@@ -21,16 +22,16 @@ export class WalletBuyPage {
     @ViewChild('walletSelectList') selections: List;
     buyContext: { amount: string; asset: Asset };
     wallets: NWallet.WalletItem[] = NWallet.WalletEmpty;
-    constructor(public navCtrl: NavController, public navParams: NavParams, private account: AccountProvider, private zone:NgZone) {
+    constructor(public navCtrl: NavController, public navParams: NavParams, private account: AccountProvider, private zone: NgZone, private currency: CurrencyProvider) {
         this.buyContext = { amount: '0', asset: Asset.native() };
         this.wallets = account.account.wallets;
+        currency;
     }
 
-    async init(): Promise<void>{
+    async init(): Promise<void> {
         const account = await this.account.getAccount();
         account;
-        this.zone.run(()=> {
-        });
+        this.zone.run(() => {});
     }
 
     test() {

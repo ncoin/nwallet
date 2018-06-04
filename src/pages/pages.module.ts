@@ -1,3 +1,4 @@
+import { PipesModule } from './../pipes/pipes.module';
 import { WalletLoanPage } from './wallet-detail/wallet-loan/wallet-loan';
 import { WalletBuyPage } from './wallet-detail/wallet-buy/wallet-buy';
 import { CreateAccountPage } from './1.account/createaccount';
@@ -20,6 +21,7 @@ import { ImportAccountPage } from './1.account/importaccount';
         IonicPageModule.forChild(WalletDetailPage),
         IonicPageModule.forChild(WalletBuyPage),
         IonicPageModule.forChild(WalletLoanPage),
+        PipesModule
     ],
     entryComponents: [TutorialPage, EntrancePage, WalletPage],
 })

@@ -8,10 +8,10 @@ export namespace NWallet {
         wallets: NWallet.WalletEmpty,
     };
     export const SignatureEmpty: Signature = { public :'public key', secret : 'secret sig' };
-    export const WalletEmpty: WalletItem[] = [{ asset: Asset.native(), amount: '0' }];
+    export const WalletEmpty: WalletItem[] = [{ asset: Asset.native(), amount: '0', price: 0 }];
     export const AddressEmpty: Address = { location: 'empty address' };
     export const ProfileEmpty: Profile = { firstName: 'john', lastName : 'doe', phoneNumber : { countryCode : '00', number: '000000' } };
-    export const TransactionEmpty: Transaction[] = [{ type : "", item: { amount : "", asset : Asset.native() }, date : new Date()}]
+    export const TransactionEmpty: Transaction[] = [{ type : "", item: { amount : "", asset : Asset.native(), price:0 }, date : new Date()}]
 
     export interface Account {
         isActivate: boolean;
@@ -40,6 +40,7 @@ export namespace NWallet {
     export interface WalletItem {
         asset: Asset;
         amount: string;
+        price: number;
     }
 
     export interface Transaction {
@@ -47,4 +48,8 @@ export namespace NWallet {
         item: WalletItem;
         date: Date;
     }
+
+    export const NCN = new Asset("NCN", "GD5KULZRARHGYJHDKDCUYHTY645Z4NP7443WS4HQJSNX45BMHV5CCTM3");
+    export const NCH = new Asset("NCH", "GD5KULZRARHGYJHDKDCUYHTY645Z4NP7443WS4HQJSNX45BMHV5CCTM3");
+    export const XLM = Asset.native();
 }

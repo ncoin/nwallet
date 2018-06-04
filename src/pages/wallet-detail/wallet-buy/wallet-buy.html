@@ -24,13 +24,14 @@
         </ion-item>
         <ion-item no-lines>
             <ion-label>> Balance</ion-label>
-            <div>
-
+            <div ion-item-end>
+                <ion-label></ion-label>
+                <ion-label></ion-label>
             </div>
         </ion-item>
         <ion-item>
             <ion-label floating>amount</ion-label>
-            <ion-input></ion-input>
+            <ion-input [(ngModel)]="buyContext.amount" name="AMOUNT" type="number" required></ion-input>
         </ion-item>
     </div>
     <!-- todo use related grid later [sky] -->

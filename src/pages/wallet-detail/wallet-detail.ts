@@ -23,7 +23,7 @@ export class WalletDetailPage {
 
     @ViewChild(Navbar) navBar: Navbar;
     constructor(public navCtrl: NavController, public navParams: NavParams, private logger: Logger) {
-        logger.debug(navParams);
+        this.logger.debug(navParams);
         this.wallet = navParams.get('wallet');
     }
 
