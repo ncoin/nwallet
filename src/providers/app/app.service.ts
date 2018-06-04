@@ -1,4 +1,4 @@
-import { ConnectProvider } from './../nsus/connector';
+import { NClientProvider } from './../nsus/nclient';
 import { Injectable } from '@angular/core';
 import { PreferenceProvider, Preference } from '../common/preference/preference';
 import { App } from 'ionic-angular';
@@ -12,7 +12,7 @@ import { Asset } from 'stellar-sdk';
  */
 @Injectable()
 export class AppServiceProvider {
-    constructor(private preference: PreferenceProvider, private app: App, private logger: Logger, private connector: ConnectProvider) {}
+    constructor(private preference: PreferenceProvider, private app: App, private logger: Logger, private connector: NClientProvider) {}
 
     public async walkThrough(processFunc: () => void): Promise<void> {
         this.app;

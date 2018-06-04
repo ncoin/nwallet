@@ -10,23 +10,27 @@ import { Keypair } from 'stellar-sdk';
 
 @Injectable()
 export class AccountProvider {
-    private account: NWallet.Account;
+    public account: NWallet.Account;
 
     constructor(private event: Events, private preference: PreferenceProvider, private logger: Logger) {
         this.init();
     }
 
     private async init(): Promise<void> {
+
         this.event;
         this.account = await this.preference.get(
             Preference.Nwallet.walletAccount,
         );
+
+        this.logger.debug('account provider initiated');
     }
 
     public async getAccount(): Promise<NWallet.Account> {
-        const account = await this.preference.get(Preference.Nwallet.walletAccount);
-        this.logger.debug('get account', account);
-        return account;
+        if (!this.account){
+            this.account = await this.preference.get(Preference.Nwallet.walletAccount);
+        }
+        return this.account;
     }
 
 
