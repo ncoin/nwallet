@@ -1,3 +1,4 @@
+import { CurrencyProvider } from './../currency/currency';
 // steller sdk wrapper
 import Stellar, { TransactionBuilder, Asset, Keypair } from 'stellar-sdk';
 import { Injectable, NgZone } from '@angular/core';
@@ -13,16 +14,17 @@ const serverAddress = {
 const nSky = new Asset('nSky432', 'GCOXH4BOXGPKYA62LOT4F4BRVKR2U2DFKTCOQ6JBMJDBLWK3ARMRJDKK');
 
 @Injectable()
-export class ConnectProvider {
+export class NClientProvider {
     private server: Stellar.Server;
     private isFetched: boolean;
     /** <public key, eventSource> */
     private paymentSubscriptions: Map<string, any>;
 
-    constructor(private zone: NgZone, private logger: Logger) {
+    constructor(private zone: NgZone, private logger: Logger, currency: CurrencyProvider) {
         this.init();
         this.paymentSubscriptions = new Map<string, any>();
         nSky;
+        currency;
     }
 
     async init(): Promise<void> {
