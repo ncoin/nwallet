@@ -1,6 +1,5 @@
 import { NWalletPageModule } from './../pages/pages.module';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpModule } from '@angular/http';
 import { NgModule, ErrorHandler } from '@angular/core';
 
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
@@ -14,6 +13,7 @@ import { NWalletApp } from './app.component';
 
 
 import { ProvidersModule } from '../providers/providers.module';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
     declarations: [
@@ -21,7 +21,7 @@ import { ProvidersModule } from '../providers/providers.module';
     ],
     imports: [
         BrowserModule,
-        HttpModule,
+        HttpClientModule,
         NWalletPageModule,
         IonicModule.forRoot(
             NWalletApp,
