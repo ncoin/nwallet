@@ -6,13 +6,38 @@
 -->
 <ion-header>
 
-  <ion-navbar>
-    <ion-title>wallet.buy</ion-title>
-  </ion-navbar>
+    <ion-navbar>
+        <ion-title>Buy NCH</ion-title>
+    </ion-navbar>
 
 </ion-header>
 
 
-<ion-content padding>
+<ion-content padding scroll="=false">
+    <div>
+        :: PAYING CURRENCY
+        <ion-item >
+            <ion-label>{{buyContext.asset.code}}</ion-label>
+            <ion-select [(ngModel)]="buyContext.asset" interface="popover">
+                <ion-option *ngFor="let wallet of wallets" [value]="wallet.asset">{{wallet.asset.code}}</ion-option>
+            </ion-select>
+        </ion-item>
+        <ion-item no-lines>
+            <ion-label>> Balance</ion-label>
+            <div>
 
+            </div>
+        </ion-item>
+        <ion-item>
+            <ion-label floating>amount</ion-label>
+            <ion-input></ion-input>
+        </ion-item>
+    </div>
+    <!-- todo use related grid later [sky] -->
+    <button ion-button block (click)="test()" style="
+            position:  absolute;
+            width: 90%;
+            left:  5%; bottom : 10%;">
+        Buy NCH
+    </button>
 </ion-content>

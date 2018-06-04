@@ -1,5 +1,8 @@
-import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams, Navbar } from 'ionic-angular';
+import { Component, ViewChild, NgZone } from '@angular/core';
+import { IonicPage, NavController, NavParams, Navbar, List } from 'ionic-angular';
+import { Asset } from 'stellar-sdk';
+import { AccountProvider } from '../../../providers/account/account';
+import { NWallet } from '../../../interfaces/nwallet';
 
 /**
  * Generated class for the WalletBuyPage page.
@@ -15,7 +18,27 @@ import { IonicPage, NavController, NavParams, Navbar } from 'ionic-angular';
 })
 export class WalletBuyPage {
     @ViewChild(Navbar) navBar: Navbar;
-    constructor(public navCtrl: NavController, public navParams: NavParams) {}
+    @ViewChild('walletSelectList') selections: List;
+    buyContext: { amount: string; asset: Asset };
+    wallets: NWallet.WalletItem[] = NWallet.WalletEmpty;
+    constructor(public navCtrl: NavController, public navParams: NavParams, private account: AccountProvider, private zone:NgZone) {
+        this.buyContext = { amount: '0', asset: Asset.native() };
+        this.wallets = account.account.wallets;
+    }
+
+    async init(): Promise<void>{
+        const account = await this.account.getAccount();
+        account;
+        this.zone.run(()=> {
+        });
+    }
+
+    test() {
+        var d = this.buyContext;
+        var asd = this.wallets;
+        asd;
+        d;
+    }
 
     ionViewDidLoad() {
         this.navBar.backButtonClick = ev => {
