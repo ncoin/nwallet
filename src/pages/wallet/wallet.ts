@@ -22,7 +22,7 @@ import { WalletDetailPage } from '../wallet-detail/wallet-detail';
 export class WalletPage {
     account: NWallet.Account = <NWallet.Account>{
         signature: { public: '', secret: '' },
-        wallets: [{ asset: { code: ' ' }, amount: ' ' }],
+        wallets: NWallet.WalletEmpty,
     };
 
     asset: Asset = Asset.native();

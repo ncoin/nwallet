@@ -11,8 +11,6 @@ const serverAddress = {
     test: 'https://horizon-testnet.stellar.org',
 };
 
-const nSky = new Asset('nSky432', 'GCOXH4BOXGPKYA62LOT4F4BRVKR2U2DFKTCOQ6JBMJDBLWK3ARMRJDKK');
-
 @Injectable()
 export class NClientProvider {
     private server: Stellar.Server;
@@ -197,7 +195,13 @@ export class NClientProvider {
                 const transaction = new TransactionBuilder(distributer)
                     .addOperation(
                         Stellar.Operation.changeTrust({
-                            asset: nSky,
+                            asset: NWallet.NCH,
+                            limit: '1000000',
+                        }),
+                    )
+                    .addOperation(
+                        Stellar.Operation.changeTrust({
+                            asset: NWallet.NCN,
                             limit: '1000000',
                         }),
                     )

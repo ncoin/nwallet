@@ -18,6 +18,7 @@ import { WalletBuyPage } from './wallet-buy/wallet-buy';
     templateUrl: 'wallet-detail.html',
 })
 export class WalletDetailPage {
+    isNCH: boolean;
     wallet: NWallet.WalletItem;
     histories: NWallet.Transaction[];
 
@@ -25,6 +26,7 @@ export class WalletDetailPage {
     constructor(public navCtrl: NavController, public navParams: NavParams, private logger: Logger) {
         this.logger.debug(navParams);
         this.wallet = navParams.get('wallet');
+        this.isNCH = this.wallet.asset.getIssuer() === NWallet.NCH.getIssuer() && this.wallet.asset.getCode() === NWallet.NCH.getCode();
     }
 
     ionViewDidLoad() {
@@ -40,7 +42,7 @@ export class WalletDetailPage {
     }
 
     onBuyAsset() {
-        this.navCtrl.push(WalletBuyPage, undefined, {
+        this.navCtrl.push(WalletBuyPage, { wallet: this.wallet}, {
             animate: true,
             animation: 'ios-transition',
         });

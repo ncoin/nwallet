@@ -5,14 +5,14 @@ import { Injectable } from '@angular/core';
 import {} from 'rxjs/add/operator/in';
 import { Observer, Subscription, BehaviorSubject } from 'rxjs/Rx';
 /*
-  Generated class for the CurrencyProvider provider.
+    Generated class for the CurrencyProvider provider.
 
-  See https://angular.io/guide/dependency-injection for more info on providers
-  and Angular DI.
+    See https://angular.io/guide/dependency-injection for more info on providers
+    and Angular DI.
 */
 export enum CurrencyId {
-    BTC = "1",
-    XLM = "512",
+    BTC = '1',
+    XLM = '512',
 }
 
 const api: (currency: CurrencyId) => string = (currency): string => {
@@ -26,6 +26,20 @@ interface CurrencyInfo {
     price: number;
 }
 
+const NCH = <CurrencyInfo>{
+    id: '-1',
+    name: 'NCash',
+    symbol: 'NCH',
+    price: 1,
+};
+
+const NCN = <CurrencyInfo>{
+    id: '-2',
+    name: 'NCoin',
+    symbol: 'NCN',
+    price: 0.03,
+};
+
 @Injectable()
 export class CurrencyProvider {
     // injected by http module
@@ -34,7 +48,7 @@ export class CurrencyProvider {
     public currencyStream: Subscription;
 
     //for debug
-    private observer:Observer<CurrencyInfo>;
+    private observer: Observer<CurrencyInfo>;
 
     constructor(private http: HttpClient, private logger: Logger) {
         this.currencyInfos = new Map<string, BehaviorSubject<CurrencyInfo>>();
@@ -55,20 +69,6 @@ export class CurrencyProvider {
             complete: () => {},
         };
 
-        const NCH =  <CurrencyInfo>{
-            id : "-1",
-            name : "NCash",
-            symbol : "NCH",
-            price : 1
-        };
-
-        const NCN = <CurrencyInfo>{
-            id : "-2",
-            name : "NCoin",
-            symbol : "NCN",
-            price : 0.03
-        };
-
         Observable.timer(0, 5000).subscribe(() => {
             this.observer.next(NCH);
             this.getCurrencyInfo(NCH.id).next(NCH);
@@ -80,17 +80,22 @@ export class CurrencyProvider {
     private sync(): void {
         const apiRequests = Observable.from(Object.keys(CurrencyId)).flatMap(currency => this.http.get(api(CurrencyId[currency])).map(this.getData));
 
-        this.currencyStream = Observable.timer(0,5000).flatMap(() => apiRequests).subscribe(this.observer);
+        this.currencyStream = Observable.timer(0, 5000)
+            .flatMap(() => apiRequests)
+            .subscribe(this.observer);
     }
 
     public getCurrencyInfo(id: string): BehaviorSubject<CurrencyInfo> {
         if (!this.currencyInfos.has(id)) {
-            this.currencyInfos.set(id, new BehaviorSubject<CurrencyInfo>({
-                id : id,
-                name : "unknown",
-                symbol : "unknown",
-                price : 0.001,
-            }));
+            this.currencyInfos.set(
+                id,
+                new BehaviorSubject<CurrencyInfo>({
+                    id: id,
+                    name: 'unknown',
+                    symbol: 'unknown',
+                    price: 0.001,
+                }),
+            );
         }
 
         return this.currencyInfos.get(id);

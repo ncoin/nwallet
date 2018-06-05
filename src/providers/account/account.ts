@@ -47,4 +47,8 @@ export class AccountProvider {
             secret: keyPair.secret(),
         };
     }
+
+    public flush():void {
+        this.account = undefined;
+    }
 }

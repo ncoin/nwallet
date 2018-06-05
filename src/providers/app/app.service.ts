@@ -1,3 +1,4 @@
+import { AccountProvider } from './../account/account';
 import { NClientProvider } from './../nsus/nclient';
 import { Injectable } from '@angular/core';
 import { PreferenceProvider, Preference } from '../common/preference/preference';
@@ -12,7 +13,7 @@ import { Asset } from 'stellar-sdk';
  */
 @Injectable()
 export class AppServiceProvider {
-    constructor(private preference: PreferenceProvider, private app: App, private logger: Logger, private connector: NClientProvider) {}
+    constructor(private preference: PreferenceProvider, private app: App, private logger: Logger, private connector: NClientProvider, private account: AccountProvider) {}
 
     public async walkThrough(processFunc: () => void): Promise<void> {
         this.app;
@@ -35,6 +36,7 @@ export class AppServiceProvider {
     public async logout(account: NWallet.Account): Promise<void> {
         await this.preference.remove(Preference.Nwallet.walletAccount);
         await this.connector.unSubscribe(account);
+        this.account.flush();
         this.logger.debug('logout', account.signature.public);
     }
 

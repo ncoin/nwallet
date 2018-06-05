@@ -17,22 +17,34 @@
     <div>
         :: PAYING CURRENCY
         <ion-item >
-            <ion-label>{{buyContext.asset.code}}</ion-label>
-            <ion-select [(ngModel)]="buyContext.asset" interface="popover">
-                <ion-option *ngFor="let wallet of wallets" [value]="wallet.asset">{{wallet.asset.code}}</ion-option>
+            <ion-label> {{wallet.asset.code | walletName}}</ion-label>
+            <ion-select [(ngModel)]="wallet" interface="popover">
+                <ion-option *ngFor="let wallet of wallets" [value]="wallet">{{wallet.asset.code}}</ion-option>
             </ion-select>
         </ion-item>
         <ion-item no-lines>
             <ion-label>> Balance</ion-label>
-            <div ion-item-end>
-                <ion-label></ion-label>
-                <ion-label></ion-label>
+            <div item-end>
+                <ion-label style="text-align: right">{{wallet | walletFormat}}</ion-label>
+                <ion-label style="text-align: right">{{wallet | walletToUSD}}</ion-label>
             </div>
         </ion-item>
         <ion-item>
-            <ion-label floating>amount</ion-label>
-            <ion-input [(ngModel)]="buyContext.amount" name="AMOUNT" type="number" required></ion-input>
+            <ion-label floating>Amount</ion-label>
+            <ion-input [(ngModel)]="amount" type="number" required></ion-input>
         </ion-item>
+        <ion-label>
+            :: BUYING CURRENCY
+        </ion-label>
+        <ion-item>
+            <ion-label item-start>
+                NCH
+            </ion-label>
+            <ion-label>
+                {{buyContext.toNCH}} NCH
+            </ion-label>
+        </ion-item>
+
     </div>
     <!-- todo use related grid later [sky] -->
     <button ion-button block (click)="test()" style="

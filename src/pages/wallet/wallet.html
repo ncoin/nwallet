@@ -6,18 +6,19 @@
 
 
 <ion-content padding>
-    <p>public</p>
+    <!-- <p>public</p>
     <p>{{account.signature.public}}</p>
     <p>secret</p>
-    <p>{{account.signature.secret}}</p>
-
+    <p>{{account.signature.secret}}</p> -->
     <ion-list>
         <ion-card *ngFor="let wallet of account.wallets">
-            <ion-card-content >
+            <ion-card-content>
                 <button ion-item style="text-align: right" (click)="onSelectWallet(wallet)">
-                        <ion-label text-left>Name</ion-label>
-                        <ion-label text-right>{{wallet.amount}} {{wallet.asset.code}}</ion-label>
-                        <ion-label text-right>{{wallet | priceCurrency}}</ion-label>
+                    <ion-label text-left>{{wallet.asset.code | walletName}}</ion-label>
+                    <div item-end>
+                        <ion-label>{{wallet | walletFormat}}</ion-label>
+                        <ion-label>{{wallet | walletToUSD}}</ion-label>
+                    </div>
                 </button>
             </ion-card-content>
         </ion-card>
@@ -26,7 +27,7 @@
         <h3>logout</h3>
     </button>
 
-    <ion-item>
+    <!-- <ion-item>
         <ion-label stacked color="primary">destination</ion-label>
         <ion-input [(ngModel)]="destination" name="destination" type="text" spellcheck="false" autocapitalize="off" required>
         </ion-input>
@@ -39,5 +40,5 @@
 
     <button ion-item (click)="onSendPayment()">
         <h3>send</h3>
-    </button>
+    </button> -->
 </ion-content>

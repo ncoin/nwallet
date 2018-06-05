@@ -1,7 +1,6 @@
 import { CurrencyProvider } from './../../../providers/currency/currency';
 import { Component, ViewChild, NgZone } from '@angular/core';
 import { IonicPage, NavController, NavParams, Navbar, List } from 'ionic-angular';
-import { Asset } from 'stellar-sdk';
 import { AccountProvider } from '../../../providers/account/account';
 import { NWallet } from '../../../interfaces/nwallet';
 
@@ -20,12 +19,43 @@ import { NWallet } from '../../../interfaces/nwallet';
 export class WalletBuyPage {
     @ViewChild(Navbar) navBar: Navbar;
     @ViewChild('walletSelectList') selections: List;
-    buyContext: { amount: string; asset: Asset };
+
+    buyContext: { toNCH: number };
     wallets: NWallet.WalletItem[] = NWallet.WalletEmpty;
+    private _amount:number;
+    private _wallet:NWallet.WalletItem;
+
     constructor(public navCtrl: NavController, public navParams: NavParams, private account: AccountProvider, private zone: NgZone, private currency: CurrencyProvider) {
-        this.buyContext = { amount: '0', asset: Asset.native() };
+
+        const wallet = navParams.get("wallet");
+        this.buyContext = {  toNCH: 0 };
+        this.wallet = wallet;
         this.wallets = account.account.wallets;
-        currency;
+        this.amount = 0;
+    }
+
+    public set amount(value: number){
+        this._amount = value;
+        this.calculateTotalNCN();
+    }
+
+    public get amount():number {
+        return this._amount;
+    }
+
+    public get wallet():NWallet.WalletItem {
+        return this._wallet;
+    }
+
+    public set wallet(wallet:NWallet.WalletItem) {
+        this._wallet = wallet;
+        this.calculateTotalNCN();
+    }
+
+    private calculateTotalNCN(): void {
+        const totalPrice = this.amount * this.wallet.price;
+        const nch = this.currency.getCurrencyInfo("-1");
+        this.buyContext.toNCH = totalPrice / nch.getValue().price;
     }
 
     async init(): Promise<void> {

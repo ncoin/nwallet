@@ -11,12 +11,19 @@
 </ion-header>
 <ion-content padding>
     <div>
-        <ion-label>
-            {{wallet.asset.code}}
-        </ion-label>
-        <ion-label>
-            {{wallet.amount}} {{wallet.asset.code}}
-        </ion-label>
+        <div>
+            <ion-label style="text-align: center; font-size: 300%">
+                {{wallet.asset.code | walletName}}
+            </ion-label>
+        </div>
+        <div align="right">
+            <ion-label>
+                {{wallet | walletFormat}}
+            </ion-label>
+            <ion-label>
+                {{wallet | walletToUSD}}
+            </ion-label>
+        </div>
     </div>
     <div>
         <label>>Transaction History</label>
@@ -25,17 +32,19 @@
                 {{history.type}} {{history.amount}} {{history.date}}
             </ion-item>
         </ion-list>
-        <div end align="middle">
-            <ion-buttons>
-                    <button ion-button (click)="onBuyAsset()">
-                            buy
-                        </button>
-                        <button ion-button (click)="onLoanAsset()">
-                            loan
-                        </button>
+        <!-- todo use related grid later [sky] -->
+        <div align="middle" style="
+        position:  absolute;
+        width: 90%;
+        left:  5%; bottom : 10%;">
+            <ion-buttons *ngIf="!isNCH">
+                <button ion-button (click)="onBuyAsset()" style="width: 30%">
+                    buy NCH
+                </button>
+                <button ion-button (click)="onLoanAsset()" style="width: 30%">
+                    loan NCH
+                </button>
             </ion-buttons>
-
-
         </div>
     </div>
 </ion-content>

@@ -1,8 +1,10 @@
+import { WalletFormatPipe } from './wallet-format/wallet-format';
 import { NgModule } from '@angular/core';
-import { PriceCurrencyPipe } from './price-currency/price-currency';
+import { WalletToUSDPipe } from './wallet-to-usd/wallet-to-usd';
+import { WalletNamePipe } from './wallet-name/wallet-name';
 @NgModule({
-	declarations: [PriceCurrencyPipe],
-	imports: [],
-	exports: [PriceCurrencyPipe]
+    declarations: [WalletToUSDPipe, WalletNamePipe, WalletFormatPipe],
+    imports: [],
+    exports: [WalletToUSDPipe, WalletNamePipe, WalletFormatPipe],
 })
 export class PipesModule {}
