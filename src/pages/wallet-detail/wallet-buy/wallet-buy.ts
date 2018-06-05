@@ -18,7 +18,6 @@ import { NWallet } from '../../../interfaces/nwallet';
 })
 export class WalletBuyPage {
     @ViewChild(Navbar) navBar: Navbar;
-    @ViewChild('walletSelectList') selections: List;
 
     buyContext: { toNCH: number };
     wallets: NWallet.WalletItem[] = NWallet.WalletEmpty;
@@ -26,7 +25,6 @@ export class WalletBuyPage {
     private _wallet:NWallet.WalletItem;
 
     constructor(public navCtrl: NavController, public navParams: NavParams, private account: AccountProvider, private zone: NgZone, private currency: CurrencyProvider) {
-
         const wallet = navParams.get("wallet");
         this.buyContext = {  toNCH: 0 };
         this.wallet = wallet;

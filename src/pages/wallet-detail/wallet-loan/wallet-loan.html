@@ -6,13 +6,51 @@
 -->
 <ion-header>
 
-  <ion-navbar>
-    <ion-title>wallet.loan</ion-title>
-  </ion-navbar>
+        <ion-navbar>
+            <ion-title>Loan NCH</ion-title>
+        </ion-navbar>
 
-</ion-header>
+    </ion-header>
 
 
-<ion-content padding>
+    <ion-content padding scroll="=false">
+        <div>
+            :: COLLATERAL CURRENCY
+            <ion-item >
+                <ion-label> {{wallet.asset.code | walletName}}</ion-label>
+                <ion-select [(ngModel)]="wallet" interface="popover">
+                    <ion-option *ngFor="let wallet of wallets" [value]="wallet">{{wallet.asset.code}}</ion-option>
+                </ion-select>
+            </ion-item>
+            <ion-item no-lines>
+                <ion-label>> Balance</ion-label>
+                <div item-end>
+                    <ion-label style="text-align: right">{{wallet | walletFormat}}</ion-label>
+                    <ion-label style="text-align: right">{{wallet | walletToUSD}}</ion-label>
+                </div>
+            </ion-item>
+            <ion-item>
+                <ion-label floating>Amount</ion-label>
+                <ion-input [(ngModel)]="amount" type="number" required></ion-input>
+            </ion-item>
+            <ion-label>
+                :: LOAN CURRENCY
+            </ion-label>
+            <ion-item>
+                <ion-label item-start>
+                    NCH
+                </ion-label>
+                <ion-label>
+                    {{loanContext.toNCH}} NCH
+                </ion-label>
+            </ion-item>
 
-</ion-content>
+        </div>
+        <!-- todo use related grid later [sky] -->
+        <button ion-button block (click)="test()" style="
+                position:  absolute;
+                width: 90%;
+                left:  5%; bottom : 10%;">
+            Request a Loan NCH
+        </button>
+    </ion-content>

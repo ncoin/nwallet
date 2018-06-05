@@ -1,3 +1,4 @@
+import { WalletLoanPage } from './wallet-loan/wallet-loan';
 import { ViewChild } from '@angular/core';
 import { Logger } from './../../providers/common/logger/logger';
 import { Component } from '@angular/core';
@@ -48,5 +49,10 @@ export class WalletDetailPage {
         });
     }
 
-    onLoanAsset() {}
+    onLoanAsset() {
+        this.navCtrl.push(WalletLoanPage, { wallet: this.wallet}, {
+            animate: true,
+            animation: 'ios-transition',
+        });
+    }
 }
