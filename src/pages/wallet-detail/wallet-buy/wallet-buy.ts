@@ -6,7 +6,6 @@ import { IonicPage, NavController, NavParams, Navbar, AlertController, LoadingCo
 import { AccountProvider } from '../../../providers/account/account';
 import { NWallet } from '../../../interfaces/nwallet';
 import { Logger } from '../../../providers/common/logger/logger';
-
 /**
  * Generated class for the WalletBuyPage page.
  *
@@ -22,11 +21,15 @@ import { Logger } from '../../../providers/common/logger/logger';
 export class WalletBuyPage {
     @ViewChild(Navbar) navBar: Navbar;
 
-    private _amount: number;
+    private _amount: number = 0;
     private _wallet: NWallet.WalletItem;
     private subscription: Subscription;
     wallets: NWallet.WalletItem[] = NWallet.WalletEmpty;
-    NCH: NWallet.WalletItem;
+    NCH: NWallet.WalletItem = {
+        amount: '0',
+        asset: NWallet.NCH,
+        price: 0,
+    };
 
     constructor(
         public navCtrl: NavController,
@@ -36,17 +39,15 @@ export class WalletBuyPage {
         private currency: CurrencyProvider,
         private logger: Logger,
         private alert: AlertController,
-        private appService :AppServiceProvider,
-        private loading: LoadingController
+        private appService: AppServiceProvider,
+        private loading: LoadingController,
     ) {
+
         this._wallet = navParams.get('wallet');
-        this._amount = 0;
-        this.wallets = account.account.wallets;
-        this.NCH = {
-            amount: '0',
-            asset: NWallet.NCH,
-            price: 0,
-        };
+        this.wallets = account.account.wallets.filter(wallet => {
+            return wallet.asset.code !== 'NCH';
+        });
+
         this.subscription = this.currency.getCurrencyInfo('-1').subscribe(cur => {
             this.zone.run(() => {
                 this.NCH.price = cur.price;
@@ -127,11 +128,9 @@ export class WalletBuyPage {
                 {
                     text: 'OK',
                     handler: async () => {
-                        const loader = this.loading.create(
-                            {
-                                content: 'wait ..',
-                            }
-                        )
+                        const loader = this.loading.create({
+                            content: 'wait ..',
+                        });
                         loader.present();
                         const result = await this.appService.requestLoan(this._amount, this._wallet);
                         this.navCtrl.popToRoot();

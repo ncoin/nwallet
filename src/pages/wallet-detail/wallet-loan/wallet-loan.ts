@@ -21,11 +21,15 @@ import { Subscription } from 'rxjs';
 export class WalletLoanPage {
     @ViewChild(Navbar) navBar: Navbar;
 
-    private _amount: number;
+    private _amount: number = 0;
     private _wallet: NWallet.WalletItem;
     private subscription: Subscription;
     wallets: NWallet.WalletItem[] = NWallet.WalletEmpty;
-    NCH: NWallet.WalletItem;
+    NCH: NWallet.WalletItem = {
+        amount: '0',
+        asset: NWallet.NCH,
+        price: 0,
+    };
 
     constructor(
         public navCtrl: NavController,
@@ -38,13 +42,11 @@ export class WalletLoanPage {
         private loading: LoadingController,
     ) {
         this._wallet = navParams.get('wallet');
-        this._amount = 0;
-        this.wallets = account.account.wallets;
-        this.NCH = {
-            amount: '0',
-            asset: NWallet.NCH,
-            price: 0,
-        };
+
+        this.wallets = account.account.wallets.filter(wallet => {
+            return wallet.asset.code !== 'NCH';
+        });
+
         this.subscription = this.currency.getCurrencyInfo('-1').subscribe(cur => {
             this.zone.run(() => {
                 this.NCH.price = cur.price;
@@ -128,7 +130,7 @@ export class WalletLoanPage {
                             content: 'wait ..',
                         });
                         loader.present();
-                        const result = await this.appService.requestLoan(this._amount, this._wallet);
+                        await this.appService.requestLoan(this._amount, this._wallet);
                         this.navCtrl.popToRoot();
                         loader.dismiss();
                     },

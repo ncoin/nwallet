@@ -35,9 +35,7 @@ export class CreateAccountPage {
 
         setTimeout(async () => {
             const current = this.navCtrl.getActive();
-            await this.navCtrl.push(WalletPage, undefined, undefined, async () => {
-                await this.navCtrl.removeView(current);
-            });
+            await this.navCtrl.setRoot(WalletPage, undefined, undefined);
         }, 1000);
     }
 }
