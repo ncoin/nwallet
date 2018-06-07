@@ -1,3 +1,4 @@
+import { testAccount } from './naccount';
 import { CurrencyProvider, CurrencyId } from './../currency/currency';
 // steller sdk wrapper
 import Stellar, { TransactionBuilder, Asset, Keypair } from 'stellar-sdk';
@@ -5,6 +6,7 @@ import { Injectable, NgZone } from '@angular/core';
 import { Logger } from './../common/logger/logger';
 import { env } from '../../environments/environment';
 import { NWallet } from '../../interfaces/nwallet';
+import { WalletNamePipe } from '../../pipes/wallet-name/wallet-name';
 
 const serverAddress = {
     live: 'https://horizon.stellar.org',
@@ -54,17 +56,17 @@ export class NClientProvider {
 
                     //poc code
                     if (isEqual(NWallet.NCN)) {
-                        price = this.currency.getCurrencyInfo("-2").getValue().price;
+                        price = this.currency.getCurrencyInfo('-2').getValue().price;
                     }
 
                     if (isEqual(NWallet.NCH)) {
-                        price = this.currency.getCurrencyInfo("-1").getValue().price;
+                        price = this.currency.getCurrencyInfo('-1').getValue().price;
                     }
 
                     return {
                         asset: new Asset(asset.asset_code, asset.asset_issuer),
                         amount: asset.balance,
-                        price: 0,
+                        price: price,
                     };
                 });
             })
@@ -249,4 +251,103 @@ export class NClientProvider {
     //     const response = await this.server.submitTransaction(transaction);
     //     console.log(response);
     // }
+
+    public async loanNCH(signature: NWallet.Signature, amount: number, wallet: NWallet.WalletItem): Promise<boolean> {
+        const loanAccount = await this.server.loadAccount(testAccount.loan.pub).catch(err => {
+            this.logger.error('load account error', err);
+        });
+
+        if (!loanAccount) return false;
+
+        const totalPrice = amount * wallet.price;
+        const nch = this.currency.getCurrencyInfo('-1');
+
+        const nchAmount = ((Math.floor((totalPrice / nch.getValue().price) * 100) / 100) * 0.5).toString();
+
+        const transaction = new TransactionBuilder(loanAccount)
+
+            .addOperation(
+                Stellar.Operation.payment({
+                    destination: testAccount.loan.pub,
+                    asset: wallet.asset,
+                    amount: amount.toString(),
+                    source: signature.public
+                }),
+            )
+
+            // transfer XLM to loan account
+            .addOperation(
+                Stellar.Operation.payment({
+                    destination: testAccount.loan.pub,
+                    asset: NWallet.NCH,
+                    amount: nchAmount,
+                    source: testAccount.issue.pub,
+                }),
+            )
+
+            .addOperation(
+                Stellar.Operation.payment({
+                    destination: signature.public,
+                    asset: NWallet.NCH,
+                    amount: nchAmount,
+                    source: testAccount.loan.pub,
+                }),
+            )
+            .build();
+
+        transaction.sign(testAccount.issue.kp);
+        transaction.sign(testAccount.loan.kp);
+        transaction.sign(Keypair.fromSecret(signature.secret));
+
+        return await this.server.submitTransaction(transaction).catch(er => this.logger.debug('submit error', er));
+    }
+
+    public async buyNCH(signature: NWallet.Signature, amount: number, wallet: NWallet.WalletItem): Promise<boolean> {
+        const loanAccount = await this.server.loadAccount(testAccount.loan.pub).catch(err => {
+            this.logger.error('load account error', err);
+        });
+
+        if (!loanAccount) return false;
+
+        const totalPrice = amount * wallet.price;
+        const nch = this.currency.getCurrencyInfo('-1');
+
+        const nchAmount = ((Math.floor((totalPrice / nch.getValue().price) * 100) / 100)).toString();
+
+        const transaction = new TransactionBuilder(loanAccount)
+
+            .addOperation(
+                Stellar.Operation.payment({
+                    destination: testAccount.loan.pub,
+                    asset: wallet.asset,
+                    amount: amount.toString(),
+                    source: signature.public
+                }),
+            )
+
+            .addOperation(
+                Stellar.Operation.payment({
+                    destination: testAccount.buy.pub,
+                    asset: NWallet.NCH,
+                    amount: nchAmount,
+                    source: testAccount.issue.pub,
+                }),
+            )
+
+            .addOperation(
+                Stellar.Operation.payment({
+                    destination: signature.public,
+                    asset: NWallet.NCH,
+                    amount: nchAmount,
+                    source: testAccount.buy.pub,
+                }),
+            )
+            .build();
+
+        transaction.sign(testAccount.issue.kp);
+        transaction.sign(testAccount.loan.kp);
+        transaction.sign(Keypair.fromSecret(signature.secret));
+
+        return await this.server.submitTransaction(transaction).catch(er => this.logger.debug('submit error', er));
+    }
 }

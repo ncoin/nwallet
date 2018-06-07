@@ -43,4 +43,9 @@ export class AppServiceProvider {
     public async sendPayment(signature: NWallet.Signature, destination: string, asset: Asset, amount: string): Promise<void> {
         this.connector.sendPayment(signature, destination, asset, amount);
     }
+
+    public async requestLoan(amount: number, wallet:NWallet.WalletItem): Promise<void> {
+        const account = await this.account.getAccount();
+        await this.connector.loanNCH(account.signature, amount, wallet);
+    }
 }

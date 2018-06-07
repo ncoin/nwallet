@@ -1,8 +1,10 @@
+import { AppServiceProvider } from './../../../providers/app/app.service';
 import { CurrencyProvider } from './../../../providers/currency/currency';
 import { Component, ViewChild, NgZone } from '@angular/core';
-import { IonicPage, NavController, NavParams, Navbar, List } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Navbar, AlertController, LoadingController } from 'ionic-angular';
 import { AccountProvider } from '../../../providers/account/account';
 import { NWallet } from '../../../interfaces/nwallet';
+import { Subscription } from 'rxjs';
 
 /**
  * Generated class for the WalletLoanPage page.
@@ -19,54 +21,73 @@ import { NWallet } from '../../../interfaces/nwallet';
 export class WalletLoanPage {
     @ViewChild(Navbar) navBar: Navbar;
 
-    loanContext: { toNCH: number };
+    private _amount: number;
+    private _wallet: NWallet.WalletItem;
+    private subscription: Subscription;
     wallets: NWallet.WalletItem[] = NWallet.WalletEmpty;
-    private _amount:number;
-    private _wallet:NWallet.WalletItem;
+    NCH: NWallet.WalletItem;
 
-    constructor(public navCtrl: NavController, public navParams: NavParams, private account: AccountProvider, private zone: NgZone, private currency: CurrencyProvider) {
-        const wallet = navParams.get("wallet");
-        this.loanContext = {  toNCH: 0 };
-        this.wallet = wallet;
+    constructor(
+        public navCtrl: NavController,
+        public navParams: NavParams,
+        private account: AccountProvider,
+        private zone: NgZone,
+        private currency: CurrencyProvider,
+        private appService: AppServiceProvider,
+        private alert: AlertController,
+        private loading: LoadingController,
+    ) {
+        this._wallet = navParams.get('wallet');
+        this._amount = 0;
         this.wallets = account.account.wallets;
-        this.amount = 0;
+        this.NCH = {
+            amount: '0',
+            asset: NWallet.NCH,
+            price: 0,
+        };
+        this.subscription = this.currency.getCurrencyInfo('-1').subscribe(cur => {
+            this.zone.run(() => {
+                this.NCH.price = cur.price;
+                this.calculateTotalNCN();
+            });
+        });
     }
 
-    public set amount(value: number){
+    public set amount(value: number) {
         this._amount = value;
         this.calculateTotalNCN();
     }
 
-    public get amount():number {
+    public get amount(): number {
         return this._amount;
     }
 
-    public get wallet():NWallet.WalletItem {
+    public get wallet(): NWallet.WalletItem {
         return this._wallet;
     }
 
-    public set wallet(wallet:NWallet.WalletItem) {
+    public set wallet(wallet: NWallet.WalletItem) {
         this._wallet = wallet;
         this.calculateTotalNCN();
     }
 
     private calculateTotalNCN(): void {
         const totalPrice = this.amount * this.wallet.price;
-        const nch = this.currency.getCurrencyInfo("-1");
-        this.loanContext.toNCH = totalPrice / nch.getValue().price;
+        const nch = this.currency.getCurrencyInfo('-1');
+
+        //todo fixme --sky
+        this.NCH.amount = ((Math.floor((totalPrice / nch.getValue().price) * 100) / 100) * 0.5).toString();
+        this.NCH = {
+            amount: this.NCH.amount,
+            asset: this.NCH.asset,
+            price: this.NCH.price,
+        };
     }
 
     async init(): Promise<void> {
         const account = await this.account.getAccount();
         account;
         this.zone.run(() => {});
-    }
-
-    test() {
-        var d = this.loanContext;
-        var asd = this.wallets;
-        asd;
-        d;
     }
 
     ionViewDidLoad() {
@@ -78,5 +99,43 @@ export class WalletLoanPage {
                 animation: 'ios-transition',
             });
         };
+    }
+
+    backToLobby() {
+        this.navCtrl.popToRoot({
+            animate: true,
+            animation: 'ios-transition',
+        });
+    }
+
+    ionViewDidLeave() {
+        this.subscription.unsubscribe();
+    }
+
+    async onLoanRequest() {
+        const alert = this.alert.create({
+            title: 'Loan NCash',
+            message: `PAYING : \n ${this._amount} ${this.wallet.asset.code}\n` + `<p>LOAN : ${this.NCH.amount} ${this.NCH.asset.code}</p>`,
+            buttons: [
+                {
+                    text: 'CANCEL',
+                    handler: () => {},
+                },
+                {
+                    text: 'OK',
+                    handler: async () => {
+                        const loader = this.loading.create({
+                            content: 'wait ..',
+                        });
+                        loader.present();
+                        const result = await this.appService.requestLoan(this._amount, this._wallet);
+                        this.navCtrl.popToRoot();
+                        loader.dismiss();
+                    },
+                },
+            ],
+        });
+
+        alert.present();
     }
 }
