@@ -19,6 +19,7 @@ import { WalletBuyPage } from './wallet-buy/wallet-buy';
     templateUrl: 'wallet-detail.html',
 })
 export class WalletDetailPage {
+    isLoading: boolean = true;;
     isNCH: boolean;
     wallet: NWallet.WalletItem;
     histories: NWallet.Transaction[];
@@ -28,6 +29,17 @@ export class WalletDetailPage {
         this.logger.debug(navParams);
         this.wallet = navParams.get('wallet');
         this.isNCH = this.wallet.asset.getIssuer() === NWallet.NCH.getIssuer() && this.wallet.asset.getCode() === NWallet.NCH.getCode();
+        this.loadTransactions()
+    }
+
+    async loadTransactions(): Promise<void> {
+        setTimeout(() => {
+            this.isLoading = false;
+        }, 3000);
+    }
+
+    doInfinite(event:any) {
+
     }
 
     ionViewDidLoad() {

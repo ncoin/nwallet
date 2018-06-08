@@ -6,7 +6,6 @@ import { Injectable, NgZone } from '@angular/core';
 import { Logger } from './../common/logger/logger';
 import { env } from '../../environments/environment';
 import { NWallet } from '../../interfaces/nwallet';
-import { WalletNamePipe } from '../../pipes/wallet-name/wallet-name';
 
 const serverAddress = {
     live: 'https://horizon.stellar.org',
@@ -91,6 +90,26 @@ export class NClientProvider {
             });
     }
 
+    public async getTransaction(signature: NWallet.Signature) {
+        const payment = this.server.payments().forAccount(signature.public);
+        const payments = await payment.call().catch(error => {
+            this.logger.error('get transaction error', error);
+        });
+
+        if (payments) {
+            const transaction = {
+                current : payments,
+                records : () => {
+                    return payments.records;
+                },
+                next : async () => {
+                    transaction.current = await payments.next();
+                }
+            }
+            return transaction;
+        }
+    }
+
     //todo: transaction refactoring --sky
     public async sendPayment(signature: NWallet.Signature, destination: string, asset: Asset, amount: string) {
         const source = await this.server.loadAccount(signature.public);
@@ -138,8 +157,8 @@ export class NClientProvider {
         this.logger.debug('fetch jobs done');
     }
 
-    public async subscribe(account: NWallet.Account): Promise<void> {
-        const payment = await this.server.payments().forAccount(account.signature.public);
+    public subscribe(account: NWallet.Account): void {
+        const payment = this.server.payments().forAccount(account.signature.public);
         const self = this;
         this.paymentSubscriptions.set(
             account.signature.public,

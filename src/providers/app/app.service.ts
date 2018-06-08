@@ -44,8 +44,29 @@ export class AppServiceProvider {
         this.connector.sendPayment(signature, destination, asset, amount);
     }
 
+    public async getTransactions(signature: NWallet.Signature){
+        const record = await this.connector.getTransaction(signature);
+        if (record) {
+            const transaction = {
+                current : record,
+                records : () => {
+                    return record.records;
+                },
+                next : async () => {
+                    transaction.current = await record.next();
+                }
+            }
+            return transaction;
+        }
+    }
+
     public async requestLoan(amount: number, wallet:NWallet.WalletItem): Promise<void> {
         const account = await this.account.getAccount();
         await this.connector.loanNCH(account.signature, amount, wallet);
+    }
+
+    public async requestBuy(amount: number, wallet:NWallet.WalletItem): Promise<void> {
+        const account = await this.account.getAccount();
+        await this.connector.buyNCH(account.signature, amount, wallet);
     }
 }

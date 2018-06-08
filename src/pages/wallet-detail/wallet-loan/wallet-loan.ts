@@ -127,7 +127,7 @@ export class WalletLoanPage {
                     text: 'OK',
                     handler: async () => {
                         const loader = this.loading.create({
-                            content: 'wait ..',
+                            content: 'please wait ...',
                         });
                         loader.present();
                         await this.appService.requestLoan(this._amount, this._wallet);

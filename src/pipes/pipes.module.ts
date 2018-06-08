@@ -1,7 +1,7 @@
-import { WalletFormatPipe } from './wallet-format/wallet-format';
 import { NgModule } from '@angular/core';
-import { WalletToUSDPipe } from './wallet-to-usd/wallet-to-usd';
-import { WalletNamePipe } from './wallet-name/wallet-name';
+import { WalletFormatPipe } from './wallet/wallet-format';
+import { WalletToUSDPipe } from './wallet/wallet-to-usd';
+import { WalletNamePipe } from './wallet/wallet-name';
 @NgModule({
     declarations: [WalletToUSDPipe, WalletNamePipe, WalletFormatPipe],
     imports: [],

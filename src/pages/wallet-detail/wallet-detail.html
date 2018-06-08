@@ -26,12 +26,17 @@
         </div>
     </div>
     <div>
-        <label>>Transaction History</label>
+        <label>> Transaction History</label>
         <ion-list *ngIf="histories && histories[0]">
             <ion-item *ngFor="let history of histories">
                 {{history.type}} {{history.amount}} {{history.date}}
             </ion-item>
         </ion-list>
+        <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+            <ion-infinite-scroll-content loadingText="more Transactions ..."></ion-infinite-scroll-content>
+        </ion-infinite-scroll>
+        <ion-spinner *ngIf="isLoading" name="crescent" style="position: absolute; left: 40%; bottom: 45%; width: 20%; height: 20%;"></ion-spinner>
+
         <!-- todo use related grid later [sky] -->
         <div align="middle" style="
         position:  absolute;

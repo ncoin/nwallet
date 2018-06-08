@@ -129,10 +129,10 @@ export class WalletBuyPage {
                     text: 'OK',
                     handler: async () => {
                         const loader = this.loading.create({
-                            content: 'wait ..',
+                            content: 'please wait ...',
                         });
                         loader.present();
-                        const result = await this.appService.requestLoan(this._amount, this._wallet);
+                        const result = await this.appService.requestBuy(this._amount, this._wallet);
                         this.navCtrl.popToRoot();
                         loader.dismiss();
                     },
