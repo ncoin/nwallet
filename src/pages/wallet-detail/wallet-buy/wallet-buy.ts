@@ -132,7 +132,7 @@ export class WalletBuyPage {
                             content: 'please wait ...',
                         });
                         loader.present();
-                        const result = await this.appService.requestBuy(this._amount, this._wallet);
+                        await this.appService.requestBuy(this._amount, this._wallet);
                         this.navCtrl.popToRoot();
                         loader.dismiss();
                     },

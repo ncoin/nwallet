@@ -4,52 +4,49 @@
   See http://ionicframework.com/docs/components/#navigation for more info on
   Ionic pages and navigation.
 -->
-<ion-header>
-    <ion-navbar>
-        <ion-title style="text-align: center">wallet.detail</ion-title>
+<ion-header no-border>
+    <ion-navbar border-bottom>
+        <ion-title>{{wallet.asset.code | walletName}}</ion-title>
     </ion-navbar>
+    <div align="right" style="margin: 0% 3% 3% 0">
+        <ion-label>
+            {{wallet | walletFormat}}
+        </ion-label>
+        <ion-label>
+            {{wallet | walletToUSD}}
+        </ion-label>
+    </div>
+    <ion-label style="margin: 0 0 3% 3%"> > Transaction History</ion-label>
 </ion-header>
 <ion-content padding>
-    <div>
-        <div>
-            <ion-label style="text-align: center; font-size: 300%">
-                {{wallet.asset.code | walletName}}
-            </ion-label>
-        </div>
-        <div align="right">
-            <ion-label>
-                {{wallet | walletFormat}}
-            </ion-label>
-            <ion-label>
-                {{wallet | walletToUSD}}
-            </ion-label>
-        </div>
-    </div>
-    <div>
-        <label>> Transaction History</label>
-        <ion-list *ngIf="histories && histories[0]">
-            <ion-item *ngFor="let history of histories">
-                {{history.type}} {{history.amount}} {{history.date}}
-            </ion-item>
-        </ion-list>
-        <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
-            <ion-infinite-scroll-content loadingText="more Transactions ..."></ion-infinite-scroll-content>
-        </ion-infinite-scroll>
-        <ion-spinner *ngIf="isLoading" name="crescent" style="position: absolute; left: 40%; bottom: 45%; width: 20%; height: 20%;"></ion-spinner>
+    <ion-list *ngIf="histories && histories[0]" style="padding: 3% 0 0 0 ">
+        <ion-item *ngFor="let history of histories" no-lines>
+            <!-- <div style="display:flex; justify-content: space-between">
+                <div>{{history.type}}</div>
+                <div style="flex-basis: 40%; text-align: right">{{history.item | walletFormat}}</div>
+                <div>{{history.date | date: 'MMM dd, yyyy'}}</div>
+            </div> -->
+                    <div item-start style="width: 20%">{{history.type}}</div>
+                    <div align="right" style="text-align: right; margin: 0 9% 0 0">{{history.item | walletFormat}}</div>
+                    <div item-end>{{history.date | date: 'MMM dd, yyyy'}}</div>
 
-        <!-- todo use related grid later [sky] -->
-        <div align="middle" style="
-        position:  absolute;
-        width: 90%;
-        left:  5%; bottom : 10%;">
-            <ion-buttons *ngIf="!isNCH">
-                <button ion-button (click)="onBuyAsset()" style="width: 30%">
-                    buy NCH
-                </button>
-                <button ion-button (click)="onLoanAsset()" style="width: 30%">
-                    loan NCH
-                </button>
-            </ion-buttons>
-        </div>
-    </div>
+        </ion-item>
+    </ion-list>
+    <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+        <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="more Transactions ..."></ion-infinite-scroll-content>
+    </ion-infinite-scroll>
 </ion-content>
+
+<ion-spinner *ngIf="isLoading" name="crescent" style="position: absolute; left: 40%; bottom: 45%; width: 20%; height: 20%; z-index: 1"></ion-spinner>
+<ion-footer *ngIf="!isNCH" style="padding: 20px 0;">
+    <div align="middle">
+        <ion-buttons *ngIf="!isNCH">
+            <button ion-button (click)="onBuyAsset()" style="width: 30%">
+                buy NCH
+            </button>
+            <button ion-button (click)="onLoanAsset()" style="width: 30%">
+                loan NCH
+            </button>
+        </ion-buttons>
+    </div>
+</ion-footer>

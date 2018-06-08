@@ -2,9 +2,10 @@ import { WalletLoanPage } from './wallet-loan/wallet-loan';
 import { ViewChild } from '@angular/core';
 import { Logger } from './../../providers/common/logger/logger';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, Navbar } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Navbar, InfiniteScroll } from 'ionic-angular';
 import { NWallet } from '../../interfaces/nwallet';
 import { WalletBuyPage } from './wallet-buy/wallet-buy';
+import { AppServiceProvider } from '../../providers/app/app.service';
 
 /**
  * Generated class for the WalletDetailPage page.
@@ -19,27 +20,50 @@ import { WalletBuyPage } from './wallet-buy/wallet-buy';
     templateUrl: 'wallet-detail.html',
 })
 export class WalletDetailPage {
-    isLoading: boolean = true;;
+    isLoading: boolean = true;
     isNCH: boolean;
     wallet: NWallet.WalletItem;
     histories: NWallet.Transaction[];
+    transactions: NWallet.TransactionRecord;
 
     @ViewChild(Navbar) navBar: Navbar;
-    constructor(public navCtrl: NavController, public navParams: NavParams, private logger: Logger) {
+    constructor(public navCtrl: NavController, public navParams: NavParams, private logger: Logger, private appService: AppServiceProvider) {
         this.logger.debug(navParams);
         this.wallet = navParams.get('wallet');
         this.isNCH = this.wallet.asset.getIssuer() === NWallet.NCH.getIssuer() && this.wallet.asset.getCode() === NWallet.NCH.getCode();
-        this.loadTransactions()
+        this.loadTransactions();
     }
 
     async loadTransactions(): Promise<void> {
-        setTimeout(() => {
-            this.isLoading = false;
-        }, 3000);
+        this.transactions = await this.appService.getTransactions(this.wallet);
+        this.histories = this.transactions.records();
+
+        await this.transactions.next();
+        const records = this.transactions.records();
+        if (records && records[0]) {
+            records.forEach(record => {
+                this.histories.push(record);
+            });
+        }
+
+        this.isLoading = false;
     }
 
-    doInfinite(event:any) {
-
+    async doInfinite(infinite: InfiniteScroll) {
+        this.logger.debug('aaa');
+        await this.transactions.next();
+        const records = this.transactions.records();
+        if (records && records[0]) {
+            records.forEach(record => {
+                this.histories.push(record);
+            });
+            infinite.complete();
+            if (records.length < 2) {
+                infinite.enable(false);
+            }
+        } else {
+            infinite.enable(false);
+        }
     }
 
     ionViewDidLoad() {
@@ -55,16 +79,24 @@ export class WalletDetailPage {
     }
 
     onBuyAsset() {
-        this.navCtrl.push(WalletBuyPage, { wallet: this.wallet}, {
-            animate: true,
-            animation: 'ios-transition',
-        });
+        this.navCtrl.push(
+            WalletBuyPage,
+            { wallet: this.wallet },
+            {
+                animate: true,
+                animation: 'ios-transition',
+            },
+        );
     }
 
     onLoanAsset() {
-        this.navCtrl.push(WalletLoanPage, { wallet: this.wallet}, {
-            animate: true,
-            animation: 'ios-transition',
-        });
+        this.navCtrl.push(
+            WalletLoanPage,
+            { wallet: this.wallet },
+            {
+                animate: true,
+                animation: 'ios-transition',
+            },
+        );
     }
 }

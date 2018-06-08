@@ -1,10 +1,11 @@
+import { testAccount } from './../nsus/naccount';
 import { AccountProvider } from './../account/account';
 import { NClientProvider } from './../nsus/nclient';
 import { Injectable } from '@angular/core';
 import { PreferenceProvider, Preference } from '../common/preference/preference';
 import { App } from 'ionic-angular';
 import { Logger } from '../common/logger/logger';
-import { NWallet } from '../../interfaces/nwallet';
+import { NWallet, getOrAddAsset } from '../../interfaces/nwallet';
 import { Asset } from 'stellar-sdk';
 // import { TutorialPage } from '../../pages/tutorial/tutorial';
 
@@ -44,28 +45,70 @@ export class AppServiceProvider {
         this.connector.sendPayment(signature, destination, asset, amount);
     }
 
-    public async getTransactions(signature: NWallet.Signature){
-        const record = await this.connector.getTransaction(signature);
-        if (record) {
+    public async getTransactions(wallet: NWallet.WalletItem) {
+        //todo fixme
+
+        const account = await this.account.getAccount();
+        const payments = await this.connector.getPayments(account.signature);
+        if (payments) {
             const transaction = {
-                current : record,
-                records : () => {
-                    return record.records;
+                current: payments,
+                records: () => {
+                    return transaction.current.records
+                        .filter(record => {
+                            let isEqual = false;
+                            if (wallet.asset.isNative()) {
+                                isEqual = record.asset_type === 'native';
+                            } else {
+                                isEqual = record.asset_code === wallet.asset.getCode() && record.asset_issuer === wallet.asset.getIssuer();
+                            }
+
+                            return record.type === 'payment' && isEqual;
+                        })
+                        .map(record => {
+                            let type: string;
+                            switch (record.from) {
+                                case testAccount.user.pub: {
+                                    type = 'sent';
+                                }
+                                break;
+                                case testAccount.buy.pub: {
+                                    type = 'bought';
+                                }
+                                break;
+                                case testAccount.loan.pub: {
+                                    type = 'rent';
+                                }
+                                break;
+                                default: {
+                                    type = 'received';
+                                }
+                                break;
+                            }
+                            return <NWallet.Transaction>{
+                                type: type,
+                                item: <NWallet.WalletItem>{
+                                    amount: record.amount,
+                                    asset: getOrAddAsset(record.asset_code, record.asset_issuer, record.asset_type),
+                                },
+                                date: record['created_at'],
+                            };
+                        });
                 },
-                next : async () => {
-                    transaction.current = await record.next();
-                }
-            }
+                next: async () => {
+                    transaction.current = await transaction.current.next();
+                },
+            };
             return transaction;
         }
     }
 
-    public async requestLoan(amount: number, wallet:NWallet.WalletItem): Promise<void> {
+    public async requestLoan(amount: number, wallet: NWallet.WalletItem): Promise<void> {
         const account = await this.account.getAccount();
         await this.connector.loanNCH(account.signature, amount, wallet);
     }
 
-    public async requestBuy(amount: number, wallet:NWallet.WalletItem): Promise<void> {
+    public async requestBuy(amount: number, wallet: NWallet.WalletItem): Promise<void> {
         const account = await this.account.getAccount();
         await this.connector.buyNCH(account.signature, amount, wallet);
     }

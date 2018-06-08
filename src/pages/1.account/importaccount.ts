@@ -38,7 +38,6 @@ export class ImportAccountPage {
         });
 
         setTimeout(async () => {
-            const current = this.navCtrl.getActive();
             await this.navCtrl.setRoot(WalletPage, undefined, undefined);
         }, 1000);
     }

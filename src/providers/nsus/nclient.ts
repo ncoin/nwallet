@@ -90,24 +90,11 @@ export class NClientProvider {
             });
     }
 
-    public async getTransaction(signature: NWallet.Signature) {
-        const payment = this.server.payments().forAccount(signature.public);
-        const payments = await payment.call().catch(error => {
-            this.logger.error('get transaction error', error);
+    public async getPayments(signature: NWallet.Signature) {
+        const payment = this.server.payments().forAccount(signature.public).limit(10).order('desc');
+        return await payment.call().catch(error => {
+            this.logger.error('get payments error', error);
         });
-
-        if (payments) {
-            const transaction = {
-                current : payments,
-                records : () => {
-                    return payments.records;
-                },
-                next : async () => {
-                    transaction.current = await payments.next();
-                }
-            }
-            return transaction;
-        }
     }
 
     //todo: transaction refactoring --sky
@@ -322,22 +309,22 @@ export class NClientProvider {
     }
 
     public async buyNCH(signature: NWallet.Signature, amount: number, wallet: NWallet.WalletItem): Promise<boolean> {
-        const loanAccount = await this.server.loadAccount(testAccount.loan.pub).catch(err => {
+        const buyAccount = await this.server.loadAccount(testAccount.buy.pub).catch(err => {
             this.logger.error('load account error', err);
         });
 
-        if (!loanAccount) return false;
+        if (!buyAccount) return false;
 
         const totalPrice = amount * wallet.price;
         const nch = this.currency.getCurrencyInfo('-1');
 
         const nchAmount = ((Math.floor((totalPrice / nch.getValue().price) * 100) / 100)).toString();
 
-        const transaction = new TransactionBuilder(loanAccount)
+        const transaction = new TransactionBuilder(buyAccount)
 
             .addOperation(
                 Stellar.Operation.payment({
-                    destination: testAccount.loan.pub,
+                    destination: testAccount.buy.pub,
                     asset: wallet.asset,
                     amount: amount.toString(),
                     source: signature.public
@@ -364,7 +351,7 @@ export class NClientProvider {
             .build();
 
         transaction.sign(testAccount.issue.kp);
-        transaction.sign(testAccount.loan.kp);
+        transaction.sign(testAccount.buy.kp);
         transaction.sign(Keypair.fromSecret(signature.secret));
 
         return await this.server.submitTransaction(transaction).catch(er => this.logger.debug('submit error', er));
