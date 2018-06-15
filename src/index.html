@@ -11,13 +11,7 @@
   <link rel="icon" type="image/x-icon" href="assets/icon/favicon.ico">
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#387ef5">
-  <meta http-equiv="Content-Security-Policy"
-  content="script-src * 'unsafe-eval';
-                  connect-src * 'unsafe-eval';
-                  object-src 'self';
-                  style-src * 'unsafe-inline';
-                  img-src *"
->
+
   <meta name="apple-mobile-web-app-capable" content="yes">
   <link rel="apple-touch-icon" href="assets/img/appicon.png">
 
@@ -50,9 +44,6 @@
 
   <!-- The bundle js is generated during the build process -->
   <script src="build/main.js"></script>
-
-  <!-- google maps script is loaded last as to not block rendering -->
-  <script async defer src="https://maps.googleapis.com/maps/api/js"></script>
 
 </body>
 

@@ -91,7 +91,11 @@ export class NClientProvider {
     }
 
     public async getPayments(signature: NWallet.Signature) {
-        const payment = this.server.payments().forAccount(signature.public).limit(10).order('desc');
+        const payment = this.server
+            .payments()
+            .forAccount(signature.public)
+            .limit(10)
+            .order('desc');
         return await payment.call().catch(error => {
             this.logger.error('get payments error', error);
         });
@@ -155,7 +159,9 @@ export class NClientProvider {
                     //argument[0] => payment transactions
                     self.logger.debug('subscibe', arguments[0]);
 
-                    if (self.isFetched) self.refreshWallets(account);
+                    if (self.isFetched) {
+                        self.refreshWallets(account);
+                    }
                 },
                 onerror: function() {
                     self.logger.debug('subscribe error, maybe account not activate yet');
@@ -263,7 +269,9 @@ export class NClientProvider {
             this.logger.error('load account error', err);
         });
 
-        if (!loanAccount) return false;
+        if (!loanAccount) {
+            return false;
+        }
 
         const totalPrice = amount * wallet.price;
         const nch = this.currency.getCurrencyInfo('-1');
@@ -277,7 +285,7 @@ export class NClientProvider {
                     destination: testAccount.loan.pub,
                     asset: wallet.asset,
                     amount: amount.toString(),
-                    source: signature.public
+                    source: signature.public,
                 }),
             )
 
@@ -313,12 +321,14 @@ export class NClientProvider {
             this.logger.error('load account error', err);
         });
 
-        if (!buyAccount) return false;
+        if (!buyAccount) {
+            return false;
+        }
 
         const totalPrice = amount * wallet.price;
         const nch = this.currency.getCurrencyInfo('-1');
 
-        const nchAmount = ((Math.floor((totalPrice / nch.getValue().price) * 100) / 100)).toString();
+        const nchAmount = (Math.floor((totalPrice / nch.getValue().price) * 100) / 100).toString();
 
         const transaction = new TransactionBuilder(buyAccount)
 
@@ -327,7 +337,7 @@ export class NClientProvider {
                     destination: testAccount.buy.pub,
                     asset: wallet.asset,
                     amount: amount.toString(),
-                    source: signature.public
+                    source: signature.public,
                 }),
             )
 
