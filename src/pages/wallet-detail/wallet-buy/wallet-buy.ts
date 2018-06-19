@@ -132,7 +132,7 @@ export class WalletBuyPage {
                             content: 'please wait ...',
                         });
                         loader.present();
-                        await this.appService.requestBuy(this._wallet.asset, this._amount);
+                        await this.appService.requestBuy(this._wallet.asset, Number.parseFloat(this._amount.toString()));
                         this.navCtrl.popToRoot();
                         loader.dismiss();
                     },

@@ -113,7 +113,7 @@ export class AppServiceProvider {
         }
     }
 
-    public async requestLoan(amount: number, asset: Asset): Promise<void> {
+    public async requestLoan(asset: Asset, amount: number): Promise<void> {
         this.signer.sign(key => this.connector.requestLoanXDR(key, asset, amount)).after(this.connector.executeLoanXDR);
     }
 
@@ -124,53 +124,23 @@ export class AppServiceProvider {
     private get signer(): Signable {
         const signer = {
 
-            innerSign: undefined,
-            sign:  (requestXDRfunc: (key: string) => Promise<string>): Signable => {
-
-                signer.innerSign = requestXDRfunc;
+            requestXDR: undefined,
+            sign:  (requstXDRexpr: (accountId: string) => Promise<string>): Signable => {
+                signer.requestXDR = requstXDRexpr;
                 return signer;
             },
             after: async (afterfunction:(xdr: string) => Promise<string>): Promise<string> => {
-
                 const account = await this.account.getAccount();
-                const xdr = await signer.innerSign(account.signature.public).then(xdr => {
-                    const transaction = new Stellar.Transaction(xdr);
+                const signedXDR = await signer.requestXDR(account.signature.public).then(unsignedXDR => {
+                    const transaction = new Stellar.Transaction(unsignedXDR);
                     transaction.sign(Keypair.fromSecret(account.signature.secret));
                     return transaction.toEnvelope().toXDR().toString('base64');
                 });
 
-                return await afterfunction(xdr);
+                return await afterfunction(signedXDR);
             }
         }
 
         return signer;
     }
-
-    // /**
-    //  *
-    //  * @param sign
-    //  * @returns signedXDR
-    //  */
-    // private sign = async (requestXDRfunc: (key: string) => Promise<string>): Promise<Signable> => {
-
-    //     var pro = new Promise<boolean>(res => {
-    //         res(true);
-    //     })
-
-    //     pro.then(val => {
-
-    //     });
-    //     const account = await this.account.getAccount();
-    //     const xdr = await requestXDRfunc(account.signature.public).then(xdr => {
-    //         const transaction = new Stellar.Transaction(xdr);
-    //         transaction.sign(Keypair.fromSecret(account.signature.secret));
-    //         return transaction.toEnvelope().toXDR().toString('base64');
-    //     });
-
-    //     return {
-    //         after: async (afterfunction:(xdr: string) => Promise<string>): Promise<string> => {
-    //             return await afterfunction(xdr);
-    //         }
-    //     }
-    // };
 }

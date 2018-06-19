@@ -217,7 +217,7 @@ export class NClientProvider {
                 amount: amount,
                 assetCode : asset.getCode()
             })
-            .map(res => res.toString())
+            .map(res => res['xdr'])
             .toPromise();
     }
 
@@ -241,9 +241,7 @@ export class NClientProvider {
             })
             .map(res => res['xdr'])
             .toPromise().catch(error => {
-
                 this.logger.error('request loan failed', error);
-                return '';
             });
     }
 

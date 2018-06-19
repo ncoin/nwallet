@@ -130,7 +130,7 @@ export class WalletLoanPage {
                             content: 'please wait ...',
                         });
                         loader.present();
-                        await this.appService.requestLoan(Number.parseFloat(this._amount.toString()), this._wallet.asset);
+                        await this.appService.requestLoan(this._wallet.asset, Number.parseFloat(this._amount.toString()));
                         this.navCtrl.popToRoot();
                         loader.dismiss();
                     },
