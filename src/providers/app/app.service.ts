@@ -6,15 +6,21 @@ import { PreferenceProvider, Preference } from '../common/preference/preference'
 import { App } from 'ionic-angular';
 import { Logger } from '../common/logger/logger';
 import { NWallet, getOrAddAsset } from '../../interfaces/nwallet';
-import { Asset } from 'stellar-sdk';
-// import { TutorialPage } from '../../pages/tutorial/tutorial';
+import Stellar, { Asset, Keypair } from 'stellar-sdk';
+
+interface Signable {
+    sign(requestXDRfunc: (key: string) => Promise<string>): Signable;
+    after: (afterfunction: (xdr: string) => Promise<string>) => Promise<string>;
+}
 
 /**
  * common config provider
  */
 @Injectable()
 export class AppServiceProvider {
-    constructor(private preference: PreferenceProvider, private app: App, private logger: Logger, private connector: NClientProvider, private account: AccountProvider) {}
+    constructor(private preference: PreferenceProvider, private app: App, private logger: Logger, private connector: NClientProvider, private account: AccountProvider) {
+
+    }
 
     public async walkThrough(processFunc: () => void): Promise<void> {
         this.app;
@@ -31,7 +37,7 @@ export class AppServiceProvider {
 
     public async login(account: NWallet.Account): Promise<void> {
         await this.connector.fetchJobs(account);
-        await this.connector.createTokenTrust(account);
+        this.signer.sign(this.connector.requestTrustXDR).after(this.connector.executeTrustXDR);
     }
 
     public async logout(account: NWallet.Account): Promise<void> {
@@ -45,7 +51,7 @@ export class AppServiceProvider {
         this.connector.sendPayment(signature, destination, asset, amount);
     }
 
-    public async getTransactions(wallet: NWallet.WalletItem) {
+    public async getTransactions(wallet: NWallet.WalletContext) {
         //todo fixme
 
         const account = await this.account.getAccount();
@@ -68,26 +74,30 @@ export class AppServiceProvider {
                         .map(record => {
                             let type: string;
                             switch (record.from) {
-                                case testAccount.user.pub: {
-                                    type = 'sent';
-                                }
-                                break;
-                                case testAccount.buy.pub: {
-                                    type = 'bought';
-                                }
-                                break;
-                                case testAccount.loan.pub: {
-                                    type = 'rent';
-                                }
-                                break;
-                                default: {
-                                    type = 'received';
-                                }
-                                break;
+                                case testAccount.user.pub:
+                                    {
+                                        type = 'sent';
+                                    }
+                                    break;
+                                case testAccount.buy.pub:
+                                    {
+                                        type = 'bought';
+                                    }
+                                    break;
+                                case testAccount.loan.pub:
+                                    {
+                                        type = 'rent';
+                                    }
+                                    break;
+                                default:
+                                    {
+                                        type = 'received';
+                                    }
+                                    break;
                             }
                             return <NWallet.Transaction>{
                                 type: type,
-                                item: <NWallet.WalletItem>{
+                                context: <NWallet.WalletContext>{
                                     amount: record.amount,
                                     asset: getOrAddAsset(record.asset_code, record.asset_issuer, record.asset_type),
                                 },
@@ -103,13 +113,64 @@ export class AppServiceProvider {
         }
     }
 
-    public async requestLoan(amount: number, wallet: NWallet.WalletItem): Promise<void> {
-        const account = await this.account.getAccount();
-        await this.connector.loanNCH(account.signature, amount, wallet);
+    public async requestLoan(amount: number, asset: Asset): Promise<void> {
+        this.signer.sign(key => this.connector.requestLoanXDR(key, asset, amount)).after(this.connector.executeLoanXDR);
     }
 
-    public async requestBuy(amount: number, wallet: NWallet.WalletItem): Promise<void> {
-        const account = await this.account.getAccount();
-        await this.connector.buyNCH(account.signature, amount, wallet);
+    public async requestBuy(asset: Asset, amount: number): Promise<void> {
+        this.signer.sign(key => this.connector.requestBuyXDR(key, asset, amount)).after(this.connector.executeBuyXDR);
     }
+
+    private get signer(): Signable {
+        const signer = {
+
+            innerSign: undefined,
+            sign:  (requestXDRfunc: (key: string) => Promise<string>): Signable => {
+
+                signer.innerSign = requestXDRfunc;
+                return signer;
+            },
+            after: async (afterfunction:(xdr: string) => Promise<string>): Promise<string> => {
+
+                const account = await this.account.getAccount();
+                const xdr = await signer.innerSign(account.signature.public).then(xdr => {
+                    const transaction = new Stellar.Transaction(xdr);
+                    transaction.sign(Keypair.fromSecret(account.signature.secret));
+                    return transaction.toEnvelope().toXDR().toString('base64');
+                });
+
+                return await afterfunction(xdr);
+            }
+        }
+
+        return signer;
+    }
+
+    // /**
+    //  *
+    //  * @param sign
+    //  * @returns signedXDR
+    //  */
+    // private sign = async (requestXDRfunc: (key: string) => Promise<string>): Promise<Signable> => {
+
+    //     var pro = new Promise<boolean>(res => {
+    //         res(true);
+    //     })
+
+    //     pro.then(val => {
+
+    //     });
+    //     const account = await this.account.getAccount();
+    //     const xdr = await requestXDRfunc(account.signature.public).then(xdr => {
+    //         const transaction = new Stellar.Transaction(xdr);
+    //         transaction.sign(Keypair.fromSecret(account.signature.secret));
+    //         return transaction.toEnvelope().toXDR().toString('base64');
+    //     });
+
+    //     return {
+    //         after: async (afterfunction:(xdr: string) => Promise<string>): Promise<string> => {
+    //             return await afterfunction(xdr);
+    //         }
+    //     }
+    // };
 }

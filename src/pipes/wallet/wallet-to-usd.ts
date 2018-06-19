@@ -14,7 +14,7 @@ export class WalletToUSDPipe implements PipeTransform {
     /**
      * Takes a value and makes it lowercase.
      */
-    transform(wallet: NWallet.WalletItem) {
+    transform(wallet: NWallet.WalletContext) {
         const value = Number.parseFloat(wallet.amount) * wallet.price;
         const floor = Math.floor(value * 100) / 100;
         return `$${floor} USD`;

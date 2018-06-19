@@ -3,7 +3,7 @@ import { AppServiceProvider } from './../../providers/app/app.service';
 import { Logger } from './../../providers/common/logger/logger';
 import { EntrancePage } from './../0.entrance/entrance';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import {  NavController, NavParams } from 'ionic-angular';
 import { NWallet } from '../../interfaces/nwallet';
 import { AccountProvider } from '../../providers/account/account';
 import { WalletDetailPage } from '../wallet-detail/wallet-detail';
@@ -20,10 +20,7 @@ import { WalletDetailPage } from '../wallet-detail/wallet-detail';
     templateUrl: 'wallet.html',
 })
 export class WalletPage {
-    account: NWallet.Account = <NWallet.Account>{
-        signature: { public: '', secret: '' },
-        wallets: NWallet.WalletEmpty,
-    };
+    account: NWallet.Account;
 
     asset: Asset = Asset.native();
     destination: string;
@@ -49,7 +46,7 @@ export class WalletPage {
         this.navCtrl.getActive().showBackButton(false);
     }
 
-    public onSelectWallet(wallet: NWallet.WalletItem) {
+    public onSelectWallet(wallet: NWallet.WalletContext) {
         this.asset = wallet.asset;
         this.navCtrl.push(WalletDetailPage, { wallet: wallet}, {
             animate : true,

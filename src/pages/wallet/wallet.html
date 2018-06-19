@@ -10,7 +10,7 @@
     <p>{{account.signature.public}}</p>
     <p>secret</p>
     <p>{{account.signature.secret}}</p> -->
-    <ion-list>
+    <ion-list *ngIf="account && account.wallets && account.wallets[0]">
         <ion-card *ngFor="let wallet of account.wallets">
             <ion-card-content>
                 <button ion-item style="text-align: right" (click)="onSelectWallet(wallet)">

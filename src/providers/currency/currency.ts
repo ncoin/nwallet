@@ -1,6 +1,6 @@
 import { Logger } from './../common/logger/logger';
 import { Injectable } from '@angular/core';
-import { Subscription, BehaviorSubject } from 'rxjs/Rx';
+import { BehaviorSubject } from 'rxjs/Rx';
 
 export interface CurrencyInfo {
     name: string;
@@ -15,6 +15,7 @@ export class CurrencyProvider {
     private currencyInfos: Map<string, BehaviorSubject<CurrencyInfo>>;
 
     constructor(private logger: Logger) {
+        this.logger;
         this.currencyInfos = new Map<string, BehaviorSubject<CurrencyInfo>>();
         this.sync();
     }

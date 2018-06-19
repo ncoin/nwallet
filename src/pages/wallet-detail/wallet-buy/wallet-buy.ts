@@ -22,10 +22,10 @@ export class WalletBuyPage {
     @ViewChild(Navbar) navBar: Navbar;
 
     private _amount: number = 0;
-    private _wallet: NWallet.WalletItem;
+    private _wallet: NWallet.WalletContext;
     private subscription: Subscription;
-    wallets: NWallet.WalletItem[] = NWallet.WalletEmpty;
-    NCH: NWallet.WalletItem = {
+    wallets: NWallet.WalletContext[] = NWallet.WalletEmpty;
+    NCH: NWallet.WalletContext = {
         amount: '0',
         asset: NWallet.NCH,
         price: 0,
@@ -65,11 +65,11 @@ export class WalletBuyPage {
         return this._amount;
     }
 
-    public get wallet(): NWallet.WalletItem {
+    public get wallet(): NWallet.WalletContext {
         return this._wallet;
     }
 
-    public set wallet(wallet: NWallet.WalletItem) {
+    public set wallet(wallet: NWallet.WalletContext) {
         this._wallet = wallet;
         this.calculateTotalNCN();
     }
@@ -132,7 +132,7 @@ export class WalletBuyPage {
                             content: 'please wait ...',
                         });
                         loader.present();
-                        await this.appService.requestBuy(this._amount, this._wallet);
+                        await this.appService.requestBuy(this._wallet.asset, this._amount);
                         this.navCtrl.popToRoot();
                         loader.dismiss();
                     },

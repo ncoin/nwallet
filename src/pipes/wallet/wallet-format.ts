@@ -13,7 +13,7 @@ export class WalletFormatPipe implements PipeTransform {
     /**
      * Takes a value and makes it lowercase.
      */
-    transform(wallet: NWallet.WalletItem) {
+    transform(wallet: NWallet.WalletContext) {
         const value = Number.parseFloat(wallet.amount);
         const floor = Math.floor(value * 100) / 100;
         return `${floor} ${wallet.asset.code}`;
