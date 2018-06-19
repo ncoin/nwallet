@@ -18,9 +18,7 @@ interface Signable {
  */
 @Injectable()
 export class AppServiceProvider {
-    constructor(private preference: PreferenceProvider, private app: App, private logger: Logger, private connector: NClientProvider, private account: AccountProvider) {
-
-    }
+    constructor(private preference: PreferenceProvider, private app: App, private logger: Logger, private connector: NClientProvider, private account: AccountProvider) {}
 
     public async walkThrough(processFunc: () => void): Promise<void> {
         this.app;
@@ -51,66 +49,10 @@ export class AppServiceProvider {
         this.connector.sendPayment(signature, destination, asset, amount);
     }
 
-    public async getTransactions(wallet: NWallet.WalletContext) {
+    public async getTransactions(asset: Asset, pageToken?: string) {
         //todo fixme
-
         const account = await this.account.getAccount();
-        const payments = await this.connector.getPayments(account.signature);
-        if (payments) {
-            const transaction = {
-                current: payments,
-                records: () => {
-                    return transaction.current.records
-                        .filter(record => {
-                            let isEqual = false;
-                            if (wallet.asset.isNative()) {
-                                isEqual = record.asset_type === 'native';
-                            } else {
-                                isEqual = record.asset_code === wallet.asset.getCode() && record.asset_issuer === wallet.asset.getIssuer();
-                            }
-
-                            return record.type === 'payment' && isEqual;
-                        })
-                        .map(record => {
-                            let type: string;
-                            switch (record.from) {
-                                case testAccount.user.pub:
-                                    {
-                                        type = 'sent';
-                                    }
-                                    break;
-                                case testAccount.buy.pub:
-                                    {
-                                        type = 'bought';
-                                    }
-                                    break;
-                                case testAccount.loan.pub:
-                                    {
-                                        type = 'rent';
-                                    }
-                                    break;
-                                default:
-                                    {
-                                        type = 'received';
-                                    }
-                                    break;
-                            }
-                            return <NWallet.Transaction>{
-                                type: type,
-                                context: <NWallet.WalletContext>{
-                                    amount: record.amount,
-                                    asset: getOrAddAsset(record.asset_code, record.asset_issuer, record.asset_type),
-                                },
-                                date: record['created_at'],
-                            };
-                        });
-                },
-                next: async () => {
-                    transaction.current = await transaction.current.next();
-                },
-            };
-            return transaction;
-        }
+        return await this.connector.getTransactions(account.signature.public, asset, pageToken);
     }
 
     public async requestLoan(asset: Asset, amount: number): Promise<void> {
@@ -123,23 +65,25 @@ export class AppServiceProvider {
 
     private get signer(): Signable {
         const signer = {
-
             requestXDR: undefined,
-            sign:  (requstXDRexpr: (accountId: string) => Promise<string>): Signable => {
+            sign: (requstXDRexpr: (accountId: string) => Promise<string>): Signable => {
                 signer.requestXDR = requstXDRexpr;
                 return signer;
             },
-            after: async (afterfunction:(xdr: string) => Promise<string>): Promise<string> => {
+            after: async (afterfunction: (xdr: string) => Promise<string>): Promise<string> => {
                 const account = await this.account.getAccount();
                 const signedXDR = await signer.requestXDR(account.signature.public).then(unsignedXDR => {
                     const transaction = new Stellar.Transaction(unsignedXDR);
                     transaction.sign(Keypair.fromSecret(account.signature.secret));
-                    return transaction.toEnvelope().toXDR().toString('base64');
+                    return transaction
+                        .toEnvelope()
+                        .toXDR()
+                        .toString('base64');
                 });
-
+                signer.requestXDR = undefined;
                 return await afterfunction(signedXDR);
-            }
-        }
+            },
+        };
 
         return signer;
     }

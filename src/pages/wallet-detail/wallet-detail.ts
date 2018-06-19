@@ -23,8 +23,9 @@ export class WalletDetailPage {
     isLoading: boolean = true;
     isNCH: boolean;
     wallet: NWallet.WalletContext;
-    histories: NWallet.Transaction[];
-    transactions: NWallet.TransactionRecord;
+    histories: NWallet.Transactions.Record[];
+    pageToken: string;
+    hasNext: boolean;
 
     @ViewChild(Navbar) navBar: Navbar;
     constructor(public navCtrl: NavController, public navParams: NavParams, private logger: Logger, private appService: AppServiceProvider) {
@@ -35,13 +36,14 @@ export class WalletDetailPage {
     }
 
     async loadTransactions(): Promise<void> {
-        this.transactions = await this.appService.getTransactions(this.wallet);
-        this.histories = this.transactions.records();
+        let transaction = await this.appService.getTransactions(this.wallet.asset);
+        this.pageToken = transaction.pageToken;
+        this.hasNext = transaction.hasNext;
+        this.histories = transaction.records;
 
-        await this.transactions.next();
-        const records = this.transactions.records();
-        if (records && records[0]) {
-            records.forEach(record => {
+        if (transaction.hasNext) {
+            transaction = await this.appService.getTransactions(this.wallet.asset, this.pageToken);
+            transaction.records.forEach(record => {
                 this.histories.push(record);
             });
         }
@@ -51,19 +53,20 @@ export class WalletDetailPage {
 
     async doInfinite(infinite: InfiniteScroll) {
         this.logger.debug('aaa');
-        await this.transactions.next();
-        const records = this.transactions.records();
-        if (records && records[0]) {
-            records.forEach(record => {
+        if (this.hasNext) {
+            const transaction = await this.appService.getTransactions(this.wallet.asset, this.pageToken);
+            transaction.records.forEach(record => {
                 this.histories.push(record);
             });
-            infinite.complete();
-            if (records.length < 2) {
+
+            if (transaction.records.length < 2) {
                 infinite.enable(false);
             }
         } else {
             infinite.enable(false);
         }
+
+        infinite.complete();
     }
 
     ionViewDidLoad() {

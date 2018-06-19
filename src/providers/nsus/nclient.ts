@@ -1,5 +1,4 @@
 import { HttpClient } from '@angular/common/http';
-import { testAccount } from './naccount';
 import { CurrencyProvider } from './../currency/currency';
 // steller sdk wrapper
 import Stellar, { TransactionBuilder, Asset, Keypair } from 'stellar-sdk';
@@ -59,7 +58,7 @@ export class NClientProvider {
                 this.logger.error('request trust failed.', error);
                 return undefined;
             });
-    }
+    };
 
     public executeTrustXDR = (xdr: string): Promise<string> => {
         return this.http
@@ -72,7 +71,7 @@ export class NClientProvider {
                 this.logger.error('getTrustXDR failed', error);
                 return undefined;
             });
-    }
+    };
 
     public getAssets(accountId: string): Promise<NWallet.WalletContext[]> {
         const url = `${apiAddress.test}accounts/${accountId}`;
@@ -90,7 +89,6 @@ export class NClientProvider {
         return this.http
             .get(url)
             .map(data => {
-                //test
                 const supportedCoins = convert(data['account']['balances']['supportCoins']);
                 const unSupportCoins = convert(data['account']['balances']['unSupportCoins']);
                 const returnCoins = supportedCoins.concat(unSupportCoins);
@@ -118,15 +116,29 @@ export class NClientProvider {
             });
     }
 
-    public async getPayments(signature: NWallet.Signature) {
-        const payment = this.server
-            .payments()
-            .forAccount(signature.public)
-            .limit(10)
-            .order('desc');
-        return await payment.call().catch(error => {
-            this.logger.error('get payments error', error);
-        });
+    public async getTransactions(accountId: string, asset: Asset, pageToken?: string): Promise<NWallet.Transactions.Context> {
+        const params = {
+            limit: '10',
+            order: 'desc',
+        };
+
+        if (pageToken) {
+            params['cursor'] = pageToken;
+        }
+
+        return this.http
+            .get(`${endPoint.url}transactions/accounts/${accountId}`, { params: params })
+            .map(response => {
+                const transaction = response['transaction'];
+                const records = NWallet.Transactions.parseRecords(asset, transaction);
+                const token = transaction['paging_token'];
+                return <NWallet.Transactions.Context>{
+                    records: records,
+                    pageToken: token,
+                    hasNext: records && records.length > 0,
+                };
+            })
+            .toPromise();
     }
 
     //todo: transaction refactoring --sky
@@ -209,17 +221,17 @@ export class NClientProvider {
         }
     }
 
-    //todo method merge
+    //todo method merge (XDRs)
     public requestBuyXDR = (accountId: string, asset: Asset, amount: number): Promise<string> => {
         return this.http
             .post(`${endPoint.url}buys/xdr`, {
                 publicKey: accountId,
                 amount: amount,
-                assetCode : asset.getCode()
+                assetCode: asset.getCode(),
             })
             .map(res => res['xdr'])
             .toPromise();
-    }
+    };
 
     public executeBuyXDR = (xdr: string): Promise<string> => {
         return this.http
@@ -228,8 +240,7 @@ export class NClientProvider {
             })
             .map(res => res.toString())
             .toPromise();
-    }
-
+    };
 
     //todo method merge
     public requestLoanXDR = (accountId: string, asset: Asset, amount: number): Promise<string> => {
@@ -237,20 +248,21 @@ export class NClientProvider {
             .post(`${endPoint.url}loans/xdr`, {
                 publicKey: accountId,
                 amount: amount,
-                assetCode : asset.getCode()
+                assetCode: asset.getCode(),
             })
             .map(res => res['xdr'])
-            .toPromise().catch(error => {
+            .toPromise()
+            .catch(error => {
                 this.logger.error('request loan failed', error);
             });
-    }
+    };
 
-    public executeLoanXDR = (xdr: string): Promise<string> =>  {
+    public executeLoanXDR = (xdr: string): Promise<string> => {
         return this.http
             .put(`${endPoint.url}loans/xdr`, {
                 xdr: xdr,
             })
             .map(res => res.toString())
             .toPromise();
-    }
+    };
 }

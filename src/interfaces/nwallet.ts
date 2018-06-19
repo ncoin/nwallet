@@ -1,3 +1,4 @@
+import { Context } from './nwallet';
 import { Asset } from 'stellar-sdk';
 export namespace NWallet {
     export const AccountEmpty: Account = {
@@ -11,7 +12,7 @@ export namespace NWallet {
     export const WalletEmpty: WalletContext[] = [{ asset: Asset.native(), amount: '0', price: 0 }];
     export const AddressEmpty: Address = { location: 'empty address' };
     export const ProfileEmpty: Profile = { firstName: 'john', lastName: 'doe', phoneNumber: { countryCode: '00', number: '000000' } };
-    export const TransactionEmpty: Transaction[] = [{ type: '', context: { amount: '', asset: Asset.native(), price: 0 }, date: new Date() }];
+    export const TransactionEmpty: Transactions.Record[] = [{ type: '', context: { amount: '', asset: Asset.native(), price: 0 }, date: new Date() }];
 
     export interface Account {
         isActivate: boolean;
@@ -43,13 +44,6 @@ export namespace NWallet {
         price: number;
     }
 
-    export interface Transaction {
-        type: string;
-        context: WalletContext;
-        date: Date;
-    }
-
-
     //todo move to other namespace
 
     export const Assets = {
@@ -58,14 +52,53 @@ export namespace NWallet {
         XLM: Asset.native(),
     };
     export const NCH = new Asset('NCH', 'GD5KULZRARHGYJHDKDCUYHTY645Z4NP7443WS4HQJSNX45BMHV5CCTM3');
+}
 
-    export interface TransactionRecord {
-        current: any;
-        records: () => NWallet.Transaction[];
-        next: () => Promise<void>;
+export namespace NWallet.Transactions {
+    export interface Context {
+        pageToken: string;
+        records: NWallet.Transactions.Record[];
+        hasNext: boolean;
     }
 
-    export interface Item {}
+    export interface Record {
+        type: string;
+        context: WalletContext;
+        date: Date;
+    }
+
+    export function parseRecords(asset: Asset, data: Object): Record[] {
+        const rawRecords = data['records'] as Object[];
+        return rawRecords
+            .map<Record>(raw => {
+                const asset = getOrAddAsset(
+                    raw['asset']['code'],
+                    raw['asset']['issuer'],
+                    raw['asset']['code'] === 'XLM' && raw['asset']['issuer'] === undefined ? 'native' : undefined,
+                );
+                return <Record>{
+                    type: raw['type'],
+                    context: <WalletContext>{
+                        amount: raw['amount'],
+                        asset: asset,
+                        price: 0,
+                    },
+                    date: raw['created_at'],
+                };
+            })
+            .filter(record => {
+                //todo extract --sky
+                if (asset.isNative() && record.context.asset.isNative()) {
+                    return true;
+                } else {
+                    return (
+                        asset.getCode() === record.context.asset.getCode() &&
+                        asset.getIssuer() === record.context.asset.getIssuer() &&
+                        asset.getAssetType() === record.context.asset.getAssetType()
+                    );
+                }
+            });
+    }
 }
 
 export const Assets = new Map<string, Asset>();
