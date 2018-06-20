@@ -1,3 +1,4 @@
+import { Observable } from 'rxjs/Observable';
 import { HttpClient } from '@angular/common/http';
 import { CurrencyProvider } from './../currency/currency';
 // steller sdk wrapper
@@ -181,33 +182,42 @@ export class NClientProvider {
 
     public async fetchJobs(account: NWallet.Account): Promise<void> {
         this.logger.debug('fetch jobs start');
-        const subscribe = this.subscribe(account);
-        const setAsset = this.refreshWallets(account);
-        await Promise.all([subscribe, setAsset]);
+        this.subscribe(account);
+        // const subscribe = this.subscribe(account);
+        // const setAsset = this.refreshWallets(account);
+        // await Promise.all([subscribe, setAsset]);
         this.isFetched = true;
         this.logger.debug('fetch jobs done');
     }
 
     public subscribe(account: NWallet.Account): void {
-        const payment = this.server.payments().forAccount(account.signature.public);
-        const self = this;
-        this.paymentSubscriptions.set(
-            account.signature.public,
-            //todo get lastest paging token --sky`
-            payment.stream({
-                onmessage: function() {
-                    //argument[0] => payment transactions
-                    self.logger.debug('subscibe', arguments[0]);
+        const subscription = Observable.timer(0, 5000).subscribe(() => {
+            this.refreshWallets(account);
+        });
 
-                    if (self.isFetched) {
-                        self.refreshWallets(account);
-                    }
-                },
-                onerror: function() {
-                    self.logger.debug('subscribe error, maybe account not activate yet');
-                },
-            }),
-        );
+        this.paymentSubscriptions.set(account.signature.public, subscription);
+    }
+
+    public subscribelegacy(account: NWallet.Account): void {
+        // const payment = this.server.payments().forAccount(account.signature.public);
+        // const self = this;
+        // this.paymentSubscriptions.set(
+        //     account.signature.public,
+        //     //todo get lastest paging token --sky`
+        //     payment.stream({
+        //         onmessage: function() {
+        //             //argument[0] => payment transactions
+        //             self.logger.debug('subscibe', arguments[0]);
+
+        //             if (self.isFetched) {
+        //                 self.refreshWallets(account);
+        //             }
+        //         },
+        //         onerror: function() {
+        //             self.logger.debug('subscribe error, maybe account not activate yet');
+        //         },
+        //     }),
+        //);
 
         this.logger.debug('subscribed', account.signature.public);
     }

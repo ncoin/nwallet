@@ -36,32 +36,25 @@ export class WalletDetailPage {
     }
 
     async loadTransactions(): Promise<void> {
-        let transaction = await this.appService.getTransactions(this.wallet.asset);
-        this.pageToken = transaction.pageToken;
-        this.hasNext = transaction.hasNext;
-        this.histories = transaction.records;
-
-        if (transaction.hasNext) {
-            transaction = await this.appService.getTransactions(this.wallet.asset, this.pageToken);
-            transaction.records.forEach(record => {
-                this.histories.push(record);
-            });
+        await this.getTransactions();
+        if (this.hasNext) {
+            this.getTransactions();
         }
 
         this.isLoading = false;
     }
 
+    async getTransactions(): Promise<void> {
+        let transaction = await this.appService.getTransactions(this.wallet.asset);
+        this.pageToken = transaction.pageToken;
+        this.hasNext = transaction.hasNext;
+        this.histories = transaction.records;
+    }
+
     async doInfinite(infinite: InfiniteScroll) {
         this.logger.debug('aaa');
         if (this.hasNext) {
-            const transaction = await this.appService.getTransactions(this.wallet.asset, this.pageToken);
-            transaction.records.forEach(record => {
-                this.histories.push(record);
-            });
-
-            if (transaction.records.length < 2) {
-                infinite.enable(false);
-            }
+            await this.getTransactions();
         } else {
             infinite.enable(false);
         }

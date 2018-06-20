@@ -32,9 +32,9 @@ export class WalletBuyPage {
     };
 
     constructor(
+        account: AccountProvider,
         public navCtrl: NavController,
         public navParams: NavParams,
-        private account: AccountProvider,
         private zone: NgZone,
         private currency: CurrencyProvider,
         private logger: Logger,
@@ -42,7 +42,6 @@ export class WalletBuyPage {
         private appService: AppServiceProvider,
         private loading: LoadingController,
     ) {
-
         this._wallet = navParams.get('wallet');
         this.wallets = account.account.wallets.filter(wallet => {
             return wallet.asset.code !== 'NCH';
@@ -85,12 +84,6 @@ export class WalletBuyPage {
             asset: this.NCH.asset,
             price: this.NCH.price,
         };
-    }
-
-    async init(): Promise<void> {
-        const account = await this.account.getAccount();
-        account;
-        this.zone.run(() => {});
     }
 
     ionViewDidLoad() {
