@@ -1,4 +1,3 @@
-import { Context } from './nwallet';
 import { Asset } from 'stellar-sdk';
 export namespace NWallet {
     export const AccountEmpty: Account = {

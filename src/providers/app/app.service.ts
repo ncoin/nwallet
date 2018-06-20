@@ -1,11 +1,10 @@
-import { testAccount } from './../nsus/naccount';
 import { AccountProvider } from './../account/account';
 import { NClientProvider } from './../nsus/nclient';
 import { Injectable } from '@angular/core';
 import { PreferenceProvider, Preference } from '../common/preference/preference';
 import { App } from 'ionic-angular';
 import { Logger } from '../common/logger/logger';
-import { NWallet, getOrAddAsset } from '../../interfaces/nwallet';
+import { NWallet } from '../../interfaces/nwallet';
 import Stellar, { Asset, Keypair } from 'stellar-sdk';
 
 interface Signable {
