@@ -3,7 +3,6 @@ import { Events, Platform } from 'ionic-angular';
 import { ConfigProvider } from '../../providers/config/config';
 import { Logger } from '../../providers/logger/logger';
 
-import { PersistenceProvider } from '../../providers/persistence/persistence';
 
 @Component({
   selector: 'page-pin',
@@ -30,7 +29,6 @@ export class PinModalPage {
     private logger: Logger,
     private platform: Platform,
     private events: Events,
-    private persistenceProvider: PersistenceProvider
   ) {
 
     this.events.subscribe('showPinModalEvent', (action: string) => {

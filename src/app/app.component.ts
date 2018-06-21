@@ -41,7 +41,7 @@ export class NWalletApp {
     ) {
         this.logger.debug('app start');
         this.initialize();
-    }
+            }
 
     private async initialize(): Promise<void> {
 

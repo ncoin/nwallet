@@ -1,17 +1,5 @@
 import { Asset } from 'stellar-sdk';
 export namespace NWallet {
-    export const AccountEmpty: Account = {
-        isActivate: false,
-        signature: NWallet.SignatureEmpty,
-        address: NWallet.AddressEmpty,
-        profile: NWallet.ProfileEmpty,
-        wallets: NWallet.WalletEmpty,
-    };
-    export const SignatureEmpty: Signature = { public: 'public key', secret: 'secret sig' };
-    export const WalletEmpty: WalletContext[] = [{ asset: Asset.native(), amount: '0', price: 0 }];
-    export const AddressEmpty: Address = { location: 'empty address' };
-    export const ProfileEmpty: Profile = { firstName: 'john', lastName: 'doe', phoneNumber: { countryCode: '00', number: '000000' } };
-    export const TransactionEmpty: Transactions.Record[] = [{ type: '', context: { amount: '', asset: Asset.native(), price: 0 }, date: new Date() }];
 
     export interface Account {
         isActivate: boolean;
@@ -37,10 +25,15 @@ export namespace NWallet {
         secret: string;
     }
 
-    export interface WalletContext {
+    export interface WalletItem {
         asset: Asset;
-        amount: string;
+        isNative: boolean;
         price: number;
+    }
+
+    export interface WalletContext {
+        item: WalletItem;
+        amount: string;
     }
 
     //todo move to other namespace
@@ -73,27 +66,29 @@ export namespace NWallet.Transactions {
                 const asset = getOrAddAsset(
                     raw['asset']['code'],
                     raw['asset']['issuer'],
-                    raw['asset']['code'] === 'XLM' && raw['asset']['issuer'] === undefined ? 'native' : undefined,
+                    ['asset']['code'] === 'XLM' && raw['asset']['issuer'] === undefined ? 'native' : undefined,
                 );
                 return <Record>{
                     type: raw['type'],
                     context: <WalletContext>{
+                        item: <WalletItem> {
+                            asset: asset,
+                            price: 0
+                        },
                         amount: raw['amount'],
-                        asset: asset,
-                        price: 0,
                     },
                     date: raw['created_at'],
                 };
             })
             .filter(record => {
                 //todo extract --sky
-                if (asset.isNative() && record.context.asset.isNative()) {
+                if (asset.isNative() && record.context.item.asset.isNative()) {
                     return true;
                 } else {
                     return (
-                        asset.getCode() === record.context.asset.getCode() &&
-                        asset.getIssuer() === record.context.asset.getIssuer() &&
-                        asset.getAssetType() === record.context.asset.getAssetType()
+                        asset.getCode() === record.context.item.asset.getCode() &&
+                        asset.getIssuer() === record.context.item.asset.getIssuer() &&
+                        asset.getAssetType() === record.context.item.asset.getAssetType()
                     );
                 }
             });

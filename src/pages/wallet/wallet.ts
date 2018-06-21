@@ -1,4 +1,3 @@
-import { Asset } from 'stellar-sdk';
 import { AppServiceProvider } from './../../providers/app/app.service';
 import { Logger } from './../../providers/common/logger/logger';
 import { EntrancePage } from './../0.entrance/entrance';
@@ -22,10 +21,6 @@ import { WalletDetailPage } from '../wallet-detail/wallet-detail';
 export class WalletPage {
     account: NWallet.Account;
 
-    asset: Asset = Asset.native();
-    destination: string;
-    amount: string;
-
     constructor(
         public navCtrl: NavController,
         public navParams: NavParams,
@@ -47,7 +42,6 @@ export class WalletPage {
     }
 
     public onSelectWallet(wallet: NWallet.WalletContext) {
-        this.asset = wallet.asset;
         this.navCtrl.push(WalletDetailPage, { wallet: wallet}, {
             animate : true,
             animation : 'ios-transition'
@@ -68,9 +62,5 @@ export class WalletPage {
             animate: true,
             animation: 'ios-transition',
         });
-    }
-
-    public onSendPayment(): void {
-        this.appService.sendPayment(this.account.signature, this.destination, this.asset, this.amount);
     }
 }

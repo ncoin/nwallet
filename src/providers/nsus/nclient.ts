@@ -1,17 +1,12 @@
-import { Observable } from 'rxjs/Observable';
+import { Subscription, Observable } from 'rxjs/Rx';
 import { HttpClient } from '@angular/common/http';
 import { CurrencyProvider } from './../currency/currency';
 // steller sdk wrapper
-import Stellar, { TransactionBuilder, Asset, Keypair } from 'stellar-sdk';
+import Stellar, { Asset } from 'stellar-sdk';
 import { Injectable, NgZone } from '@angular/core';
 import { Logger } from './../common/logger/logger';
 import { env } from '../../environments/environment';
 import { NWallet, getOrAddAsset } from '../../interfaces/nwallet';
-
-const serverAddress = {
-    live: 'https://horizon.stellar.org',
-    test: 'https://horizon-testnet.stellar.org',
-};
 
 //todo environment schema --sky
 const apiAddress = {
@@ -26,25 +21,24 @@ const endPoint = {
 
 @Injectable()
 export class NClientProvider {
-    private server: Stellar.Server;
-    private isFetched: boolean;
     /** <public key, eventSource> */
-    private paymentSubscriptions: Map<string, any>;
+    private paymentSubscriptions: Map<string, Subscription>;
 
     constructor(private zone: NgZone, private logger: Logger, private currency: CurrencyProvider, private http: HttpClient) {
         this.currency;
-        this.paymentSubscriptions = new Map<string, any>();
+        this.paymentSubscriptions = new Map<string, Subscription>();
         this.init();
     }
 
     async init(): Promise<void> {
         if (env.network === 'test') {
+            //todo move location
             Stellar.Network.useTestNetwork();
-            this.server = new Stellar.Server(serverAddress.test);
             endPoint.url = apiAddress.test;
         } else {
-            this.server = new Stellar.Server(serverAddress.live);
             endPoint.url = apiAddress.live;
+            //todo move location
+            Stellar.Network.usePublicNetwork();
         }
     }
 
@@ -79,11 +73,16 @@ export class NClientProvider {
         const convert = (data: Object[]): NWallet.WalletContext[] => {
             return data.map(item => {
                 const asset = item['asset'];
-                return <NWallet.WalletContext>{
+                const wallet = <NWallet.WalletContext>{
                     amount: item['amount'],
-                    asset: getOrAddAsset(asset['code'], asset['issuer'], asset['code'] === 'XLM' && asset['issuer'] === undefined ? 'native' : undefined),
-                    price: item['price'],
+                    item: <NWallet.WalletItem>{
+                        asset: getOrAddAsset(asset['code'], asset['issuer'], asset['code'] === 'XLM' && asset['issuer'] === undefined ? 'native' : undefined),
+                        price: item['price'],
+                        isNative : item['native']
+                    },
                 };
+
+                return wallet;
             });
         };
 
@@ -99,21 +98,6 @@ export class NClientProvider {
             .catch(error => {
                 this.logger.error('getAsset failed', error);
                 return [];
-            });
-    }
-
-    public isExistAccount(accountId: string): Promise<boolean> {
-        return this.server
-            .accounts()
-            .accountId(accountId) //load account?
-            .call()
-            .then(record => {
-                this.logger.debug(record);
-                return true;
-            })
-            .catch(error => {
-                this.logger.error('isExistAccountError', error);
-                return false;
             });
     }
 
@@ -142,38 +126,15 @@ export class NClientProvider {
             .toPromise();
     }
 
-    //todo: transaction refactoring --sky
-    public async sendPayment(signature: NWallet.Signature, destination: string, asset: Asset, amount: string) {
-        const source = await this.server.loadAccount(signature.public);
-        const transaction = new TransactionBuilder(source);
-        //todo: change trust
-        if (await this.isExistAccount(destination)) {
-            transaction.addOperation(
-                Stellar.Operation.payment({
-                    destination: destination,
-                    asset: asset,
-                    amount: amount,
-                }),
-            );
-        } else {
-            transaction.addOperation(
-                Stellar.Operation.createAccount({
-                    destination: destination,
-                    startingBalance: amount,
-                }),
-            );
-        }
-
-        const tran = transaction.build();
-        tran.sign(Keypair.fromSecret(signature.secret));
-        this.server.submitTransaction(tran);
-    }
-
     public async refreshWallets(account: NWallet.Account): Promise<void> {
         this.getAssets(account.signature.public).then(wallets => {
             this.logger.debug('refresh Wallets');
-            //todo check equality then zone run --sky`
 
+            //todo fixme --sky`
+
+            wallets.filter(wallet => wallet.amount);
+
+            //todo check equality then zone run --sky`
             this.zone.run(() => {
                 account.wallets = wallets;
             });
@@ -186,11 +147,10 @@ export class NClientProvider {
         // const subscribe = this.subscribe(account);
         // const setAsset = this.refreshWallets(account);
         // await Promise.all([subscribe, setAsset]);
-        this.isFetched = true;
         this.logger.debug('fetch jobs done');
     }
 
-    public subscribe(account: NWallet.Account): void {
+    public subscribe = (account: NWallet.Account): void => {
         const subscription = Observable.timer(0, 5000).subscribe(() => {
             this.refreshWallets(account);
         });
@@ -226,7 +186,7 @@ export class NClientProvider {
         const unSubscribePayment = this.paymentSubscriptions.get(account.signature.public);
 
         if (unSubscribePayment) {
-            unSubscribePayment();
+            unSubscribePayment.unsubscribe();
             this.logger.debug('payment subscription closed');
         }
     }

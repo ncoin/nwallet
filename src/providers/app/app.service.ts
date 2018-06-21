@@ -21,6 +21,7 @@ export class AppServiceProvider {
 
     public async walkThrough(processFunc: () => void): Promise<void> {
         this.app;
+        this.flushApplication();
         processFunc();
     }
 
@@ -42,10 +43,6 @@ export class AppServiceProvider {
         await this.connector.unSubscribe(account);
         this.account.flush();
         this.logger.debug('logout', account.signature.public);
-    }
-
-    public async sendPayment(signature: NWallet.Signature, destination: string, asset: Asset, amount: string): Promise<void> {
-        this.connector.sendPayment(signature, destination, asset, amount);
     }
 
     public async getTransactions(asset: Asset, pageToken?: string) {

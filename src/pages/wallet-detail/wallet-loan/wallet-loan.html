@@ -19,9 +19,9 @@
     <div>
         <div style="margin: 3% 0% 2% 0%">:: COLLATERAL CURRENCY</div>
         <ion-item>
-            <ion-label> {{wallet.asset.code | walletName}}</ion-label>
+            <ion-label> {{wallet.item | walletName}}</ion-label>
             <ion-select [(ngModel)]="wallet" interface="popover">
-                <ion-option *ngFor="let wallet of wallets" [value]="wallet">{{wallet.asset.code}}</ion-option>
+                <ion-option *ngFor="let wallet of wallets" [value]="wallet">{{wallet.item.asset.code}}</ion-option>
             </ion-select>
         </ion-item>
         <ion-item no-lines>
@@ -39,18 +39,18 @@
         </ion-item>
         <ion-item>
             <ion-label floating>Amount</ion-label>
-            <ion-input [(ngModel)]="amount" type="number" required min="0" max="1000" autocomplete="true"></ion-input>
+            <ion-input [(ngModel)]="nchAmount" type="number" required min="0" max="1000" autocomplete="true"></ion-input>
         </ion-item>
         <ion-label style="margin: 5% 0% 0% 0%">
             :: LOAN CURRENCY
         </ion-label>
         <ion-item no-lines>
             <ion-label item-start>
-                NCH
+                {{expectSpendWallet.item.asset.code}}
             </ion-label>
             <div item-end>
                 <ion-label style="text-align: right">
-                    {{NCH | walletFormat}}
+                    {{expectSpendWallet| walletFormat}}
                 </ion-label>
             </div>
         </ion-item>

@@ -2,10 +2,7 @@ import { Logger } from './../common/logger/logger';
 import { Events } from 'ionic-angular';
 import { NWallet } from './../../interfaces/nwallet';
 import { Injectable } from '@angular/core';
-import {
-    PreferenceProvider,
-    Preference,
-} from '../common/preference/preference';
+import { PreferenceProvider, Preference } from '../common/preference/preference';
 import { Keypair } from 'stellar-sdk';
 
 @Injectable()
@@ -17,22 +14,18 @@ export class AccountProvider {
     }
 
     private async init(): Promise<void> {
-
         this.event;
-        this.account = await this.preference.get(
-            Preference.Nwallet.walletAccount,
-        );
+        this.account = await this.preference.get(Preference.Nwallet.walletAccount);
 
         this.logger.debug('account provider initiated');
     }
 
     public async getAccount(): Promise<NWallet.Account> {
-        if (!this.account){
+        if (!this.account) {
             this.account = await this.preference.get(Preference.Nwallet.walletAccount);
         }
         return this.account;
     }
-
 
     public generateSignature(secretKey?: string): NWallet.Signature {
         let keyPair: Keypair;
@@ -48,7 +41,7 @@ export class AccountProvider {
         };
     }
 
-    public flush():void {
+    public flush(): void {
         this.account = undefined;
     }
 }

@@ -31,7 +31,7 @@ export class WalletDetailPage {
     constructor(public navCtrl: NavController, public navParams: NavParams, private logger: Logger, private appService: AppServiceProvider) {
         this.logger.debug(navParams);
         this.wallet = navParams.get('wallet');
-        this.isNCH = this.wallet.asset.getIssuer() === NWallet.NCH.getIssuer() && this.wallet.asset.getCode() === NWallet.NCH.getCode();
+        this.isNCH = this.wallet.item.asset.code === 'NCH' && this.wallet.item.isNative;
         this.loadTransactions();
     }
 
@@ -45,7 +45,7 @@ export class WalletDetailPage {
     }
 
     async getTransactions(): Promise<void> {
-        let transaction = await this.appService.getTransactions(this.wallet.asset);
+        let transaction = await this.appService.getTransactions(this.wallet.item.asset);
         this.pageToken = transaction.pageToken;
         this.hasNext = transaction.hasNext;
         this.histories = transaction.records;
