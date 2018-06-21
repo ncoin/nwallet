@@ -1,6 +1,5 @@
 import { Asset } from 'stellar-sdk';
 export namespace NWallet {
-
     export interface Account {
         isActivate: boolean;
         signature: Signature;
@@ -63,21 +62,17 @@ export namespace NWallet.Transactions {
         const rawRecords = data['records'] as Object[];
         return rawRecords
             .map<Record>(raw => {
-                const asset = getOrAddAsset(
-                    raw['asset']['code'],
-                    raw['asset']['issuer'],
-                    ['asset']['code'] === 'XLM' && raw['asset']['issuer'] === undefined ? 'native' : undefined,
-                );
+                const asset = raw['asset'];
+                const item = getOrAddWalletItem(asset['code'], asset['issuer'], raw['native']);
+                const amount = raw['amount'];
+                const createdAt = raw['created_at'];
                 return <Record>{
                     type: raw['type'],
                     context: <WalletContext>{
-                        item: <WalletItem> {
-                            asset: asset,
-                            price: 0
-                        },
-                        amount: raw['amount'],
+                        item: item,
+                        amount: amount,
                     },
-                    date: raw['created_at'],
+                    date: createdAt,
                 };
             })
             .filter(record => {
@@ -95,12 +90,20 @@ export namespace NWallet.Transactions {
     }
 }
 
-export const Assets = new Map<string, Asset>();
+const Assets = new Map<string, NWallet.WalletItem>([
+    [
+        'XLM_native',
+        <NWallet.WalletItem>{
+            asset: Asset.native(),
+            price: 0,
+        },
+    ],
+]);
 
 //todo AOP (cache decorator) --sky
-export function getOrAddAsset(code: string, issuer: string, assetType: string): Asset {
-    if (assetType === 'native') {
-        return Asset.native();
+export function getOrAddWalletItem(code: string, issuer: string, isNative: boolean): NWallet.WalletItem {
+    if (code === 'XLM' && isNative === true) {
+        issuer = 'native';
     }
 
     const key = `${code}_${issuer}`;
@@ -108,6 +111,20 @@ export function getOrAddAsset(code: string, issuer: string, assetType: string): 
     if (Assets.has(key)) {
         return Assets.get(key);
     } else {
-        return Assets.set(key, new Asset(code, issuer)).get(key);
+
+        const asset = new Asset(code, issuer);
+        if (code === 'NCH' && isNative) {
+            NWallet.Assets.NCH = asset;
+        }
+
+        if (code === 'NCN' && isNative) {
+            NWallet.Assets.NCN = asset;
+        }
+
+        return Assets.set(key, <NWallet.WalletItem>{
+            asset: asset,
+            price: 0,
+            isNative: isNative,
+        }).get(key);
     }
 }

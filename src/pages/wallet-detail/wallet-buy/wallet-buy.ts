@@ -4,7 +4,6 @@ import { IonicPage, NavController, NavParams, Navbar, AlertController, LoadingCo
 import { AccountProvider } from '../../../providers/account/account';
 import { NWallet } from '../../../interfaces/nwallet';
 import { Logger } from '../../../providers/common/logger/logger';
-import { NWalletApp } from '../../../app/app.component';
 /**
  * Generated class for the WalletBuyPage page.
  *
@@ -63,7 +62,7 @@ export class WalletBuyPage {
     }
 
     private calculateTotalNCN(): void {
-        const totalPrice = this.nchAmount * this.wallet.item.price;
+        const totalPrice = (this.nchAmount * 1) / this.wallet.item.price;
         this.expectSpendWallet = <NWallet.WalletContext>{
             amount: totalPrice.toString(),
             item: this._wallet.item,

@@ -1,5 +1,5 @@
 import { AppServiceProvider } from './../../../providers/app/app.service';
-import { Component, ViewChild, NgZone } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams, Navbar, AlertController, LoadingController } from 'ionic-angular';
 import { AccountProvider } from '../../../providers/account/account';
 import { NWallet } from '../../../interfaces/nwallet';
@@ -25,10 +25,9 @@ export class WalletLoanPage {
     expectSpendWallet: NWallet.WalletContext;
 
     constructor(
+        account: AccountProvider,
         public navCtrl: NavController,
         public navParams: NavParams,
-        private account: AccountProvider,
-        private zone: NgZone,
         private appService: AppServiceProvider,
         private alert: AlertController,
         private loading: LoadingController,
@@ -63,18 +62,12 @@ export class WalletLoanPage {
     }
 
     private calculateTotalNCN(): void {
-        const totalPrice = this.nchAmount * 1 / (this.wallet.item.price);
+        const totalPrice = (this.nchAmount * 1) / this.wallet.item.price;
         this.expectSpendWallet = <NWallet.WalletContext>{
             amount: totalPrice.toString(),
             item: this._wallet.item,
             price: this.expectSpendWallet.item.price,
         };
-    }
-
-    async init(): Promise<void> {
-        const account = await this.account.getAccount();
-        account;
-        this.zone.run(() => {});
     }
 
     ionViewDidLoad() {

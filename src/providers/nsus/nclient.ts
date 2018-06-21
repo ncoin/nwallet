@@ -6,7 +6,7 @@ import Stellar, { Asset } from 'stellar-sdk';
 import { Injectable, NgZone } from '@angular/core';
 import { Logger } from './../common/logger/logger';
 import { env } from '../../environments/environment';
-import { NWallet, getOrAddAsset } from '../../interfaces/nwallet';
+import { NWallet, getOrAddWalletItem } from '../../interfaces/nwallet';
 
 //todo environment schema --sky
 const apiAddress = {
@@ -71,15 +71,14 @@ export class NClientProvider {
     public getAssets(accountId: string): Promise<NWallet.WalletContext[]> {
         const url = `${apiAddress.test}accounts/${accountId}`;
         const convert = (data: Object[]): NWallet.WalletContext[] => {
-            return data.map(item => {
-                const asset = item['asset'];
+            return data.map(data => {
+                const asset = data['asset'];
+                const amount = data['amount'];
+                const item = getOrAddWalletItem(asset['code'], asset['issuer'], data['native']);
+                item.price = data['price'];
                 const wallet = <NWallet.WalletContext>{
-                    amount: item['amount'],
-                    item: <NWallet.WalletItem>{
-                        asset: getOrAddAsset(asset['code'], asset['issuer'], asset['code'] === 'XLM' && asset['issuer'] === undefined ? 'native' : undefined),
-                        price: item['price'],
-                        isNative : item['native']
-                    },
+                    item : item,
+                    amount : amount
                 };
 
                 return wallet;
