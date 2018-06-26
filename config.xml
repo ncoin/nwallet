@@ -97,4 +97,5 @@
     <plugin name="cordova-android-support-gradle-release" spec="~1.4.3" />
     <plugin name="cordova-plugin-touch-id" spec="~3.3.1" />
     <plugin name="cordova-plugin-android-fingerprint-auth" spec="~1.4.4" />
+    <plugin name="cordova-plugin-secure-storage" spec="^2.6.8" />
 </widget>
