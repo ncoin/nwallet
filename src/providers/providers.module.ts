@@ -6,6 +6,8 @@ import { AccountProvider } from './account/account';
 import { PreferenceProvider } from './common/preference/preference';
 import { NClientProvider } from './nsus/nclient';
 import { CurrencyProvider } from './currency/currency';
+import { LockProvider } from './common/lock/lock';
+import { PlatformProvider } from './common/platform/platform';
 
 @NgModule({
     providers: [
@@ -15,7 +17,9 @@ import { CurrencyProvider } from './currency/currency';
         AccountProvider,
         AppServiceProvider,
         ConfigProvider,
-        CurrencyProvider
+        CurrencyProvider,
+        PlatformProvider,
+        LockProvider
     ],
 })
 export class ProvidersModule {}

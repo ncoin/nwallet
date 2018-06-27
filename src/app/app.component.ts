@@ -1,3 +1,5 @@
+import { LockProvider } from './../providers/common/lock/lock';
+import { Subscription } from 'rxjs/Rx';
 import { WalletPage } from './../pages/wallet/wallet';
 import { Logger } from './../providers/common/logger/logger';
 import { Component, ViewChild } from '@angular/core';
@@ -27,7 +29,7 @@ export class NWalletApp {
     // the root nav is a child of the root app component
     // @ViewChild(Nav) gets a reference to the app's root nav
     @ViewChild(Nav) nav: Nav;
-
+    private resumeSubscription: Subscription;
     // List of pages that can be navigated to from the left menu
     // the left menu only works after login
     // the login page disables the left menu
@@ -37,18 +39,19 @@ export class NWalletApp {
         public platform: Platform,
         private splashScreen: SplashScreen,
         private preference: PreferenceProvider,
-        private logger: Logger
+        private logger: Logger,
+        private lock: LockProvider,
     ) {
         this.logger.debug('app start');
         this.initialize();
-            }
+    }
 
     private async initialize(): Promise<void> {
 
         const account = await this.preference.get(Preference.Nwallet.walletAccount);
-        if (account){
+        if (account) {
             this.rootPage = WalletPage;
-        } else{
+        } else {
             this.rootPage = EntrancePage;
         }
 
@@ -66,9 +69,25 @@ export class NWalletApp {
     }
 
     private platformReady(): void {
+
+        this.logger.info('prepare platform');
+
         this.platform.ready().then(() => {
-            this.splashScreen.hide();
+            this.onPlatformReady();
         });
+    }
+
+    private async onPlatformReady(): Promise<void> {
+        // todo load app services
+        this.resumeSubscription = this.platform.resume.subscribe(() => {
+            this.openResumeModal();
+        });
+
+        this.openResumeModal();
+
+        this.splashScreen.hide();
+
+        this.logger.info('platform ready');
     }
 
     openPage(page: PageInterface) {
@@ -76,11 +95,18 @@ export class NWalletApp {
         this;
     }
 
-    openTutorial():void {
+    private openResumeModal(): void {
+        this.lock.tryLockModalOpen();
+    }
+
+    ngOnDestroy(): void {
+        this.resumeSubscription.unsubscribe();
+    }
+
+    openTutorial(): void {
         this.nav.push(TutorialPage, undefined, {
-            animate : true,
-            animation : 'ios-transition'
+            animate: true,
+            animation: 'ios-transition',
         });
     }
 }
-

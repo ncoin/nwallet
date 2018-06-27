@@ -1,6 +1,6 @@
 page-pin {
     ion-content {
-        background-color: color($colors, blank) !important;
+        background-color: color($colors, light) !important;
     }
     .pin-header {
         height: 160px;
@@ -39,7 +39,7 @@ page-pin {
         position: fixed;
         width: 100%;
         height: 100%;
-        background-color: color($colors, blank);
+        background-color: color($colors, light);
         .block-code {
             padding-top: 30px;
             display: flex;

@@ -32,8 +32,10 @@ $headings-font-weight: 300;
 // to match your app's branding. Ionic uses a Sass map of
 // colors so you can add, rename and remove colors as needed.
 // The "primary" color is the only required color in the map.
+$color-primary: #647ce8;
 
 $colors: (
+  blank:    #488aff,
   primary:    #488aff,
   secondary:  #32db64,
   danger:     #f53d3d,
@@ -45,6 +47,7 @@ $colors: (
   vimeo:      #23b6ea,
   facebook:   #3b5998
 );
+
 
 
 // App iOS Variables

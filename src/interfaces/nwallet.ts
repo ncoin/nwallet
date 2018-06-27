@@ -56,6 +56,7 @@ export namespace NWallet.Transactions {
         type: string;
         context: WalletContext;
         date: Date;
+        id: string;
     }
 
     export function parseRecords(asset: Asset, data: Object): Record[] {
@@ -73,6 +74,7 @@ export namespace NWallet.Transactions {
                         amount: amount,
                     },
                     date: createdAt,
+                    id : '804ddcf3b5b1f912d901d298dff1c30082182b839729dc767be5cbaf9316e588'
                 };
             })
             .filter(record => {

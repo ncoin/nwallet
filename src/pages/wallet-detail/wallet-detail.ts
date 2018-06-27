@@ -6,6 +6,7 @@ import { IonicPage, NavController, NavParams, Navbar, InfiniteScroll } from 'ion
 import { NWallet } from '../../interfaces/nwallet';
 import { WalletBuyPage } from './wallet-buy/wallet-buy';
 import { AppServiceProvider } from '../../providers/app/app.service';
+import { InAppBrowser } from '@ionic-native/in-app-browser';
 
 /**
  * Generated class for the WalletDetailPage page.
@@ -28,7 +29,7 @@ export class WalletDetailPage {
     hasNext: boolean;
 
     @ViewChild(Navbar) navBar: Navbar;
-    constructor(public navCtrl: NavController, public navParams: NavParams, private logger: Logger, private appService: AppServiceProvider) {
+    constructor(public navCtrl: NavController, public navParams: NavParams, private logger: Logger, private appService: AppServiceProvider, private iab: InAppBrowser) {
         this.logger.debug(navParams);
         this.wallet = navParams.get('wallet');
         this.isNCH = this.wallet.item.asset.code === 'NCH' && this.wallet.item.isNative;
@@ -94,5 +95,21 @@ export class WalletDetailPage {
                 animation: 'ios-transition',
             },
         );
+    }
+
+    onExploreTransaction(transactionId: string) {
+        const browser = this.iab.create(`https://stellar.expert/explorer/testnet/tx/${transactionId}`, '_blank', {
+            location: 'no',
+            clearcache: 'yes',
+            footer: 'yes',
+            toolbar: 'no',
+            closebuttoncaption: 'done',
+        });
+
+        browser.insertCSS({
+            code: 'body { margin-top : 50px;}',
+        });
+
+        browser.show();
     }
 }

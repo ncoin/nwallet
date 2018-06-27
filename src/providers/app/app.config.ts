@@ -1,10 +1,13 @@
 import { Injectable } from '@angular/core';
+import { Logger } from '../common/logger/logger';
 
-// interface Configuration {
-//     config1 :string
-// }
+export interface Configuration {
+    touchId: any;
+}
 
 @Injectable()
 export class ConfigProvider {
-
+    constructor(private logger: Logger){
+        this.logger;
+    }
 }
