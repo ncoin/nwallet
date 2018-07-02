@@ -127,7 +127,7 @@ export class NClientProvider {
 
     public async refreshWallets(account: NWallet.Account): Promise<void> {
         this.getAssets(account.signature.public).then(wallets => {
-            this.logger.debug('refresh Wallets');
+            this.logger.debug('refresh Wallets', wallets);
 
             //todo fixme --sky`
 

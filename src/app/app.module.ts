@@ -16,6 +16,8 @@ import { NWalletApp } from './app.component';
 import { ProvidersModule } from '../providers/providers.module';
 import { HttpClientModule } from '@angular/common/http';
 import { FingerprintAIO } from '@ionic-native/fingerprint-aio'
+import { StatusBar } from '@ionic-native/status-bar';
+import { Vibration } from '@ionic-native/vibration';
 
 BootStrap();
 @NgModule({
@@ -65,7 +67,9 @@ BootStrap();
         { provide: ErrorHandler, useClass: IonicErrorHandler },
         InAppBrowser,
         SplashScreen,
-        FingerprintAIO
+        FingerprintAIO,
+        StatusBar,
+        Vibration
     ],
 })
 export class AppModule {}

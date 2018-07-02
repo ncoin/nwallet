@@ -19,7 +19,7 @@ export class FingerprintModalPage {
 
     public checkFingerprint(): void {
         this.fingerprint.isAvailable().then(
-            async (isAvailable) => {
+            async isAvailable => {
                 this.isFingerprintAvailable = true;
                 this.logger.debug('isAvailable', isAvailable);
                 const result = await this.fingerprint
@@ -33,10 +33,11 @@ export class FingerprintModalPage {
                     });
 
                 if (result) {
+                    this.unregister();
                     this.navCtrl.pop({ animate: true });
                 }
             },
-            (error) => {
+            error => {
                 this.isFingerprintAvailable = false;
                 this.logger.error('fingerprint unvailalbe, ', error);
             },
