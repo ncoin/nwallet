@@ -19,12 +19,6 @@ interface Signable {
 export class AppServiceProvider {
     constructor(private preference: PreferenceProvider, private app: App, private logger: Logger, private connector: NClientProvider, private account: AccountProvider) {}
 
-    public async walkThrough(processFunc: () => void): Promise<void> {
-        this.app;
-        this.flushApplication();
-        processFunc();
-    }
-
     public async flushApplication(): Promise<void> {
         await this.preference.clear();
     }

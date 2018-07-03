@@ -1,3 +1,4 @@
+import { TranslateService } from '@ngx-translate/core';
 import { Pipe, PipeTransform } from '@angular/core';
 import { NWallet } from '../../interfaces/nwallet';
 
@@ -5,11 +6,12 @@ import { NWallet } from '../../interfaces/nwallet';
     name: 'walletName',
 })
 export class WalletNamePipe implements PipeTransform {
-    static nameDic = new Map<string, string>([['NCH', 'NCash'], ['NCN', 'NCoin'], ['XLM', 'Stellar Lumen']]);
+    constructor(private translate:TranslateService){
 
+    }
     transform(item: NWallet.WalletItem) {
-        if (item.isNative === true && WalletNamePipe.nameDic.has(item.asset.code)) {
-            return WalletNamePipe.nameDic.get(item.asset.code);
+        if (item.isNative === true) {
+            return this.translate.instant(item.asset.code);
         }
 
         return item.asset.code;

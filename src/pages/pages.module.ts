@@ -1,3 +1,4 @@
+
 import { NWalletDirectiveModule } from './../directives/directive.module';
 
 // import { PinModalPage } from './1.security/pin/pin';
@@ -16,6 +17,8 @@ import { FingerprintModalPage } from './1.security/fingerprint/fingerprint';
 import { PinPad } from './1.security/pin/pin-pad/pin-pad';
 import { PinDots } from './1.security/pin/pin-dot/pin-dots';
 import { PinModalPage } from './1.security/pin/pin';
+import { TranslateModule } from '@ngx-translate/core';
+
 
 @NgModule({
     declarations: [
@@ -47,9 +50,11 @@ import { PinModalPage } from './1.security/pin/pin';
         IonicPageModule.forChild(PinModalPage),
         //IonicPageModule.forChild(PinModalPage),
         PipesModule,
-        NWalletDirectiveModule
+        NWalletDirectiveModule,
+        TranslateModule.forChild()
 
     ],
     entryComponents: [TutorialPage, EntrancePage, WalletPage],
 })
 export class NWalletPageModule {}
+

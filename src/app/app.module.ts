@@ -1,3 +1,6 @@
+import { SharedModule } from './../shared/shared.module';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { env } from './../environments/environment';
 import { NWalletPageModule } from './../pages/pages.module';
 import { BrowserModule } from '@angular/platform-browser';
@@ -17,15 +20,13 @@ import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { FingerprintAIO } from '@ionic-native/fingerprint-aio';
 import { StatusBar } from '@ionic-native/status-bar';
 import { Vibration } from '@ionic-native/vibration';
-import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
-import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 BootStrap();
 @NgModule({
     declarations: [NWalletApp],
     imports: [
         BrowserModule,
         HttpClientModule,
-        NWalletPageModule,
+
         IonicModule.forRoot(
             NWalletApp,
             {},
@@ -62,7 +63,9 @@ BootStrap();
                 useFactory: createTranslateLoader,
                 deps: [HttpClient],
             },
+            useDefaultLang: true,
         }),
+        NWalletPageModule,
     ],
     bootstrap: [IonicApp],
     entryComponents: [NWalletApp],
@@ -76,6 +79,6 @@ function BootStrap() {
     }
 }
 
-export function createTranslateLoader(http: HttpClient) {
-    return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+function createTranslateLoader(http: HttpClient) {
+    return new TranslateHttpLoader(http, '../assets/i18n/', '.json');
 }

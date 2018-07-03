@@ -14,6 +14,7 @@ export namespace Preference.App {
 
     /** is tutorial proceeded? */
     export const hasSeenTutorial: Item<boolean> = { name: 'hasSeenTutorial' };
+    export const language: Item<string> = { name: 'language' };
 }
 
 export namespace Preference.Nwallet{
