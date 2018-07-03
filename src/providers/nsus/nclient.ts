@@ -43,7 +43,7 @@ export class NClientProvider {
     }
 
     public requestTrustXDR = (accountId: string): Promise<string> => {
-        this.logger.debug('[nclient] request trust XDR ...');
+        this.logger.debug('[nclient] request get trust XDR ...');
         return this.http
             .post(`${endPoint.url}trusts/xlm/xdr`, {
                 public_key: accountId,
@@ -51,11 +51,11 @@ export class NClientProvider {
             .map(res => res['xdr'])
             .toPromise()
             .then(xdr => {
-                this.logger.debug('[nclient] request trust XDR success');
+                this.logger.debug('[nclient] request get trust XDR success');
                 return xdr;
             })
             .catch((response: HttpErrorResponse) => {
-                this.logger.error('[nclient] request trust XDR failed.', response);
+                this.logger.error('[nclient] request get trust XDR failed.', response);
                 return undefined;
             });
     };
@@ -114,13 +114,15 @@ export class NClientProvider {
 
     public async getTransactions(accountId: string, asset: Asset, pageToken?: string): Promise<NWallet.Transactions.Context> {
         const params = {
-            limit: '10',
+            limit: pageToken ? '10' : '15',
             order: 'desc',
         };
 
         if (pageToken) {
             params['cursor'] = pageToken;
         }
+
+        this.logger.debug('[nclient] request getTransaction ...', params);
 
         return this.http
             .get(`${endPoint.url}transactions/xlm/accounts/${accountId}`, { params: params })
@@ -135,8 +137,12 @@ export class NClientProvider {
                 };
             })
             .toPromise()
+            .then(context => {
+                this.logger.debug('[nclient] request getTransaction success', context);
+                return context;
+            })
             .catch((response: HttpErrorResponse) => {
-                this.logger.error('[nclient] getTransaction failed', response);
+                this.logger.error('[nclient] request getTransaction failed', response);
                 return undefined;
             });
     }
@@ -182,7 +188,7 @@ export class NClientProvider {
 
     //todo method merge (XDRs)
     public requestBuyXDR = (accountId: string, asset: Asset, amount: number): Promise<string> => {
-        this.logger.debug('[nclient] request buy ...');
+        this.logger.debug('[nclient] request get buy xdr ...');
 
         return this.http
             .post(`${endPoint.url}buys/nch/xdr`, {
@@ -191,33 +197,37 @@ export class NClientProvider {
                 asset_code: asset.getCode(),
             })
             .map(res => res['xdr'])
-            .toPromise().then(response => {
-                this.logger.debug('[nclient] request buy success');
+            .toPromise()
+            .then(response => {
+                this.logger.debug('[nclient] request get buy xdr success');
                 return response;
-            }).catch((response:HttpErrorResponse) => {
-                this.logger.error('[nclient] request buy failed', response);
+            })
+            .catch((response: HttpErrorResponse) => {
+                this.logger.error('[nclient] request get buy xdr failed', response);
             });
     };
 
-    public executeBuyXDR = (accoundId:string, xdr: string): Promise<string> => {
-        this.logger.debug('[nclient] execute buy ...');
+    public executeBuyXDR = (accoundId: string, xdr: string): Promise<string> => {
+        this.logger.debug('[nclient] execute buy xdr ...');
 
         return this.http
             .put(`${endPoint.url}buys/nch/xdr`, {
                 xdr: xdr,
-                public_key : accoundId,
+                public_key: accoundId,
             })
-            .toPromise().then(response => {
-                this.logger.debug('[nclient] execute buy success', response);
+            .toPromise()
+            .then(response => {
+                this.logger.debug('[nclient] execute buy xdr success');
                 return response;
-            }).catch((response:HttpErrorResponse)=> {
-                this.logger.debug('[nclient] execute buy failed', response);
+            })
+            .catch((response: HttpErrorResponse) => {
+                this.logger.debug('[nclient] execute buy xdr failed', response);
                 return undefined;
             });
     };
 
     public requestLoanXDR = (accountId: string, asset: Asset, amount: number): Promise<string> => {
-        this.logger.debug('[nclient] request loan ...');
+        this.logger.debug('[nclient] request get loan xdr ...');
 
         return this.http
             .post(`${endPoint.url}loans/nch/xdr`, {
@@ -228,16 +238,16 @@ export class NClientProvider {
             .map(res => res['xdr'])
             .toPromise()
             .then(response => {
-                this.logger.debug('[nclient] request loan success', response);
+                this.logger.debug('[nclient] request get loan xdr success');
                 return response;
             })
-            .catch((response:HttpErrorResponse) => {
-                this.logger.error('[nclient] request loan failed', response);
+            .catch((response: HttpErrorResponse) => {
+                this.logger.error('[nclient] request get loan xdr failed', response);
             });
     };
 
     public executeLoanXDR = (accountId: string, xdr: string): Promise<string> => {
-        this.logger.debug('[nclient] execute loan ...');
+        this.logger.debug('[nclient] execute loan xdr ...');
 
         return this.http
             .put(`${endPoint.url}loans/nch/xdr`, {
@@ -245,11 +255,13 @@ export class NClientProvider {
                 public_key: accountId,
             })
             .map(res => res.toString())
-            .toPromise().then(response => {
-                this.logger.debug('[nclient] execute loan success');
+            .toPromise()
+            .then(response => {
+                this.logger.debug('[nclient] execute loan xdr success');
                 return response;
-            }).catch((response:HttpErrorResponse)=> {
-                this.logger.debug('[nclient] execute loan failed', response);
+            })
+            .catch((response: HttpErrorResponse) => {
+                this.logger.debug('[nclient] execute loan xdr failed', response);
                 return undefined;
             });
     };

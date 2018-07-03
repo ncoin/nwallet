@@ -34,6 +34,6 @@ export class AppConfigProvider {
         }
 
         await this.translate.use(this.translate.getDefaultLang()).toPromise();
-        this.logger.debug('[appconfig] current language : ', this.translate.getDefaultLang());
+        this.logger.debug('[appconfig] current language :', this.translate.getDefaultLang());
     }
 }

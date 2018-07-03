@@ -17,14 +17,13 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
 
 @IonicPage()
 @Component({
-    selector: 'page-wallet-detail',
     templateUrl: 'wallet-detail.html',
 })
 export class WalletDetailPage {
     isLoading: boolean = true;
     isNCH: boolean;
     wallet: NWallet.WalletContext;
-    histories: NWallet.Transactions.Record[];
+    histories: NWallet.Transactions.Record[] = [];
     pageToken: string;
     hasNext: boolean;
 
@@ -45,16 +44,16 @@ export class WalletDetailPage {
     }
 
     async getTransactions(): Promise<void> {
-        let transaction = await this.appService.getTransactions(this.wallet.item.asset);
+        let transaction = await this.appService.getTransactions(this.wallet.item.asset, this.pageToken);
         if (transaction) {
             this.pageToken = transaction.pageToken;
             this.hasNext = transaction.hasNext;
-            this.histories = transaction.records;
+            this.histories.push(...transaction.records);
         }
     }
 
-    async doInfinite(infinite: InfiniteScroll) {
-        this.logger.debug('aaa');
+    async doInfinite(infinite: InfiniteScroll): Promise<void> {
+        this.logger.debug('[wallet-detail-page]has next', this.hasNext);
         if (this.hasNext) {
             await this.getTransactions();
         } else {
@@ -64,7 +63,7 @@ export class WalletDetailPage {
         infinite.complete();
     }
 
-    ionViewDidLoad() {
+    ionViewDidLoad(): void {
         //todo extract --sky
         this.navBar.backButtonClick = ev => {
             ev.preventDefault();
@@ -76,7 +75,7 @@ export class WalletDetailPage {
         };
     }
 
-    onBuyAsset() {
+    onBuyAsset(): void {
         this.navCtrl.push(
             WalletBuyPage,
             { wallet: this.wallet },
@@ -87,7 +86,7 @@ export class WalletDetailPage {
         );
     }
 
-    onLoanAsset() {
+    private onLoanAsset(): void {
         this.navCtrl.push(
             WalletLoanPage,
             { wallet: this.wallet },
@@ -98,7 +97,7 @@ export class WalletDetailPage {
         );
     }
 
-    onExploreTransaction(transactionId: string) {
+    public onExploreTransaction(transactionId: string): void {
         const browser = this.iab.create(`https://stellar.expert/explorer/testnet/tx/${transactionId}`, '_blank', {
             location: 'no',
             clearcache: 'yes',

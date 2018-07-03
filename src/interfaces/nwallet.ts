@@ -98,6 +98,7 @@ const Assets = new Map<string, NWallet.WalletItem>([
         <NWallet.WalletItem>{
             asset: Asset.native(),
             price: 0,
+            isNative : true
         },
     ],
 ]);

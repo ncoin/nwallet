@@ -6,9 +6,7 @@ import { NWallet } from '../../interfaces/nwallet';
     name: 'walletName',
 })
 export class WalletNamePipe implements PipeTransform {
-    constructor(private translate:TranslateService){
-
-    }
+    constructor(private translate: TranslateService) {}
     transform(item: NWallet.WalletItem) {
         if (item.isNative === true) {
             return this.translate.instant(item.asset.code);
