@@ -1,9 +1,6 @@
-import { SharedModule } from './../shared/shared.module';
-import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { NWalletSharedModule } from './../shared/shared.module';
 import { env } from './../environments/environment';
 import { NWalletPageModule } from './../pages/pages.module';
-import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, ErrorHandler, enableProdMode } from '@angular/core';
 
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
@@ -15,8 +12,7 @@ import { IonicStorageModule } from '@ionic/storage';
 
 import { NWalletApp } from './app.component';
 
-import { ProvidersModule } from '../providers/providers.module';
-import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { NWalletProvidersModule } from '../providers/providers.module';
 import { FingerprintAIO } from '@ionic-native/fingerprint-aio';
 import { StatusBar } from '@ionic-native/status-bar';
 import { Vibration } from '@ionic-native/vibration';
@@ -24,19 +20,9 @@ BootStrap();
 @NgModule({
     declarations: [NWalletApp],
     imports: [
-        BrowserModule,
-        HttpClientModule,
-        ProvidersModule,
+        NWalletSharedModule,
+        NWalletProvidersModule,
         NWalletPageModule,
-        SharedModule,
-        TranslateModule.forRoot({
-            loader: {
-                provide: TranslateLoader,
-                useFactory: createTranslateLoader,
-                deps: [HttpClient],
-            },
-            useDefaultLang: true,
-        }),
         IonicStorageModule.forRoot(),
         IonicModule.forRoot(
             NWalletApp,
@@ -77,8 +63,4 @@ function BootStrap() {
     if (env.name === 'prod' || env.name === 'stage') {
         enableProdMode();
     }
-}
-
-function createTranslateLoader(http: HttpClient) {
-    return new TranslateHttpLoader(http, '../assets/i18n/', '.json');
 }

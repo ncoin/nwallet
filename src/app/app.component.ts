@@ -39,11 +39,11 @@ export class NWalletApp {
         this.platform
             .ready()
             .then(() => {
-                this.logger.info('prepare platform');
+                this.logger.debug('[app-page] prepare platform');
                 this.onPlatformReady();
             })
             .catch(error => {
-                this.logger.info('prepare platform failed.', error);
+                this.logger.debug('[app-page] prepare platform failed.', error);
             });
     }
 
@@ -51,21 +51,23 @@ export class NWalletApp {
         await this.appConfig.loadAll();
         await this.preparePage();
         this.prepareSecurity();
-        this.logger.info('platform ready now');
+        this.logger.debug('[app-page] latform ready now');
         this.splashScreen.hide();
     }
 
     private async preparePage(): Promise<void> {
-        this.logger.debug('prepare entrance pages');
         const account = await this.account.getAccount();
         if (account) {
+            this.logger.debug('[app-page] prepare wallet page');
             this.rootPage = WalletPage;
         } else {
+            this.logger.debug('[app-page] prepare entrance page');
             this.rootPage = EntrancePage;
         }
 
         const hasSeenTutorial = await this.appConfig.hasSeenTutorial();
         if (!hasSeenTutorial) {
+            this.logger.debug('[app-page] prepare tutorial page');
             this.nav.push(TutorialPage, undefined, undefined, () => {});
             return;
         }

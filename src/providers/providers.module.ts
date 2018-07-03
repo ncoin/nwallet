@@ -22,4 +22,4 @@ import { PlatformProvider } from './common/platform/platform';
         LockProvider
     ],
 })
-export class ProvidersModule {}
+export class NWalletProvidersModule {}

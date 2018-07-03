@@ -8,7 +8,7 @@ export class AppConfigProvider {
     constructor(private logger: Logger, private translate: TranslateService, private preference: PreferenceProvider) {}
 
     public async loadAll(): Promise<void> {
-        this.logger.info('load providers');
+        this.logger.debug('[appconfig] load providers');
         await Promise.all([this.loadLanguage()]);
     }
 
@@ -34,6 +34,6 @@ export class AppConfigProvider {
         }
 
         await this.translate.use(this.translate.getDefaultLang()).toPromise();
-        this.logger.info('current language = ', this.translate.getDefaultLang());
+        this.logger.debug('[appconfig] current language : ', this.translate.getDefaultLang());
     }
 }

@@ -12,12 +12,12 @@ export class LockProvider {
 
     public tryLockModalOpen(): void {
         if (this.isModalProcessing) {
-            this.logger.info('secure phase already processing');
+            this.logger.debug('[lock] secure phase already processing');
             return;
         }
 
         if (!this.isSecurityAvailable()){
-            this.logger.info('secure phase not available')
+            this.logger.debug('[lock] secure phase not available')
             return;
         }
 
@@ -27,7 +27,7 @@ export class LockProvider {
     private isSecurityAvailable(): boolean{
 
         //todo
-        this.logger.debug('security check',this.platform.isMobile);
+        this.logger.debug('[lock] security check',this.platform.isMobile);
         return true;
         // return this.platform.isMobile;
     }

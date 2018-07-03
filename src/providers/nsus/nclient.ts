@@ -127,26 +127,24 @@ export class NClientProvider {
 
     public async refreshWallets(account: NWallet.Account): Promise<void> {
         this.getAssets(account.signature.public).then(wallets => {
-            this.logger.debug('refresh Wallets', wallets);
-
-            //todo fixme --sky`
-
-            wallets.filter(wallet => wallet.amount);
+            this.logger.debug('[nclient] refresh Wallets', wallets);
 
             //todo check equality then zone run --sky`
             this.zone.run(() => {
-                account.wallets = wallets;
+                account.wallets = account.wallets || [];
+                account.wallets.length = 0;
+                account.wallets.push(...wallets);
             });
         });
     }
 
     public async fetchJobs(account: NWallet.Account): Promise<void> {
-        this.logger.debug('fetch jobs start');
+        this.logger.debug('[nclient] fetch jobs start');
         this.subscribe(account);
         // const subscribe = this.subscribe(account);
         // const setAsset = this.refreshWallets(account);
         // await Promise.all([subscribe, setAsset]);
-        this.logger.debug('fetch jobs done');
+        this.logger.debug('[nclient] fetch jobs done');
     }
 
     public subscribe = (account: NWallet.Account): void => {

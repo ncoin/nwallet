@@ -7,4 +7,4 @@ import { WalletNamePipe } from './wallet/wallet-name';
     imports: [],
     exports: [WalletToUSDPipe, WalletNamePipe, WalletFormatPipe],
 })
-export class PipesModule {}
+export class NWalletPipesModule {}

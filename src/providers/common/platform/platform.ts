@@ -31,8 +31,6 @@ export class PlatformProvider {
         this.isNW = this.isNodeWebkit();
         this.isMobile = this.platform.is('mobile');
         this.isDevel = !this.isMobile && !this.isNW;
-
-        this.logger.info('PlatformProvider initialized.');
     }
 
     public getBrowserName(): string {

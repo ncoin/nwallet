@@ -2,7 +2,7 @@
 import { NWalletDirectiveModule } from './../directives/directive.module';
 
 // import { PinModalPage } from './1.security/pin/pin';
-import { PipesModule } from './../pipes/pipes.module';
+import { NWalletPipesModule } from './../pipes/pipes.module';
 import { WalletLoanPage } from './wallet-detail/wallet-loan/wallet-loan';
 import { WalletBuyPage } from './wallet-detail/wallet-buy/wallet-buy';
 import { CreateAccountPage } from './1.account/createaccount';
@@ -17,7 +17,7 @@ import { FingerprintModalPage } from './1.security/fingerprint/fingerprint';
 import { PinPad } from './1.security/pin/pin-pad/pin-pad';
 import { PinDots } from './1.security/pin/pin-dot/pin-dots';
 import { PinModalPage } from './1.security/pin/pin';
-import { TranslateModule } from '@ngx-translate/core';
+import { NWalletSharedModule } from '../shared/shared.module';
 
 
 @NgModule({
@@ -36,6 +36,9 @@ import { TranslateModule } from '@ngx-translate/core';
         PinModalPage,
     ],
     imports: [
+        NWalletPipesModule,
+        NWalletDirectiveModule,
+        NWalletSharedModule,
         IonicPageModule.forChild(TutorialPage),
         IonicPageModule.forChild(EntrancePage),
         IonicPageModule.forChild(WalletPage),
@@ -48,11 +51,6 @@ import { TranslateModule } from '@ngx-translate/core';
         IonicPageModule.forChild(PinDots),
         IonicPageModule.forChild(PinPad),
         IonicPageModule.forChild(PinModalPage),
-        //IonicPageModule.forChild(PinModalPage),
-        PipesModule,
-        NWalletDirectiveModule,
-        TranslateModule.forChild()
-
     ],
     entryComponents: [TutorialPage, EntrancePage, WalletPage],
 })

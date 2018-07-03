@@ -37,7 +37,6 @@ export class WalletPage {
     }
 
     ionViewDidLoad() {
-        this.logger.debug('ionViewDidLoad WalletPage');
         this.navCtrl.getActive().showBackButton(false);
     }
 
