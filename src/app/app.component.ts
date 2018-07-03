@@ -9,7 +9,7 @@ import { Nav, Platform } from 'ionic-angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { EntrancePage } from '../pages/0.entrance/entrance';
-import { TutorialPage } from '../pages/tutorial/tutorial';
+import { TutorialPage } from '../pages/etc.tutorial/tutorial';
 import { AppConfigProvider } from '../providers/app/app.config';
 
 @Component({

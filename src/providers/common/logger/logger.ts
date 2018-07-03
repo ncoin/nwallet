@@ -34,7 +34,7 @@ export class Logger {
             this.weight[this.levels[i].level] = this.levels[i].weight;
         }
 
-        this.addFilterText('refresh wallets')
+        this.addFilterText('refresh wallets');
     }
 
     public addFilterLevels(level: loglevels) {
@@ -60,6 +60,10 @@ export class Logger {
     }
 
     private isFilteredText(text: string): boolean {
+        if (typeof text === 'object') {
+            return false;
+        }
+
         return this.filterTexts.some(filteredText => {
             return text.includes(filteredText);
         });

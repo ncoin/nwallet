@@ -9,7 +9,7 @@ import { CreateAccountPage } from './1.account/createaccount';
 import { NgModule } from '@angular/core';
 import { WalletDetailPage } from './wallet-detail/wallet-detail';
 import { IonicPageModule } from 'ionic-angular';
-import { TutorialPage } from './tutorial/tutorial';
+import { TutorialPage } from './etc.tutorial/tutorial';
 import { EntrancePage } from './0.entrance/entrance';
 import { WalletPage } from './wallet/wallet';
 import { ImportAccountPage } from './1.account/importaccount';

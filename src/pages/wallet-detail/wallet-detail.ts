@@ -30,7 +30,6 @@ export class WalletDetailPage {
 
     @ViewChild(Navbar) navBar: Navbar;
     constructor(public navCtrl: NavController, public navParams: NavParams, private logger: Logger, private appService: AppServiceProvider, private iab: InAppBrowser) {
-        this.logger.debug(navParams);
         this.wallet = navParams.get('wallet');
         this.isNCH = this.wallet.item.asset.code === 'NCH' && this.wallet.item.isNative;
         this.loadTransactions();
@@ -47,9 +46,11 @@ export class WalletDetailPage {
 
     async getTransactions(): Promise<void> {
         let transaction = await this.appService.getTransactions(this.wallet.item.asset);
-        this.pageToken = transaction.pageToken;
-        this.hasNext = transaction.hasNext;
-        this.histories = transaction.records;
+        if (transaction) {
+            this.pageToken = transaction.pageToken;
+            this.hasNext = transaction.hasNext;
+            this.histories = transaction.records;
+        }
     }
 
     async doInfinite(infinite: InfiniteScroll) {

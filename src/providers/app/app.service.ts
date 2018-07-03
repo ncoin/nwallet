@@ -8,8 +8,8 @@ import { NWallet } from '../../interfaces/nwallet';
 import Stellar, { Asset, Keypair } from 'stellar-sdk';
 
 interface Signable {
-    sign(requestXDRfunc: (key: string) => Promise<string>): Signable;
-    after: (afterfunction: (xdr: string) => Promise<string>) => Promise<string>;
+    sign(requestXDRfunc: (accountId: string) => Promise<string>): Signable;
+    after: (afterfunction: (accountId:string, xdr: string) => Promise<string>) => Promise<string>;
 }
 
 /**
@@ -17,7 +17,9 @@ interface Signable {
  */
 @Injectable()
 export class AppServiceProvider {
-    constructor(private preference: PreferenceProvider, private app: App, private logger: Logger, private connector: NClientProvider, private account: AccountProvider) {}
+    constructor(private preference: PreferenceProvider, private app: App, private logger: Logger, private connector: NClientProvider, private account: AccountProvider) {
+        this.app;
+    }
 
     public async flushApplication(): Promise<void> {
         await this.preference.clear();
@@ -46,21 +48,21 @@ export class AppServiceProvider {
     }
 
     public async requestLoan(asset: Asset, amount: number): Promise<void> {
-        this.signer.sign(key => this.connector.requestLoanXDR(key, asset, amount)).after(this.connector.executeLoanXDR);
+        await this.signer.sign(key => this.connector.requestLoanXDR(key, asset, amount)).after(this.connector.executeLoanXDR);
     }
 
     public async requestBuy(asset: Asset, amount: number): Promise<void> {
-        this.signer.sign(key => this.connector.requestBuyXDR(key, asset, amount)).after(this.connector.executeBuyXDR);
+        await this.signer.sign(key => this.connector.requestBuyXDR(key, asset, amount)).after(this.connector.executeBuyXDR);
     }
 
     private get signer(): Signable {
         const signer = {
-            requestXDR: undefined,
+            requestXDR: <(accountId: string) => Promise<string>>undefined,
             sign: (requstXDRexpr: (accountId: string) => Promise<string>): Signable => {
                 signer.requestXDR = requstXDRexpr;
                 return signer;
             },
-            after: async (afterfunction: (xdr: string) => Promise<string>): Promise<string> => {
+            after: async (afterfunction: (accountId: string, xdr: string) => Promise<string>): Promise<string> => {
                 const account = await this.account.getAccount();
                 const signedXDR = await signer.requestXDR(account.signature.public).then(unsignedXDR => {
                     const transaction = new Stellar.Transaction(unsignedXDR);
@@ -69,9 +71,13 @@ export class AppServiceProvider {
                         .toEnvelope()
                         .toXDR()
                         .toString('base64');
+                }).catch(error => {
+                    this.logger.error('request xdr failed', error);
                 });
                 signer.requestXDR = undefined;
-                return await afterfunction(signedXDR);
+                if (signedXDR) {
+                    return await afterfunction(account.signature.public, signedXDR);
+                }
             },
         };
 
