@@ -26,7 +26,18 @@ BootStrap();
     imports: [
         BrowserModule,
         HttpClientModule,
-
+        ProvidersModule,
+        NWalletPageModule,
+        SharedModule,
+        TranslateModule.forRoot({
+            loader: {
+                provide: TranslateLoader,
+                useFactory: createTranslateLoader,
+                deps: [HttpClient],
+            },
+            useDefaultLang: true,
+        }),
+        IonicStorageModule.forRoot(),
         IonicModule.forRoot(
             NWalletApp,
             {},
@@ -55,17 +66,6 @@ BootStrap();
                 ],
             },
         ),
-        IonicStorageModule.forRoot(),
-        ProvidersModule,
-        TranslateModule.forRoot({
-            loader: {
-                provide: TranslateLoader,
-                useFactory: createTranslateLoader,
-                deps: [HttpClient],
-            },
-            useDefaultLang: true,
-        }),
-        NWalletPageModule,
     ],
     bootstrap: [IonicApp],
     entryComponents: [NWalletApp],
