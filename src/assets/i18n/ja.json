@@ -1,4 +1,16 @@
 {
   "NWallet": "NWallet",
-  "CreateAccount": "Create Account"
+  "NCH": "NCash",
+  "NCN": "NCoin",
+  "XLM": "Stellar Lumen",
+  "CreateAccount": "Create Account",
+  "ImportAccount": "Import Account",
+  "Logout": "Logout",
+  "TransactionHistory": "Transacion History",
+  "Bought": "Bought",
+  "Lent": "Lent",
+  "Sent": "Sent",
+  "Receive": "Receive",
+  "Buy": "Buy",
+  "Loan": "Loan"
 }

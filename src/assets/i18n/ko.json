@@ -1,4 +1,16 @@
 {
-  "NWallet": "NWalletko",
-  "CreateAccount": "Create Account"
+  "NWallet": "NWallet",
+  "NCH": "NCash",
+  "NCN": "NCoin",
+  "XLM": "Stellar Lumen",
+  "CreateAccount": "계정생성",
+  "ImportAccount": "계정 추가",
+  "Logout": "로그아웃",
+  "TransactionHistory": "거래 내역",
+  "Bought": "구매함",
+  "Lent": "대출함",
+  "Sent": "보냄",
+  "Receive": "받음",
+  "Buy": "구매",
+  "Loan": "대출"
 }
