@@ -127,7 +127,7 @@ export class NClientProvider {
 
     public async refreshWallets(account: NWallet.Account): Promise<void> {
         this.getAssets(account.signature.public).then(wallets => {
-            this.logger.debug('[nclient] refresh Wallets', wallets);
+            this.logger.debug('[nclient] refresh wallets', wallets);
 
             //todo check equality then zone run --sky`
             this.zone.run(() => {
@@ -153,30 +153,6 @@ export class NClientProvider {
         });
 
         this.paymentSubscriptions.set(account.signature.public, subscription);
-    }
-
-    public subscribelegacy(account: NWallet.Account): void {
-        // const payment = this.server.payments().forAccount(account.signature.public);
-        // const self = this;
-        // this.paymentSubscriptions.set(
-        //     account.signature.public,
-        //     //todo get lastest paging token --sky`
-        //     payment.stream({
-        //         onmessage: function() {
-        //             //argument[0] => payment transactions
-        //             self.logger.debug('subscibe', arguments[0]);
-
-        //             if (self.isFetched) {
-        //                 self.refreshWallets(account);
-        //             }
-        //         },
-        //         onerror: function() {
-        //             self.logger.debug('subscribe error, maybe account not activate yet');
-        //         },
-        //     }),
-        //);
-
-        this.logger.debug('subscribed', account.signature.public);
     }
 
     public async unSubscribe(account: NWallet.Account): Promise<void> {

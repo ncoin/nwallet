@@ -51,7 +51,7 @@ export class NWalletApp {
         await this.appConfig.loadAll();
         await this.preparePage();
         this.prepareSecurity();
-        this.logger.debug('[app-page] latform ready now');
+        this.logger.debug('[app-page] platform ready now');
         this.splashScreen.hide();
     }
 

@@ -2,16 +2,26 @@ import { Injectable, isDevMode } from '@angular/core';
 
 import * as _ from 'lodash';
 
+type loglevels = 'debug' | 'info' | 'warn' | 'error';
+type loglabels = 'Debug' | 'Info' | 'Warning' | 'Error';
+interface LogLevel {
+    level: loglevels;
+    weight: number;
+    default?: boolean;
+    label: loglabels;
+}
+
 @Injectable()
 export class Logger {
     /* tslint:disable */
     public levels: any;
     public weight: any;
     public logs: any[];
-
+    public filters: loglevels[] = [];
+    public filterTexts: string[] = [];
     constructor() {
         this.logs = [];
-        this.levels = [
+        this.levels = <LogLevel[]>[
             { level: 'error', weight: 1, label: 'Error' },
             { level: 'warn', weight: 2, label: 'Warning' },
             { level: 'info', weight: 3, label: 'Info', default: true },
@@ -23,40 +33,62 @@ export class Logger {
         for (let i = 0; i < this.levels.length; i++) {
             this.weight[this.levels[i].level] = this.levels[i].weight;
         }
+
+        this.addFilterText('refresh wallets')
+    }
+
+    public addFilterLevels(level: loglevels) {
+        const index = this.filters.indexOf(level);
+        if (index < 0) {
+            this.filters.push(level);
+        }
+    }
+
+    public removeFilterLevels(level: loglevels) {
+        const index = this.filters.indexOf(level);
+        if (index > -1) {
+            this.filters.slice(index);
+        }
+    }
+
+    public addFilterText(text: string) {
+        this.filterTexts.push(text);
+    }
+
+    private isFilteredLevel(level: loglevels): boolean {
+        return this.filters.indexOf(level) !== -1;
+    }
+
+    private isFilteredText(text: string): boolean {
+        return this.filterTexts.some(filteredText => {
+            return text.includes(filteredText);
+        });
     }
 
     public error(message?: any, ...optionalParams: any[]): void {
-        let msg =
-            '[error] ' +
-            (_.isString(message) ? message : JSON.stringify(message));
+        let msg = '[error] ' + (_.isString(message) ? message : JSON.stringify(message));
         console.log(msg, ...optionalParams);
         let args = this.processingArgs(arguments);
         this.add('error', args);
     }
 
     public debug(message?: any, ...optionalParams: any[]): void {
-        let msg =
-            '[debug] ' +
-            (_.isString(message) ? message : JSON.stringify(message));
-        if (isDevMode()) console.log(msg, ...optionalParams);
+        let msg = '[debug] ' + (_.isString(message) ? message : JSON.stringify(message));
+        if (isDevMode() && !this.isFilteredLevel('debug') && !this.isFilteredText(message)) console.log(msg, ...optionalParams);
         let args = this.processingArgs(arguments);
         this.add('debug', args);
     }
 
     public info(message?: any, ...optionalParams: any[]): void {
-        let msg =
-            '[info] ' +
-            (_.isString(message) ? message : JSON.stringify(message));
-        if (isDevMode()) console.log(msg, ...optionalParams);
+        let msg = '[info] ' + (_.isString(message) ? message : JSON.stringify(message));
+        if (isDevMode() && !this.isFilteredLevel('info') && !this.isFilteredText(message)) console.log(msg, ...optionalParams);
         let args = this.processingArgs(arguments);
         this.add('info', args);
     }
 
     public warn(message?: any, ...optionalParams: any[]): void {
-        let msg =
-            '[warn] ' +
-            (_.isString(message) ? message : JSON.stringify(message));
-        if (isDevMode()) console.log(msg, ...optionalParams);
+        let msg = '[warn] ' + (_.isString(message) ? message : JSON.stringify(message));
+        if (isDevMode() && !this.isFilteredLevel('warn') && !this.isFilteredText(message)) console.log(msg, ...optionalParams);
         let args = this.processingArgs(arguments);
         this.add('warn', args);
     }
