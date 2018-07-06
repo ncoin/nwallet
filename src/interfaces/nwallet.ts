@@ -59,8 +59,8 @@ export namespace NWallet.Transactions {
         id: string;
     }
 
-    export function parseRecords(asset: Asset, data: Object): Record[] {
-        const rawRecords = data['records'] as Object[];
+    export function parseRecords(asset: Asset, data: Object[]): Record[] {
+        const rawRecords = data;
         return rawRecords
             .map<Record>(raw => {
                 const asset = raw['asset'];
@@ -74,7 +74,7 @@ export namespace NWallet.Transactions {
                         amount: amount,
                     },
                     date: createdAt,
-                    id : '804ddcf3b5b1f912d901d298dff1c30082182b839729dc767be5cbaf9316e588'
+                    id:  raw['transaction_hash'],
                 };
             })
             .filter(record => {
@@ -98,10 +98,30 @@ const Assets = new Map<string, NWallet.WalletItem>([
         <NWallet.WalletItem>{
             asset: Asset.native(),
             price: 0,
-            isNative : true
+            isNative: true,
         },
     ],
 ]);
+
+
+
+export namespace NWallet.Protocol {
+
+    export enum XdrRequestTypes {
+        Trust = 'trusts/stellar/',
+        Buy = 'buys/ncash/stellar/',
+        Loan = 'loans/ncash/stellar/',
+    }
+
+    export interface Response {
+
+    }
+
+    export interface XDRResponse extends Response {
+        id: string;
+        xdr: string;
+    }
+}
 
 //todo AOP (cache decorator) --sky
 export function getOrAddWalletItem(code: string, issuer: string, isNative: boolean): NWallet.WalletItem {
@@ -114,7 +134,6 @@ export function getOrAddWalletItem(code: string, issuer: string, isNative: boole
     if (Assets.has(key)) {
         return Assets.get(key);
     } else {
-
         const asset = new Asset(code, issuer);
         if (code === 'NCH' && isNative) {
             NWallet.Assets.NCH = asset;

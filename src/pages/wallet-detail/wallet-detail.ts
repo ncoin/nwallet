@@ -52,7 +52,7 @@ export class WalletDetailPage {
         }
     }
 
-    async doInfinite(infinite: InfiniteScroll): Promise<void> {
+    public async doInfinite(infinite: InfiniteScroll): Promise<void> {
         this.logger.debug('[wallet-detail-page]has next', this.hasNext);
         if (this.hasNext) {
             await this.getTransactions();
@@ -63,7 +63,7 @@ export class WalletDetailPage {
         infinite.complete();
     }
 
-    ionViewDidLoad(): void {
+    public ionViewDidLoad(): void {
         //todo extract --sky
         this.navBar.backButtonClick = ev => {
             ev.preventDefault();
@@ -75,7 +75,7 @@ export class WalletDetailPage {
         };
     }
 
-    onBuyAsset(): void {
+    public onBuyAsset(): void {
         this.navCtrl.push(
             WalletBuyPage,
             { wallet: this.wallet },
@@ -86,7 +86,7 @@ export class WalletDetailPage {
         );
     }
 
-    private onLoanAsset(): void {
+    public onLoanAsset(): void {
         this.navCtrl.push(
             WalletLoanPage,
             { wallet: this.wallet },

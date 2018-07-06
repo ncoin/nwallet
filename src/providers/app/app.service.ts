@@ -7,13 +7,8 @@ import { Logger } from '../common/logger/logger';
 import { NWallet } from '../../interfaces/nwallet';
 import Stellar, { Asset, Keypair } from 'stellar-sdk';
 
-interface Signable {
-    sign(requestXDRfunc: (accountId: string) => Promise<string>): Signable;
-    after: (afterfunction: (accountId:string, xdr: string) => Promise<string>) => Promise<string>;
-}
-
 /**
- * common config provider
+ * common business logic provider
  */
 @Injectable()
 export class AppServiceProvider {
@@ -31,7 +26,7 @@ export class AppServiceProvider {
 
     public async login(account: NWallet.Account): Promise<void> {
         await this.connector.fetchJobs(account);
-        this.signer.sign(this.connector.requestTrustXDR).after(this.connector.executeTrustXDR);
+        this.requestTrust();
     }
 
     public async logout(account: NWallet.Account): Promise<void> {
@@ -47,40 +42,40 @@ export class AppServiceProvider {
         return await this.connector.getTransactions(account.signature.public, asset, pageToken);
     }
 
-    public async requestLoan(asset: Asset, amount: number): Promise<void> {
-        await this.signer.sign(key => this.connector.requestLoanXDR(key, asset, amount)).after(this.connector.executeLoanXDR);
+
+    private async requestTrust(): Promise<void> {
+        this.processXdr(NWallet.Protocol.XdrRequestTypes.Trust, {});
     }
 
     public async requestBuy(asset: Asset, amount: number): Promise<void> {
-        await this.signer.sign(key => this.connector.requestBuyXDR(key, asset, amount)).after(this.connector.executeBuyXDR);
+        await this.processXdr(NWallet.Protocol.XdrRequestTypes.Buy, {
+            amount: amount,
+            asset_code: asset.getCode(),
+        });
     }
 
-    private get signer(): Signable {
-        const signer = {
-            requestXDR: <(accountId: string) => Promise<string>>undefined,
-            sign: (requstXDRexpr: (accountId: string) => Promise<string>): Signable => {
-                signer.requestXDR = requstXDRexpr;
-                return signer;
-            },
-            after: async (afterfunction: (accountId: string, xdr: string) => Promise<string>): Promise<string> => {
-                const account = await this.account.getAccount();
-                const signedXDR = await signer.requestXDR(account.signature.public).then(unsignedXDR => {
-                    const transaction = new Stellar.Transaction(unsignedXDR);
-                    transaction.sign(Keypair.fromSecret(account.signature.secret));
-                    return transaction
-                        .toEnvelope()
-                        .toXDR()
-                        .toString('base64');
-                }).catch(error => {
-                    this.logger.error('request xdr failed', error);
-                });
-                signer.requestXDR = undefined;
-                if (signedXDR) {
-                    return await afterfunction(account.signature.public, signedXDR);
-                }
-            },
-        };
+    public async requestLoan(asset: Asset, amount: number): Promise<void> {
+        await this.processXdr(NWallet.Protocol.XdrRequestTypes.Loan, {
+            amount: amount,
+            asset_code: asset.getCode(),
+        });
+    }
 
-        return signer;
+    private async processXdr(requestType: NWallet.Protocol.XdrRequestTypes, params: Object): Promise<void> {
+        const account = await this.account.getAccount();
+        params['public_key'] = account.signature.public;
+        const xdrResponse = await this.connector.requestXDR(requestType, params);
+        if (xdrResponse) {
+            const transaction = new Stellar.Transaction(xdrResponse.xdr);
+            transaction.sign(Keypair.fromSecret(account.signature.secret));
+            await this.connector.executeXDR(requestType, {
+                public_key: account.signature.public,
+                id: xdrResponse.id.toString(),
+                xdr: transaction
+                    .toEnvelope()
+                    .toXDR()
+                    .toString('base64'),
+            });
+        }
     }
 }

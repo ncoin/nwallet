@@ -10,8 +10,9 @@ import { NWallet, getOrAddWalletItem } from '../../interfaces/nwallet';
 
 //todo environment schema --sky
 const apiAddress = {
-    live: 'http://wallet-api-dev.ncoin.com:3000/api/',
-    test: 'http://wallet-api-dev.ncoin.com:3000/api/',
+    dev: ' http://wallet-api-dev.ncoin.com:3000/api/',
+    prod: '	https://api-stage.ncoin.com',
+    stage: 'http://wallet-api-dev.ncoin.com:3000/api/',
 };
 
 //todo inject by env? --sky
@@ -30,134 +31,20 @@ export class NClientProvider {
         this.init();
     }
 
+    private getKeyFromValue(enums: {}, value: any): string {
+        return Object.keys(enums).filter(type => enums[type] === value)[0];
+    }
+
     async init(): Promise<void> {
         if (env.network === 'test') {
             //todo move location
             Stellar.Network.useTestNetwork();
-            endPoint.url = apiAddress.test;
+            endPoint.url = apiAddress.dev;
         } else {
-            endPoint.url = apiAddress.live;
+            endPoint.url = apiAddress.prod;
             //todo move location
             Stellar.Network.usePublicNetwork();
         }
-    }
-
-    public requestTrustXDR = (accountId: string): Promise<string> => {
-        this.logger.debug('[nclient] request get trust XDR ...');
-        return this.http
-            .post(`${endPoint.url}trusts/xlm/xdr`, {
-                public_key: accountId,
-            })
-            .map(res => res['xdr'])
-            .toPromise()
-            .then(xdr => {
-                this.logger.debug('[nclient] request get trust XDR success');
-                return xdr;
-            })
-            .catch((response: HttpErrorResponse) => {
-                this.logger.error('[nclient] request get trust XDR failed.', response);
-                return undefined;
-            });
-    };
-
-    public executeTrustXDR = (accountId: string, xdr: string): Promise<string> => {
-        this.logger.debug('[nclient] execute trust XDR ...');
-
-        return this.http
-            .put(`${endPoint.url}trusts/xlm/xdr`, {
-                xdr: xdr,
-                public_key: accountId,
-            })
-            .map(res => res.toString())
-            .toPromise()
-            .then(response => {
-                this.logger.debug('[nclient] execute trust XDR success');
-                return response;
-            })
-            .catch((response: HttpErrorResponse) => {
-                this.logger.error('[nclient] execute trust XDR failed', response);
-                return undefined;
-            });
-    };
-
-    public getAssets(accountId: string): Promise<NWallet.WalletContext[]> {
-        const url = `${apiAddress.test}accounts/xlm/${accountId}`;
-        const convert = (data: Object[]): NWallet.WalletContext[] => {
-            return data.map(data => {
-                const asset = data['asset'];
-                const amount = data['amount'];
-                const item = getOrAddWalletItem(asset['code'], asset['issuer'], data['native']);
-                item.price = data['price'];
-                const wallet = <NWallet.WalletContext>{
-                    item: item,
-                    amount: amount,
-                };
-
-                return wallet;
-            });
-        };
-
-        return this.http
-            .get(url)
-            .map(data => {
-                const supportedCoins = convert(data['account']['balances']['supportCoins']);
-                const unSupportCoins = convert(data['account']['balances']['unSupportCoins']);
-                const returnCoins = supportedCoins.concat(unSupportCoins);
-                return returnCoins;
-            })
-            .toPromise()
-            .catch((response: HttpErrorResponse) => {
-                this.logger.error('[nclient] getAsset failed', response);
-                return [];
-            });
-    }
-
-    public async getTransactions(accountId: string, asset: Asset, pageToken?: string): Promise<NWallet.Transactions.Context> {
-        const params = {
-            limit: pageToken ? '10' : '15',
-            order: 'desc',
-        };
-
-        if (pageToken) {
-            params['cursor'] = pageToken;
-        }
-
-        this.logger.debug('[nclient] request getTransaction ...', params);
-
-        return this.http
-            .get(`${endPoint.url}transactions/xlm/accounts/${accountId}`, { params: params })
-            .map(response => {
-                const transaction = response['transaction'];
-                const records = NWallet.Transactions.parseRecords(asset, transaction);
-                const token = transaction['paging_token'];
-                return <NWallet.Transactions.Context>{
-                    records: records,
-                    pageToken: token,
-                    hasNext: records && records.length > 0,
-                };
-            })
-            .toPromise()
-            .then(context => {
-                this.logger.debug('[nclient] request getTransaction success', context);
-                return context;
-            })
-            .catch((response: HttpErrorResponse) => {
-                this.logger.error('[nclient] request getTransaction failed', response);
-                return undefined;
-            });
-    }
-
-    public async refreshWallets(account: NWallet.Account): Promise<void> {
-        this.getAssets(account.signature.public).then(wallets => {
-            this.logger.debug('[nclient] refresh wallets', wallets);
-
-            //todo check equality then zone run --sky`
-            this.zone.run(() => {
-                account.wallets = account.wallets || [];
-                account.wallets.length = 0;
-                account.wallets.push(...wallets);
-            });
-        });
     }
 
     public async fetchJobs(account: NWallet.Account): Promise<void> {
@@ -186,82 +73,115 @@ export class NClientProvider {
         }
     }
 
-    //todo method merge (XDRs)
-    public requestBuyXDR = (accountId: string, asset: Asset, amount: number): Promise<string> => {
-        this.logger.debug('[nclient] request get buy xdr ...');
+    public getAssets(accountId: string): Promise<NWallet.WalletContext[]> {
+        const url = `${apiAddress.stage}accounts/stellar/${accountId}`;
+        const convert = (data: Object[]): NWallet.WalletContext[] => {
+            return data.map(data => {
+                const asset = data['asset'];
+                const amount = data['amount'];
+                const item = getOrAddWalletItem(asset['code'], asset['issuer'], data['native']);
+                item.price = data['price'];
+                const wallet = <NWallet.WalletContext>{
+                    item: item,
+                    amount: amount,
+                };
 
-        return this.http
-            .post(`${endPoint.url}buys/nch/xdr`, {
-                public_key: accountId,
-                amount: amount,
-                asset_code: asset.getCode(),
-            })
-            .map(res => res['xdr'])
-            .toPromise()
-            .then(response => {
-                this.logger.debug('[nclient] request get buy xdr success');
-                return response;
-            })
-            .catch((response: HttpErrorResponse) => {
-                this.logger.error('[nclient] request get buy xdr failed', response);
+                return wallet;
             });
-    };
-
-    public executeBuyXDR = (accoundId: string, xdr: string): Promise<string> => {
-        this.logger.debug('[nclient] execute buy xdr ...');
+        };
 
         return this.http
-            .put(`${endPoint.url}buys/nch/xdr`, {
-                xdr: xdr,
-                public_key: accoundId,
+            .get(url)
+            .map(data => {
+                const supportedCoins = convert(data['balances']['supportCoins']);
+                const unSupportCoins = convert(data['balances']['unSupportCoins']);
+                const returnCoins = supportedCoins.concat(unSupportCoins);
+                return returnCoins;
             })
             .toPromise()
-            .then(response => {
-                this.logger.debug('[nclient] execute buy xdr success');
+            .catch((response: HttpErrorResponse) => {
+                this.logger.error('[nclient] getAsset failed', response);
+                return [];
+            });
+    }
+
+    public async getTransactions(accountId: string, asset: Asset, pageToken?: string): Promise<NWallet.Transactions.Context> {
+        const params = {
+            limit: pageToken ? '10' : '15',
+            order: 'desc',
+            asset_code: asset.getCode(),
+        };
+
+        if (pageToken) {
+            params['cursor'] = pageToken;
+        }
+
+        this.logger.debug('[nclient] request getTransaction ...');
+
+        return this.http
+            .get(`${endPoint.url}transactions/stellar/accounts/${accountId}`, { params: params })
+            .map(response => {
+                const transactions = response['transactions'];
+                const token = response['paging_token'];
+                const records = NWallet.Transactions.parseRecords(asset, transactions);
+                return <NWallet.Transactions.Context>{
+                    records: records,
+                    pageToken: token,
+                    hasNext: records && records.length > 0,
+                };
+            })
+            .toPromise()
+            .then(context => {
+                this.logger.debug('[nclient] request getTransaction done', context);
+                return context;
+            })
+            .catch((response: HttpErrorResponse) => {
+                this.logger.error('[nclient] request getTransaction failed', params, response);
+                return undefined;
+            });
+    }
+
+    public async refreshWallets(account: NWallet.Account): Promise<void> {
+        this.getAssets(account.signature.public).then(wallets => {
+            this.logger.debug('[nclient] refresh wallets', wallets);
+
+            //todo check equality then zone run --sky`
+            this.zone.run(() => {
+                account.wallets = account.wallets || [];
+                account.wallets.length = 0;
+                account.wallets.push(...wallets);
+            });
+        });
+    }
+
+    public requestXDR = (requestType: NWallet.Protocol.XdrRequestTypes, params: Object): Promise<NWallet.Protocol.XDRResponse> => {
+        const type = this.getKeyFromValue(NWallet.Protocol.XdrRequestTypes, requestType);
+        this.logger.debug(`[nclient] request get ${type} xdr ...`);
+        return this.http
+            .post(`${endPoint.url}${requestType}`, params)
+            .toPromise()
+            .then((response: NWallet.Protocol.XDRResponse) => {
+                this.logger.debug(`[nclient] request get ${type} xdr done`);
                 return response;
             })
             .catch((response: HttpErrorResponse) => {
-                this.logger.debug('[nclient] execute buy xdr failed', response);
+                this.logger.error(`[nclient] request get ${type} xdr failed`, response);
                 return undefined;
             });
     };
 
-    public requestLoanXDR = (accountId: string, asset: Asset, amount: number): Promise<string> => {
-        this.logger.debug('[nclient] request get loan xdr ...');
-
+    public executeXDR = (requestType: NWallet.Protocol.XdrRequestTypes, params: Object): Promise<NWallet.Protocol.XDRResponse> => {
+        const type = this.getKeyFromValue(NWallet.Protocol.XdrRequestTypes, requestType);
+        this.logger.debug(`[nclient] execute ${type} xdr ...`);
         return this.http
-            .post(`${endPoint.url}loans/nch/xdr`, {
-                public_key: accountId,
-                amount: amount,
-                asset_code: asset.getCode(),
-            })
-            .map(res => res['xdr'])
+            .put(`${endPoint.url}${requestType}`, params)
             .toPromise()
             .then(response => {
-                this.logger.debug('[nclient] request get loan xdr success');
+                this.logger.debug(`[nclient] execute ${type} xdr done`);
                 return response;
             })
             .catch((response: HttpErrorResponse) => {
-                this.logger.error('[nclient] request get loan xdr failed', response);
-            });
-    };
-
-    public executeLoanXDR = (accountId: string, xdr: string): Promise<string> => {
-        this.logger.debug('[nclient] execute loan xdr ...');
-
-        return this.http
-            .put(`${endPoint.url}loans/nch/xdr`, {
-                xdr: xdr,
-                public_key: accountId,
-            })
-            .map(res => res.toString())
-            .toPromise()
-            .then(response => {
-                this.logger.debug('[nclient] execute loan xdr success');
-                return response;
-            })
-            .catch((response: HttpErrorResponse) => {
-                this.logger.debug('[nclient] execute loan xdr failed', response);
+                this.logger.error(`[nclient] execute ${type} xdr failed`, response);
                 return undefined;
             });
     };
