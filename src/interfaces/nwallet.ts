@@ -63,8 +63,8 @@ export namespace NWallet.Transactions {
         const rawRecords = data;
         return rawRecords
             .map<Record>(raw => {
-                const asset = raw['asset'];
-                const item = getOrAddWalletItem(asset['code'], asset['issuer'], raw['native']);
+                const resAsset = raw['asset'];
+                const item = getOrAddWalletItem(resAsset['code'], resAsset['issuer'], raw['native']);
                 const amount = raw['amount'];
                 const createdAt = raw['created_at'];
                 return <Record>{

@@ -8,18 +8,6 @@ import { Logger } from './../common/logger/logger';
 import { env } from '../../environments/environment';
 import { NWallet, getOrAddWalletItem } from '../../interfaces/nwallet';
 
-//todo environment schema --sky
-const apiAddress = {
-    dev: ' http://wallet-api-dev.ncoin.com:3000/api/',
-    prod: '	https://api-stage.ncoin.com',
-    stage: 'http://wallet-api-dev.ncoin.com:3000/api/',
-};
-
-//todo inject by env? --sky
-const endPoint = {
-    url: '',
-};
-
 @Injectable()
 export class NClientProvider {
     /** <public key, eventSource> */
@@ -39,9 +27,7 @@ export class NClientProvider {
         if (env.network === 'test') {
             //todo move location
             Stellar.Network.useTestNetwork();
-            endPoint.url = apiAddress.dev;
         } else {
-            endPoint.url = apiAddress.prod;
             //todo move location
             Stellar.Network.usePublicNetwork();
         }
@@ -74,7 +60,7 @@ export class NClientProvider {
     }
 
     public getAssets(accountId: string): Promise<NWallet.WalletContext[]> {
-        const url = `${apiAddress.stage}accounts/stellar/${accountId}`;
+        const url = `${env.endpoint.client}accounts/stellar/${accountId}`;
         const convert = (data: Object[]): NWallet.WalletContext[] => {
             return data.map(data => {
                 const asset = data['asset'];
@@ -119,7 +105,7 @@ export class NClientProvider {
         this.logger.debug('[nclient] request getTransaction ...');
 
         return this.http
-            .get(`${endPoint.url}transactions/stellar/accounts/${accountId}`, { params: params })
+            .get(`${env.endpoint.client}transactions/stellar/accounts/${accountId}`, { params: params })
             .map(response => {
                 const transactions = response['transactions'];
                 const token = response['paging_token'];
@@ -158,7 +144,7 @@ export class NClientProvider {
         const type = this.getKeyFromValue(NWallet.Protocol.XdrRequestTypes, requestType);
         this.logger.debug(`[nclient] request get ${type} xdr ...`);
         return this.http
-            .post(`${endPoint.url}${requestType}`, params)
+            .post(`${env.endpoint.client}${requestType}`, params)
             .toPromise()
             .then((response: NWallet.Protocol.XDRResponse) => {
                 this.logger.debug(`[nclient] request get ${type} xdr done`);
@@ -170,19 +156,19 @@ export class NClientProvider {
             });
     };
 
-    public executeXDR = (requestType: NWallet.Protocol.XdrRequestTypes, params: Object): Promise<NWallet.Protocol.XDRResponse> => {
+    public executeXDR = (requestType: NWallet.Protocol.XdrRequestTypes, params: Object): Promise<boolean> => {
         const type = this.getKeyFromValue(NWallet.Protocol.XdrRequestTypes, requestType);
         this.logger.debug(`[nclient] execute ${type} xdr ...`);
         return this.http
-            .put(`${endPoint.url}${requestType}`, params)
+            .put(`${env.endpoint.client}${requestType}`, params)
             .toPromise()
             .then(response => {
                 this.logger.debug(`[nclient] execute ${type} xdr done`);
-                return response;
+                return response['success'];
             })
             .catch((response: HttpErrorResponse) => {
                 this.logger.error(`[nclient] execute ${type} xdr failed`, response);
-                return undefined;
+                return false;
             });
     };
 }

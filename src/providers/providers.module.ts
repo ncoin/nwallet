@@ -1,3 +1,4 @@
+import { TokenProvider } from './token/token';
 import { NgModule } from '@angular/core';
 import { Logger } from './common/logger/logger';
 import { AppServiceProvider } from './app/app.service';
@@ -19,7 +20,8 @@ import { PlatformProvider } from './common/platform/platform';
         AppConfigProvider,
         CurrencyProvider,
         PlatformProvider,
-        LockProvider
+        LockProvider,
+        TokenProvider
     ],
 })
 export class NWalletProvidersModule {}

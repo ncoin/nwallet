@@ -8,5 +8,5 @@ export interface Environments {
 }
 
 export const Schema = {
-    network : <NetworkType> 'test'
+    network : <NetworkType> 'test',
 }

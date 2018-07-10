@@ -6,6 +6,7 @@ import {  NavController, NavParams } from 'ionic-angular';
 import { NWallet } from '../../interfaces/nwallet';
 import { AccountProvider } from '../../providers/account/account';
 import { WalletDetailPage } from '../wallet-detail/wallet-detail';
+import { TokenProvider } from '../../providers/token/token';
 
 /**
  * Generated class for the WalletPage page.
@@ -27,6 +28,7 @@ export class WalletPage {
         private logger: Logger,
         private accountProvider: AccountProvider,
         private appService: AppServiceProvider,
+        private token: TokenProvider
     ) {
         this.init();
     }
@@ -34,6 +36,7 @@ export class WalletPage {
     private async init(): Promise<void> {
         this.account = await this.accountProvider.getAccount();
         await this.appService.login(this.account);
+        const token = await this.token.getToken();
     }
 
     ionViewDidLoad() {
