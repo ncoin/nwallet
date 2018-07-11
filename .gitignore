@@ -34,3 +34,11 @@ UserInterfaceState.xcuserstate
 
 #
 .vscode/settings.json
+
+#
+resources/android/**
+resources/ios/**
+resources/screenshots/**
+legacy
+src/assets/i18n/Desc.json
+src/assets/i18n/translation.json

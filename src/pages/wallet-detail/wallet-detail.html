@@ -6,7 +6,7 @@
 -->
 <ion-header no-border>
     <ion-navbar border-bottom>
-        <ion-title>{{wallet.asset.code | walletName}}</ion-title>
+        <ion-title>{{wallet.item | walletName}}</ion-title>
     </ion-navbar>
     <div align="right" style="margin: 0% 3% 3% 0">
         <ion-label>
@@ -16,21 +16,23 @@
             {{wallet | walletToUSD}}
         </ion-label>
     </div>
-    <ion-label style="margin: 0 0 3% 3%"> > Transaction History</ion-label>
+    <ion-label style="margin: 0 0 3% 3%"> > <span translate>TransactionHistory</span></ion-label>
 </ion-header>
-<ion-content padding>
-    <ion-list *ngIf="histories && histories[0]" style="padding: 3% 0 0 0 ">
-        <ion-item *ngFor="let history of histories" no-lines>
+<ion-content>
+    <ion-list *ngIf="histories && histories[0]" padding-horizontal>
             <!-- <div style="display:flex; justify-content: space-between">
                 <div>{{history.type}}</div>
                 <div style="flex-basis: 40%; text-align: right">{{history.item | walletFormat}}</div>
                 <div>{{history.date | date: 'MMM dd, yyyy'}}</div>
             </div> -->
-                    <div item-start style="width: 20%">{{history.type}}</div>
-                    <div align="right" style="text-align: right; margin: 0 9% 0 0">{{history.item | walletFormat}}</div>
-                    <div item-end>{{history.date | date: 'MMM dd, yyyy'}}</div>
-
-        </ion-item>
+            <!-- <div item-start style="width: 20%">{{history.type}}</div>
+            <div align="right" style="text-align: right; margin: 0 9% 0 0">{{history.context | walletFormat}}</div>
+            <div item-end>{{history.date | date: 'MMM dd, yyyy'}}</div> -->
+            <button ion-item  padding-left *ngFor="let history of histories" (click)="onExploreTransaction(history.id)">
+                <div item-start item-width="20%">{{history.type | titlecase | translate}}</div>
+                <div item-content item-width="50%" text-right style="padding: 0 5% 0 0">{{history.context | walletFormat}}</div>
+                <div item-end item-width="30%" style="margin: 0">{{history.date | date: 'MMM dd, yyyy'}}</div>
+            </button>
     </ion-list>
     <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
         <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="more Transactions ..."></ion-infinite-scroll-content>
@@ -42,10 +44,10 @@
     <div align="middle">
         <ion-buttons *ngIf="!isNCH">
             <button ion-button (click)="onBuyAsset()" style="width: 30%">
-                buy NCH
+                <ion-label><span translate>Buy</span> NCH</ion-label>
             </button>
             <button ion-button (click)="onLoanAsset()" style="width: 30%">
-                loan NCH
+                <ion-label><span translate>Loan</span> NCH</ion-label>
             </button>
         </ion-buttons>
     </div>

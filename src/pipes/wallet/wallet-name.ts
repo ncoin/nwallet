@@ -1,24 +1,17 @@
+import { TranslateService } from '@ngx-translate/core';
 import { Pipe, PipeTransform } from '@angular/core';
+import { NWallet } from '../../interfaces/nwallet';
 
-/**
- * Generated class for the WalletNamePipe pipe.
- *
- * See https://angular.io/api/core/Pipe for more info on Angular Pipes.
- */
 @Pipe({
     name: 'walletName',
 })
 export class WalletNamePipe implements PipeTransform {
-    static nameDic = new Map<string, string>([['NCH', 'NCash'], ['NCN', 'NCoin'], ['XLM', 'Stellar Lumen']]);
-
-    /**
-     * Takes a value and makes it lowercase.
-     */
-    transform(value: string) {
-        if (WalletNamePipe.nameDic.has(value)) {
-            return WalletNamePipe.nameDic.get(value);
+    constructor(private translate: TranslateService) {}
+    transform(item: NWallet.WalletItem) {
+        if (item.isNative === true) {
+            return this.translate.instant(item.asset.code);
         }
 
-        return `${value}(undefined)`;
+        return item.asset.code;
     }
 }

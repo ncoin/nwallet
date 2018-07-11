@@ -1,24 +1,19 @@
-import { testAccount } from './../nsus/naccount';
 import { AccountProvider } from './../account/account';
 import { NClientProvider } from './../nsus/nclient';
 import { Injectable } from '@angular/core';
 import { PreferenceProvider, Preference } from '../common/preference/preference';
 import { App } from 'ionic-angular';
 import { Logger } from '../common/logger/logger';
-import { NWallet, getOrAddAsset } from '../../interfaces/nwallet';
-import { Asset } from 'stellar-sdk';
-// import { TutorialPage } from '../../pages/tutorial/tutorial';
+import { NWallet } from '../../interfaces/nwallet';
+import Stellar, { Asset, Keypair } from 'stellar-sdk';
 
 /**
- * common config provider
+ * common business logic provider
  */
 @Injectable()
 export class AppServiceProvider {
-    constructor(private preference: PreferenceProvider, private app: App, private logger: Logger, private connector: NClientProvider, private account: AccountProvider) {}
-
-    public async walkThrough(processFunc: () => void): Promise<void> {
+    constructor(private preference: PreferenceProvider, private app: App, private logger: Logger, private connector: NClientProvider, private account: AccountProvider) {
         this.app;
-        processFunc();
     }
 
     public async flushApplication(): Promise<void> {
@@ -31,7 +26,7 @@ export class AppServiceProvider {
 
     public async login(account: NWallet.Account): Promise<void> {
         await this.connector.fetchJobs(account);
-        await this.connector.createTokenTrust(account);
+        this.requestTrust();
     }
 
     public async logout(account: NWallet.Account): Promise<void> {
@@ -41,75 +36,46 @@ export class AppServiceProvider {
         this.logger.debug('logout', account.signature.public);
     }
 
-    public async sendPayment(signature: NWallet.Signature, destination: string, asset: Asset, amount: string): Promise<void> {
-        this.connector.sendPayment(signature, destination, asset, amount);
-    }
-
-    public async getTransactions(wallet: NWallet.WalletItem) {
+    public async getTransactions(asset: Asset, pageToken?: string) {
         //todo fixme
-
         const account = await this.account.getAccount();
-        const payments = await this.connector.getPayments(account.signature);
-        if (payments) {
-            const transaction = {
-                current: payments,
-                records: () => {
-                    return transaction.current.records
-                        .filter(record => {
-                            let isEqual = false;
-                            if (wallet.asset.isNative()) {
-                                isEqual = record.asset_type === 'native';
-                            } else {
-                                isEqual = record.asset_code === wallet.asset.getCode() && record.asset_issuer === wallet.asset.getIssuer();
-                            }
+        return await this.connector.getTransactions(account.signature.public, asset, pageToken);
+    }
 
-                            return record.type === 'payment' && isEqual;
-                        })
-                        .map(record => {
-                            let type: string;
-                            switch (record.from) {
-                                case testAccount.user.pub: {
-                                    type = 'sent';
-                                }
-                                break;
-                                case testAccount.buy.pub: {
-                                    type = 'bought';
-                                }
-                                break;
-                                case testAccount.loan.pub: {
-                                    type = 'rent';
-                                }
-                                break;
-                                default: {
-                                    type = 'received';
-                                }
-                                break;
-                            }
-                            return <NWallet.Transaction>{
-                                type: type,
-                                item: <NWallet.WalletItem>{
-                                    amount: record.amount,
-                                    asset: getOrAddAsset(record.asset_code, record.asset_issuer, record.asset_type),
-                                },
-                                date: record['created_at'],
-                            };
-                        });
-                },
-                next: async () => {
-                    transaction.current = await transaction.current.next();
-                },
-            };
-            return transaction;
+
+    private async requestTrust(): Promise<void> {
+        this.processXdr(NWallet.Protocol.XdrRequestTypes.Trust, {});
+    }
+
+    public async requestBuy(asset: Asset, amount: number): Promise<void> {
+        await this.processXdr(NWallet.Protocol.XdrRequestTypes.Buy, {
+            amount: amount,
+            asset_code: asset.getCode(),
+        });
+    }
+
+    public async requestLoan(asset: Asset, amount: number): Promise<void> {
+        await this.processXdr(NWallet.Protocol.XdrRequestTypes.Loan, {
+            amount: amount,
+            asset_code: asset.getCode(),
+        });
+    }
+
+    private async processXdr(requestType: NWallet.Protocol.XdrRequestTypes, params: Object): Promise<void> {
+        const account = await this.account.getAccount();
+        params['public_key'] = account.signature.public;
+        const xdrResponse = await this.connector.requestXDR(requestType, params);
+        if (xdrResponse) {
+            const transaction = new Stellar.Transaction(xdrResponse.xdr);
+            transaction.sign(Keypair.fromSecret(account.signature.secret));
+            await this.connector.executeXDR(requestType, {
+                public_key: account.signature.public,
+                id: xdrResponse.id.toString(),
+                xdr: transaction
+                    .toEnvelope()
+                    .toXDR()
+                    .toString('base64'),
+            });
         }
-    }
-
-    public async requestLoan(amount: number, wallet: NWallet.WalletItem): Promise<void> {
-        const account = await this.account.getAccount();
-        await this.connector.loanNCH(account.signature, amount, wallet);
-    }
-
-    public async requestBuy(amount: number, wallet: NWallet.WalletItem): Promise<void> {
-        const account = await this.account.getAccount();
-        await this.connector.buyNCH(account.signature, amount, wallet);
     }
 }

@@ -6,6 +6,7 @@ import { IonicPage, NavController, NavParams, Navbar, InfiniteScroll } from 'ion
 import { NWallet } from '../../interfaces/nwallet';
 import { WalletBuyPage } from './wallet-buy/wallet-buy';
 import { AppServiceProvider } from '../../providers/app/app.service';
+import { InAppBrowser } from '@ionic-native/in-app-browser';
 
 /**
  * Generated class for the WalletDetailPage page.
@@ -16,57 +17,53 @@ import { AppServiceProvider } from '../../providers/app/app.service';
 
 @IonicPage()
 @Component({
-    selector: 'page-wallet-detail',
     templateUrl: 'wallet-detail.html',
 })
 export class WalletDetailPage {
     isLoading: boolean = true;
     isNCH: boolean;
-    wallet: NWallet.WalletItem;
-    histories: NWallet.Transaction[];
-    transactions: NWallet.TransactionRecord;
+    wallet: NWallet.WalletContext;
+    histories: NWallet.Transactions.Record[] = [];
+    pageToken: string;
+    hasNext: boolean;
 
     @ViewChild(Navbar) navBar: Navbar;
-    constructor(public navCtrl: NavController, public navParams: NavParams, private logger: Logger, private appService: AppServiceProvider) {
-        this.logger.debug(navParams);
+    constructor(public navCtrl: NavController, public navParams: NavParams, private logger: Logger, private appService: AppServiceProvider, private iab: InAppBrowser) {
         this.wallet = navParams.get('wallet');
-        this.isNCH = this.wallet.asset.getIssuer() === NWallet.NCH.getIssuer() && this.wallet.asset.getCode() === NWallet.NCH.getCode();
+        this.isNCH = this.wallet.item.asset.code === 'NCH' && this.wallet.item.isNative;
         this.loadTransactions();
     }
 
     async loadTransactions(): Promise<void> {
-        this.transactions = await this.appService.getTransactions(this.wallet);
-        this.histories = this.transactions.records();
-
-        await this.transactions.next();
-        const records = this.transactions.records();
-        if (records && records[0]) {
-            records.forEach(record => {
-                this.histories.push(record);
-            });
+        await this.getTransactions();
+        if (this.hasNext) {
+            this.getTransactions();
         }
 
         this.isLoading = false;
     }
 
-    async doInfinite(infinite: InfiniteScroll) {
-        this.logger.debug('aaa');
-        await this.transactions.next();
-        const records = this.transactions.records();
-        if (records && records[0]) {
-            records.forEach(record => {
-                this.histories.push(record);
-            });
-            infinite.complete();
-            if (records.length < 2) {
-                infinite.enable(false);
-            }
-        } else {
-            infinite.enable(false);
+    async getTransactions(): Promise<void> {
+        let transaction = await this.appService.getTransactions(this.wallet.item.asset, this.pageToken);
+        if (transaction) {
+            this.pageToken = transaction.pageToken;
+            this.hasNext = transaction.hasNext;
+            this.histories.push(...transaction.records);
         }
     }
 
-    ionViewDidLoad() {
+    public async doInfinite(infinite: InfiniteScroll): Promise<void> {
+        this.logger.debug('[wallet-detail-page]has next', this.hasNext);
+        if (this.hasNext) {
+            await this.getTransactions();
+        } else {
+            infinite.enable(false);
+        }
+
+        infinite.complete();
+    }
+
+    public ionViewDidLoad(): void {
         //todo extract --sky
         this.navBar.backButtonClick = ev => {
             ev.preventDefault();
@@ -78,7 +75,7 @@ export class WalletDetailPage {
         };
     }
 
-    onBuyAsset() {
+    public onBuyAsset(): void {
         this.navCtrl.push(
             WalletBuyPage,
             { wallet: this.wallet },
@@ -89,7 +86,7 @@ export class WalletDetailPage {
         );
     }
 
-    onLoanAsset() {
+    public onLoanAsset(): void {
         this.navCtrl.push(
             WalletLoanPage,
             { wallet: this.wallet },
@@ -98,5 +95,21 @@ export class WalletDetailPage {
                 animation: 'ios-transition',
             },
         );
+    }
+
+    public onExploreTransaction(transactionId: string): void {
+        const browser = this.iab.create(`https://stellar.expert/explorer/testnet/tx/${transactionId}`, '_blank', {
+            location: 'no',
+            clearcache: 'yes',
+            footer: 'yes',
+            toolbar: 'no',
+            closebuttoncaption: 'done',
+        });
+
+        browser.insertCSS({
+            code: 'body { margin-top : 50px;}',
+        });
+
+        browser.show();
     }
 }

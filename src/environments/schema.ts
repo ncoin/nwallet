@@ -5,8 +5,15 @@ export interface Environments {
     name: EnvironmentType;
     /** test network */
     network: NetworkType;
+
+    endpoint: {
+        client: string;
+        auth: string;
+        token: () => string;
+    };
 }
 
 export const Schema = {
-    network : <NetworkType> 'test'
-}
+    network: <NetworkType>'test',
+    tokenPath: 'uaa/api/oauth/token',
+};

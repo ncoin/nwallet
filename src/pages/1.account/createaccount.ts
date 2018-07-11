@@ -28,9 +28,9 @@ export class CreateAccountPage {
         await this.preference.set(Preference.Nwallet.walletAccount, <NWallet.Account>{
             isActivate: false,
             signature: signature,
-            address: NWallet.AddressEmpty,
-            profile: NWallet.ProfileEmpty,
-            wallets: NWallet.WalletEmpty,
+            address: undefined,
+            profile: undefined,
+            wallets: undefined,
         });
 
         setTimeout(async () => {

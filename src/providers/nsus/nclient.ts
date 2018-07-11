@@ -1,359 +1,174 @@
-import { testAccount } from './naccount';
-import { CurrencyProvider, CurrencyId } from './../currency/currency';
+import { Subscription, Observable } from 'rxjs/Rx';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { CurrencyProvider } from './../currency/currency';
 // steller sdk wrapper
-import Stellar, { TransactionBuilder, Asset, Keypair } from 'stellar-sdk';
+import Stellar, { Asset } from 'stellar-sdk';
 import { Injectable, NgZone } from '@angular/core';
 import { Logger } from './../common/logger/logger';
 import { env } from '../../environments/environment';
-import { NWallet } from '../../interfaces/nwallet';
-
-const serverAddress = {
-    live: 'https://horizon.stellar.org',
-    test: 'https://horizon-testnet.stellar.org',
-};
+import { NWallet, getOrAddWalletItem } from '../../interfaces/nwallet';
 
 @Injectable()
 export class NClientProvider {
-    private server: Stellar.Server;
-    private isFetched: boolean;
     /** <public key, eventSource> */
-    private paymentSubscriptions: Map<string, any>;
+    private paymentSubscriptions: Map<string, Subscription>;
 
-    constructor(private zone: NgZone, private logger: Logger, private currency: CurrencyProvider) {
+    constructor(private zone: NgZone, private logger: Logger, private currency: CurrencyProvider, private http: HttpClient) {
+        this.currency;
+        this.paymentSubscriptions = new Map<string, Subscription>();
         this.init();
-        this.paymentSubscriptions = new Map<string, any>();
+    }
+
+    private getKeyFromValue(enums: {}, value: any): string {
+        return Object.keys(enums).filter(type => enums[type] === value)[0];
     }
 
     async init(): Promise<void> {
         if (env.network === 'test') {
+            //todo move location
             Stellar.Network.useTestNetwork();
-            this.server = new Stellar.Server(serverAddress.test);
         } else {
-            this.server = new Stellar.Server(serverAddress.live);
+            //todo move location
+            Stellar.Network.usePublicNetwork();
         }
-    }
-
-    public getAssets(accountId: string): Promise<NWallet.WalletItem[]> {
-        return this.server
-            .loadAccount(accountId)
-            .then(account => {
-                return account.balances.map<NWallet.WalletItem>(asset => {
-                    this.logger.debug('asset', asset);
-                    if (asset.asset_type === 'native') {
-                        return {
-                            asset: Asset.native(),
-                            amount: asset.balance,
-                            price: this.currency.getCurrencyInfo(CurrencyId.XLM).getValue().price,
-                        };
-                    }
-
-                    const isEqual = (dest: Asset) => {
-                        return asset.asset_code === dest.getCode() && asset.asset_issuer === dest.getIssuer() && asset.asset_type === NWallet.NCH.getAssetType();
-                    };
-
-                    let price: number = 0;
-
-                    //poc code
-                    if (isEqual(NWallet.NCN)) {
-                        price = this.currency.getCurrencyInfo('-2').getValue().price;
-                    }
-
-                    if (isEqual(NWallet.NCH)) {
-                        price = this.currency.getCurrencyInfo('-1').getValue().price;
-                    }
-
-                    return {
-                        asset: new Asset(asset.asset_code, asset.asset_issuer),
-                        amount: asset.balance,
-                        price: price,
-                    };
-                });
-            })
-            .catch(error => {
-                this.logger.error('get asset error', error);
-                return NWallet.WalletEmpty;
-            });
-    }
-
-    public isExistAccount(accountId: string): Promise<boolean> {
-        return this.server
-            .accounts()
-            .accountId(accountId) //load account?
-            .call()
-            .then(record => {
-                this.logger.debug(record);
-                return true;
-            })
-            .catch(error => {
-                this.logger.error('isExistAccountError', error);
-                return false;
-            });
-    }
-
-    public async getPayments(signature: NWallet.Signature) {
-        const payment = this.server.payments().forAccount(signature.public).limit(10).order('desc');
-        return await payment.call().catch(error => {
-            this.logger.error('get payments error', error);
-        });
-    }
-
-    //todo: transaction refactoring --sky
-    public async sendPayment(signature: NWallet.Signature, destination: string, asset: Asset, amount: string) {
-        const source = await this.server.loadAccount(signature.public);
-        const transaction = new TransactionBuilder(source);
-        //todo: change trust
-        if (await this.isExistAccount(destination)) {
-            transaction.addOperation(
-                Stellar.Operation.payment({
-                    destination: destination,
-                    asset: asset,
-                    amount: amount,
-                }),
-            );
-        } else {
-            transaction.addOperation(
-                Stellar.Operation.createAccount({
-                    destination: destination,
-                    startingBalance: amount,
-                }),
-            );
-        }
-
-        const tran = transaction.build();
-        tran.sign(Keypair.fromSecret(signature.secret));
-        this.server.submitTransaction(tran);
-    }
-
-    public async refreshWallets(account: NWallet.Account): Promise<void> {
-        this.getAssets(account.signature.public).then(wallets => {
-            this.logger.debug('refresh Wallets');
-            //todo check equality then zone run --sky`
-
-            this.zone.run(() => {
-                account.wallets = wallets;
-            });
-        });
     }
 
     public async fetchJobs(account: NWallet.Account): Promise<void> {
-        this.logger.debug('fetch jobs start');
-        const subscribe = this.subscribe(account);
-        const setAsset = this.refreshWallets(account);
-        await Promise.all([subscribe, setAsset]);
-        this.isFetched = true;
-        this.logger.debug('fetch jobs done');
+        this.logger.debug('[nclient] fetch jobs start');
+        this.subscribe(account);
+        // const subscribe = this.subscribe(account);
+        // const setAsset = this.refreshWallets(account);
+        // await Promise.all([subscribe, setAsset]);
+        this.logger.debug('[nclient] fetch jobs done');
     }
 
-    public subscribe(account: NWallet.Account): void {
-        const payment = this.server.payments().forAccount(account.signature.public);
-        const self = this;
-        this.paymentSubscriptions.set(
-            account.signature.public,
-            //todo get lastest paging token --sky`
-            payment.stream({
-                onmessage: function() {
-                    //argument[0] => payment transactions
-                    self.logger.debug('subscibe', arguments[0]);
+    public subscribe = (account: NWallet.Account): void => {
+        const subscription = Observable.timer(0, 5000).subscribe(() => {
+            this.refreshWallets(account);
+        });
 
-                    if (self.isFetched) self.refreshWallets(account);
-                },
-                onerror: function() {
-                    self.logger.debug('subscribe error, maybe account not activate yet');
-                },
-            }),
-        );
-
-        this.logger.debug('subscribed', account.signature.public);
-    }
+        this.paymentSubscriptions.set(account.signature.public, subscription);
+    };
 
     public async unSubscribe(account: NWallet.Account): Promise<void> {
         const unSubscribePayment = this.paymentSubscriptions.get(account.signature.public);
 
         if (unSubscribePayment) {
-            unSubscribePayment();
-            this.logger.debug('payment subscription closed');
+            unSubscribePayment.unsubscribe();
+            this.logger.debug('[nclient] payment subscription closed');
         }
     }
 
-    // public async createAccount2(): Promise<void> {
-    //     const issuer = await this.server.loadAccount(this.issuer.Key);
+    public getAssets(accountId: string): Promise<NWallet.WalletContext[]> {
+        const url = `${env.endpoint.client}accounts/stellar/${accountId}`;
+        const convert = (data: Object[]): NWallet.WalletContext[] => {
+            return data.map(data => {
+                const asset = data['asset'];
+                const amount = data['amount'];
+                const item = getOrAddWalletItem(asset['code'], asset['issuer'], data['native']);
+                item.price = data['price'];
+                const wallet = <NWallet.WalletContext>{
+                    item: item,
+                    amount: amount,
+                };
 
-    //     const destination = Keypair.random();
-    //     console.log('pair ', destination.publicKey());
-    //     console.log('pair ', destination.secret());
+                return wallet;
+            });
+        };
 
-    //     const transaction = new TransactionBuilder(issuer)
-    //         .addOperation(
-    //             Stellar.Operation.createAccount({
-    //                 destination: destination.publicKey(),
-    //                 startingBalance: '1234',
-    //             }),
-    //         )
-    //         .build();
-
-    //     transaction.sign(Keypair.fromSecret(this.issuer.secretKey));
-    //     const response = await this.server.submitTransaction(transaction);
-    //     console.log(response);
-    // }
-
-    async createTokenTrust(account: NWallet.Account): Promise<void> {
-        this.server
-            .loadAccount(account.signature.public)
-            .then(async distributer => {
-                const transaction = new TransactionBuilder(distributer)
-                    .addOperation(
-                        Stellar.Operation.changeTrust({
-                            asset: NWallet.NCH,
-                            limit: '1000000',
-                        }),
-                    )
-                    .addOperation(
-                        Stellar.Operation.changeTrust({
-                            asset: NWallet.NCN,
-                            limit: '1000000',
-                        }),
-                    )
-                    .build();
-
-                transaction.sign(Keypair.fromSecret(account.signature.secret));
-                const response = await this.server.submitTransaction(transaction);
-                console.log(response);
+        return this.http
+            .get(url)
+            .map(data => {
+                const supportedCoins = convert(data['balances']['supportCoins']);
+                const unSupportCoins = convert(data['balances']['unSupportCoins']);
+                const returnCoins = supportedCoins.concat(unSupportCoins);
+                return returnCoins;
             })
-            .catch(err => {
-                this.logger.debug('create trust error : ', err);
+            .toPromise()
+            .catch((response: HttpErrorResponse) => {
+                this.logger.error('[nclient] getAsset failed', response);
+                return [];
             });
     }
 
-    // async issueToken(): Promise<void> {
-    //     const issuer = await this.server.loadAccount(this.issuer.Key);
-    //     const transaction = new TransactionBuilder(issuer)
-    //         .addOperation(
-    //             Stellar.Operation.payment({
-    //                 destination: this.distributer.Key,
-    //                 asset: nSky,
-    //                 amount: '1000000',
-    //             }),
-    //         )
-    //         .build();
+    public async getTransactions(accountId: string, asset: Asset, pageToken?: string): Promise<NWallet.Transactions.Context> {
+        const params = {
+            limit: pageToken ? '10' : '15',
+            order: 'desc',
+            asset_code: asset.getCode(),
+        };
 
-    //     transaction.sign(Keypair.fromSecret(this.issuer.secretKey));
-    //     const response = await this.server.submitTransaction(transaction);
-    //     console.log(response);
-    // }
+        if (pageToken) {
+            params['cursor'] = pageToken;
+        }
 
-    // async payment(): Promise<void> {
-    //     const distributer = await this.server.loadAccount(this.distributer.Key);
-    //     const transaction = new TransactionBuilder(distributer)
-    //         .addOperation(
-    //             Stellar.Operation.payment({
-    //                 destination: this.issuer.Key,
-    //                 asset: nSky,
-    //                 amount: '999999',
-    //             }),
-    //         )
-    //         .build();
+        this.logger.debug('[nclient] request getTransaction ...');
 
-    //     transaction.sign(Keypair.fromSecret(this.distributer.secretKey));
-    //     const response = await this.server.submitTransaction(transaction);
-    //     console.log(response);
-    // }
-
-    public async loanNCH(signature: NWallet.Signature, amount: number, wallet: NWallet.WalletItem): Promise<boolean> {
-        const loanAccount = await this.server.loadAccount(testAccount.loan.pub).catch(err => {
-            this.logger.error('load account error', err);
-        });
-
-        if (!loanAccount) return false;
-
-        const totalPrice = amount * wallet.price;
-        const nch = this.currency.getCurrencyInfo('-1');
-
-        const nchAmount = ((Math.floor((totalPrice / nch.getValue().price) * 100) / 100) * 0.5).toString();
-
-        const transaction = new TransactionBuilder(loanAccount)
-
-            .addOperation(
-                Stellar.Operation.payment({
-                    destination: testAccount.loan.pub,
-                    asset: wallet.asset,
-                    amount: amount.toString(),
-                    source: signature.public
-                }),
-            )
-
-            // transfer XLM to loan account
-            .addOperation(
-                Stellar.Operation.payment({
-                    destination: testAccount.loan.pub,
-                    asset: NWallet.NCH,
-                    amount: nchAmount,
-                    source: testAccount.issue.pub,
-                }),
-            )
-
-            .addOperation(
-                Stellar.Operation.payment({
-                    destination: signature.public,
-                    asset: NWallet.NCH,
-                    amount: nchAmount,
-                    source: testAccount.loan.pub,
-                }),
-            )
-            .build();
-
-        transaction.sign(testAccount.issue.kp);
-        transaction.sign(testAccount.loan.kp);
-        transaction.sign(Keypair.fromSecret(signature.secret));
-
-        return await this.server.submitTransaction(transaction).catch(er => this.logger.debug('submit error', er));
+        return this.http
+            .get(`${env.endpoint.client}transactions/stellar/accounts/${accountId}`, { params: params })
+            .map(response => {
+                const transactions = response['transactions'];
+                const token = response['paging_token'];
+                const records = NWallet.Transactions.parseRecords(asset, transactions);
+                return <NWallet.Transactions.Context>{
+                    records: records,
+                    pageToken: token,
+                    hasNext: records && records.length > 0,
+                };
+            })
+            .toPromise()
+            .then(context => {
+                this.logger.debug('[nclient] request getTransaction done', context);
+                return context;
+            })
+            .catch((response: HttpErrorResponse) => {
+                this.logger.error('[nclient] request getTransaction failed', params, response);
+                return undefined;
+            });
     }
 
-    public async buyNCH(signature: NWallet.Signature, amount: number, wallet: NWallet.WalletItem): Promise<boolean> {
-        const buyAccount = await this.server.loadAccount(testAccount.buy.pub).catch(err => {
-            this.logger.error('load account error', err);
+    public async refreshWallets(account: NWallet.Account): Promise<void> {
+        this.getAssets(account.signature.public).then(wallets => {
+            this.logger.debug('[nclient] refresh wallets', wallets);
+
+            //todo check equality then zone run --sky`
+            this.zone.run(() => {
+                account.wallets = account.wallets || [];
+                account.wallets.length = 0;
+                account.wallets.push(...wallets);
+            });
         });
-
-        if (!buyAccount) return false;
-
-        const totalPrice = amount * wallet.price;
-        const nch = this.currency.getCurrencyInfo('-1');
-
-        const nchAmount = ((Math.floor((totalPrice / nch.getValue().price) * 100) / 100)).toString();
-
-        const transaction = new TransactionBuilder(buyAccount)
-
-            .addOperation(
-                Stellar.Operation.payment({
-                    destination: testAccount.buy.pub,
-                    asset: wallet.asset,
-                    amount: amount.toString(),
-                    source: signature.public
-                }),
-            )
-
-            .addOperation(
-                Stellar.Operation.payment({
-                    destination: testAccount.buy.pub,
-                    asset: NWallet.NCH,
-                    amount: nchAmount,
-                    source: testAccount.issue.pub,
-                }),
-            )
-
-            .addOperation(
-                Stellar.Operation.payment({
-                    destination: signature.public,
-                    asset: NWallet.NCH,
-                    amount: nchAmount,
-                    source: testAccount.buy.pub,
-                }),
-            )
-            .build();
-
-        transaction.sign(testAccount.issue.kp);
-        transaction.sign(testAccount.buy.kp);
-        transaction.sign(Keypair.fromSecret(signature.secret));
-
-        return await this.server.submitTransaction(transaction).catch(er => this.logger.debug('submit error', er));
     }
+
+    public requestXDR = (requestType: NWallet.Protocol.XdrRequestTypes, params: Object): Promise<NWallet.Protocol.XDRResponse> => {
+        const type = this.getKeyFromValue(NWallet.Protocol.XdrRequestTypes, requestType);
+        this.logger.debug(`[nclient] request get ${type} xdr ...`);
+        return this.http
+            .post(`${env.endpoint.client}${requestType}`, params)
+            .toPromise()
+            .then((response: NWallet.Protocol.XDRResponse) => {
+                this.logger.debug(`[nclient] request get ${type} xdr done`);
+                return response;
+            })
+            .catch((response: HttpErrorResponse) => {
+                this.logger.error(`[nclient] request get ${type} xdr failed`, response);
+                return undefined;
+            });
+    };
+
+    public executeXDR = (requestType: NWallet.Protocol.XdrRequestTypes, params: Object): Promise<boolean> => {
+        const type = this.getKeyFromValue(NWallet.Protocol.XdrRequestTypes, requestType);
+        this.logger.debug(`[nclient] execute ${type} xdr ...`);
+        return this.http
+            .put(`${env.endpoint.client}${requestType}`, params)
+            .toPromise()
+            .then(response => {
+                this.logger.debug(`[nclient] execute ${type} xdr done`);
+                return response['success'];
+            })
+            .catch((response: HttpErrorResponse) => {
+                this.logger.error(`[nclient] execute ${type} xdr failed`, response);
+                return false;
+            });
+    };
 }

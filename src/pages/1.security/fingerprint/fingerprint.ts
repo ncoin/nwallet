@@ -1,42 +1,46 @@
+import { FingerprintAIO } from '@ionic-native/fingerprint-aio';
 import { Component } from '@angular/core';
-import { Events, Platform } from 'ionic-angular';
+import { Platform, NavController } from 'ionic-angular';
+import { Logger } from '../../../providers/common/logger/logger';
 
-// Providers
-import { AppProvider } from '../../providers/app/app';
-import { TouchIdProvider } from '../../providers/touchid/touchid';
-
+// fingerprint, pin both
 @Component({
-  selector: 'page-fingerprint',
-  templateUrl: 'fingerprint.html',
+    selector: 'page-fingerprint',
+    templateUrl: 'fingerprint.html',
 })
 export class FingerprintModalPage {
+    public unregister: Function;
+    public isFingerprintAvailable: boolean;
 
-  public unregister: any;
-  public isCopay: boolean;
-  public showFingerprintModal: boolean;
+    constructor(private fingerprint: FingerprintAIO, private platform: Platform, private navCtrl: NavController, private logger: Logger) {
+        this.unregister = this.platform.registerBackButtonAction(() => {});
+        this.checkFingerprint();
+    }
 
-  constructor(
-    private touchid: TouchIdProvider,
-    private platform: Platform,
-    private appProvider: AppProvider,
-    private events: Events
-  ) {
+    public checkFingerprint(): void {
+        this.fingerprint.isAvailable().then(
+            async isAvailable => {
+                this.isFingerprintAvailable = true;
+                this.logger.debug('isAvailable', isAvailable);
+                const result = await this.fingerprint
+                    .show({
+                        clientId: 'NWallet',
+                        clientSecret: 'password',
+                    })
+                    .catch(error => {
+                        this.logger.info('auth failed', error);
+                        return false;
+                    });
 
-    this.events.subscribe('showFingerprintModalEvent', (isCopay) => {
-      this.isCopay = isCopay;
-      this.showFingerprintModal = true;
-      this.unregister = this.platform.registerBackButtonAction(() => { });
-      this.checkFingerprint();
-    });
-  }
-
-  public checkFingerprint(): void {
-    this.touchid.check().then(() => {
-      setTimeout(() => {
-        this.showFingerprintModal = false;
-        this.unregister();
-        this.events.publish('finishFingerprintModalEvent');
-      }, 300);
-    });
-  }
+                if (result) {
+                    this.unregister();
+                    this.navCtrl.pop({ animate: true });
+                }
+            },
+            error => {
+                this.isFingerprintAvailable = false;
+                this.logger.error('fingerprint unvailalbe, ', error);
+            },
+        );
+    }
 }

@@ -1,24 +1,11 @@
 import { Asset } from 'stellar-sdk';
 export namespace NWallet {
-    export const AccountEmpty: Account = {
-        isActivate: false,
-        signature: NWallet.SignatureEmpty,
-        address: NWallet.AddressEmpty,
-        profile: NWallet.ProfileEmpty,
-        wallets: NWallet.WalletEmpty,
-    };
-    export const SignatureEmpty: Signature = { public: 'public key', secret: 'secret sig' };
-    export const WalletEmpty: WalletItem[] = [{ asset: Asset.native(), amount: '0', price: 0 }];
-    export const AddressEmpty: Address = { location: 'empty address' };
-    export const ProfileEmpty: Profile = { firstName: 'john', lastName: 'doe', phoneNumber: { countryCode: '00', number: '000000' } };
-    export const TransactionEmpty: Transaction[] = [{ type: '', item: { amount: '', asset: Asset.native(), price: 0 }, date: new Date() }];
-
     export interface Account {
         isActivate: boolean;
         signature: Signature;
         address: Address;
         profile: Profile;
-        wallets: WalletItem[];
+        wallets: WalletContext[];
     }
 
     export interface Address {
@@ -39,36 +26,127 @@ export namespace NWallet {
 
     export interface WalletItem {
         asset: Asset;
-        amount: string;
+        isNative: boolean;
         price: number;
     }
 
-    export interface Transaction {
-        type: string;
+    export interface WalletContext {
         item: WalletItem;
-        date: Date;
+        amount: string;
     }
 
-    export const NCN = new Asset('NCN', 'GD5KULZRARHGYJHDKDCUYHTY645Z4NP7443WS4HQJSNX45BMHV5CCTM3');
-    export const NCH = new Asset('NCH', 'GD5KULZRARHGYJHDKDCUYHTY645Z4NP7443WS4HQJSNX45BMHV5CCTM3');
-    export const XLM = Asset.native();
+    //todo move to other namespace
 
-    export interface TransactionRecord {
-        current: any;
-        records: () => NWallet.Transaction[];
-        next: () => Promise<void>;
+    export const Assets = {
+        NCH: <Asset>undefined,
+        NCN: <Asset>undefined,
+        XLM: Asset.native(),
+    };
+    export const NCH = new Asset('NCH', 'GD5KULZRARHGYJHDKDCUYHTY645Z4NP7443WS4HQJSNX45BMHV5CCTM3');
+}
+
+export namespace NWallet.Transactions {
+    export interface Context {
+        pageToken: string;
+        records: NWallet.Transactions.Record[];
+        hasNext: boolean;
+    }
+
+    export interface Record {
+        type: string;
+        context: WalletContext;
+        date: Date;
+        id: string;
+    }
+
+    export function parseRecords(asset: Asset, data: Object[]): Record[] {
+        const rawRecords = data;
+        return rawRecords
+            .map<Record>(raw => {
+                const resAsset = raw['asset'];
+                const item = getOrAddWalletItem(resAsset['code'], resAsset['issuer'], raw['native']);
+                const amount = raw['amount'];
+                const createdAt = raw['created_at'];
+                return <Record>{
+                    type: raw['type'],
+                    context: <WalletContext>{
+                        item: item,
+                        amount: amount,
+                    },
+                    date: createdAt,
+                    id:  raw['transaction_hash'],
+                };
+            })
+            .filter(record => {
+                //todo extract --sky
+                if (asset.isNative() && record.context.item.asset.isNative()) {
+                    return true;
+                } else {
+                    return (
+                        asset.getCode() === record.context.item.asset.getCode() &&
+                        asset.getIssuer() === record.context.item.asset.getIssuer() &&
+                        asset.getAssetType() === record.context.item.asset.getAssetType()
+                    );
+                }
+            });
     }
 }
 
-export const Assets = new Map<string, Asset>([[`${NWallet.NCH.code}_${NWallet.NCH.issuer}`, NWallet.NCH], [`${NWallet.NCN.code}_${NWallet.NCN.issuer}`, NWallet.NCN], ['XLM', Asset.native()]]);
+const Assets = new Map<string, NWallet.WalletItem>([
+    [
+        'XLM_native',
+        <NWallet.WalletItem>{
+            asset: Asset.native(),
+            price: 0,
+            isNative: true,
+        },
+    ],
+]);
 
-export function getOrAddAsset(code: string, issuer: string, assetType:string): Asset{
-    if (assetType === 'native')
-        return Asset.native();
-    const key = `${code}_${issuer}`;
-    if (Assets.has(key)){
-        return Assets.get(key);
-    }else {
-        Assets.set(key, new Asset(code, issuer)).get(key);
+
+
+export namespace NWallet.Protocol {
+
+    export enum XdrRequestTypes {
+        Trust = 'trusts/stellar/',
+        Buy = 'buys/ncash/stellar/',
+        Loan = 'loans/ncash/stellar/',
     }
-};
+
+    export interface Response {
+
+    }
+
+    export interface XDRResponse extends Response {
+        id: string;
+        xdr: string;
+    }
+}
+
+//todo AOP (cache decorator) --sky
+export function getOrAddWalletItem(code: string, issuer: string, isNative: boolean): NWallet.WalletItem {
+    if (code === 'XLM' && isNative === true) {
+        issuer = 'native';
+    }
+
+    const key = `${code}_${issuer}`;
+
+    if (Assets.has(key)) {
+        return Assets.get(key);
+    } else {
+        const asset = new Asset(code, issuer);
+        if (code === 'NCH' && isNative) {
+            NWallet.Assets.NCH = asset;
+        }
+
+        if (code === 'NCN' && isNative) {
+            NWallet.Assets.NCN = asset;
+        }
+
+        return Assets.set(key, <NWallet.WalletItem>{
+            asset: asset,
+            price: 0,
+            isNative: isNative,
+        }).get(key);
+    }
+}

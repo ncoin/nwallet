@@ -1,11 +1,14 @@
+import { TokenProvider } from './token/token';
 import { NgModule } from '@angular/core';
 import { Logger } from './common/logger/logger';
 import { AppServiceProvider } from './app/app.service';
-import { ConfigProvider } from './app/app.config';
+import { AppConfigProvider } from './app/app.config';
 import { AccountProvider } from './account/account';
 import { PreferenceProvider } from './common/preference/preference';
 import { NClientProvider } from './nsus/nclient';
 import { CurrencyProvider } from './currency/currency';
+import { LockProvider } from './common/lock/lock';
+import { PlatformProvider } from './common/platform/platform';
 
 @NgModule({
     providers: [
@@ -14,8 +17,11 @@ import { CurrencyProvider } from './currency/currency';
         PreferenceProvider,
         AccountProvider,
         AppServiceProvider,
-        ConfigProvider,
-        CurrencyProvider
+        AppConfigProvider,
+        CurrencyProvider,
+        PlatformProvider,
+        LockProvider,
+        TokenProvider
     ],
 })
-export class ProvidersModule {}
+export class NWalletProvidersModule {}

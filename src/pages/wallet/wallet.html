@@ -1,20 +1,19 @@
 <ion-header show>
     <ion-navbar>
-        <ion-title>Wallet</ion-title>
+        <ion-title ><span translate>NWallet</span></ion-title>
     </ion-navbar>
 </ion-header>
-
 
 <ion-content padding>
     <!-- <p>public</p>
     <p>{{account.signature.public}}</p>
     <p>secret</p>
     <p>{{account.signature.secret}}</p> -->
-    <ion-list>
+    <ion-list *ngIf="account && account.wallets && account.wallets[0]">
         <ion-card *ngFor="let wallet of account.wallets">
             <ion-card-content>
                 <button ion-item style="text-align: right" (click)="onSelectWallet(wallet)">
-                    <ion-label text-left>{{wallet.asset.code | walletName}}</ion-label>
+                    <ion-label text-left>{{wallet.item | walletName}}</ion-label>
                     <div item-end>
                         <ion-label>{{wallet | walletFormat}}</ion-label>
                         <ion-label>{{wallet | walletToUSD}}</ion-label>
@@ -24,21 +23,6 @@
         </ion-card>
     </ion-list>
     <button ion-item (click)="onLogout()">
-        <h3>logout</h3>
+        <h3 translate>Logout</h3>
     </button>
-
-    <!-- <ion-item>
-        <ion-label stacked color="primary">destination</ion-label>
-        <ion-input [(ngModel)]="destination" name="destination" type="text" spellcheck="false" autocapitalize="off" required>
-        </ion-input>
-    </ion-item>
-    <ion-item>
-        <ion-label stacked color="primary">amount ({{asset.code}})</ion-label>
-        <ion-input [(ngModel)]="amount" name="amounts" type="text" spellcheck="false" autocapitalize="off" required>
-        </ion-input>
-    </ion-item>
-
-    <button ion-item (click)="onSendPayment()">
-        <h3>send</h3>
-    </button> -->
 </ion-content>

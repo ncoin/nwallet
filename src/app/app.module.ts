@@ -1,6 +1,7 @@
+import { NWalletSharedModule } from './../shared/shared.module';
+import { env } from './../environments/environment';
 import { NWalletPageModule } from './../pages/pages.module';
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule, ErrorHandler } from '@angular/core';
+import { NgModule, ErrorHandler, enableProdMode } from '@angular/core';
 
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 
@@ -11,18 +12,19 @@ import { IonicStorageModule } from '@ionic/storage';
 
 import { NWalletApp } from './app.component';
 
-
-import { ProvidersModule } from '../providers/providers.module';
-import { HttpClientModule } from '@angular/common/http';
-
+import { NWalletProvidersModule } from '../providers/providers.module';
+import { FingerprintAIO } from '@ionic-native/fingerprint-aio';
+import { StatusBar } from '@ionic-native/status-bar';
+import { Vibration } from '@ionic-native/vibration';
+import { Device } from '@ionic-native/device';
+BootStrap();
 @NgModule({
-    declarations: [
-        NWalletApp,
-    ],
+    declarations: [NWalletApp],
     imports: [
-        BrowserModule,
-        HttpClientModule,
+        NWalletSharedModule,
+        NWalletProvidersModule,
         NWalletPageModule,
+        IonicStorageModule.forRoot(),
         IonicModule.forRoot(
             NWalletApp,
             {},
@@ -51,17 +53,15 @@ import { HttpClientModule } from '@angular/common/http';
                 ],
             },
         ),
-        IonicStorageModule.forRoot(),
-        ProvidersModule,
     ],
     bootstrap: [IonicApp],
-    entryComponents: [
-        NWalletApp,
-    ],
-    providers: [
-        { provide: ErrorHandler, useClass: IonicErrorHandler },
-        InAppBrowser,
-        SplashScreen,
-    ],
+    entryComponents: [NWalletApp],
+    providers: [{ provide: ErrorHandler, useClass: IonicErrorHandler }, InAppBrowser, SplashScreen, FingerprintAIO, StatusBar, Vibration, Device],
 })
 export class AppModule {}
+
+function BootStrap() {
+    if (env.name === 'prod' || env.name === 'stage') {
+        enableProdMode();
+    }
+}

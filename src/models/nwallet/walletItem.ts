@@ -1,22 +1,21 @@
-
-export interface NWalletAsset {
-    /** asset name */
-    code: string;
-    amount: number;
+export abstract class NWalletItemBase {
+    abstract get getCode(): string;
+    abstract get price(): number;
+    abstract set price(value: number);
 }
 
-export abstract class NWalletAssetBase implements NWalletAsset {
+export abstract class NWalletAssetBase  {
     /** asset name */
     code: string;
-    amount: number;
+    price: number;
 
     constructor(){}
 
-    public Add(amount: number): void {
-        if (amount <= 0){
+    public Add(price: number): void {
+        if (price <= 0){
             throw new Error("Method not implemented.");
         }
-        this.amount += amount;
+        this.price += price;
     }
 }
 

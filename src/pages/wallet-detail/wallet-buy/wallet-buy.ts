@@ -1,7 +1,5 @@
 import { AppServiceProvider } from './../../../providers/app/app.service';
-import { Subscription } from 'rxjs/Rx';
-import { CurrencyProvider } from './../../../providers/currency/currency';
-import { Component, ViewChild, NgZone } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams, Navbar, AlertController, LoadingController } from 'ionic-angular';
 import { AccountProvider } from '../../../providers/account/account';
 import { NWallet } from '../../../interfaces/nwallet';
@@ -21,76 +19,55 @@ import { Logger } from '../../../providers/common/logger/logger';
 export class WalletBuyPage {
     @ViewChild(Navbar) navBar: Navbar;
 
-    private _amount: number = 0;
-    private _wallet: NWallet.WalletItem;
-    private subscription: Subscription;
-    wallets: NWallet.WalletItem[] = NWallet.WalletEmpty;
-    NCH: NWallet.WalletItem = {
-        amount: '0',
-        asset: NWallet.NCH,
-        price: 0,
-    };
+    private _nchAmount: number = 0;
+    private _wallet: NWallet.WalletContext;
+    wallets: NWallet.WalletContext[];
+    expectSpendWallet: NWallet.WalletContext;
 
     constructor(
+        account: AccountProvider,
         public navCtrl: NavController,
         public navParams: NavParams,
-        private account: AccountProvider,
-        private zone: NgZone,
-        private currency: CurrencyProvider,
         private logger: Logger,
         private alert: AlertController,
         private appService: AppServiceProvider,
         private loading: LoadingController,
     ) {
-
         this._wallet = navParams.get('wallet');
+        this.expectSpendWallet = <NWallet.WalletContext> {
+            item : this._wallet.item,
+            amount : "0",
+        };
         this.wallets = account.account.wallets.filter(wallet => {
-            return wallet.asset.code !== 'NCH';
-        });
-
-        this.subscription = this.currency.getCurrencyInfo('-1').subscribe(cur => {
-            this.zone.run(() => {
-                this.NCH.price = cur.price;
-                this.calculateTotalNCN();
-            });
+            return wallet.item.asset.code !== 'NCH' && wallet.item.isNative;
         });
     }
 
-    public set amount(value: number) {
-        this._amount = value;
+    public set nchAmount(value: number) {
+        this._nchAmount = value;
         this.calculateTotalNCN();
     }
 
-    public get amount(): number {
-        return this._amount;
+    public get nchAmount(): number {
+        return this._nchAmount;
     }
 
-    public get wallet(): NWallet.WalletItem {
+    public get wallet(): NWallet.WalletContext {
         return this._wallet;
     }
 
-    public set wallet(wallet: NWallet.WalletItem) {
+    public set wallet(wallet: NWallet.WalletContext) {
         this._wallet = wallet;
         this.calculateTotalNCN();
     }
 
     private calculateTotalNCN(): void {
-        const totalPrice = this.amount * this.wallet.price;
-        const nch = this.currency.getCurrencyInfo('-1');
-
-        //todo fixme --sky
-        this.NCH.amount = (Math.floor((totalPrice / nch.getValue().price) * 100) / 100).toString();
-        this.NCH = {
-            amount: this.NCH.amount,
-            asset: this.NCH.asset,
-            price: this.NCH.price,
+        const totalPrice = (this.nchAmount * 1) / this.wallet.item.price;
+        this.expectSpendWallet = <NWallet.WalletContext>{
+            amount: totalPrice.toString(),
+            item: this._wallet.item,
+            price: this.expectSpendWallet.item.price,
         };
-    }
-
-    async init(): Promise<void> {
-        const account = await this.account.getAccount();
-        account;
-        this.zone.run(() => {});
     }
 
     ionViewDidLoad() {
@@ -113,13 +90,12 @@ export class WalletBuyPage {
     }
 
     ionViewDidLeave() {
-        this.subscription.unsubscribe();
     }
 
     async onBuyRequest() {
         const alert = this.alert.create({
             title: 'buy NCash',
-            message: `PAYING : \n ${this._amount} ${this.wallet.asset.code}\n` + `<p>BUY : ${this.NCH.amount} ${this.NCH.asset.code}</p>`,
+            message: `PAYING : \n ${this._nchAmount} ${this.wallet.item.asset.code}\n` + `<p>BUY : ${this.expectSpendWallet.amount} ${this.expectSpendWallet.item.asset.code}</p>`,
             buttons: [
                 {
                     text: 'CANCEL',
@@ -132,7 +108,7 @@ export class WalletBuyPage {
                             content: 'please wait ...',
                         });
                         loader.present();
-                        await this.appService.requestBuy(this._amount, this._wallet);
+                        await this.appService.requestBuy(this._wallet.item.asset, Number.parseFloat(this._nchAmount.toString()));
                         this.navCtrl.popToRoot();
                         loader.dismiss();
                     },
