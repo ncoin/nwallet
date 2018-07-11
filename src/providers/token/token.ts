@@ -13,67 +13,65 @@ export class Token {
     private scope: string;
     private jti: string;
     private expiredDate: number;
+
     public getAuth(): string {
-        return `Bearer ${this.access_token}`;
+        //aa
+        return `${this.token_type} ${this.access_token}`;
     }
 
     public setExpiration() {
-        this.expiredDate = Date.now() + (this.expires_in * 1000);
+        this.expiredDate = Date.now() + this.expires_in * 1000;
     }
 
-    public isExpired():boolean{
+    public isExpired(): boolean {
         return Date.now() > this.expiredDate;
     }
 }
-interface body {
-    grant_type: string;
-    public_key: string;
-    coin_symbol: string;
-    device_id: string;
-    email?: string;
-}
+
 @Injectable()
 export class TokenProvider {
-    private requestParam: body;
 
     private token: Token;
     constructor(private http: HttpClient, private logger: Logger, private device: Device, private account: AccountProvider) {}
 
-    public async getToken() : Promise<Token> {
+    public async getToken(): Promise<Token> {
         if (!this.token || this.token.isExpired()) {
-            this.token = await this.getTokenInternal();
+            this.token = await this.issueToken();
         }
 
         return this.token;
     }
-    private async getTokenInternal(): Promise<Token> {
+
+    private async issueToken(): Promise<Token> {
         const account = await this.account.getAccount();
-
-        this.requestParam = <body>{
-            coin_symbol: 'XLM',
-            device_id: 'e383550c-369b-4eca-aca3-ea29f1722958',
-            public_key: account.signature.public,
-            grant_type: 'password',
-        };
-
         const token = await this.http
-            .post<Token>(`${env.endpoint.auth}uaa/api/oauth/token`, this.requestParam, {
-                headers: {
-                    Authorization: `Basic ${btoa(`app-n-wallet:app-n-wallet`)}`,
+            .post(
+                env.endpoint.token(),
+                {
+                    coin_symbol: 'XLM',
+                    device_id: env.name === 'dev' ? 'develop' : this.device.uuid,
+                    public_key: account.signature.public,
+                    grant_type: 'password',
                 },
-            })
+                {
+                    headers: {
+                        Authorization: 'Basic ' + btoa(`app-n-wallet:app-n-wallet`),
+                        Accept: 'application/json',
+                    },
+                },
+            )
+            .map(response => Object.assign(new Token(), response))
             .toPromise()
-            .then(token => {
-                this.logger.debug('[token] get token success', token);
+            .then((token: Token) => {
+                this.logger.debug('[token] issue token done');
                 token.setExpiration();
                 return token;
             })
             .catch((response: HttpErrorResponse) => {
-                this.logger.error('[token] get token failed', response);
+                this.logger.error('[token] issue token failed', response);
                 return undefined;
             });
 
-        this.logger.debug('token', token);
         return token;
     }
 }
