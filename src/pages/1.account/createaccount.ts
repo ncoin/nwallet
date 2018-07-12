@@ -1,11 +1,11 @@
 import { PreferenceProvider } from './../../providers/common/preference/preference';
 import { AccountProvider } from './../../providers/account/account';
-import { WalletPage } from './../wallet/wallet';
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { Logger } from '../../providers/common/logger/logger';
 import { Preference } from '../../providers/common/preference/preference';
 import { NWallet } from '../../interfaces/nwallet';
+import { TabcontainerPage } from '../tab/tabcontainer';
 
 /**
  * Generated class for the CreateaccountPage page.
@@ -34,7 +34,7 @@ export class CreateAccountPage {
         });
 
         setTimeout(async () => {
-            await this.navCtrl.setRoot(WalletPage, undefined, undefined);
+            await this.navCtrl.setRoot(TabcontainerPage, undefined, undefined);
         }, 1000);
     }
 }

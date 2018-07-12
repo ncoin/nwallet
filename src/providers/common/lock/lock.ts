@@ -28,7 +28,7 @@ export class LockProvider {
 
         //todo
         this.logger.debug('[lock] security check',this.platform.isMobile);
-        return true;
+        return false;
         // return this.platform.isMobile;
     }
 

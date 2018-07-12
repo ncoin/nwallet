@@ -16,6 +16,7 @@ export class Token {
 
     public getAuth(): string {
         //aa
+        this.scope; this.jti;
         return `${this.token_type} ${this.access_token}`;
     }
 
@@ -30,7 +31,6 @@ export class Token {
 
 @Injectable()
 export class TokenProvider {
-
     private token: Token;
     constructor(private http: HttpClient, private logger: Logger, private device: Device, private account: AccountProvider) {}
 
@@ -44,6 +44,7 @@ export class TokenProvider {
 
     private async issueToken(): Promise<Token> {
         const account = await this.account.getAccount();
+        this.logger.debug('[token] issue token ...');
         const token = await this.http
             .post(
                 env.endpoint.token(),
@@ -60,9 +61,9 @@ export class TokenProvider {
                     },
                 },
             )
-            .map(response => Object.assign(new Token(), response))
             .toPromise()
             .then((token: Token) => {
+                token = Object.assign(new Token(), token);
                 this.logger.debug('[token] issue token done');
                 token.setExpiration();
                 return token;

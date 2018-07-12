@@ -1,0 +1,8 @@
+<ion-tabs [selectedIndex]="selectedIndex" name="conference">
+    <ion-tab *ngFor="let tab of tabItems" [root]="tab.component" tabIcon="contacts"></ion-tab>
+    <!-- <ion-tab [root]="tab1Root" tabTitle="Schedule" tabIcon="calendar" tabUrlPath="conference-schedule"></ion-tab>
+    <ion-tab [root]="tab2Root" tabTitle="Speakers" tabIcon="contacts"></ion-tab>
+    <ion-tab [root]="tab3Root" tabTitle="Map" tabIcon="map"></ion-tab>
+    <ion-tab [root]="tab4Root" tabTitle="About" tabIcon="information-circle"></ion-tab>
+    <ion-tab [root]="tab4Root" tabTitle="About" tabIcon="information-circle"></ion-tab> -->
+</ion-tabs>

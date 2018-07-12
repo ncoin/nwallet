@@ -1,12 +1,14 @@
-import { AppServiceProvider } from './../../providers/app/app.service';
-import { Logger } from './../../providers/common/logger/logger';
-import { EntrancePage } from './../0.entrance/entrance';
+import { WalletLoanPage } from './wallet-detail/wallet-loan/wallet-loan';
+import { WalletBuyPage } from './wallet-detail/wallet-buy/wallet-buy';
+import { EntrancePage } from './../../0.entrance/entrance';
+import { WalletDetailPage } from './wallet-detail/wallet-detail';
+import { TokenProvider } from './../../../providers/token/token';
+import { AccountProvider } from './../../../providers/account/account';
+import { Logger } from './../../../providers/common/logger/logger';
 import { Component } from '@angular/core';
-import {  NavController, NavParams } from 'ionic-angular';
-import { NWallet } from '../../interfaces/nwallet';
-import { AccountProvider } from '../../providers/account/account';
-import { WalletDetailPage } from '../wallet-detail/wallet-detail';
-import { TokenProvider } from '../../providers/token/token';
+import { NavController, NavParams } from 'ionic-angular';
+import { NWallet } from '../../../interfaces/nwallet';
+import { AppServiceProvider } from '../../../providers/app/app.service';
 
 /**
  * Generated class for the WalletPage page.
@@ -16,8 +18,8 @@ import { TokenProvider } from '../../providers/token/token';
  */
 
 @Component({
-    selector: 'page-wallet',
-    templateUrl: 'wallet.html',
+    selector: 'tab-wallet',
+    templateUrl: 'wallet-tab.html',
 })
 export class WalletPage {
     account: NWallet.Account;
@@ -28,7 +30,7 @@ export class WalletPage {
         private logger: Logger,
         private accountProvider: AccountProvider,
         private appService: AppServiceProvider,
-        private token: TokenProvider
+        private token: TokenProvider,
     ) {
         this.init();
     }
@@ -37,6 +39,7 @@ export class WalletPage {
         this.account = await this.accountProvider.getAccount();
         await this.appService.login(this.account);
         const token = await this.token.getToken();
+        this.logger.debug('[remove me]', token);
     }
 
     ionViewDidLoad() {
@@ -44,18 +47,14 @@ export class WalletPage {
     }
 
     public onSelectWallet(wallet: NWallet.WalletContext) {
-        this.navCtrl.push(WalletDetailPage, { wallet: wallet}, {
-            animate : true,
-            animation : 'ios-transition'
-        });
-    }
-
-    public onClear(): void {
-        this.navCtrl.setRoot(EntrancePage, undefined, {
-            animate: true,
-            animation: 'ios-transition',
-        });
-        this.logger.debug('onClear');
+        this.navCtrl.push(
+            WalletDetailPage,
+            { wallet: wallet },
+            {
+                animate: true,
+                animation: 'ios-transition',
+            },
+        );
     }
 
     public onLogout(): void {
@@ -66,3 +65,5 @@ export class WalletPage {
         });
     }
 }
+
+export const WalletTabPages = [WalletPage, WalletDetailPage, WalletBuyPage, WalletLoanPage];

@@ -5,6 +5,11 @@ export interface Environments {
     name: EnvironmentType;
     /** public network */
     network: NetworkType;
+    endpoint: {
+        client: string,
+        auth: string,
+        token: () => string,
+    }
 }
 
 export const Schema = {

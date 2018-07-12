@@ -1,7 +1,7 @@
+import { TabcontainerPage } from './../pages/tab/tabcontainer';
 import { AccountProvider } from './../providers/account/account';
 import { LockProvider } from './../providers/common/lock/lock';
 import { Subscription } from 'rxjs/Rx';
-import { WalletPage } from './../pages/wallet/wallet';
 import { Logger } from './../providers/common/logger/logger';
 import { Component, ViewChild } from '@angular/core';
 
@@ -59,7 +59,7 @@ export class NWalletApp {
         const account = await this.account.getAccount();
         if (account) {
             this.logger.debug('[app-page] prepare wallet page');
-            this.rootPage = WalletPage;
+            this.rootPage = TabcontainerPage;
         } else {
             this.logger.debug('[app-page] prepare entrance page');
             this.rootPage = EntrancePage;

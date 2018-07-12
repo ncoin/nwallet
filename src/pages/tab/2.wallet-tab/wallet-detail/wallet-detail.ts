@@ -1,12 +1,12 @@
 import { WalletLoanPage } from './wallet-loan/wallet-loan';
 import { ViewChild } from '@angular/core';
-import { Logger } from './../../providers/common/logger/logger';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, Navbar, InfiniteScroll } from 'ionic-angular';
-import { NWallet } from '../../interfaces/nwallet';
 import { WalletBuyPage } from './wallet-buy/wallet-buy';
-import { AppServiceProvider } from '../../providers/app/app.service';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
+import { NWallet } from '../../../../interfaces/nwallet';
+import { Logger } from '../../../../providers/common/logger/logger';
+import { AppServiceProvider } from '../../../../providers/app/app.service';
 
 /**
  * Generated class for the WalletDetailPage page.

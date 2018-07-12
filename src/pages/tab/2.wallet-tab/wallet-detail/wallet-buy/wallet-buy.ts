@@ -1,9 +1,9 @@
-import { AppServiceProvider } from './../../../providers/app/app.service';
+import { AppServiceProvider } from './../../../../../providers/app/app.service';
+import { Logger } from './../../../../../providers/common/logger/logger';
+import { AccountProvider } from './../../../../../providers/account/account';
 import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams, Navbar, AlertController, LoadingController } from 'ionic-angular';
-import { AccountProvider } from '../../../providers/account/account';
-import { NWallet } from '../../../interfaces/nwallet';
-import { Logger } from '../../../providers/common/logger/logger';
+import { NWallet } from '../../../../../interfaces/nwallet';
 /**
  * Generated class for the WalletBuyPage page.
  *

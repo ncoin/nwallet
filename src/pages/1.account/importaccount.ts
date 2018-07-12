@@ -1,5 +1,5 @@
+import { TabcontainerPage } from './../tab/tabcontainer';
 import { PreferenceProvider, Preference } from './../../providers/common/preference/preference';
-import { WalletPage } from './../wallet/wallet';
 import { Component } from '@angular/core';
 import { IonicPage, NavController } from 'ionic-angular';
 import { Logger } from '../../providers/common/logger/logger';
@@ -38,7 +38,7 @@ export class ImportAccountPage {
         });
 
         setTimeout(async () => {
-            await this.navCtrl.setRoot(WalletPage, undefined, undefined);
+            await this.navCtrl.setRoot(TabcontainerPage, undefined, undefined);
         }, 1000);
     }
 }

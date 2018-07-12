@@ -5,12 +5,11 @@ export interface Environments {
     name: EnvironmentType;
     /** test network */
     network: NetworkType;
-
     endpoint: {
-        client: string;
-        auth: string;
-        token: () => string;
-    };
+        client: string,
+        auth: string,
+        token: () => string,
+    }
 }
 
 export const Schema = {
