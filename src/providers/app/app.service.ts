@@ -26,7 +26,7 @@ export class AppServiceProvider {
 
     public async login(account: NWallet.Account): Promise<void> {
         await this.connector.fetchJobs(account);
-        this.requestTrust();
+        //this.requestTrust();
     }
 
     public async logout(account: NWallet.Account): Promise<void> {

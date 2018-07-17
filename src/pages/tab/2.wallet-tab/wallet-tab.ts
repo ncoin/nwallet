@@ -8,6 +8,7 @@ import { Component, NgZone } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { NWallet } from '../../../interfaces/nwallet';
 import { EventProvider } from '../../../providers/common/event/event';
+import { AccountProvider } from '../../../providers/account/account';
 
 /**
  * Generated class for the WalletPage page.
@@ -29,7 +30,7 @@ export class WalletPage {
     nCash: NWallet.AssetContext;
     totalPrice: string;
     private subscription: any;
-    constructor(public navCtrl: NavController, public navParams: NavParams, private zone: NgZone, private event: EventProvider, private logger: Logger) {
+    constructor(public navCtrl: NavController, private event: EventProvider, private logger: Logger, private account: AccountProvider) {
         this.init();
     }
 
@@ -37,35 +38,44 @@ export class WalletPage {
         this.navCtrl.getActive().showBackButton(false);
     }
 
-    init(): any {
-        this.subscription = this.event.subscribe(EventTypes.NWallet.account_refresh_wallet, wallets => {
-            const nCash = wallets.find(wallet => {
-                return wallet.item.isNative === true && wallet.item.asset.code === 'NCH';
-            });
-
-            let totalAmount = 0;
-            wallets.forEach(wallet => {
-                totalAmount += Number.parseFloat(wallet.amount) * wallet.item.price;
-            });
-
-            this.totalPrice = totalAmount.toString();
-
-            wallets.splice(wallets.indexOf(nCash), 1);
-
-            this.logger.debug('[wallet-tab] on wallet changed');
-            this.walletPages.length = 0;
-            let sliceWallet = wallets.splice(0, 3);
-
-            this.zone.run(() => {
-                while (sliceWallet.length > 0) {
-                    this.walletPages.push({ wallets: sliceWallet });
-                    sliceWallet = wallets.splice(0, 3);
-                }
-
-                this.nCash = nCash;
-            });
-        });
+    ionViewDidEnter() {
+        this.subscription = this.event.subscribe(EventTypes.NWallet.account_refresh_wallet, this.refreshWallets);
     }
+
+    ionViewDidLeave() {
+        this.event.unsubscribe(EventTypes.NWallet.account_refresh_wallet, this.subscription);
+    }
+
+    async init(): Promise<void> {
+        const account = await this.account.getAccount();
+        this.refreshWallets(account.wallets);
+    }
+
+    private refreshWallets = (assets: NWallet.AssetContext[]): void => {
+        this.logger.debug('[wallet-tab] on refresh assets');
+        const nCash = assets.find(wallet => {
+            return wallet.item.isNative === true && wallet.item.asset.code === 'NCH';
+        });
+
+        let totalAmount = 0;
+        assets.forEach(wallet => {
+            totalAmount += Number.parseFloat(wallet.amount) * wallet.item.price;
+        });
+
+        this.totalPrice = totalAmount.toString();
+
+        assets.splice(assets.indexOf(nCash), 1);
+
+        this.walletPages.length = 0;
+        let sliceWallet = assets.splice(0, 3);
+
+        while (sliceWallet.length > 0) {
+            this.walletPages.push({ wallets: sliceWallet });
+            sliceWallet = assets.splice(0, 3);
+        }
+
+        this.nCash = nCash;
+    };
 
     public onSelectWallet(wallet: NWallet.AssetContext) {
         this.navCtrl.push(

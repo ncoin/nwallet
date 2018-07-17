@@ -1,3 +1,4 @@
+import { AppServiceProvider } from './../providers/app/app.service';
 import { TabcontainerPage } from '../pages/tab/tabcontainer';
 import { AccountProvider } from '../providers/account/account';
 import { LockProvider } from '../providers/common/lock/lock';
@@ -31,6 +32,7 @@ export class NWalletApp {
         private lock: LockProvider,
         private account: AccountProvider,
         private appConfig: AppConfigProvider,
+        private appService: AppServiceProvider,
     ) {
         this.initialize();
     }
@@ -59,6 +61,7 @@ export class NWalletApp {
         const account = await this.account.getAccount();
         if (account) {
             this.logger.debug('[app-page] prepare wallet page');
+            await this.appService.login(account);
             this.rootPage = TabcontainerPage;
         } else {
             this.logger.debug('[app-page] prepare entrance page');

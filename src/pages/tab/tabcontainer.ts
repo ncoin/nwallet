@@ -9,13 +9,7 @@ import { LoanNcashTabPage } from './3.loan-ncash-tab/loan-ncash-tab';
 import { WalletTabPages, WalletPage } from './2.wallet-tab/wallet-tab';
 import { Logger } from '../../providers/common/logger/logger';
 
-/**
- * Generated class for the TabcontainerPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
-export interface WalletTabContext {
+export interface TabItemContext {
     // title: "Schedule",
     // name: "TabsPage",
     component: any;
@@ -32,12 +26,13 @@ export interface WalletTabContext {
 })
 export class TabcontainerPage {
     selectedIndex: number;
-    tabItems: WalletTabContext[] = [
+    tabItems: TabItemContext[] = [
         {
             component: TransferTabPage,
         },
         {
             component: WalletBuyPage,
+            params : { wallet: this.account.getNativeWallet() }
         },
         {
             component: WalletPage,
@@ -56,9 +51,6 @@ export class TabcontainerPage {
     }
 
     private async init(): Promise<void> {
-        const account = await this.account.getAccount();
-        await this.appService.login(account);
-        this.tabItems[1].params = { wallet: this.account.getNativeWallet() };
     }
 
     chat() {}
