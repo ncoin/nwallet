@@ -14,15 +14,27 @@ export class AccountProvider {
     }
 
     private async init(): Promise<void> {
-        this.event;this.logger;
+        this.event;
+        this.logger;
         this.account = await this.preference.get(Preference.Nwallet.walletAccount);
     }
 
+    // todo remove me --sky`
     public async getAccount(): Promise<NWallet.Account> {
         if (!this.account) {
             this.account = await this.preference.get(Preference.Nwallet.walletAccount);
         }
         return this.account;
+    }
+
+    public getNativeWallet(): NWallet.WalletContext {
+        if (!this.account) {
+            throw new Error('[account] account not exist!');
+        }
+
+        return this.account.wallets.find(wallet => {
+            return wallet.item.asset.isNative();
+        });
     }
 
     public generateSignature(secretKey?: string): NWallet.Signature {

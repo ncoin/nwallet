@@ -2,5 +2,8 @@
     "rulesDirectory": ["node_modules/tslint-eslint-rules/dist/rules"],
     "rules": {
         "no-duplicate-variable": true,
+        "no-unused-expression" : true,
+        "no-unused-variable": false,
+        "no-angle-bracket-type-assertion" : true,
     }
 }

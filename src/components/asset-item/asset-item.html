@@ -1,0 +1,12 @@
+<ion-card>
+    <ion-card-content>
+        <button ion-item style="text-align: right" >
+            <ion-label text-left>{{asset.item | walletName}}</ion-label>
+            <div item-end>
+                <ion-label>{{asset | walletFormat}}</ion-label>
+                <ion-label>{{asset | walletToUSD}}</ion-label>
+            </div>
+        </button>
+        <ng-content></ng-content>
+    </ion-card-content>
+</ion-card>

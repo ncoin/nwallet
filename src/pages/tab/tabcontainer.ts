@@ -1,8 +1,10 @@
-import { BuyNcashTabPage } from './1.buy-ncash-tab/buy-ncash-tab';
+import { WalletBuyPage } from './2.wallet-tab/wallet-detail/wallet-buy/wallet-buy';
+import { AccountProvider } from './../../providers/account/account';
+import { AppServiceProvider } from './../../providers/app/app.service';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { TransferTabPage } from './0.transfer-tab/transfer-tab';
-import { AccountTabPage } from './5.account-tab/account-tab';
+import { AccountTabPage } from './4.account-tab/account-tab';
 import { LoanNcashTabPage } from './3.loan-ncash-tab/loan-ncash-tab';
 import { WalletTabPages, WalletPage } from './2.wallet-tab/wallet-tab';
 
@@ -33,7 +35,7 @@ export class TabcontainerPage {
             component: TransferTabPage,
         },
         {
-            component: BuyNcashTabPage,
+            component: WalletBuyPage,
         },
         {
             component: WalletPage,
@@ -46,13 +48,20 @@ export class TabcontainerPage {
         },
     ];
 
-    constructor(public navCtrl: NavController, public navParams: NavParams) {
+    constructor(public navCtrl: NavController, public navParams: NavParams, private appService: AppServiceProvider, private account: AccountProvider) {
         this.selectedIndex = 2;
+        this.init();
     }
 
-    ionViewDidLoad() {
-        console.log('ionViewDidLoad TabcontainerPage');
+    private async init(): Promise<void> {
+        this.account.getAccount().then(async account => {
+            await this.appService.login(account);
+        });
+    }
+
+    chat() {
+
     }
 }
 
-export const NWalletTabPages = [TabcontainerPage, TransferTabPage, BuyNcashTabPage, LoanNcashTabPage, AccountTabPage, ...WalletTabPages];
+export const NWalletTabPages = [TabcontainerPage, TransferTabPage, WalletBuyPage, LoanNcashTabPage, AccountTabPage, ...WalletTabPages];

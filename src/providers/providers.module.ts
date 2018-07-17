@@ -9,6 +9,7 @@ import { NClientProvider } from './nsus/nclient';
 import { CurrencyProvider } from './currency/currency';
 import { LockProvider } from './common/lock/lock';
 import { PlatformProvider } from './common/platform/platform';
+import { EventProvider } from './common/event/event';
 
 @NgModule({
     providers: [
@@ -21,7 +22,8 @@ import { PlatformProvider } from './common/platform/platform';
         CurrencyProvider,
         PlatformProvider,
         LockProvider,
-        TokenProvider
+        TokenProvider,
+        EventProvider
     ],
 })
 export class NWalletProvidersModule {}

@@ -1,4 +1,10 @@
 import { Asset } from 'stellar-sdk';
+
+export namespace NWallet {
+
+
+}
+
 export namespace NWallet {
     export interface Account {
         isActivate: boolean;

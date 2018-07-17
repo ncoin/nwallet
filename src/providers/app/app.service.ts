@@ -31,7 +31,9 @@ export class AppServiceProvider {
 
     public async logout(account: NWallet.Account): Promise<void> {
         await this.preference.remove(Preference.Nwallet.walletAccount);
-        await this.connector.unSubscribe(account);
+
+        //todo unsubscribe
+        await this.connector.unSubscribes(account);
         this.account.flush();
         this.logger.debug('logout', account.signature.public);
     }
@@ -41,7 +43,6 @@ export class AppServiceProvider {
         const account = await this.account.getAccount();
         return await this.connector.getTransactions(account.signature.public, asset, pageToken);
     }
-
 
     private async requestTrust(): Promise<void> {
         this.processXdr(NWallet.Protocol.XdrRequestTypes.Trust, {});

@@ -1,14 +1,13 @@
+import { EventTypes } from './../../../interfaces/events';
 import { WalletLoanPage } from './wallet-detail/wallet-loan/wallet-loan';
 import { WalletBuyPage } from './wallet-detail/wallet-buy/wallet-buy';
 import { EntrancePage } from './../../0.entrance/entrance';
 import { WalletDetailPage } from './wallet-detail/wallet-detail';
-import { TokenProvider } from './../../../providers/token/token';
-import { AccountProvider } from './../../../providers/account/account';
 import { Logger } from './../../../providers/common/logger/logger';
-import { Component } from '@angular/core';
+import { Component, NgZone } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { NWallet } from '../../../interfaces/nwallet';
-import { AppServiceProvider } from '../../../providers/app/app.service';
+import { EventProvider } from '../../../providers/common/event/event';
 
 /**
  * Generated class for the WalletPage page.
@@ -17,33 +16,55 @@ import { AppServiceProvider } from '../../../providers/app/app.service';
  * Ionic pages and navigation.
  */
 
+export interface WalletSlide {
+    wallets: NWallet.WalletContext[];
+}
+
 @Component({
     selector: 'tab-wallet',
     templateUrl: 'wallet-tab.html',
 })
 export class WalletPage {
-    account: NWallet.Account;
-
-    constructor(
-        public navCtrl: NavController,
-        public navParams: NavParams,
-        private logger: Logger,
-        private accountProvider: AccountProvider,
-        private appService: AppServiceProvider,
-        private token: TokenProvider,
-    ) {
+    walletPages: WalletSlide[] = [];
+    nCash: NWallet.WalletContext;
+    totalPrice: string;
+    private subscription: any;
+    constructor(public navCtrl: NavController, public navParams: NavParams, private zone: NgZone, private event: EventProvider, private logger: Logger) {
         this.init();
-    }
-
-    private async init(): Promise<void> {
-        this.account = await this.accountProvider.getAccount();
-        await this.appService.login(this.account);
-        const token = await this.token.getToken();
-        this.logger.debug('[remove me]', token);
     }
 
     ionViewDidLoad() {
         this.navCtrl.getActive().showBackButton(false);
+    }
+
+    init(): any {
+        this.subscription = this.event.subscribe(EventTypes.NWallet.account_refresh_wallet, wallets => {
+            const nCash = wallets.find(wallet => {
+                return wallet.item.isNative === true && wallet.item.asset.code === 'NCH';
+            });
+
+            let totalAmount = 0;
+            wallets.forEach(wallet => {
+                totalAmount += Number.parseFloat(wallet.amount) * wallet.item.price;
+            });
+
+            this.totalPrice = totalAmount.toString();
+
+            wallets.splice(wallets.indexOf(nCash), 1);
+
+            this.logger.debug('[wallet-tab] on wallet changed');
+            this.walletPages.length = 0;
+            let sliceWallet = wallets.splice(0, 3);
+
+            this.zone.run(() => {
+                while (sliceWallet.length > 0) {
+                    this.walletPages.push({ wallets: sliceWallet });
+                    sliceWallet = wallets.splice(0, 3);
+                }
+
+                this.nCash = nCash;
+            });
+        });
     }
 
     public onSelectWallet(wallet: NWallet.WalletContext) {
@@ -58,7 +79,7 @@ export class WalletPage {
     }
 
     public onLogout(): void {
-        this.appService.logout(this.account);
+        // this.appService.logout(this.account);
         this.navCtrl.setRoot(EntrancePage, undefined, {
             animate: true,
             animation: 'ios-transition',

@@ -1,4 +1,3 @@
-
 import { NWalletDirectiveModule } from './../directives/directive.module';
 
 // import { PinModalPage } from './1.security/pin/pin';
@@ -15,6 +14,7 @@ import { PinDots } from './1.security/pin/pin-dot/pin-dots';
 import { PinModalPage } from './1.security/pin/pin';
 import { NWalletSharedModule } from '../shared/shared.module';
 import { NWalletTabPages } from './tab/tabcontainer';
+import { NWalletComponents } from '../components/components.module';
 
 
 @NgModule({
@@ -27,7 +27,8 @@ import { NWalletTabPages } from './tab/tabcontainer';
         PinDots,
         PinPad,
         PinModalPage,
-        ...NWalletTabPages
+        ...NWalletTabPages,
+        ...NWalletComponents
     ],
     imports: [
         NWalletPipesModule,

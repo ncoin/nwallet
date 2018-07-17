@@ -1,65 +1,44 @@
-import { Subscription, Observable } from 'rxjs/Rx';
+import { EventTypes } from './../../interfaces/events';
+import { Observable } from 'rxjs/Rx';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { CurrencyProvider } from './../currency/currency';
-// steller sdk wrapper
-import Stellar, { Asset } from 'stellar-sdk';
-import { Injectable, NgZone } from '@angular/core';
+import { Asset } from 'stellar-sdk';
+import { Injectable } from '@angular/core';
 import { Logger } from './../common/logger/logger';
 import { env } from '../../environments/environment';
 import { NWallet, getOrAddWalletItem } from '../../interfaces/nwallet';
+import { EventProvider } from '../common/event/event';
 
 @Injectable()
 export class NClientProvider {
-    /** <public key, eventSource> */
-    private paymentSubscriptions: Map<string, Subscription>;
 
-    constructor(private zone: NgZone, private logger: Logger, private currency: CurrencyProvider, private http: HttpClient) {
-        this.currency;
-        this.paymentSubscriptions = new Map<string, Subscription>();
-        this.init();
+    constructor(private logger: Logger, private http: HttpClient, private event: EventProvider) {
     }
 
     private getKeyFromValue(enums: {}, value: any): string {
         return Object.keys(enums).filter(type => enums[type] === value)[0];
     }
 
-    async init(): Promise<void> {
-        if (env.network === 'test') {
-            //todo move location
-            Stellar.Network.useTestNetwork();
-        } else {
-            //todo move location
-            Stellar.Network.usePublicNetwork();
-        }
-    }
-
     public async fetchJobs(account: NWallet.Account): Promise<void> {
         this.logger.debug('[nclient] fetch jobs start');
-        this.subscribe(account);
+        this.fetchStreams(account);
         // const subscribe = this.subscribe(account);
         // const setAsset = this.refreshWallets(account);
         // await Promise.all([subscribe, setAsset]);
         this.logger.debug('[nclient] fetch jobs done');
     }
 
-    public subscribe = (account: NWallet.Account): void => {
-        const subscription = Observable.timer(0, 5000).subscribe(() => {
-            this.refreshWallets(account);
-        });
-
-        this.paymentSubscriptions.set(account.signature.public, subscription);
+    public fetchStreams = (account: NWallet.Account): void => {
+        const assetRefresh = Observable.timer(0, 5000).mergeMap(() => this.getAssets(account.signature.public));
+        assetRefresh.subscribe(wallet => {
+            this.event.publish(EventTypes.NWallet.account_refresh_wallet, wallet);
+        })
     };
 
-    public async unSubscribe(account: NWallet.Account): Promise<void> {
-        const unSubscribePayment = this.paymentSubscriptions.get(account.signature.public);
-
-        if (unSubscribePayment) {
-            unSubscribePayment.unsubscribe();
-            this.logger.debug('[nclient] payment subscription closed');
-        }
+    public async unSubscribes(account: NWallet.Account): Promise<void> {
+        account;
     }
 
-    public getAssets(accountId: string): Promise<NWallet.WalletContext[]> {
+    public getAssets(accountId: string): Observable<NWallet.WalletContext[]> {
         const url = `${env.endpoint.client}accounts/stellar/${accountId}`;
         const convert = (data: Object[]): NWallet.WalletContext[] => {
             return data.map(data => {
@@ -76,19 +55,12 @@ export class NClientProvider {
             });
         };
 
-        return this.http
-            .get(url)
-            .map(data => {
-                const supportedCoins = convert(data['balances']['supportCoins']);
-                const unSupportCoins = convert(data['balances']['unSupportCoins']);
-                const returnCoins = supportedCoins.concat(unSupportCoins);
-                return returnCoins;
-            })
-            .toPromise()
-            .catch((response: HttpErrorResponse) => {
-                this.logger.error('[nclient] getAsset failed', response);
-                return [];
-            });
+        return this.http.get(url).map(data => {
+            const supportedCoins = convert(data['balances']['supportCoins']);
+            const unSupportCoins = convert(data['balances']['unSupportCoins']);
+            const returnCoins = supportedCoins.concat(unSupportCoins);
+            return returnCoins;
+        });
     }
 
     public async getTransactions(accountId: string, asset: Asset, pageToken?: string): Promise<NWallet.Transactions.Context> {
@@ -125,19 +97,6 @@ export class NClientProvider {
                 this.logger.error('[nclient] request getTransaction failed', params, response);
                 return undefined;
             });
-    }
-
-    public async refreshWallets(account: NWallet.Account): Promise<void> {
-        this.getAssets(account.signature.public).then(wallets => {
-            this.logger.debug('[nclient] refresh wallets', wallets);
-
-            //todo check equality then zone run --sky`
-            this.zone.run(() => {
-                account.wallets = account.wallets || [];
-                account.wallets.length = 0;
-                account.wallets.push(...wallets);
-            });
-        });
     }
 
     public requestXDR = (requestType: NWallet.Protocol.XdrRequestTypes, params: Object): Promise<NWallet.Protocol.XDRResponse> => {

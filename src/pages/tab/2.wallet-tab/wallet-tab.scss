@@ -1,3 +1,22 @@
-page-wallet {
+page-wallet {}
 
+ion-slide.swiper-slide {
+    //align-items: flex-start;
 }
+
+ion-slides.slides {
+    height: auto;
+}
+
+div.slide-zoom {
+    min-height: 40rem;
+}
+
+div.swiper-wrapper {
+    margin: 0 0 1rem 0;
+}
+div.swiper-pagination {
+    align-content: flex-end;
+    height: auto;
+    bottom: 0rem !important;
+ }
