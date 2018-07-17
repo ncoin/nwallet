@@ -11,7 +11,7 @@ export namespace NWallet {
         signature: Signature;
         address: Address;
         profile: Profile;
-        wallets: WalletContext[];
+        wallets: AssetContext[];
     }
 
     export interface Address {
@@ -30,14 +30,14 @@ export namespace NWallet {
         secret: string;
     }
 
-    export interface WalletItem {
+    export interface AssetItem {
         asset: Asset;
         isNative: boolean;
         price: number;
     }
 
-    export interface WalletContext {
-        item: WalletItem;
+    export interface AssetContext {
+        item: AssetItem;
         amount: string;
     }
 
@@ -60,7 +60,7 @@ export namespace NWallet.Transactions {
 
     export interface Record {
         type: string;
-        context: WalletContext;
+        context: AssetContext;
         date: Date;
         id: string;
     }
@@ -75,7 +75,7 @@ export namespace NWallet.Transactions {
                 const createdAt = raw['created_at'];
                 return <Record>{
                     type: raw['type'],
-                    context: <WalletContext>{
+                    context: <AssetContext>{
                         item: item,
                         amount: amount,
                     },
@@ -98,10 +98,10 @@ export namespace NWallet.Transactions {
     }
 }
 
-const Assets = new Map<string, NWallet.WalletItem>([
+const Assets = new Map<string, NWallet.AssetItem>([
     [
         'XLM_native',
-        <NWallet.WalletItem>{
+        <NWallet.AssetItem>{
             asset: Asset.native(),
             price: 0,
             isNative: true,
@@ -130,7 +130,7 @@ export namespace NWallet.Protocol {
 }
 
 //todo AOP (cache decorator) --sky
-export function getOrAddWalletItem(code: string, issuer: string, isNative: boolean): NWallet.WalletItem {
+export function getOrAddWalletItem(code: string, issuer: string, isNative: boolean): NWallet.AssetItem {
     if (code === 'XLM' && isNative === true) {
         issuer = 'native';
     }
@@ -149,7 +149,7 @@ export function getOrAddWalletItem(code: string, issuer: string, isNative: boole
             NWallet.Assets.NCN = asset;
         }
 
-        return Assets.set(key, <NWallet.WalletItem>{
+        return Assets.set(key, <NWallet.AssetItem>{
             asset: asset,
             price: 0,
             isNative: isNative,

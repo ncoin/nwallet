@@ -1,4 +1,4 @@
-import { Events as NWEvents } from './../../../interfaces/events';
+import { Events as NWEvents } from '../../../interfaces/events';
 import { Events } from 'ionic-angular';
 import { Injectable } from '@angular/core';
 

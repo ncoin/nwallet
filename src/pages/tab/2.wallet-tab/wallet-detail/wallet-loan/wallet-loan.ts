@@ -1,5 +1,5 @@
-import { AppServiceProvider } from './../../../../../providers/app/app.service';
-import { AccountProvider } from './../../../../../providers/account/account';
+import { AppServiceProvider } from '../../../../../providers/app/app.service';
+import { AccountProvider } from '../../../../../providers/account/account';
 import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams, Navbar, AlertController, LoadingController } from 'ionic-angular';
 import { NWallet } from '../../../../../interfaces/nwallet';
@@ -20,9 +20,9 @@ export class WalletLoanPage {
     @ViewChild(Navbar) navBar: Navbar;
 
     private _nchAmount: number = 0;
-    private _wallet: NWallet.WalletContext;
-    wallets: NWallet.WalletContext[];
-    expectSpendWallet: NWallet.WalletContext;
+    private _wallet: NWallet.AssetContext;
+    wallets: NWallet.AssetContext[];
+    expectSpendWallet: NWallet.AssetContext;
 
     constructor(
         account: AccountProvider,
@@ -33,7 +33,7 @@ export class WalletLoanPage {
         private loading: LoadingController,
     ) {
         this._wallet = navParams.get('wallet');
-        this.expectSpendWallet = <NWallet.WalletContext>{
+        this.expectSpendWallet = <NWallet.AssetContext>{
             item: this._wallet.item,
             amount: '0',
         };
@@ -52,18 +52,18 @@ export class WalletLoanPage {
         return this._nchAmount;
     }
 
-    public get wallet(): NWallet.WalletContext {
+    public get wallet(): NWallet.AssetContext {
         return this._wallet;
     }
 
-    public set wallet(wallet: NWallet.WalletContext) {
+    public set wallet(wallet: NWallet.AssetContext) {
         this._wallet = wallet;
         this.calculateTotalNCN();
     }
 
     private calculateTotalNCN(): void {
         const totalPrice = (this.nchAmount * 1) / this.wallet.item.price;
-        this.expectSpendWallet = <NWallet.WalletContext>{
+        this.expectSpendWallet = <NWallet.AssetContext>{
             amount: totalPrice.toString(),
             item: this._wallet.item,
             price: this.expectSpendWallet.item.price,

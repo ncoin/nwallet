@@ -12,9 +12,5 @@ import { NWallet } from '../../interfaces/nwallet';
     templateUrl: 'asset-item.html',
 })
 export class AssetItemComponent {
-    @Input() asset: NWallet.WalletContext;
-
-    constructor() {
-        console.log('heelo');
-    }
+    @Input() asset: NWallet.AssetContext;
 }

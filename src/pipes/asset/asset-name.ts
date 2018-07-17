@@ -5,7 +5,7 @@ import { NWallet } from '../../interfaces/nwallet';
 @Pipe({
     name: 'assetName',
 })
-export class WalletNamePipe implements PipeTransform {
+export class AssetNamePipe implements PipeTransform {
     constructor(private translate: TranslateService) {}
     transform(item: NWallet.AssetItem) {
         if (item.isNative === true) {

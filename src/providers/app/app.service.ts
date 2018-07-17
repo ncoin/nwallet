@@ -1,5 +1,5 @@
-import { AccountProvider } from './../account/account';
-import { NClientProvider } from './../nsus/nclient';
+import { AccountProvider } from '../account/account';
+import { NClientProvider } from '../nsus/nclient';
 import { Injectable } from '@angular/core';
 import { PreferenceProvider, Preference } from '../common/preference/preference';
 import { App } from 'ionic-angular';

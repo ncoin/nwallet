@@ -1,8 +1,8 @@
-import { TabcontainerPage } from './../pages/tab/tabcontainer';
-import { AccountProvider } from './../providers/account/account';
-import { LockProvider } from './../providers/common/lock/lock';
-import { Subscription } from 'rxjs/Rx';
-import { Logger } from './../providers/common/logger/logger';
+import { TabcontainerPage } from '../pages/tab/tabcontainer';
+import { AccountProvider } from '../providers/account/account';
+import { LockProvider } from '../providers/common/lock/lock';
+import { Subscription } from 'rxjs';
+import { Logger } from '../providers/common/logger/logger';
 import { Component, ViewChild } from '@angular/core';
 
 import { Nav, Platform } from 'ionic-angular';

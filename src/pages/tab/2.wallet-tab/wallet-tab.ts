@@ -1,9 +1,9 @@
-import { EventTypes } from './../../../interfaces/events';
+import { EventTypes } from '../../../interfaces/events';
 import { WalletLoanPage } from './wallet-detail/wallet-loan/wallet-loan';
 import { WalletBuyPage } from './wallet-detail/wallet-buy/wallet-buy';
-import { EntrancePage } from './../../0.entrance/entrance';
+import { EntrancePage } from '../../0.entrance/entrance';
 import { WalletDetailPage } from './wallet-detail/wallet-detail';
-import { Logger } from './../../../providers/common/logger/logger';
+import { Logger } from '../../../providers/common/logger/logger';
 import { Component, NgZone } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { NWallet } from '../../../interfaces/nwallet';
@@ -17,7 +17,7 @@ import { EventProvider } from '../../../providers/common/event/event';
  */
 
 export interface WalletSlide {
-    wallets: NWallet.WalletContext[];
+    wallets: NWallet.AssetContext[];
 }
 
 @Component({
@@ -26,7 +26,7 @@ export interface WalletSlide {
 })
 export class WalletPage {
     walletPages: WalletSlide[] = [];
-    nCash: NWallet.WalletContext;
+    nCash: NWallet.AssetContext;
     totalPrice: string;
     private subscription: any;
     constructor(public navCtrl: NavController, public navParams: NavParams, private zone: NgZone, private event: EventProvider, private logger: Logger) {
@@ -67,7 +67,7 @@ export class WalletPage {
         });
     }
 
-    public onSelectWallet(wallet: NWallet.WalletContext) {
+    public onSelectWallet(wallet: NWallet.AssetContext) {
         this.navCtrl.push(
             WalletDetailPage,
             { wallet: wallet },

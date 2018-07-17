@@ -19,7 +19,7 @@
     <div>
         <div style="margin: 3% 0% 2% 0%">:: COLLATERAL CURRENCY</div>
         <ion-item>
-            <ion-label> {{wallet.item | walletName}}</ion-label>
+            <ion-label> {{wallet.item | assetName}}</ion-label>
             <ion-select [(ngModel)]="wallet" interface="popover">
                 <ion-option *ngFor="let wallet of wallets" [value]="wallet">{{wallet.item.asset.code}}</ion-option>
             </ion-select>
@@ -27,14 +27,14 @@
         <ion-item no-lines>
             <ion-label>> Balance</ion-label>
             <div item-end>
-                <ion-label item-end style="text-align: right">{{wallet | walletFormat}}</ion-label>
+                <ion-label item-end style="text-align: right">{{wallet | assetFormat}}</ion-label>
             </div>
         </ion-item>
         <ion-item no-lines>
             <ion-label>> Available</ion-label>
             <div item-end>
-                <ion-label style="text-align: right">{{wallet | walletFormat}}</ion-label>
-                <ion-label style="text-align: right">{{wallet | walletToUSD}}</ion-label>
+                <ion-label style="text-align: right">{{wallet | assetFormat}}</ion-label>
+                <ion-label style="text-align: right">{{wallet | assetToUSD}}</ion-label>
             </div>
         </ion-item>
         <ion-item>
@@ -50,7 +50,7 @@
             </ion-label>
             <div item-end>
                 <ion-label style="text-align: right">
-                    {{expectSpendWallet| walletFormat}}
+                    {{expectSpendWallet| assetFormat}}
                 </ion-label>
             </div>
         </ion-item>

@@ -1,4 +1,4 @@
-import { PreferenceProvider, Preference } from './../common/preference/preference';
+import { PreferenceProvider, Preference } from '../common/preference/preference';
 import { Injectable } from '@angular/core';
 import { Logger } from '../common/logger/logger';
 import { TranslateService } from '@ngx-translate/core';

@@ -22,7 +22,7 @@ import { AppServiceProvider } from '../../../../providers/app/app.service';
 export class WalletDetailPage {
     isLoading: boolean = true;
     isNCH: boolean;
-    wallet: NWallet.WalletContext;
+    wallet: NWallet.AssetContext;
     histories: NWallet.Transactions.Record[] = [];
     pageToken: string;
     hasNext: boolean;

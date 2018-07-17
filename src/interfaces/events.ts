@@ -19,7 +19,7 @@ export const EventTypes = {
     NWallet: {
         account_create: new Events<string>('account_create'),
         account_import: set<string>('account_import'),
-        account_refresh_wallet: set<NWallet.WalletContext[]>('account_refresh_wallet'),
+        account_refresh_wallet: set<NWallet.AssetContext[]>('account_refresh_wallet'),
     },
 };
 

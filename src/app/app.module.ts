@@ -1,7 +1,7 @@
 import Stellar from 'stellar-sdk';
-import { NWalletSharedModule } from './../shared/shared.module';
-import { env } from './../environments/environment';
-import { NWalletPageModule } from './../pages/pages.module';
+import { NWalletSharedModule } from '../shared/shared.module';
+import { env } from '../environments/environment';
+import { NWalletPageModule } from '../pages/pages.module';
 import { NgModule, ErrorHandler, enableProdMode } from '@angular/core';
 
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';

@@ -1,7 +1,7 @@
-import { NWalletDirectiveModule } from './../directives/directive.module';
+import { NWalletDirectiveModule } from '../directives/directive.module';
 
 // import { PinModalPage } from './1.security/pin/pin';
-import { NWalletPipesModule } from './../pipes/pipes.module';
+import { NWalletPipesModule } from '../pipes/pipes.module';
 import { CreateAccountPage } from './1.account/createaccount';
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';

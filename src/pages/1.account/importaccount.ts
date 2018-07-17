@@ -1,5 +1,5 @@
-import { TabcontainerPage } from './../tab/tabcontainer';
-import { PreferenceProvider, Preference } from './../../providers/common/preference/preference';
+import { TabcontainerPage } from '../tab/tabcontainer';
+import { PreferenceProvider, Preference } from '../../providers/common/preference/preference';
 import { Component } from '@angular/core';
 import { IonicPage, NavController } from 'ionic-angular';
 import { Logger } from '../../providers/common/logger/logger';

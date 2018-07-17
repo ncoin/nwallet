@@ -1,6 +1,6 @@
-import { AccountProvider } from './../account/account';
-import { env } from './../../environments/environment';
-import { Logger } from './../common/logger/logger';
+import { AccountProvider } from '../account/account';
+import { env } from '../../environments/environment';
+import { Logger } from '../common/logger/logger';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Device } from '@ionic-native/device';

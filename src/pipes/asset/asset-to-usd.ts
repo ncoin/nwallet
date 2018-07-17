@@ -10,7 +10,7 @@ import { NWallet } from '../../interfaces/nwallet';
     name: 'assetToUSD',
 })
 // USD only (fix it later!)
-export class WalletToUSDPipe implements PipeTransform {
+export class AssetToUSDPipe implements PipeTransform {
     /**
      * Takes a value and makes it lowercase.
      */

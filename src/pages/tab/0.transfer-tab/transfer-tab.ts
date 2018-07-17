@@ -14,7 +14,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
     templateUrl: 'transfer-tab.html',
 })
 export class TransferTabPage {
-    
+
     constructor(public navCtrl: NavController, public navParams: NavParams) {}
 
     ionViewDidLoad() {

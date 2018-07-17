@@ -1,5 +1,5 @@
-import { PreferenceProvider } from './../../providers/common/preference/preference';
-import { AccountProvider } from './../../providers/account/account';
+import { PreferenceProvider } from '../../providers/common/preference/preference';
+import { AccountProvider } from '../../providers/account/account';
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { Logger } from '../../providers/common/logger/logger';

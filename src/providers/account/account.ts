@@ -1,6 +1,6 @@
-import { Logger } from './../common/logger/logger';
+import { Logger } from '../common/logger/logger';
 import { Events } from 'ionic-angular';
-import { NWallet } from './../../interfaces/nwallet';
+import { NWallet } from '../../interfaces/nwallet';
 import { Injectable } from '@angular/core';
 import { PreferenceProvider, Preference } from '../common/preference/preference';
 import { Keypair } from 'stellar-sdk';
@@ -27,7 +27,7 @@ export class AccountProvider {
         return this.account;
     }
 
-    public getNativeWallet(): NWallet.WalletContext {
+    public getNativeWallet(): NWallet.AssetContext {
         if (!this.account) {
             throw new Error('[account] account not exist!');
         }
