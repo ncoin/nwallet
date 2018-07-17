@@ -18,7 +18,7 @@ export class EventProvider {
         }
     }
 
-    publish<T>(event: NWEvents<T>, param: T): void {
+    publish<T>(event: NWEvents<T>, param?: T): void {
         this.event.publish(event.getKey(), param);
     }
 }

@@ -1,4 +1,6 @@
-import { AppServiceProvider } from './../providers/app/app.service';
+import { EventTypes } from './../interfaces/events';
+import { EventProvider } from './../providers/common/event/event';
+import { AppServiceProvider } from '../providers/app/app.service';
 import { TabcontainerPage } from '../pages/tab/tabcontainer';
 import { AccountProvider } from '../providers/account/account';
 import { LockProvider } from '../providers/common/lock/lock';
@@ -33,6 +35,7 @@ export class NWalletApp {
         private account: AccountProvider,
         private appConfig: AppConfigProvider,
         private appService: AppServiceProvider,
+        private event: EventProvider
     ) {
         this.initialize();
     }
@@ -50,6 +53,8 @@ export class NWalletApp {
     }
 
     private async onPlatformReady(): Promise<void> {
+        this.subscribeEvents();
+
         await this.appConfig.loadAll();
         await this.preparePage();
         this.prepareSecurity();
@@ -57,12 +62,22 @@ export class NWalletApp {
         this.splashScreen.hide();
     }
 
+    private subscribeEvents(): void {
+
+        this.event.subscribe(EventTypes.App.user_login, () => {
+            this.rootPage = TabcontainerPage;
+        })
+        this.event.subscribe(EventTypes.App.user_logout, () => {
+            this.rootPage = EntrancePage;
+        });
+    }
+
     private async preparePage(): Promise<void> {
         const account = await this.account.getAccount();
         if (account) {
             this.logger.debug('[app-page] prepare wallet page');
             await this.appService.login(account);
-            this.rootPage = TabcontainerPage;
+            this.logger.debug('[app-page] login');
         } else {
             this.logger.debug('[app-page] prepare entrance page');
             this.rootPage = EntrancePage;

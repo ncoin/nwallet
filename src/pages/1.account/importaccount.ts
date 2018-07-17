@@ -1,5 +1,4 @@
-import { TabcontainerPage } from '../tab/tabcontainer';
-import { PreferenceProvider, Preference } from '../../providers/common/preference/preference';
+import { AppServiceProvider } from './../../providers/app/app.service';
 import { Component } from '@angular/core';
 import { IonicPage, NavController } from 'ionic-angular';
 import { Logger } from '../../providers/common/logger/logger';
@@ -21,7 +20,12 @@ import { NWallet } from '../../interfaces/nwallet';
 export class ImportAccountPage {
     public secretKey: string;
 
-    constructor(public navCtrl: NavController, public account: AccountProvider, private preference: PreferenceProvider, private logger: Logger) {}
+    constructor(
+        public navCtrl: NavController,
+        public account: AccountProvider,
+        private logger: Logger,
+        private appService: AppServiceProvider,
+    ) {}
 
     ionViewDidLoad() {}
 
@@ -29,16 +33,14 @@ export class ImportAccountPage {
         this.logger.debug('import ', this.secretKey);
         const signature = this.account.generateSignature(this.secretKey);
 
-        await this.preference.set(Preference.Nwallet.walletAccount, <NWallet.Account>{
+        const importAccount = <NWallet.Account>{
             isActivate: false,
             signature: signature,
             address: undefined,
             profile: undefined,
-            wallets: undefined,
-        });
+            wallets: [],
+        };
 
-        setTimeout(async () => {
-            await this.navCtrl.setRoot(TabcontainerPage, undefined, undefined);
-        }, 1000);
+        await this.appService.login(importAccount);
     }
 }

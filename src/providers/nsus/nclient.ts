@@ -1,5 +1,5 @@
 import { EventTypes } from '../../interfaces/events';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Asset } from 'stellar-sdk';
 import { Injectable } from '@angular/core';
@@ -10,6 +10,7 @@ import { EventProvider } from '../common/event/event';
 
 @Injectable()
 export class NClientProvider {
+    private subscriptions: Subscription[] = [];
     constructor(private logger: Logger, private http: HttpClient, private event: EventProvider) {}
 
     private getKeyFromValue(enums: {}, value: any): string {
@@ -28,18 +29,23 @@ export class NClientProvider {
     public fetchStreams = (account: NWallet.Account): Promise<boolean> => {
         return new Promise<boolean>(resolve => {
             const assetRefresh = Observable.timer(0, 5000).mergeMap(() => this.getAssets(account.signature.public));
-            assetRefresh.subscribe(wallet => {
-                account.wallets = account.wallets || [];
-                account.wallets.length = 0;
-                account.wallets.push(...wallet);
-                this.event.publish(EventTypes.NWallet.account_refresh_wallet, wallet);
-                resolve(true);
-            });
+            this.subscriptions.push(
+                assetRefresh.subscribe(wallet => {
+                    account.wallets = account.wallets || [];
+                    account.wallets.length = 0;
+                    account.wallets.push(...wallet);
+                    this.event.publish(EventTypes.NWallet.account_refresh_wallet, wallet);
+                    resolve(true);
+                }),
+            );
         });
     };
 
     public async unSubscribes(account: NWallet.Account): Promise<void> {
         account;
+        this.subscriptions.forEach(subscription => {
+            subscription.unsubscribe();
+        })
     }
 
     public getAssets(accountId: string): Observable<NWallet.AssetContext[]> {

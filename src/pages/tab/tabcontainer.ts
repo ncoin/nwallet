@@ -1,13 +1,13 @@
-import { WalletBuyPage } from './2.wallet-tab/wallet-detail/wallet-buy/wallet-buy';
+import { WalletBuyPage } from './2.buy-ncash-tab/wallet-buy';
 import { AccountProvider } from '../../providers/account/account';
 import { AppServiceProvider } from '../../providers/app/app.service';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { TransferTabPage } from './0.transfer-tab/transfer-tab';
-import { AccountTabPage } from './4.account-tab/account-tab';
-import { LoanNcashTabPage } from './3.loan-ncash-tab/loan-ncash-tab';
-import { WalletTabPages, WalletPage } from './2.wallet-tab/wallet-tab';
+import { AccountTabPage } from './5.account-tab/account-tab';
+import { WalletTabPages, WalletPage } from './3.wallet-tab/wallet-tab';
 import { Logger } from '../../providers/common/logger/logger';
+import { WalletLoanPage } from './4.loan-ncash-tab/wallet-loan';
+import { WalletDetailPage } from './1.transfer-tab/wallet-detail';
 
 export interface TabItemContext {
     // title: "Schedule",
@@ -28,17 +28,17 @@ export class TabcontainerPage {
     selectedIndex: number;
     tabItems: TabItemContext[] = [
         {
-            component: TransferTabPage,
+            component: WalletDetailPage,
         },
         {
             component: WalletBuyPage,
-            params : { wallet: this.account.getNativeWallet() }
+            params: { wallet: this.account.getNativeWallet() },
         },
         {
             component: WalletPage,
         },
         {
-            component: LoanNcashTabPage,
+            component: WalletLoanPage,
         },
         {
             component: AccountTabPage,
@@ -47,13 +47,12 @@ export class TabcontainerPage {
 
     constructor(public navCtrl: NavController, public navParams: NavParams, private appService: AppServiceProvider, private account: AccountProvider, private logger: Logger) {
         this.selectedIndex = 2;
-        this.init();
     }
 
-    private async init(): Promise<void> {
+    chat() {
+        this.appService;
+        this.logger;
     }
-
-    chat() {}
 }
 
-export const NWalletTabPages = [TabcontainerPage, TransferTabPage, WalletBuyPage, LoanNcashTabPage, AccountTabPage, ...WalletTabPages];
+export const NWalletTabPages = [TabcontainerPage, WalletDetailPage, WalletBuyPage, WalletLoanPage, AccountTabPage, ...WalletTabPages];

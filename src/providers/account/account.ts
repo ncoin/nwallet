@@ -20,6 +20,13 @@ export class AccountProvider {
     }
 
     // todo remove me --sky`
+    public async setAccount(account: NWallet.Account): Promise<NWallet.Account> {
+        await this.preference.set(Preference.Nwallet.walletAccount, account);
+        this.account = account;
+        return this.account;
+    }
+
+    // todo remove me --sky`
     public async getAccount(): Promise<NWallet.Account> {
         if (!this.account) {
             this.account = await this.preference.get(Preference.Nwallet.walletAccount);
@@ -33,7 +40,7 @@ export class AccountProvider {
         }
 
         return this.account.wallets.find(wallet => {
-            return wallet.item.asset.isNative();
+            return wallet.item.asset.isNative() === true;
         });
     }
 

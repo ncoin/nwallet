@@ -1,11 +1,10 @@
 import { EventTypes } from '../../../interfaces/events';
-import { WalletLoanPage } from './wallet-detail/wallet-loan/wallet-loan';
-import { WalletBuyPage } from './wallet-detail/wallet-buy/wallet-buy';
-import { EntrancePage } from '../../0.entrance/entrance';
-import { WalletDetailPage } from './wallet-detail/wallet-detail';
+import { WalletLoanPage } from '../4.loan-ncash-tab/wallet-loan';
+import { WalletBuyPage } from '../2.buy-ncash-tab/wallet-buy';
+import { WalletDetailPage } from '../1.transfer-tab/wallet-detail';
 import { Logger } from '../../../providers/common/logger/logger';
-import { Component, NgZone } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { Component } from '@angular/core';
+import { NavController } from 'ionic-angular';
 import { NWallet } from '../../../interfaces/nwallet';
 import { EventProvider } from '../../../providers/common/event/event';
 import { AccountProvider } from '../../../providers/account/account';
@@ -39,11 +38,14 @@ export class WalletPage {
     }
 
     ionViewDidEnter() {
-        this.subscription = this.event.subscribe(EventTypes.NWallet.account_refresh_wallet, this.refreshWallets);
+        if (!this.subscription) {
+            this.subscription = this.event.subscribe(EventTypes.NWallet.account_refresh_wallet, this.refreshWallets);
+        }
     }
 
     ionViewDidLeave() {
         this.event.unsubscribe(EventTypes.NWallet.account_refresh_wallet, this.subscription);
+        this.subscription = undefined;
     }
 
     async init(): Promise<void> {
@@ -86,14 +88,6 @@ export class WalletPage {
                 animation: 'ios-transition',
             },
         );
-    }
-
-    public onLogout(): void {
-        // this.appService.logout(this.account);
-        this.navCtrl.setRoot(EntrancePage, undefined, {
-            animate: true,
-            animation: 'ios-transition',
-        });
     }
 }
 
