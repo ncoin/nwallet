@@ -13,30 +13,44 @@
 </ion-header>
 <ion-content padding>
     <ion-list>
-        <ion-item detail-push>
-            Item with Detail Arrow
-        </ion-item>
-        <button ion-item>
-            Button Item with Detail Arrow
-        </button>
-        <ion-item>
-            <span translate>Help</span>
-        </ion-item>
-        <ion-item>
-            <span translate>Language</span>
-        </ion-item>
-        <ion-item>
-            <span translate>PinSetting</span>
-        </ion-item>
-        <ion-item>
-            <span translate>WalletBackup</span>
-        </ion-item>
-        <ion-item>
-            <ion-label>
-                <span translate>EnablePushNotification</span>
-            </ion-label>
-            <ion-toggle></ion-toggle>
-        </ion-item>
+        <ion-card>
+            <ion-card-content>
+                <button ion-item>
+                    <span translate>Help</span>
+                </button>
+            </ion-card-content>
+        </ion-card>
+        <ion-card>
+            <ion-card-content>
+                <button ion-item>
+                    <span translate>Language</span>
+                </button>
+            </ion-card-content>
+        </ion-card>
+        <ion-card>
+            <ion-card-content>
+                <button ion-item>
+                    <span translate>PinSetting</span>
+                </button>
+            </ion-card-content>
+        </ion-card>
+        <ion-card>
+            <ion-card-content>
+                <button ion-item>
+                    <span translate>WalletBackup</span>
+                </button>
+            </ion-card-content>
+        </ion-card>
+        <ion-card>
+            <ion-card-content>
+                <button ion-item (click)="setNotification(!_enablePushNotification)">
+                    <ion-label>
+                        <span translate>EnablePushNotifications</span>
+                    </ion-label>
+                    <ion-toggle [(ngModel)]="enablePushNotification"></ion-toggle>
+                </button>
+            </ion-card-content>
+        </ion-card>
         <button ion-item (click)="onLogout()">
             <span translate>Logout</span>
         </button>
