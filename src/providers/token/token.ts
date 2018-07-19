@@ -32,6 +32,19 @@ export class Token {
         return Date.now() > this.expiredDate;
     }
 }
+// for test (remove me)
+
+const nonceRange = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+
+export function getNonce (): string {
+    if (env.name !== 'dev')
+        throw new Error('invalid environment');
+    let nonce = '';
+    for (let i = 0; i < 20; i++) {
+        nonce += nonceRange.charAt(Math.floor(Math.random() * nonceRange.length));
+    }
+    return nonce;
+}
 
 @Injectable()
 export class TokenProvider {
@@ -47,6 +60,8 @@ export class TokenProvider {
     }
 
     private async issueToken(): Promise<Token> {
+        const id = getNonce();
+
         const account = await this.account.getAccount();
         this.logger.debug('[token] issue token ...');
         const token = await this.http
@@ -54,7 +69,7 @@ export class TokenProvider {
                 env.endpoint.token(),
                 {
                     coin_symbol: 'XLM',
-                    device_id: env.name === 'dev' ? 'develop' : this.device.uuid,
+                    device_id: env.name === 'dev' ? `develop_${id}` : this.device.uuid,
                     public_key: account.signature.public,
                     grant_type: 'password',
                 },
