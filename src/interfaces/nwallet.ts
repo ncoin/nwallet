@@ -2,7 +2,6 @@ import { Asset } from 'stellar-sdk';
 
 export namespace NWallet {
 
-
 }
 
 export namespace NWallet {
@@ -80,7 +79,7 @@ export namespace NWallet.Transactions {
                         amount: amount,
                     },
                     date: createdAt,
-                    id:  raw['transaction_hash'],
+                    id: raw['transaction_hash'],
                 };
             })
             .filter(record => {
@@ -109,19 +108,14 @@ const Assets = new Map<string, NWallet.AssetItem>([
     ],
 ]);
 
-
-
 export namespace NWallet.Protocol {
-
     export enum XdrRequestTypes {
         Trust = 'trusts/stellar/',
         Buy = 'buys/ncash/stellar/',
         Loan = 'loans/ncash/stellar/',
     }
 
-    export interface Response {
-
-    }
+    export interface Response {}
 
     export interface XDRResponse extends Response {
         id: string;

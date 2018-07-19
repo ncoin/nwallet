@@ -86,13 +86,9 @@
     <allow-navigation href="http://192.168.200.6:8101" />
     <allow-navigation href="http://192.168.100.4:8100" />
     <allow-navigation href="https://horizon-testnet.stellar.org" />
-    <allow-navigation href="http://wallet-api.dev.ncoin.com:3000/api/" />
-    <allow-navigation href="http://wallet-api.stage.ncoin.com:3000/api/" />
-    <allow-navigation href="http://wallet-api.ncoin.com:3000/api/" />
-
-    <allow-navigation href="http://api-dev.ncoin.com:8080" />
-    <allow-navigation href="https://api-stage.ncoin.com" />
-    <allow-navigation href="https://api.ncoin.com" />
+    <allow-navigation href="http://api.dev.ncoin.com:8080" />
+    <allow-navigation href="https://api.stage.ncoin.com:8080" />
+    <allow-navigation href="https://api.sss.ncoin.com" />
 
     <engine name="android" spec="7.0.0" />
     <plugin name="cordova-plugin-crosswalk-webview" spec="^2.3.0">

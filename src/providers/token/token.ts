@@ -14,10 +14,14 @@ export class Token {
     private jti: string;
     private expiredDate: number;
 
+    static capitalize(value:string) {
+        return value.charAt(0).toUpperCase() + value.slice(1);
+    }
+
     public getAuth(): string {
         //aa
         this.scope; this.jti;
-        return `${this.token_type} ${this.access_token}`;
+        return `${Token.capitalize(this.token_type)} ${this.access_token}`;
     }
 
     public setExpiration() {

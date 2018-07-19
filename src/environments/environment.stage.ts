@@ -5,8 +5,8 @@ export const env: Environments = {
     name: 'stage',
     network: Schema.network,
     endpoint: {
-        client: 'http://wallet-api.dev.ncoin.com:3000/api/',
-        auth: 'https://api-stage.ncoin.com/',
+        client: 'http://api.stage.ncoin.com:8080/wallet/api/',
+        auth: 'http://api.stage.ncoin.com:8080/',
         token: () => `${env.endpoint.auth}${Schema.tokenPath}`,
     },
 };

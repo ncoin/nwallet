@@ -1,4 +1,4 @@
-import { EventProvider } from './../common/event/event';
+import { EventProvider } from '../common/event/event';
 import { AccountProvider } from '../account/account';
 import { NClientProvider } from '../nsus/nclient';
 import { Injectable } from '@angular/core';
@@ -31,7 +31,7 @@ export class AppServiceProvider {
         await this.account.setAccount(account);
         await this.connector.fetchJobs(account);
         this.requestTrust();
-        this.logger.debug('[app-service] login done');
+        this.logger.debug('[appService] login done');
         this.event.publish(EventTypes.App.user_login);
     }
 

@@ -7,11 +7,13 @@ import { Logger } from '../common/logger/logger';
 import { env } from '../../environments/environment';
 import { NWallet, getOrAddWalletItem } from '../../interfaces/nwallet';
 import { EventProvider } from '../common/event/event';
+import { TokenProvider, Token } from '../token/token';
 
 @Injectable()
 export class NClientProvider {
     private subscriptions: Subscription[] = [];
-    constructor(private logger: Logger, private http: HttpClient, private event: EventProvider) {}
+    private _token: Token;
+    constructor(private logger: Logger, private http: HttpClient, private event: EventProvider, private token: TokenProvider) {}
 
     private getKeyFromValue(enums: {}, value: any): string {
         return Object.keys(enums).filter(type => enums[type] === value)[0];
@@ -19,6 +21,7 @@ export class NClientProvider {
 
     public async fetchJobs(account: NWallet.Account): Promise<void> {
         this.logger.debug('[nclient] fetch jobs start');
+        this._token = await this.token.getToken();
         await this.fetchStreams(account);
         // const subscribe = this.subscribe(account);
         // const setAsset = this.refreshWallets(account);
@@ -26,7 +29,11 @@ export class NClientProvider {
         this.logger.debug('[nclient] fetch jobs done');
     }
 
-    public fetchStreams = (account: NWallet.Account): Promise<boolean> => {
+    private async tryRefreshToken() {
+        this._token = await this.token.getToken();
+    }
+
+    public fetchStreams = async (account: NWallet.Account): Promise<boolean> => {
         return new Promise<boolean>(resolve => {
             const assetRefresh = Observable.timer(0, 5000).mergeMap(() => this.getAssets(account.signature.public));
             this.subscriptions.push(
@@ -34,10 +41,15 @@ export class NClientProvider {
                     account.wallets = account.wallets || [];
                     account.wallets.length = 0;
                     account.wallets.push(...wallet);
+                    this.logger.debug(wallet);
                     this.event.publish(EventTypes.NWallet.account_refresh_wallet, wallet);
                     resolve(true);
                 }),
             );
+
+            assetRefresh.subscribe(() => {
+                this.tryRefreshToken();
+            });
         });
     };
 
@@ -45,7 +57,7 @@ export class NClientProvider {
         account;
         this.subscriptions.forEach(subscription => {
             subscription.unsubscribe();
-        })
+        });
     }
 
     public getAssets(accountId: string): Observable<NWallet.AssetContext[]> {
@@ -65,12 +77,22 @@ export class NClientProvider {
             });
         };
 
-        return this.http.get(url).map(data => {
-            const supportedCoins = convert(data['balances']['supportCoins']);
-            const unSupportCoins = convert(data['balances']['unSupportCoins']);
-            const returnCoins = supportedCoins.concat(unSupportCoins);
-            return returnCoins;
-        });
+        return this.http
+            .get(url, {
+                headers: {
+                    Authorization: this._token.getAuth(),
+                },
+            })
+            .map(data => {
+                const supportedCoins = convert(data['balances']['supportCoins']);
+                const unSupportCoins = convert(data['balances']['unSupportCoins']);
+                const returnCoins = supportedCoins.concat(unSupportCoins);
+                return returnCoins;
+            })
+            .catch((error: HttpErrorResponse) => {
+                this.logger.error('[nclient] get asset failed', error);
+                return [];
+            });
     }
 
     public async getTransactions(accountId: string, asset: Asset, pageToken?: string): Promise<NWallet.Transactions.Context> {
@@ -87,7 +109,12 @@ export class NClientProvider {
         this.logger.debug('[nclient] request getTransaction ...');
 
         return this.http
-            .get(`${env.endpoint.client}transactions/stellar/accounts/${accountId}`, { params: params })
+            .get(`${env.endpoint.client}transactions/stellar/accounts/${accountId}`, {
+                params: params,
+                headers: {
+                    Authorization: this._token.getAuth(),
+                },
+            })
             .map(response => {
                 const transactions = response['transactions'];
                 const token = response['paging_token'];
@@ -113,7 +140,11 @@ export class NClientProvider {
         const type = this.getKeyFromValue(NWallet.Protocol.XdrRequestTypes, requestType);
         this.logger.debug(`[nclient] request get ${type} xdr ...`);
         return this.http
-            .post(`${env.endpoint.client}${requestType}`, params)
+            .post(`${env.endpoint.client}${requestType}`, params, {
+                headers :  {
+                    Authorization : this._token.getAuth(),
+                }
+            })
             .toPromise()
             .then((response: NWallet.Protocol.XDRResponse) => {
                 this.logger.debug(`[nclient] request get ${type} xdr done`);
@@ -129,7 +160,11 @@ export class NClientProvider {
         const type = this.getKeyFromValue(NWallet.Protocol.XdrRequestTypes, requestType);
         this.logger.debug(`[nclient] execute ${type} xdr ...`);
         return this.http
-            .put(`${env.endpoint.client}${requestType}`, params)
+            .put(`${env.endpoint.client}${requestType}`, params, {
+                headers :  {
+                    Authorization : this._token.getAuth(),
+                }
+            })
             .toPromise()
             .then(response => {
                 this.logger.debug(`[nclient] execute ${type} xdr done`);

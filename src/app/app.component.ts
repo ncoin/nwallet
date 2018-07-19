@@ -1,5 +1,5 @@
-import { EventTypes } from './../interfaces/events';
-import { EventProvider } from './../providers/common/event/event';
+import { EventTypes } from '../interfaces/events';
+import { EventProvider } from '../providers/common/event/event';
 import { AppServiceProvider } from '../providers/app/app.service';
 import { TabcontainerPage } from '../pages/tab/tabcontainer';
 import { AccountProvider } from '../providers/account/account';
