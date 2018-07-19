@@ -1,6 +1,6 @@
-import { AppConfigProvider } from './../../../providers/app/app.config';
-import { Logger } from './../../../providers/common/logger/logger';
-import { AccountProvider } from './../../../providers/account/account';
+import { AppConfigProvider } from '../../../providers/app/app.config';
+import { Logger } from '../../../providers/common/logger/logger';
+import { AccountProvider } from '../../../providers/account/account';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, ToastController } from 'ionic-angular';
 import { EntrancePage } from '../../0.entrance/entrance';

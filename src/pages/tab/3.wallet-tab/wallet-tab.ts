@@ -50,7 +50,7 @@ export class WalletPage {
 
     async init(): Promise<void> {
         const account = await this.account.getAccount();
-        this.refreshWallets(account.wallets);
+        this.refreshWallets(account.wallets.slice());
     }
 
     private refreshWallets = (assets: NWallet.AssetContext[]): void => {

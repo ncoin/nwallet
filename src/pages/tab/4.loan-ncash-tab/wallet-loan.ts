@@ -21,24 +21,37 @@ export class WalletLoanPage {
 
     private _nchAmount: number = 0;
     private _wallet: NWallet.AssetContext;
-    wallets: NWallet.AssetContext[];
+    wallets: NWallet.AssetContext[] = [];
     expectSpendWallet: NWallet.AssetContext;
 
     constructor(
-        account: AccountProvider,
         public navCtrl: NavController,
         public navParams: NavParams,
+        private account: AccountProvider,
         private appService: AppServiceProvider,
         private alert: AlertController,
         private loading: LoadingController,
     ) {
-        this._wallet = navParams.get('wallet');
+        this._wallet = this.account.getNativeWallet();
         this.expectSpendWallet = <NWallet.AssetContext>{
             item: this._wallet.item,
             amount: '0',
         };
 
-        this.wallets = account.account.wallets.filter(wallet => {
+        const availables = account.account.wallets.filter(wallet => {
+            return wallet.item.asset.code !== 'NCH' && wallet.item.isNative;
+        })
+        this.wallets.push(...availables);
+    }
+
+    ionViewDidEnter(){
+        this._wallet = this.account.getNativeWallet();
+        this.expectSpendWallet = <NWallet.AssetContext>{
+            item: this._wallet.item,
+            amount: '0',
+        };
+
+        this.wallets = this.account.account.wallets.filter(wallet => {
             return wallet.item.asset.code !== 'NCH';
         });
     }
@@ -69,26 +82,6 @@ export class WalletLoanPage {
             price: this.expectSpendWallet.item.price,
         };
     }
-
-    ionViewDidLoad() {
-        this.navBar.backButtonClick = ev => {
-            ev.preventDefault();
-            ev.stopPropagation();
-            this.navCtrl.pop({
-                animate: true,
-                animation: 'ios-transition',
-            });
-        };
-    }
-
-    backToLobby() {
-        this.navCtrl.popToRoot({
-            animate: true,
-            animation: 'ios-transition',
-        });
-    }
-
-    ionViewDidLeave() {}
 
     async onLoanRequest() {
         const alert = this.alert.create({

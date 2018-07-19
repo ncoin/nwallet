@@ -7,7 +7,7 @@ import { AccountTabPage } from './5.account-tab/account-tab';
 import { WalletTabPages, WalletPage } from './3.wallet-tab/wallet-tab';
 import { Logger } from '../../providers/common/logger/logger';
 import { WalletLoanPage } from './4.loan-ncash-tab/wallet-loan';
-import { WalletDetailPage } from './1.transfer-tab/wallet-detail';
+import { TransferTabPage } from './1.transfer-tab/transfer-tab';
 
 export interface TabItemContext {
     // title: "Schedule",
@@ -28,7 +28,7 @@ export class TabcontainerPage {
     selectedIndex: number;
     tabItems: TabItemContext[] = [
         {
-            component: WalletDetailPage,
+            component: TransferTabPage,
         },
         {
             component: WalletBuyPage,
@@ -55,4 +55,4 @@ export class TabcontainerPage {
     }
 }
 
-export const NWalletTabPages = [TabcontainerPage, WalletDetailPage, WalletBuyPage, WalletLoanPage, AccountTabPage, ...WalletTabPages];
+export const NWalletTabPages = [TabcontainerPage, TransferTabPage, WalletBuyPage, WalletLoanPage, AccountTabPage, ...WalletTabPages];

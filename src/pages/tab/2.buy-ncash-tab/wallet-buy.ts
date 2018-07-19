@@ -5,7 +5,6 @@ import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams, Navbar, AlertController, LoadingController } from 'ionic-angular';
 import { NWallet } from '../../../interfaces/nwallet';
 
-
 @IonicPage()
 @Component({
     selector: 'page-wallet-buy',
@@ -16,11 +15,11 @@ export class WalletBuyPage {
 
     private _nchAmount: number = 0;
     private _wallet: NWallet.AssetContext;
-    wallets: NWallet.AssetContext[];
+    wallets: NWallet.AssetContext[] = [];
     expectSpendWallet: NWallet.AssetContext;
 
     constructor(
-        account: AccountProvider,
+        private account: AccountProvider,
         public navCtrl: NavController,
         public navParams: NavParams,
         private logger: Logger,
@@ -28,14 +27,16 @@ export class WalletBuyPage {
         private appService: AppServiceProvider,
         private loading: LoadingController,
     ) {
-        this._wallet = navParams.get('wallet');
+        this._wallet = this.account.getNativeWallet();
         this.expectSpendWallet = <NWallet.AssetContext>{
             item: this._wallet.item,
             amount: '0',
         };
-        this.wallets = account.account.wallets.filter(wallet => {
+
+        const availables = account.account.wallets.filter(wallet => {
             return wallet.item.asset.code !== 'NCH' && wallet.item.isNative;
         });
+        this.wallets.push(...availables);
     }
 
     public set nchAmount(value: number) {
@@ -64,27 +65,6 @@ export class WalletBuyPage {
             price: this.expectSpendWallet.item.price,
         };
     }
-
-    ionViewDidLoad() {
-        this.navBar.backButtonClick = ev => {
-            ev.preventDefault();
-            ev.stopPropagation();
-            this.navCtrl.pop({
-                animate: true,
-                animation: 'ios-transition',
-            });
-        };
-    }
-
-    backToLobby() {
-        this.logger.debug('backToLobby');
-        this.navCtrl.popToRoot({
-            animate: true,
-            animation: 'ios-transition',
-        });
-    }
-
-    ionViewDidLeave() {}
 
     async onBuyRequest() {
         const alert = this.alert.create({
