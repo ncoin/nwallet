@@ -67,3 +67,28 @@
     }
   }
 }
+
+
+/* layout */
+body {
+    background: $background-color;
+}
+ion-app {
+    background: url('../assets/img/bg.png') no-repeat top center;
+    background-size: cover;
+}
+
+// fonts
+
+
+// Headers
+ion-header {
+    background: $background-color url('../assets/img/headers_bg.png') no-repeat bottom center;
+}
+ion-header ion-title {
+    text-align: center;
+}
+ion-header ion-title img {
+    max-width: 100%;
+}
+

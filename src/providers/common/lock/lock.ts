@@ -17,7 +17,7 @@ export class LockProvider {
         }
 
         if (!this.isSecurityAvailable()){
-            this.logger.debug('[lock] secure phase not available')
+            this.logger.debug('[lock] secure phase not available');
             return;
         }
 

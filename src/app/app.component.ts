@@ -66,7 +66,7 @@ export class NWalletApp {
 
         this.event.subscribe(EventTypes.App.user_login, () => {
             this.rootPage = TabcontainerPage;
-        })
+        });
         this.event.subscribe(EventTypes.App.user_logout, () => {
             this.rootPage = EntrancePage;
         });

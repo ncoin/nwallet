@@ -16,6 +16,8 @@ import { EventTypes } from '../../interfaces/events';
 export class AppServiceProvider {
     constructor(private preference: PreferenceProvider, private app: App, private logger: Logger, private connector: NClientProvider, private account: AccountProvider, private event: EventProvider) {
         this.app;
+
+        this.preference.remove(Preference.Nwallet.walletAccount);
     }
 
     public async flushApplication(): Promise<void> {

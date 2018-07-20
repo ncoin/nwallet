@@ -1,4 +1,3 @@
-<ion-tabs [selectedIndex]="selectedIndex" name="conference">
-    <ion-tab *ngFor="let tab of tabItems" [root]="tab.component" [rootParams]="tab.params"  tabIcon="contacts"></ion-tab>
-
+<ion-tabs [selectedIndex]="selectedIndex" name="conference" tabsPlacement="bottom">
+    <ion-tab *ngFor="let tab of tabItems" [root]="tab.component" [rootParams]="tab.params"></ion-tab>
 </ion-tabs>

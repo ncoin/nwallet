@@ -9,4 +9,4 @@ import { NWalletPipesModule } from '../pipes/pipes.module';
 export class NWalletComponentsModule {}
 export const NWalletComponents = [
     AssetItemComponent
-]
+];
