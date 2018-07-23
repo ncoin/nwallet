@@ -16,7 +16,7 @@
 
 <ion-content padding scroll="=false">
     <div>
-        <div style="margin: 3% 0% 2% 0%">:: {{'COLLATERAL'| translate}} {{'CURRENCY' | translate }}</div>
+        <div style="margin: 3% 0% 2% 0%">:: {{'Colleteral'| translate}} {{'Currency' | translate }}</div>
         <ion-item>
             <ion-label> {{wallet.item | assetName}}</ion-label>
             <ion-select [(ngModel)]="wallet" interface="popover">
@@ -24,24 +24,24 @@
             </ion-select>
         </ion-item>
         <ion-item no-lines>
-            <ion-label>> Balance</ion-label>
+            <ion-label>> {{ 'Balance' | translate }}</ion-label>
             <div item-end>
                 <ion-label item-end style="text-align: right">{{wallet | assetFormat}}</ion-label>
             </div>
         </ion-item>
         <ion-item no-lines>
-            <ion-label>> Available</ion-label>
+            <ion-label>> {{'Available' | translate}}</ion-label>
             <div item-end>
                 <ion-label style="text-align: right">{{wallet | assetFormat}}</ion-label>
                 <ion-label style="text-align: right">{{wallet | assetToUSD}}</ion-label>
             </div>
         </ion-item>
         <ion-item>
-            <ion-label floating>Amount</ion-label>
+            <ion-label floating>{{ 'Amount' | translate }} </ion-label>
             <ion-input [(ngModel)]="nchAmount" type="number" required min="0" max="1000" autocomplete="true"></ion-input>
         </ion-item>
         <ion-label style="margin: 5% 0% 0% 0%">
-            :: {{ 'LOAN' | translate }} {{'CURRENCY' |translate }}
+            :: {{ 'Loan' | translate | uppercase }} {{ 'Currency' |translate | uppercase}}
         </ion-label>
         <ion-item no-lines>
             <ion-label item-start>

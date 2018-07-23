@@ -14,7 +14,14 @@ import { EventTypes } from '../../interfaces/events';
  */
 @Injectable()
 export class AppServiceProvider {
-    constructor(private preference: PreferenceProvider, private app: App, private logger: Logger, private connector: NClientProvider, private account: AccountProvider, private event: EventProvider) {
+    constructor(
+        private preference: PreferenceProvider,
+        private app: App,
+        private logger: Logger,
+        private connector: NClientProvider,
+        private account: AccountProvider,
+        private event: EventProvider,
+    ) {
         this.app;
 
         this.preference.remove(Preference.Nwallet.walletAccount);
@@ -44,7 +51,6 @@ export class AppServiceProvider {
         this.account.flush();
         this.logger.debug('logout', account.signature.public);
         this.event.publish(EventTypes.App.user_logout);
-
     }
 
     public async getTransactions(asset: Asset, pageToken?: string) {
@@ -75,6 +81,7 @@ export class AppServiceProvider {
         const account = await this.account.getAccount();
         params['public_key'] = account.signature.public;
         const xdrResponse = await this.connector.requestXDR(requestType, params);
+
         if (xdrResponse) {
             const transaction = new Stellar.Transaction(xdrResponse.xdr);
             transaction.sign(Keypair.fromSecret(account.signature.secret));

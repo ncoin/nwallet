@@ -63,7 +63,6 @@ export class NClientProvider {
     }
 
     public async getAssets(accountId: string): Promise<NWallet.AssetContext[]> {
-        const url = `${env.endpoint.client}accounts/stellar/${accountId}`;
         const convert = (data: Object[]): NWallet.AssetContext[] => {
             return data.map(data => {
                 const asset = data['asset'];
@@ -80,7 +79,7 @@ export class NClientProvider {
         };
 
         return this.http
-            .get(url, {
+            .get(env.endpoint.api(`accounts/stellar/${accountId}`), {
                 headers: {
                     Authorization: await this.getToken(),
                 },
@@ -112,7 +111,7 @@ export class NClientProvider {
         this.logger.debug('[nclient] request getTransaction ...');
 
         return this.http
-            .get(`${env.endpoint.client}transactions/stellar/accounts/${accountId}`, {
+            .get(env.endpoint.api(`transactions/stellar/accounts/${accountId}`), {
                 params: params,
                 headers: {
                     Authorization: await this.getToken(),
@@ -130,7 +129,7 @@ export class NClientProvider {
             })
             .toPromise()
             .then(context => {
-                this.logger.debug('[nclient] request getTransaction done', context);
+                this.logger.debug('[nclient] request getTransaction done');
                 return context;
             })
             .catch((response: HttpErrorResponse) => {
@@ -143,7 +142,7 @@ export class NClientProvider {
         const type = this.getKeyFromValue(NWallet.Protocol.XdrRequestTypes, requestType);
         this.logger.debug(`[nclient] request get ${type} xdr ...`);
         return this.http
-            .post(`${env.endpoint.client}${requestType}`, params, {
+            .post(env.endpoint.api(requestType), params, {
                 headers: {
                     Authorization: await this.getToken(),
                 },
@@ -163,7 +162,7 @@ export class NClientProvider {
         const type = this.getKeyFromValue(NWallet.Protocol.XdrRequestTypes, requestType);
         this.logger.debug(`[nclient] execute ${type} xdr ...`);
         return this.http
-            .put(`${env.endpoint.client}${requestType}`, params, {
+            .put(env.endpoint.api(requestType), params, {
                 headers: {
                     Authorization: await this.getToken(),
                 },
@@ -178,5 +177,4 @@ export class NClientProvider {
                 return false;
             });
     };
-
 }

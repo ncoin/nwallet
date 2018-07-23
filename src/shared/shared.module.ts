@@ -5,7 +5,7 @@ import { TranslateModule, TranslateLoader, MissingTranslationHandler, MissingTra
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 function createTranslateLoader(http: HttpClient) {
-    return new TranslateHttpLoader(http, '../assets/i18n/', '.json');
+    return new TranslateHttpLoader(http, 'assets/i18n/', '.json');
 }
 
 export class MissingHandler implements MissingTranslationHandler {

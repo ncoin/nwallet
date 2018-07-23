@@ -40,11 +40,11 @@ export class WalletLoanPage {
 
         const availables = account.account.wallets.filter(wallet => {
             return wallet.item.asset.code !== 'NCH' && wallet.item.isNative;
-        })
+        });
         this.wallets.push(...availables);
     }
 
-    ionViewDidEnter(){
+    ionViewDidEnter() {
         this._wallet = this.account.getNativeWallet();
         this.expectSpendWallet = <NWallet.AssetContext>{
             item: this._wallet.item,

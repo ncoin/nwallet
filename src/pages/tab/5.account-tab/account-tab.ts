@@ -19,12 +19,19 @@ export class AccountTabPage {
     }
 
     public set enablePushNotification(value: boolean) {
-        this.logger.debug('[account-tab] push notification sett', value);
+        this.logger.debug('[account-tab] push notification set', value);
         this._enablePushNotification = value;
         this.setNotification(value);
     }
 
-    constructor(public navCtrl: NavController, private appService: AppServiceProvider, private account: AccountProvider, private appConfig: AppConfigProvider, private logger: Logger, private toast: ToastController) {}
+    constructor(
+        public navCtrl: NavController,
+        private appService: AppServiceProvider,
+        private account: AccountProvider,
+        private appConfig: AppConfigProvider,
+        private logger: Logger,
+        private toast: ToastController,
+    ) {}
 
     public async onLogout(): Promise<void> {
         const account = await this.account.getAccount();
@@ -37,17 +44,15 @@ export class AccountTabPage {
     }
 
     private async setNotification(isEnable: boolean): Promise<void> {
-
         const result = await this.appConfig.setPushNotification(isEnable);
         // wait result;
         const toast = this.toast.create({
-            message : `request \`${isEnable}\` => result \`${result}\``,
+            message: `request \`${isEnable}\` => result \`${result}\``,
             duration: 1000,
         });
 
         this._enablePushNotification = result;
 
         toast.present();
-
     }
 }

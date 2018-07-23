@@ -32,7 +32,6 @@ export class TabcontainerPage {
         },
         {
             component: WalletBuyPage,
-            params: { wallet: this.account.getNativeWallet() },
         },
         {
             component: WalletPage,
@@ -47,11 +46,19 @@ export class TabcontainerPage {
 
     constructor(public navCtrl: NavController, public navParams: NavParams, private appService: AppServiceProvider, private account: AccountProvider, private logger: Logger) {
         this.selectedIndex = 2;
+        this.account;
     }
 
     chat() {
         this.appService;
         this.logger;
+    }
+
+    public changeTransition(event: any): void {
+        event;
+        // var index = event.index;
+        // const direction = index < this.selectedIndex ? 'left' : 'right';
+        // const e = event;
     }
 }
 

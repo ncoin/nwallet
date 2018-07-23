@@ -14,13 +14,14 @@ export class Token {
     private jti: string;
     private expiredDate: number;
 
-    static capitalize(value:string) {
+    static capitalize(value: string) {
         return value.charAt(0).toUpperCase() + value.slice(1);
     }
 
     public getAuth(): string {
         //aa
-        this.scope; this.jti;
+        this.scope;
+        this.jti;
         return `${Token.capitalize(this.token_type)} ${this.access_token}`;
     }
 
@@ -32,13 +33,12 @@ export class Token {
         return Date.now() > this.expiredDate;
     }
 }
-// for test (remove me)
+// for test (remove me) --sky
 
 const nonceRange = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
-export function getNonce (): string {
-    if (env.name !== 'dev')
-        throw new Error('invalid environment');
+export function getNonce(): string {
+    if (env.name !== 'dev') throw new Error('invalid environment');
     let nonce = '';
     for (let i = 0; i < 20; i++) {
         nonce += nonceRange.charAt(Math.floor(Math.random() * nonceRange.length));
@@ -60,7 +60,7 @@ export class TokenProvider {
     }
 
     private async issueToken(): Promise<Token> {
-        const id = getNonce();
+        const id = this.device.uuid ? this.device.uuid : getNonce();
 
         const account = await this.account.getAccount();
         this.logger.debug('[token] issue token ...');
@@ -75,7 +75,7 @@ export class TokenProvider {
                 },
                 {
                     headers: {
-                        Authorization: 'Basic ' + btoa(`app-n-wallet:app-n-wallet`),
+                        Authorization: `Basic ${btoa(`app-n-wallet:app-n-wallet`)}`,
                         Accept: 'application/json',
                     },
                 },

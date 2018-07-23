@@ -115,8 +115,13 @@ export namespace NWallet.Protocol {
         Loan = 'loans/ncash/stellar/',
     }
 
+
+    // todo
+
     export interface Response {}
 
+
+    // todo
     export interface XDRResponse extends Response {
         id: string;
         xdr: string;

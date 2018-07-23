@@ -1,4 +1,6 @@
-import { Environments, Schema } from './schema';
+import { Environments, Constants } from './template';
+
+import { Schema } from './schema';
 
 /** develop environment */
 export const env: Environments = {
@@ -7,7 +9,7 @@ export const env: Environments = {
     endpoint: {
         client: 'http://api.dev.ncoin.com:8080/wallet/api/',
         auth: 'http://api.dev.ncoin.com:8080/',
-        token: () => `${env.endpoint.auth}${Schema.tokenPath}`,
+        api: (path: string) => `${env.endpoint.client}${path}`,
+        token: () => `${env.endpoint.auth}${Constants.tokenPath}`,
     },
 };
-
