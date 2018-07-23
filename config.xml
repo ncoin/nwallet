@@ -98,7 +98,6 @@
     <allow-navigation href="http://api-dev.ncoin.com:8080" />
     <allow-navigation href="https://api-stage.ncoin.com" />
     <allow-navigation href="https://api.ncoin.com" />
-
     <engine name="android" spec="7.0.0" />
     <plugin name="cordova-plugin-crosswalk-webview" spec="^2.3.0">
         <variable name="XWALK_VERSION" value="23+" />

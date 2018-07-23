@@ -84,32 +84,15 @@ $toolbar-md-active-color: #fff;
 
 $background-color: transparent;
 
-$tabs-tab-min-height: 80px;
+$tabs-tab-min-height: 70px;
 $tabs-ios-tab-min-height: $tabs-tab-min-height;
 $tabs-md-tab-min-height: $tabs-tab-min-height;
 $tabs-wp-tab-min-height: $tabs-tab-min-height;
 
+$tabs-tab-color-active: transparent;
+$tabs-tab-color-inactive: transparent;
+
 $tabs-tab-padding: 0;
-$tabs-ios-tab-padding: $tabs-tab-padding;
-$tabs-ios-tab-padding-bottom: $tabs-tab-padding;
-$tabs-ios-tab-padding-end: $tabs-tab-padding;
-$tabs-ios-tab-padding-start: $tabs-tab-padding;
-$tabs-ios-tab-padding-top: $tabs-tab-padding;
-$tabs-md-tab-padding: $tabs-tab-padding;
-$tabs-md-tab-padding-active: $tabs-tab-padding;
-$tabs-md-tab-padding-active-bottom: $tabs-tab-padding;
-$tabs-md-tab-padding-active-end: $tabs-tab-padding;
-$tabs-md-tab-padding-active-start: $tabs-tab-padding;
-$tabs-md-tab-padding-active-top: $tabs-tab-padding;
-$tabs-md-tab-padding-bottom: $tabs-tab-padding;
-$tabs-md-tab-padding-end: $tabs-tab-padding;
-$tabs-md-tab-padding-start: $tabs-tab-padding;
-$tabs-md-tab-padding-top: $tabs-tab-padding;
-$tabs-wp-tab-padding: $tabs-tab-padding;
-$tabs-wp-tab-padding-bottom: $tabs-tab-padding;
-$tabs-wp-tab-padding-end: $tabs-tab-padding;
-$tabs-wp-tab-padding-start: $tabs-tab-padding;
-$tabs-wp-tab-padding-top: $tabs-tab-padding;
 
 $tabs-border-color: transparent;
 $tabs-ios-border-color: transparent;
@@ -118,5 +101,7 @@ $tabs-wp-border-color: transparent;
 $tabs-wp-tab-border: 0;
 
 $tabs-background: transparent url("../assets/img/tabs_bg.png") repeat-x bottom;
+
+$tabs-md-tab-icon-transform-y-active: 0;
 
 // END

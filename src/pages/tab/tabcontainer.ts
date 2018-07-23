@@ -13,10 +13,10 @@ export interface TabItemContext {
     // title: "Schedule",
     // name: "TabsPage",
     component: any;
+    icon: string;
     params?: any;
     // tabComponent: SchedulePage,
     // index: 0,
-    // icon: "calendar"
 }
 
 @IonicPage()
@@ -29,19 +29,24 @@ export class TabcontainerPage {
     tabItems: TabItemContext[] = [
         {
             component: TransferTabPage,
+            icon: "nwallet-transfer",
         },
         {
             component: WalletBuyPage,
+            icon: "nwallet-buy",
             params: { wallet: this.account.getNativeWallet() },
         },
         {
             component: WalletPage,
+            icon: "nwallet-home",
         },
         {
             component: WalletLoanPage,
+            icon: "nwallet-loan",
         },
         {
             component: AccountTabPage,
+            icon: "nwallet-account",
         },
     ];
 
