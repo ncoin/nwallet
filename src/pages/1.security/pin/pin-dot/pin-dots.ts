@@ -1,4 +1,4 @@
-import { Animate } from './../../../../directives/animate/animate';
+import { Animate } from '../../../../directives/animate/animate';
 import { Component, Input, QueryList, SimpleChanges, ViewChildren } from '@angular/core';
 
 @Component({

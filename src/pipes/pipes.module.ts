@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
-import { WalletFormatPipe } from './wallet/wallet-format';
-import { WalletToUSDPipe } from './wallet/wallet-to-usd';
-import { WalletNamePipe } from './wallet/wallet-name';
+import { AssetFormatPipe } from './asset/asset-format';
+import { AssetToUSDPipe } from './asset/asset-to-usd';
+import { AssetNamePipe } from './asset/asset-name';
 @NgModule({
-    declarations: [WalletToUSDPipe, WalletNamePipe, WalletFormatPipe],
+    declarations: [AssetToUSDPipe, AssetNamePipe, AssetFormatPipe],
     imports: [],
-    exports: [WalletToUSDPipe, WalletNamePipe, WalletFormatPipe],
+    exports: [AssetToUSDPipe, AssetNamePipe, AssetFormatPipe],
 })
 export class NWalletPipesModule {}

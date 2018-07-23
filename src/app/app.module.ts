@@ -1,6 +1,7 @@
-import { NWalletSharedModule } from './../shared/shared.module';
-import { env } from './../environments/environment';
-import { NWalletPageModule } from './../pages/pages.module';
+import Stellar from 'stellar-sdk';
+import { NWalletSharedModule } from '../shared/shared.module';
+import { env } from '../environments/environment';
+import { NWalletPageModule } from '../pages/pages.module';
 import { NgModule, ErrorHandler, enableProdMode } from '@angular/core';
 
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
@@ -63,5 +64,13 @@ export class AppModule {}
 function BootStrap() {
     if (env.name === 'prod' || env.name === 'stage') {
         enableProdMode();
+    }
+
+    if (env.network === 'test') {
+        //todo move location
+        Stellar.Network.useTestNetwork();
+    } else {
+        //todo move location
+        Stellar.Network.usePublicNetwork();
     }
 }

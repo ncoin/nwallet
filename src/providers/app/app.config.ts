@@ -1,4 +1,4 @@
-import { PreferenceProvider, Preference } from './../common/preference/preference';
+import { PreferenceProvider, Preference } from '../common/preference/preference';
 import { Injectable } from '@angular/core';
 import { Logger } from '../common/logger/logger';
 import { TranslateService } from '@ngx-translate/core';
@@ -10,10 +10,6 @@ export class AppConfigProvider {
     public async loadAll(): Promise<void> {
         this.logger.debug('[appconfig] load providers');
         await Promise.all([this.loadLanguage()]);
-    }
-
-    public async hasSeenTutorial(): Promise<boolean> {
-        return await this.preference.get(Preference.App.hasSeenTutorial);
     }
 
     private async loadLanguage(): Promise<void> {
@@ -35,5 +31,17 @@ export class AppConfigProvider {
 
         await this.translate.use(this.translate.getDefaultLang()).toPromise();
         this.logger.debug('[appconfig] current language :', this.translate.getDefaultLang());
+    }
+
+    public async hasSeenTutorial(): Promise<boolean> {
+        return await this.preference.get(Preference.App.hasSeenTutorial);
+    }
+
+    public async setPushNotification(isEnable:boolean): Promise<boolean> {
+
+        // todo request --sky
+        await this.preference.set(Preference.App.notification, isEnable);
+
+        return isEnable;
     }
 }

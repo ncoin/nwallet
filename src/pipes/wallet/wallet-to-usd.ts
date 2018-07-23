@@ -7,14 +7,14 @@ import { NWallet } from '../../interfaces/nwallet';
  * See https://angular.io/api/core/Pipe for more info on Angular Pipes.
  */
 @Pipe({
-    name: 'walletToUSD',
+    name: 'assetToUSD',
 })
 // USD only (fix it later!)
 export class WalletToUSDPipe implements PipeTransform {
     /**
      * Takes a value and makes it lowercase.
      */
-    transform(wallet: NWallet.WalletContext) {
+    transform(wallet: NWallet.AssetContext) {
         const value = Number.parseFloat(wallet.amount) * wallet.item.price;
         const floor = Math.floor(value * 100) / 100;
         return `$${floor} USD`;

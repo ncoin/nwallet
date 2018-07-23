@@ -1,4 +1,4 @@
-import { Logger } from './../logger/logger';
+import { Logger } from '../logger/logger';
 import { Injectable } from '@angular/core';
 import { Platform } from 'ionic-angular';
 

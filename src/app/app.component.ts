@@ -1,8 +1,11 @@
-import { AccountProvider } from './../providers/account/account';
-import { LockProvider } from './../providers/common/lock/lock';
-import { Subscription } from 'rxjs/Rx';
-import { WalletPage } from './../pages/wallet/wallet';
-import { Logger } from './../providers/common/logger/logger';
+import { EventTypes } from '../interfaces/events';
+import { EventProvider } from '../providers/common/event/event';
+import { AppServiceProvider } from '../providers/app/app.service';
+import { TabcontainerPage } from '../pages/tab/tabcontainer';
+import { AccountProvider } from '../providers/account/account';
+import { LockProvider } from '../providers/common/lock/lock';
+import { Subscription } from 'rxjs';
+import { Logger } from '../providers/common/logger/logger';
 import { Component, ViewChild } from '@angular/core';
 
 import { Nav, Platform } from 'ionic-angular';
@@ -31,6 +34,8 @@ export class NWalletApp {
         private lock: LockProvider,
         private account: AccountProvider,
         private appConfig: AppConfigProvider,
+        private appService: AppServiceProvider,
+        private event: EventProvider
     ) {
         this.initialize();
     }
@@ -48,6 +53,8 @@ export class NWalletApp {
     }
 
     private async onPlatformReady(): Promise<void> {
+        this.subscribeEvents();
+
         await this.appConfig.loadAll();
         await this.preparePage();
         this.prepareSecurity();
@@ -55,11 +62,22 @@ export class NWalletApp {
         this.splashScreen.hide();
     }
 
+    private subscribeEvents(): void {
+
+        this.event.subscribe(EventTypes.App.user_login, () => {
+            this.rootPage = TabcontainerPage;
+        });
+        this.event.subscribe(EventTypes.App.user_logout, () => {
+            this.rootPage = EntrancePage;
+        });
+    }
+
     private async preparePage(): Promise<void> {
         const account = await this.account.getAccount();
         if (account) {
             this.logger.debug('[app-page] prepare wallet page');
-            this.rootPage = WalletPage;
+            await this.appService.login(account);
+            this.logger.debug('[app-page] login');
         } else {
             this.logger.debug('[app-page] prepare entrance page');
             this.rootPage = EntrancePage;

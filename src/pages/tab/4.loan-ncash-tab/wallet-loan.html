@@ -8,8 +8,7 @@
 
     <ion-navbar>
         <ion-title>
-            <div style="float:left">Loan NCH</div>
-            <button style="float:right; background: transparent; color: white; font-size: 100%"  (click)="backToLobby()">x</button>
+            {{'Loan' |translate }} {{'NCH'| translate}}
         </ion-title>
     </ion-navbar>
 </ion-header>
@@ -17,32 +16,32 @@
 
 <ion-content padding scroll="=false">
     <div>
-        <div style="margin: 3% 0% 2% 0%">:: COLLATERAL CURRENCY</div>
+        <div style="margin: 3% 0% 2% 0%">:: {{'Colleteral'| translate}} {{'Currency' | translate }}</div>
         <ion-item>
-            <ion-label> {{wallet.item | walletName}}</ion-label>
+            <ion-label> {{wallet.item | assetName}}</ion-label>
             <ion-select [(ngModel)]="wallet" interface="popover">
-                <ion-option *ngFor="let wallet of wallets" [value]="wallet">{{wallet.item.asset.code}}</ion-option>
+                <ion-option *ngFor="let walleta of wallets" [value]="walleta">{{walleta.item.asset.code}}</ion-option>
             </ion-select>
         </ion-item>
         <ion-item no-lines>
-            <ion-label>> Balance</ion-label>
+            <ion-label>> {{ 'Balance' | translate }}</ion-label>
             <div item-end>
-                <ion-label item-end style="text-align: right">{{wallet | walletFormat}}</ion-label>
+                <ion-label item-end style="text-align: right">{{wallet | assetFormat}}</ion-label>
             </div>
         </ion-item>
         <ion-item no-lines>
-            <ion-label>> Available</ion-label>
+            <ion-label>> {{'Available' | translate}}</ion-label>
             <div item-end>
-                <ion-label style="text-align: right">{{wallet | walletFormat}}</ion-label>
-                <ion-label style="text-align: right">{{wallet | walletToUSD}}</ion-label>
+                <ion-label style="text-align: right">{{wallet | assetFormat}}</ion-label>
+                <ion-label style="text-align: right">{{wallet | assetToUSD}}</ion-label>
             </div>
         </ion-item>
         <ion-item>
-            <ion-label floating>Amount</ion-label>
+            <ion-label floating>{{ 'Amount' | translate }} </ion-label>
             <ion-input [(ngModel)]="nchAmount" type="number" required min="0" max="1000" autocomplete="true"></ion-input>
         </ion-item>
         <ion-label style="margin: 5% 0% 0% 0%">
-            :: LOAN CURRENCY
+            :: {{ 'Loan' | translate | uppercase }} {{ 'Currency' |translate | uppercase}}
         </ion-label>
         <ion-item no-lines>
             <ion-label item-start>
@@ -50,7 +49,7 @@
             </ion-label>
             <div item-end>
                 <ion-label style="text-align: right">
-                    {{expectSpendWallet| walletFormat}}
+                    {{expectSpendWallet| assetFormat}}
                 </ion-label>
             </div>
         </ion-item>
@@ -60,6 +59,6 @@
                 position:  absolute;
                 width: 90%;
                 left:  5%; bottom : 10%;">
-        Request a Loan NCH
+        {{'Loan' | translate}} {{'NCH'|translate }}
     </button>
 </ion-content>

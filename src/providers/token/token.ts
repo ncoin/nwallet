@@ -1,6 +1,6 @@
-import { AccountProvider } from './../account/account';
-import { env } from './../../environments/environment';
-import { Logger } from './../common/logger/logger';
+import { AccountProvider } from '../account/account';
+import { env } from '../../environments/environment';
+import { Logger } from '../common/logger/logger';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Device } from '@ionic-native/device';
@@ -14,9 +14,15 @@ export class Token {
     private jti: string;
     private expiredDate: number;
 
+    static capitalize(value: string) {
+        return value.charAt(0).toUpperCase() + value.slice(1);
+    }
+
     public getAuth(): string {
         //aa
-        return `${this.token_type} ${this.access_token}`;
+        this.scope;
+        this.jti;
+        return `${Token.capitalize(this.token_type)} ${this.access_token}`;
     }
 
     public setExpiration() {
@@ -27,10 +33,21 @@ export class Token {
         return Date.now() > this.expiredDate;
     }
 }
+// for test (remove me) --sky
+
+const nonceRange = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+
+export function getNonce(): string {
+    if (env.name !== 'dev') throw new Error('invalid environment');
+    let nonce = '';
+    for (let i = 0; i < 20; i++) {
+        nonce += nonceRange.charAt(Math.floor(Math.random() * nonceRange.length));
+    }
+    return nonce;
+}
 
 @Injectable()
 export class TokenProvider {
-
     private token: Token;
     constructor(private http: HttpClient, private logger: Logger, private device: Device, private account: AccountProvider) {}
 
@@ -43,26 +60,29 @@ export class TokenProvider {
     }
 
     private async issueToken(): Promise<Token> {
+        const id = this.device.uuid ? this.device.uuid : getNonce();
+
         const account = await this.account.getAccount();
+        this.logger.debug('[token] issue token ...');
         const token = await this.http
             .post(
                 env.endpoint.token(),
                 {
                     coin_symbol: 'XLM',
-                    device_id: env.name === 'dev' ? 'develop' : this.device.uuid,
+                    device_id: env.name === 'dev' ? `develop_${id}` : this.device.uuid,
                     public_key: account.signature.public,
                     grant_type: 'password',
                 },
                 {
                     headers: {
-                        Authorization: 'Basic ' + btoa(`app-n-wallet:app-n-wallet`),
+                        Authorization: `Basic ${btoa(`app-n-wallet:app-n-wallet`)}`,
                         Accept: 'application/json',
                     },
                 },
             )
-            .map(response => Object.assign(new Token(), response))
             .toPromise()
             .then((token: Token) => {
+                token = Object.assign(new Token(), token);
                 this.logger.debug('[token] issue token done');
                 token.setExpiration();
                 return token;

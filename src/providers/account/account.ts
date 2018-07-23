@@ -1,6 +1,6 @@
-import { Logger } from './../common/logger/logger';
+import { Logger } from '../common/logger/logger';
 import { Events } from 'ionic-angular';
-import { NWallet } from './../../interfaces/nwallet';
+import { NWallet } from '../../interfaces/nwallet';
 import { Injectable } from '@angular/core';
 import { PreferenceProvider, Preference } from '../common/preference/preference';
 import { Keypair } from 'stellar-sdk';
@@ -14,15 +14,34 @@ export class AccountProvider {
     }
 
     private async init(): Promise<void> {
-        this.event;this.logger;
+        this.event;
+        this.logger;
         this.account = await this.preference.get(Preference.Nwallet.walletAccount);
     }
 
+    // todo remove me --sky`
+    public async setAccount(account: NWallet.Account): Promise<NWallet.Account> {
+        await this.preference.set(Preference.Nwallet.walletAccount, account);
+        this.account = account;
+        return this.account;
+    }
+
+    // todo remove me --sky`
     public async getAccount(): Promise<NWallet.Account> {
         if (!this.account) {
             this.account = await this.preference.get(Preference.Nwallet.walletAccount);
         }
         return this.account;
+    }
+
+    public getNativeWallet(): NWallet.AssetContext {
+        if (!this.account) {
+            throw new Error('[account] account not exist!');
+        }
+
+        return this.account.wallets.find(wallet => {
+            return wallet.item.asset.isNative() === true;
+        });
     }
 
     public generateSignature(secretKey?: string): NWallet.Signature {

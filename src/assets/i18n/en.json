@@ -12,5 +12,11 @@
   "Sent": "Sent",
   "Receive": "Receive",
   "Buy": "Buy",
-  "Loan": "Loan"
+  "Loan": "Loan",
+  "Account": "Account",
+  "Currency": "Currency",
+  "Buying": "Buying",
+  "Paying": "Paying",
+  "Transfer": "Transfer",
+  "CurrentLanguage": "English"
 }

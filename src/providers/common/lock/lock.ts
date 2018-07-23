@@ -1,4 +1,4 @@
-import { PinModalPage } from './../../../pages/1.security/pin/pin';
+import { PinModalPage } from '../../../pages/1.security/pin/pin';
 // import { FingerprintModalPage } from './../../../pages/1.security/fingerprint/fingerprint';
 import { Injectable } from '@angular/core';
 import { ModalController, ModalOptions } from 'ionic-angular';
@@ -17,7 +17,7 @@ export class LockProvider {
         }
 
         if (!this.isSecurityAvailable()){
-            this.logger.debug('[lock] secure phase not available')
+            this.logger.debug('[lock] secure phase not available');
             return;
         }
 
@@ -28,7 +28,7 @@ export class LockProvider {
 
         //todo
         this.logger.debug('[lock] security check',this.platform.isMobile);
-        return true;
+        return false;
         // return this.platform.isMobile;
     }
 

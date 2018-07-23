@@ -2,10 +2,10 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { NWallet } from '../../interfaces/nwallet';
 
 @Pipe({
-    name: 'walletFormat',
+    name: 'assetFormat',
 })
-export class WalletFormatPipe implements PipeTransform {
-    transform(wallet: NWallet.WalletContext) {
+export class AssetFormatPipe implements PipeTransform {
+    transform(wallet: NWallet.AssetContext) {
         const value = Number.parseFloat(wallet.amount);
         // const floor = Math.floor(value * 100) / 100;
         return `${value} ${wallet.item.asset.code}`;
