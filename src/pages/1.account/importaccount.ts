@@ -30,7 +30,7 @@ export class ImportAccountPage {
     ionViewDidLoad() {}
 
     public async onImportAccount(): Promise<void> {
-        this.logger.debug('import ', this.secretKey);
+        this.logger.debug('[import-account-page] import', this.secretKey);
         const signature = this.account.generateSignature(this.secretKey);
 
         const importAccount = <NWallet.Account>{

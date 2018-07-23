@@ -23,8 +23,6 @@ export class AppServiceProvider {
         private event: EventProvider,
     ) {
         this.app;
-
-        this.preference.remove(Preference.Nwallet.walletAccount);
     }
 
     public async flushApplication(): Promise<void> {

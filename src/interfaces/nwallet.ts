@@ -47,7 +47,6 @@ export namespace NWallet {
         NCN: <Asset>undefined,
         XLM: Asset.native(),
     };
-    export const NCH = new Asset('NCH', 'GD5KULZRARHGYJHDKDCUYHTY645Z4NP7443WS4HQJSNX45BMHV5CCTM3');
 }
 
 export namespace NWallet.Transactions {
