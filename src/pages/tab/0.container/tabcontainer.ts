@@ -2,7 +2,7 @@ import { WalletBuyPage } from '../2.buy-ncash-tab/wallet-buy';
 import { AccountProvider } from '../../../providers/account/account';
 import { AppServiceProvider } from '../../../providers/app/app.service';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular/umd';
+import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { AccountTabPage } from '../5.account-tab/account-tab';
 import { WalletTabPages, WalletPage } from '../3.wallet-tab/wallet-tab';
 import { Logger } from '../../../providers/common/logger/logger';

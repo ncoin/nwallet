@@ -1,7 +1,7 @@
 import { EventTypes } from '../interfaces/events';
 import { EventProvider } from '../providers/common/event/event';
 import { AppServiceProvider } from '../providers/app/app.service';
-import { TabcontainerPage } from '../pages/tab/tabcontainer';
+import { TabcontainerPage } from '../pages/tab/0.container/tabcontainer';
 import { AccountProvider } from '../providers/account/account';
 import { LockProvider } from '../providers/common/lock/lock';
 import { Subscription } from 'rxjs';

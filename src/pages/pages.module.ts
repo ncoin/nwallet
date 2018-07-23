@@ -13,7 +13,7 @@ import { PinPad } from './1.security/pin/pin-pad/pin-pad';
 import { PinDots } from './1.security/pin/pin-dot/pin-dots';
 import { PinModalPage } from './1.security/pin/pin';
 import { NWalletSharedModule } from '../shared/shared.module';
-import { NWalletTabPages } from './tab/tabcontainer';
+import { NWalletTabPages } from './tab/0.container/tabcontainer';
 import { NWalletComponents } from '../components/components.module';
 
 

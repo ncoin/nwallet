@@ -67,7 +67,6 @@ export class WalletBuyPage {
     }
 
     async onBuyRequest() {
-        this.logger;
         const alert = this.alert.create({
             title: 'buy NCash',
             message: `PAYING : \n ${this._nchAmount} ${this.wallet.item.asset.code}\n` + `<p>BUY : ${this.expectSpendWallet.amount} ${this.expectSpendWallet.item.asset.code}</p>`,

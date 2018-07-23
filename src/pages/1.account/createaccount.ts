@@ -5,7 +5,7 @@ import { NavController } from 'ionic-angular';
 import { Logger } from '../../providers/common/logger/logger';
 import { Preference } from '../../providers/common/preference/preference';
 import { NWallet } from '../../interfaces/nwallet';
-import { TabcontainerPage } from '../tab/tabcontainer';
+import { TabcontainerPage } from '../tab/0.container/tabcontainer';
 
 /**
  * Generated class for the CreateaccountPage page.
