@@ -85,6 +85,7 @@ ion-app {
 // Headers
 ion-header {
     background: $background-color url('../assets/img/headers_bg.png') no-repeat bottom center;
+    background-size: cover;
 }
 ion-header ion-title {
     text-align: center;
@@ -99,9 +100,6 @@ ion-header ion-title img {
 // Tabs
 ion-tabs .tabbar .tab-button {
     padding: 0 !important;
-}
-.tab-button .tab-button-icon {
-    background: $background-color url('../assets/img/tabs_icons_off.png') no-repeat;
 }
 .tab-button .tab-button-icon.icon{
     padding: 0;
@@ -127,35 +125,40 @@ ion-tabs .tabbar .tab-button {
     top: -10px;
     width: 102px !important;
     height: 79px !important;
-    background-position: 0 0 !important;
+    background: $background-color url('../assets/img/tabs_icons_wallet_off.png') no-repeat;
+    background-size: cover;
 }
 .ion-ios-nwallet-transfer,
 .ion-ios-nwallet-transfer-outline,
 .ion-md-nwallet-transfer {
     width: 40px !important;
     height: 40px !important;
-    background-position: -102px 0 !important;
+    background: $background-color url('../assets/img/tabs_icons_transfer_off.png') no-repeat;
+    background-size: cover;
 }
 .ion-ios-nwallet-buy,
 .ion-ios-nwallet-buy-outline,
 .ion-md-nwallet-buy {
     width: 44px !important;
     height: 48px !important;
-    background-position: -142px 0 !important;
+    background: $background-color url('../assets/img/tabs_icons_buy_off.png') no-repeat;
+    background-size: cover;
 }
 .ion-ios-nwallet-loan,
 .ion-ios-nwallet-loan-outline,
 .ion-md-nwallet-loan {
     width: 44px !important;
     height: 40px !important;
-    background-position: -186px 0 !important;
+    background: $background-color url('../assets/img/tabs_icons_loan_off.png') no-repeat;
+    background-size: cover;
 }
 .ion-ios-nwallet-account,
 .ion-ios-nwallet-account-outline,
 .ion-md-nwallet-account {
     width: 39px !important;
     height: 40px !important;
-    background-position: -230px 0 !important;
+    background: $background-color url('../assets/img/tabs_icons_account_off.png') no-repeat;
+    background-size: cover;
 }
 
 
