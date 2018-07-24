@@ -1,55 +1,63 @@
-<ng-template #native>{{wallet.item.asset.code | translate}}</ng-template>
+<!-- <ng-template #native>{{wallet.item.asset.code | translate}}</ng-template>
 <ng-template #notnative>{{wallet.item.asset.code}}</ng-template>
-<ion-header>
-    <ion-navbar>
-        <ion-title>
-            {{'BUY' | translate}} {{'NCH' | translate}}
-        </ion-title>
-    </ion-navbar>
+<div *ngIf="wallet.item.isNative; then native ; else notnative"></div> -->
+<ion-header show>
+    <ion-title>
+        <img src="assets/img/title_buy_ncash.png">
+    </ion-title>
 </ion-header>
-
-
 <ion-content padding scroll="=false">
-    <div>
-        <div style="margin: 3% 0% 2% 0%">:: {{'PAYING CURRENCY' | translate}}</div>
+    <div style="background: white">
+        <ion-label> > {{'BuyWith' | translate}}</ion-label>
         <ion-item>
             <ion-label>
-                <div *ngIf="wallet.item.isNative; then native ; else notnative"></div>
+                <span translate>Amount</span>
             </ion-label>
-            <ion-select [(ngModel)]="wallet" interface="popover">
-                <ion-option *ngFor="let walleta of wallets" [value]="walleta">{{walleta.item.asset.code}}</ion-option>
+            <ion-input [(ngModel)]="sourceAssetAmount" type="number" text-right></ion-input>
+            <ion-select item-end [(ngModel)]="sourceAsset" interface="popover">
+                <ion-option *ngFor="let asset of availableAssets" [value]="asset" (ionSelect)="onAssetChanged()">{{asset.item.asset.code}}</ion-option>
             </ion-select>
         </ion-item>
         <ion-item no-lines>
-            <ion-label>> {{'Balance' | translate}}</ion-label>
-            <div item-end>
-                <ion-label style="text-align: right">{{wallet | assetFormat}}</ion-label>
-                <ion-label style="text-align: right">{{wallet | assetToUSD}}</ion-label>
-            </div>
-        </ion-item>
-        <ion-item>
-            <ion-label floating>{{'Amount' | translate}}</ion-label>
-            <ion-input [(ngModel)]="nchAmount" type="number" required></ion-input>
-        </ion-item>
-        <ion-label style="margin: 5% 0% 0% 0%">
-            :: {{'BUYING CURRENCY' | translate}}
-        </ion-label>
-        <ion-item no-lines>
-            <ion-label item-start>
-                {{expectSpendWallet.item.asset.code}}
-            </ion-label>
             <div item-end>
                 <ion-label style="text-align: right">
-                    {{expectSpendWallet| assetFormat}}
+                    {{'Balance' | translate}}: {{sourceAsset | assetFormat}}
                 </ion-label>
             </div>
         </ion-item>
+        <ion-item>
+            <button (click)="onMaxBuy()" item-end>
+                <ion-label text-right>{{'Max' | translate}}</ion-label>
+            </button>
+        </ion-item>
+        <ion-label>
+            > {{'NCH' | translate}}
+        </ion-label>
+        <ion-item no-lines>
+            <ion-label item-start>
+                {{'Amount'}}
+            </ion-label>
+            <div item-end>
+                <ion-label style="text-align: right">
+                    {{expectedNCHContext| assetFormat}}
+                </ion-label>
+            </div>
+        </ion-item>
+        <ion-item no-lines>
+            <div item-end>
+                <ion-label style="text-align: right">
+                    {{'Available' | translate}}: {{expectedMaxNCHAmount}} NCH
+                </ion-label>
+            </div>
+        </ion-item>
+        <ion-item no-lines>
+            <button (click)="onMaxBuy()" item-end>
+                <ion-label text-right>{{'Max' | translate}}</ion-label>
+            </button>
+        </ion-item>
     </div>
     <!-- todo use related grid later [sky] -->
-    <button ion-button block (click)="onBuyRequest()" style="
-            position:  absolute;
-            width: 90%;
-            left:  5%; bottom : 10%;">
+    <button ion-button block (click)="onBuyRequest()">
         {{'Buy' | translate }} {{'NCH' | translate }}
     </button>
 </ion-content>

@@ -32,6 +32,7 @@ export namespace NWallet {
     export interface AssetItem {
         asset: Asset;
         isNative: boolean;
+        /** amount per usd price */
         price: number;
     }
 

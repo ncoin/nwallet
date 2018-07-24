@@ -3,7 +3,7 @@ import { AppServiceProvider } from '../../../providers/app/app.service';
 import { AccountProvider } from '../../../providers/account/account';
 import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams, Navbar, AlertController, LoadingController } from 'ionic-angular';
-import { NWallet } from '../../../interfaces/nwallet';
+import { NWallet, getOrAddWalletItem } from '../../../interfaces/nwallet';
 
 @IonicPage()
 @Component({
@@ -13,10 +13,12 @@ import { NWallet } from '../../../interfaces/nwallet';
 export class WalletBuyPage {
     @ViewChild(Navbar) navBar: Navbar;
 
-    private _nchAmount: number = 0;
-    private _wallet: NWallet.AssetContext;
-    wallets: NWallet.AssetContext[] = [];
-    expectSpendWallet: NWallet.AssetContext;
+    private _sourceAssetAmount: number = 0;
+    private _sourceAsset: NWallet.AssetContext;
+    availableAssets: NWallet.AssetContext[] = [];
+    expectedNCHContext: NWallet.AssetContext;
+    expectedMaxNCHAmount: number;
+
 
     constructor(
         private account: AccountProvider,
@@ -27,49 +29,67 @@ export class WalletBuyPage {
         private appService: AppServiceProvider,
         private loading: LoadingController,
     ) {
-        this._wallet = this.account.getNativeWallet();
-        this.expectSpendWallet = <NWallet.AssetContext>{
-            item: this._wallet.item,
+        this._sourceAsset = this.account.getNativeWallet();
+        const nch = getOrAddWalletItem(NWallet.Assets.NCH.code, NWallet.Assets.NCH.issuer, false);
+
+        this.expectedNCHContext = <NWallet.AssetContext>{
+            item: nch,
             amount: '0',
         };
+        this.expectedMaxNCHAmount = Number.parseFloat(this.sourceAsset.amount) * this.sourceAsset.item.price;
 
         const availables = account.account.wallets.filter(wallet => {
             return wallet.item.asset.code !== 'NCH' && wallet.item.isNative;
         });
-        this.wallets.push(...availables);
+
+        this.availableAssets.push(...availables);
     }
 
-    public set nchAmount(value: number) {
-        this._nchAmount = value;
-        this.calculateTotalNCN();
+    public set sourceAssetAmount(value: number) {
+        this._sourceAssetAmount = value;
+        this.calcualteExpectedNCHAmount();
     }
 
-    public get nchAmount(): number {
-        return this._nchAmount;
+    public get sourceAssetAmount(): number {
+        return this._sourceAssetAmount;
     }
 
-    public get wallet(): NWallet.AssetContext {
-        return this._wallet;
+    public get sourceAsset(): NWallet.AssetContext {
+        return this._sourceAsset;
     }
 
-    public set wallet(wallet: NWallet.AssetContext) {
-        this._wallet = wallet;
-        this.calculateTotalNCN();
+    public set sourceAsset(wallet: NWallet.AssetContext) {
+        this._sourceAsset = wallet;
+        this.calcualteExpectedNCHAmount();
     }
 
-    private calculateTotalNCN(): void {
-        const totalPrice = (this.nchAmount * 1) / this.wallet.item.price;
-        this.expectSpendWallet = <NWallet.AssetContext>{
+    private calcualteExpectedNCHAmount(): void {
+        // to usd
+        const totalPrice = this.sourceAssetAmount * this.sourceAsset.item.price;
+        const nch = getOrAddWalletItem(NWallet.Assets.NCH.code, NWallet.Assets.NCH.issuer, false);
+        this.expectedNCHContext = <NWallet.AssetContext>{
             amount: totalPrice.toString(),
-            item: this._wallet.item,
-            price: this.expectSpendWallet.item.price,
+            item: nch,
+            price: nch.price
         };
+
+        this.expectedMaxNCHAmount = Number.parseFloat(this.sourceAsset.amount) * this.sourceAsset.item.price;
     }
 
-    async onBuyRequest() {
+    public onMaxBuy(): void {
+        this.sourceAssetAmount = Number.parseFloat(this._sourceAsset.amount);
+    }
+
+    public onAssetChanged(): void {
+        this.sourceAssetAmount = 0;
+    }
+
+    public async onBuyRequest() {
         const alert = this.alert.create({
             title: 'buy NCash',
-            message: `PAYING : \n ${this._nchAmount} ${this.wallet.item.asset.code}\n` + `<p>BUY : ${this.expectSpendWallet.amount} ${this.expectSpendWallet.item.asset.code}</p>`,
+            message:
+                `PAYING : \n ${this._sourceAssetAmount} ${this.sourceAsset.item.asset.code}\n` +
+                `<p>BUY : ${this.expectedNCHContext.amount} ${this.expectedNCHContext.item.asset.code}</p>`,
             buttons: [
                 {
                     text: 'CANCEL',
@@ -82,7 +102,7 @@ export class WalletBuyPage {
                             content: 'please wait ...',
                         });
                         loader.present();
-                        await this.appService.requestBuy(this._wallet.item.asset, Number.parseFloat(this._nchAmount.toString()));
+                        await this.appService.requestBuy(this._sourceAsset.item.asset, Number.parseFloat(this._sourceAssetAmount.toString()));
                         this.navCtrl.popToRoot();
                         loader.dismiss();
                     },

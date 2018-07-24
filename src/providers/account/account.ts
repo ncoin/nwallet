@@ -34,10 +34,24 @@ export class AccountProvider {
         return this.account;
     }
 
-    public getNativeWallet(): NWallet.AssetContext {
+
+    // todo decoration --sky`
+    private checkAccount(): void {
         if (!this.account) {
             throw new Error('[account] account not exist!');
         }
+    }
+
+    // public getAsset(): NWallet.AssetContext {
+    //     this.checkAccount();
+
+    //     return this.account.wallets.find(wallet => {
+    //         return wallet.item.asset.isNative() === true;
+    //     });
+    // }
+
+    public getNativeWallet(): NWallet.AssetContext {
+        this.checkAccount();
 
         return this.account.wallets.find(wallet => {
             return wallet.item.asset.isNative() === true;
