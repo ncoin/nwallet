@@ -30,7 +30,8 @@ export class AppConfigProvider {
         }
 
         await this.translate.use(this.translate.getDefaultLang()).toPromise();
-        this.logger.debug('[appconfig] current language :', this.translate.getDefaultLang());
+        this.translate.addLangs(['en','es','fr','de','it','ja','ko','nl','pl','pt','ru','zh-cn','zh-tw']);
+        this.logger.debug('[appconfig] current language :', this.translate.getDefaultLang())
     }
 
     public async hasSeenTutorial(): Promise<boolean> {

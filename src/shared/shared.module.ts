@@ -25,7 +25,7 @@ export class MissingHandler implements MissingTranslationHandler {
                 useFactory: createTranslateLoader,
                 deps: [HttpClient],
             },
-            useDefaultLang: false,
+            useDefaultLang: true,
             missingTranslationHandler: {provide: MissingTranslationHandler, useClass:MissingHandler}
         }),
     ],

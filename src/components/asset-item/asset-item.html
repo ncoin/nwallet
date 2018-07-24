@@ -1,7 +1,9 @@
+<ng-template #native>{{asset.item.asset.code | translate}}</ng-template>
+<ng-template #notnative>{{asset.item.asset.code}}</ng-template>
 <ion-card>
     <ion-card-content>
-        <button ion-item style="text-align: right" >
-            <ion-label text-left>{{asset.item | assetName}}</ion-label>
+        <button ion-item style="text-align: right">
+            <ion-label text-left *ngIf="asset.item.isNative;then native; else notnative"></ion-label>
             <div item-end>
                 <ion-label>{{asset | assetFormat}}</ion-label>
                 <ion-label>{{asset | assetToUSD}}</ion-label>

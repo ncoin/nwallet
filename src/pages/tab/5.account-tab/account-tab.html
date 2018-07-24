@@ -22,9 +22,12 @@
         </ion-card>
         <ion-card>
             <ion-card-content>
-                <button ion-item>
-                    <span translate>Language</span>
-                </button>
+                <ion-item>
+                    <ion-label>{{'Language' | translate}}</ion-label>
+                    <ion-select interface="popover" [(ngModel)]="currentLanguage">
+                        <ion-option *ngFor="let language of supportedLanguagesPair" [value]="language" (ionSelect)="onLanguageChanged(language)">{{language.value}}</ion-option>
+                    </ion-select>
+                </ion-item>
             </ion-card-content>
         </ion-card>
         <ion-card>
@@ -54,8 +57,9 @@
         <button ion-item (click)="onLogout()">
             <span translate>Logout</span>
         </button>
-        <ion-label>
+        <ion-label style="color: white">
             <span translate>CurrentLanguage</span>
+            {{'Logout' | translate}}
         </ion-label>
 
     </ion-list>

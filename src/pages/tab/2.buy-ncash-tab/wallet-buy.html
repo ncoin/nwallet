@@ -1,9 +1,5 @@
-<!--
-  Generated template for the WalletBuyPage page.
-
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
+<ng-template #native>{{wallet.item.asset.code | translate}}</ng-template>
+<ng-template #notnative>{{wallet.item.asset.code}}</ng-template>
 <ion-header>
     <ion-navbar>
         <ion-title>
@@ -17,7 +13,9 @@
     <div>
         <div style="margin: 3% 0% 2% 0%">:: {{'PAYING CURRENCY' | translate}}</div>
         <ion-item>
-            <ion-label> {{wallet.item | assetName}}</ion-label>
+            <ion-label>
+                <div *ngIf="wallet.item.isNative; then native ; else notnative"></div>
+            </ion-label>
             <ion-select [(ngModel)]="wallet" interface="popover">
                 <ion-option *ngFor="let walleta of wallets" [value]="walleta">{{walleta.item.asset.code}}</ion-option>
             </ion-select>
