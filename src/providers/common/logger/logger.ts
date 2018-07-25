@@ -71,7 +71,7 @@ export class Logger {
 
     public error(message?: any, ...optionalParams: any[]): void {
         let msg = '[error] ' + (_.isString(message) ? message : JSON.stringify(message));
-        console.log(msg, ...optionalParams);
+        if (isDevMode() && !this.isFilteredLevel('error') && !this.isFilteredText(message)) console.log(msg, ...optionalParams);
         let args = this.processingArgs(arguments);
         this.add('error', args);
     }

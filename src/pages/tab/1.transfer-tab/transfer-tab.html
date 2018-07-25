@@ -10,23 +10,107 @@
     </ion-title>
 </ion-header>
 <ion-content>
-    <div style="background-color: yellowgreen">
-        receive exchange send
-    </div>
-    <div>
-        history
+    <ion-grid style="background-color: green; height: 15%;" ion-fixed>
+        <ion-row style="height: 60%;">
+            <ion-col>
+                <button>receive</button>
+            </ion-col>
+            <ion-col>
+                <button>exchange</button>
+            </ion-col>
+            <ion-col>
+                <button>send</button>
+            </ion-col>
+        </ion-row>
+        <ion-row style="height: 40%;">
+            <ion-col offset-2>
+                <div id="history" style="background-color : yellow">History</div>
+            </ion-col>
+            <ion-col col-2>
+                <div id="history-icon" style="background-color: orange;">icon</div>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+    <div style="position: relative; top: 15%;">
+        <ion-list>
+            <button ion-item>aaaa</button>
+            <button ion-item>aaaa</button>
+            <button ion-item>aaaa</button>
+            <button ion-item>aaaa</button>
+            <button ion-item>aaaa</button>
+            <button ion-item>aaaa</button>
+            <button ion-item>aaaa</button>
+            <button ion-item>aaaa</button>
+            <button ion-item>aaaa</button>
+            <button ion-item>aaaa</button>
+            <button ion-item>aaaa</button>
+            <button ion-item>aaaa</button>
+            <button ion-item>aaaa</button>
+            <button ion-item>aaaa</button>
+            <button ion-item>aaaa</button>
+            <button ion-item>aaaa</button>
+            <button ion-item>aaaa</button>
+            <button ion-item>aaaa</button>
+            <button ion-item>aaaa</button>
+            <button ion-item>aaaa</button>
+            <button ion-item>aaaa</button>
+            <button ion-item>aaaa</button>
+            <button ion-item>aaaa</button>
+            <button ion-item>aaaa</button>
+            <button ion-item>aaaa</button>
+            <button ion-item>aaaa</button>
+            <button ion-item>aaaa</button>
+            <button ion-item>aaaa</button>
+            <button ion-item>aaaa</button>
+            <button ion-item>aaaa</button>
+            <button ion-item>aaaa</button>
+            <button ion-item>aaaa</button>
+            <button ion-item>aaaa</button>
+            <button ion-item>bbbb</button>
+        </ion-list>
+        <ion-infinite-scroll (ionInfinite)="doInfinite($event)" style="background-color: red">
+            <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="more Transactions ..."></ion-infinite-scroll-content>
+        </ion-infinite-scroll>
     </div>
 
 
-    <ion-content>
-        processing
-        <div style="background-color: gray; height: 50%;">
-            c cc
-        </div>
-        october
-        <div style="background-color: gainsboro; height: 50%;">
-            c cc
-        </div>
-    </ion-content>
+    <!-- <ion-list style="background-color: goldenrod; height: 85%;">
+        <button ion-item>aaaa</button>
+        <button ion-item>aaaa</button>
+        <button ion-item>aaaa</button>
+        <button ion-item>aaaa</button>
+        <button ion-item>aaaa</button>
+        <button ion-item>aaaa</button>
+        <button ion-item>aaaa</button>
+        <button ion-item>aaaa</button>
+        <button ion-item>aaaa</button>
+        <button ion-item>aaaa</button>
+        <button ion-item>aaaa</button>
+        <button ion-item>aaaa</button>
+        <button ion-item>aaaa</button>
+        <button ion-item>aaaa</button>
+        <button ion-item>aaaa</button>
+        <button ion-item>aaaa</button>
+        <button ion-item>aaaa</button>
+        <button ion-item>aaaa</button>
+        <button ion-item>aaaa</button>
+        <button ion-item>aaaa</button>
+        <button ion-item>aaaa</button>
+        <button ion-item>aaaa</button>
+        <button ion-item>aaaa</button>
+        <button ion-item>aaaa</button>
+        <button ion-item>aaaa</button>
+        <button ion-item>aaaa</button>
+        <button ion-item>aaaa</button>
+        <button ion-item>aaaa</button>
+        <button ion-item>aaaa</button>
+        <button ion-item>aaaa</button>
+        <button ion-item>aaaa</button>
+        <button ion-item>aaaa</button>
+        <button ion-item>aaaa</button>
+        <button ion-item>bbbb</button>
+    </ion-list> -->
+
+
 
 </ion-content>
