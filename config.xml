@@ -22,6 +22,7 @@
     <allow-navigation href="http://169.254.80.80:8100" />
     <allow-navigation href="http://192.168.200.6:8101" />
     <allow-navigation href="http://192.168.100.4:8100" />
+    <allow-navigation href="http://192.168.5.23:8101" />
     <allow-navigation href="https://horizon-testnet.stellar.org" />
     <allow-navigation href="http://api.dev.ncoin.com:8080" />
     <allow-navigation href="https://api.stage.ncoin.com:8080" />
@@ -87,7 +88,6 @@
     </platform>
     <preference name="orientation" value="default" />
     <preference name="ScrollEnabled" value="false" />
-    <preference name="StatusBarStyle" value="default" />
     <preference name="android-minSdkVersion" value="16" />
     <preference name="BackupWebStorage" value="none" />
     <preference name="SplashScreen" value="screen" />

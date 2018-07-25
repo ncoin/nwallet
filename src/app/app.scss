@@ -97,14 +97,14 @@ ion-header ion-title img {
     max-height: 150px;
 }
 ion-header.header-ios {
-    padding-top: 20px;
+    padding-top: 0;
 }
 ion-header ion-navbar.nwallet-start {
     background: $background-color url('../assets/img/title_nwallet.png') no-repeat center center;
     background-size: contain;
     max-width: 100%;
     min-width: 290px;
-    min-height: 90px;
+    min-height: 90px !important;
     max-height: 150px;
 }
 

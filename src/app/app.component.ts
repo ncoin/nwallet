@@ -49,7 +49,8 @@ export class NWalletApp {
             .ready()
             .then(() => {
                 this.statusBar.overlaysWebView(false);
-                this.statusBar.backgroundColorByHexString('#ffffff');
+                this.statusBar.backgroundColorByHexString('#000');
+                this.statusBar.styleLightContent();
 
                 this.logger.debug('[app-page] prepare platform');
                 this.onPlatformReady();
