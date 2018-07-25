@@ -96,7 +96,7 @@ ion-header ion-title img {
     min-height: 60px;
     max-height: 150px;
 }
-ion-header.nwallet-start.header-ios {
+ion-header.header-ios {
     padding-top: 20px;
 }
 ion-header ion-navbar.nwallet-start {
@@ -233,4 +233,32 @@ a.tab-button:hover{
 .swiper-pagination-bullet-active {
     background: #fff;
     opacity: 1;
+}
+
+
+// buttons
+.btn {
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+.btn.default {
+    background: #49413a;
+    -webkit-box-shadow: #736961 0 1px 0 inset;
+    -moz-box-shadow: #736961 0 1px 0 inset;
+    box-shadow: #736961 0 1px 0 inset;
+}
+.btn.default h3 {
+    color: #d8d5d1;
+    font-weight: 500;
+}
+
+
+// ios list
+.list-ios > .item-block:first-child {
+    border-top: 0;
+}
+.list-ios > .item-block:last-child, .list-ios > .item-wrapper:last-child .item-block {
+    border-bottom: 0;
 }

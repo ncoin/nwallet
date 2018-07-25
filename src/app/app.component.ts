@@ -10,6 +10,7 @@ import { Component, ViewChild } from '@angular/core';
 
 import { Nav, Platform } from 'ionic-angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
+import { StatusBar } from '@ionic-native/status-bar';
 
 import { EntrancePage } from '../pages/0.entrance/entrance';
 import { TutorialPage } from '../pages/etc.tutorial/tutorial';
@@ -30,6 +31,7 @@ export class NWalletApp {
     constructor(
         public platform: Platform,
         private splashScreen: SplashScreen,
+        private statusBar: StatusBar,
         private logger: Logger,
         private lock: LockProvider,
         private account: AccountProvider,
@@ -37,6 +39,8 @@ export class NWalletApp {
         private appService: AppServiceProvider,
         private event: EventProvider
     ) {
+
+
         this.initialize();
     }
 
@@ -44,6 +48,9 @@ export class NWalletApp {
         this.platform
             .ready()
             .then(() => {
+                this.statusBar.overlaysWebView(false);
+                this.statusBar.backgroundColorByHexString('#ffffff');
+
                 this.logger.debug('[app-page] prepare platform');
                 this.onPlatformReady();
             })

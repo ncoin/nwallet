@@ -89,13 +89,16 @@ $toolbar-md-active-color: #fff;
 // Overriding Ionic Sass Variables
 // START
 
+// Global
 $background-color: transparent;
 
+// Toolbar
 $toolbar-padding: 0;
 $toolbar-wp-padding: $toolbar-padding;
 $toolbar-ios-padding: $toolbar-padding;
 $toolbar-md-padding: $toolbar-padding;
 
+// Tab
 $tabs-tab-min-height: 70px;
 $tabs-ios-tab-min-height: $tabs-tab-min-height;
 $tabs-md-tab-min-height: $tabs-tab-min-height;
@@ -116,6 +119,17 @@ $tabs-background: transparent url("../assets/img/tabs_bg.png") repeat-x bottom;
 
 $tabs-md-tab-icon-transform-y-active: 0;
 
-$content-ios-transition-background: $background-color;
+// card
+$card-ios-background-color: $background-color;
+$card-ios-box-shadow: none;
+$card-ios-box-shadow-color: $background-color;
+
+$card-md-background-color: $background-color;
+$card-md-box-shadow: none;
+$card-md-box-shadow-color: $background-color;
+
+$card-wp-background-color: $background-color;
+$card-wp-box-shadow: none;
+$card-wp-box-shadow-color: $background-color;
 
 // END
