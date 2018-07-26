@@ -27,9 +27,10 @@ $color-primary: #fff;
 $color-secondary: #9f9f9f;
 $color-secondary-light: #c0bfbf;
 $color-secondary-dark: #7e7e7e;
-$color-danger: #cc0e28;
 $color-title: #fff5df;
 $color-title-second: #ded1b6;
+
+$color-danger: #cc0e28;
 $icon-border-radius: 50%;
 $txp-icon-border-radius: 2rem;
 $toolbar-background: #2a3f90;
@@ -95,9 +96,12 @@ $content-ios-transition-background: $background-color;
 
 // Toolbar
 $toolbar-padding: 0;
-$toolbar-wp-padding: $toolbar-padding;
 $toolbar-ios-padding: $toolbar-padding;
 $toolbar-md-padding: $toolbar-padding;
+$toolbar-wp-padding: $toolbar-padding;
+
+$toolbar-background: transparent;
+$toolbar-md-background: $toolbar-background;
 
 // Tab
 $tabs-tab-min-height: 70px;
@@ -132,5 +136,6 @@ $card-md-box-shadow-color: $background-color;
 $card-wp-background-color: $background-color;
 $card-wp-box-shadow: none;
 $card-wp-box-shadow-color: $background-color;
+
 
 // END
