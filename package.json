@@ -65,8 +65,9 @@
     "devDependencies": {
         "@ionic/app-scripts": "3.1.11",
         "@types/stellar-sdk": "^0.8.4",
+        "codelyzer": "^4.4.2",
         "tslint": "^5.10.0",
-        "typescript": "~2.4.2"
+        "typescript": "^2.9.2"
     },
     "config": {
         "ionic_aot_write_to_disk": true,
