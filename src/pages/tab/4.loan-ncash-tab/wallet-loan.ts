@@ -19,7 +19,7 @@ import { NWallet } from '../../../interfaces/nwallet';
 export class WalletLoanPage {
     @ViewChild(Navbar) navBar: Navbar;
 
-    private _nchAmount: number = 0;
+    private _nchAmount = 0;
     private _wallet: NWallet.AssetContext;
     wallets: NWallet.AssetContext[] = [];
     expectSpendWallet: NWallet.AssetContext;

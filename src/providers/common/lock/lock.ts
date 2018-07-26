@@ -16,7 +16,7 @@ export class LockProvider {
             return;
         }
 
-        if (!this.isSecurityAvailable()){
+        if (!this.isSecurityAvailable()) {
             this.logger.debug('[lock] secure phase not available');
             return;
         }
@@ -24,10 +24,10 @@ export class LockProvider {
         this.processFingerprintSecure();
     }
 
-    private isSecurityAvailable(): boolean{
+    private isSecurityAvailable(): boolean {
 
-        //todo
-        this.logger.debug('[lock] security check',this.platform.isMobile);
+        // todo
+        this.logger.debug('[lock] security check', this.platform.isMobile);
         return false;
         // return this.platform.isMobile;
     }

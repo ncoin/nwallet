@@ -9,11 +9,11 @@ export abstract class NWalletAssetBase  {
     code: string;
     price: number;
 
-    constructor(){}
+    constructor() {}
 
     public Add(price: number): void {
-        if (price <= 0){
-            throw new Error("Method not implemented.");
+        if (price <= 0) {
+            throw new Error('Method not implemented.');
         }
         this.price += price;
     }

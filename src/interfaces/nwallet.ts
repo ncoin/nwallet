@@ -41,7 +41,7 @@ export namespace NWallet {
         amount: string;
     }
 
-    //todo move to other namespace
+    // todo move to other namespace
 
     export const Assets = {
         NCH: <Asset>undefined,
@@ -83,7 +83,7 @@ export namespace NWallet.Transactions {
                 };
             })
             .filter(record => {
-                //todo extract --sky
+                // todo extract --sky
                 if (asset.isNative() && record.context.item.asset.isNative()) {
                     return true;
                 } else {
@@ -97,7 +97,7 @@ export namespace NWallet.Transactions {
     }
 }
 
-const Assets = new Map<string, NWallet.AssetItem>([
+const AssetMap = new Map<string, NWallet.AssetItem>([
     [
         'XLM_native',
         <NWallet.AssetItem>{
@@ -115,20 +115,19 @@ export namespace NWallet.Protocol {
         Loan = 'loans/ncash/stellar/',
     }
 
-
     // todo
 
-    export interface Response {}
-
+    export interface Response {
+        id: string;
+    }
 
     // todo
     export interface XDRResponse extends Response {
-        id: string;
         xdr: string;
     }
 }
 
-//todo AOP (cache decorator) --sky
+// todo AOP (cache decorator) --sky
 export function getOrAddWalletItem(code: string, issuer: string, isNative: boolean): NWallet.AssetItem {
     if (code === 'XLM' && isNative === true) {
         issuer = 'native';
@@ -136,8 +135,8 @@ export function getOrAddWalletItem(code: string, issuer: string, isNative: boole
 
     const key = `${code}_${issuer}`;
 
-    if (Assets.has(key)) {
-        return Assets.get(key);
+    if (AssetMap.has(key)) {
+        return AssetMap.get(key);
     } else {
         const asset = new Asset(code, issuer);
         if (code === 'NCH' && isNative) {
@@ -148,7 +147,7 @@ export function getOrAddWalletItem(code: string, issuer: string, isNative: boole
             NWallet.Assets.NCN = asset;
         }
 
-        return Assets.set(key, <NWallet.AssetItem>{
+        return AssetMap.set(key, <NWallet.AssetItem>{
             asset: asset,
             price: 0,
             isNative: isNative,

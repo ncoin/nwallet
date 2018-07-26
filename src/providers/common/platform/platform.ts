@@ -34,15 +34,15 @@ export class PlatformProvider {
     }
 
     public getBrowserName(): string {
-        let userAgent = window.navigator.userAgent;
-        let browsers = {
+        const userAgent = window.navigator.userAgent;
+        const browsers = {
             chrome: /chrome/i,
             safari: /safari/i,
             firefox: /firefox/i,
             ie: /internet explorer/i,
         };
 
-        for (let key in browsers) {
+        for (const key in browsers) {
             if (browsers[key].test(userAgent)) {
                 return key;
             }
@@ -52,7 +52,7 @@ export class PlatformProvider {
     }
 
     public isNodeWebkit(): boolean {
-        let isNode = typeof process !== 'undefined' && typeof require !== 'undefined';
+        const isNode = typeof process !== 'undefined' && typeof require !== 'undefined';
         if (isNode) {
             try {
                 return typeof (window as any).require('nw.gui') !== 'undefined';

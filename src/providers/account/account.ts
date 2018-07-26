@@ -14,8 +14,6 @@ export class AccountProvider {
     }
 
     private async init(): Promise<void> {
-        this.event;
-        this.logger;
         this.account = await this.preference.get(Preference.Nwallet.walletAccount);
     }
 

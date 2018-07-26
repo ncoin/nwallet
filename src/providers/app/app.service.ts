@@ -22,7 +22,6 @@ export class AppServiceProvider {
         private account: AccountProvider,
         private event: EventProvider,
     ) {
-        this.app;
     }
 
     public async flushApplication(): Promise<void> {
@@ -33,7 +32,7 @@ export class AppServiceProvider {
         await this.preference.set(Preference.App.hasSeenTutorial, true);
     }
 
-    //todo fixme
+    // todo fixme
     public async login(account: NWallet.Account): Promise<void> {
         await this.account.setAccount(account);
         await this.connector.fetchJobs(account);
@@ -44,7 +43,7 @@ export class AppServiceProvider {
 
     public async logout(account: NWallet.Account): Promise<void> {
         await this.preference.remove(Preference.Nwallet.walletAccount);
-        //todo unsubscribe
+        // todo unsubscribe
         await this.connector.unSubscribes(account);
         this.account.flush();
         this.logger.debug('logout', account.signature.public);
@@ -52,7 +51,7 @@ export class AppServiceProvider {
     }
 
     public async getTransactions(asset: Asset, pageToken?: string) {
-        //todo fixme
+        // todo fixme
         const account = await this.account.getAccount();
         return await this.connector.getTransactions(account.signature.public, asset, pageToken);
     }

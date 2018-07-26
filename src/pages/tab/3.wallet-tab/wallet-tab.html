@@ -22,13 +22,11 @@
     <ion-slides pager>
         <ion-slide *ngFor="let walletPage of walletPages">
             <ion-list>
-                <asset-item *ngFor="let wallet of walletPage.wallets" [asset]="wallet" (click)="onSelectWallet(wallet)">
-                </asset-item>
+                <nw-asset-item *ngFor="let wallet of walletPage.wallets" [asset]="wallet" (click)="onSelectWallet(wallet)"></nw-asset-item>
             </ion-list>
         </ion-slide>
     </ion-slides>
     <div *ngIf="nCash && nCash.item">
-        <asset-item [asset]="nCash" (click)="onSelectWallet(nCash)">
-        </asset-item>
+        <nw-asset-item [asset]="nCash" (click)="onSelectWallet(nCash)"></nw-asset-item>
     </div>
 </ion-content>

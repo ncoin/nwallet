@@ -7,7 +7,6 @@ export class CurrencyProvider {
 
 
     constructor(private logger: Logger) {
-        this.logger;
         this.sync();
     }
 

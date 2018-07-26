@@ -8,7 +8,7 @@ import { NWallet } from '../../interfaces/nwallet';
  * Components.
  */
 @Component({
-    selector: 'asset-item',
+    selector: 'nw-asset-item',
     templateUrl: 'asset-item.html',
 })
 export class AssetItemComponent {

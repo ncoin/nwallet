@@ -13,7 +13,7 @@ import { NWallet, getOrAddWalletItem } from '../../../interfaces/nwallet';
 export class WalletBuyPage {
     @ViewChild(Navbar) navBar: Navbar;
 
-    private _sourceAssetAmount: number = 0;
+    private _sourceAssetAmount = 0;
     private _sourceAsset: NWallet.AssetContext;
     availableAssets: NWallet.AssetContext[] = [];
     expectedNCHContext: NWallet.AssetContext;

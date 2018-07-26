@@ -20,7 +20,7 @@ import { AppServiceProvider } from '../../../providers/app/app.service';
     templateUrl: 'wallet-detail.html',
 })
 export class WalletDetailPage {
-    isLoading: boolean = true;
+    isLoading = true;
     isNCH: boolean;
     wallet: NWallet.AssetContext;
     histories: NWallet.Transactions.Record[] = [];
@@ -44,7 +44,7 @@ export class WalletDetailPage {
     }
 
     async getTransactions(): Promise<void> {
-        let transaction = await this.appService.getTransactions(this.wallet.item.asset, this.pageToken);
+        const transaction = await this.appService.getTransactions(this.wallet.item.asset, this.pageToken);
         if (transaction) {
             this.pageToken = transaction.pageToken;
             this.hasNext = transaction.hasNext;
@@ -64,7 +64,7 @@ export class WalletDetailPage {
     }
 
     public ionViewDidLoad(): void {
-        //todo extract --sky
+        // todo extract --sky
         this.navBar.backButtonClick = ev => {
             ev.preventDefault();
             ev.stopPropagation();

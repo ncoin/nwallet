@@ -67,10 +67,10 @@ function BootStrap() {
     }
 
     if (env.network === 'test') {
-        //todo move location
+        // todo move location
         Stellar.Network.useTestNetwork();
     } else {
-        //todo move location
+        // todo move location
         Stellar.Network.usePublicNetwork();
     }
 }

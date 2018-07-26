@@ -1,12 +1,13 @@
+import { Subscription } from 'rxjs/Subscription';
 import { EventTypes } from '../interfaces/events';
 import { EventProvider } from '../providers/common/event/event';
 import { AppServiceProvider } from '../providers/app/app.service';
 import { TabcontainerPage } from '../pages/tab/0.container/tabcontainer';
 import { AccountProvider } from '../providers/account/account';
 import { LockProvider } from '../providers/common/lock/lock';
-import { Subscription } from 'rxjs';
+
 import { Logger } from '../providers/common/logger/logger';
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, OnDestroy } from '@angular/core';
 
 import { Nav, Platform } from 'ionic-angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -19,7 +20,8 @@ import { AppConfigProvider } from '../providers/app/app.config';
 @Component({
     templateUrl: 'app.template.html',
 })
-export class NWalletApp {
+// tslint:disable-next-line:component-class-suffix
+export class NWalletApp implements OnDestroy {
     // the root nav is a child of the root app component
     // @ViewChild(Nav) gets a reference to the app's root nav
     @ViewChild(Nav) nav: Nav;

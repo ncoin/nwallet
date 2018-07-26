@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { NgModule } from "@angular/core";
-import { TranslateModule, TranslateLoader, MissingTranslationHandler, MissingTranslationHandlerParams } from "@ngx-translate/core";
+import { NgModule } from '@angular/core';
+import { TranslateModule, TranslateLoader, MissingTranslationHandler, MissingTranslationHandlerParams } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 function createTranslateLoader(http: HttpClient) {
@@ -26,7 +26,7 @@ export class MissingHandler implements MissingTranslationHandler {
                 deps: [HttpClient],
             },
             useDefaultLang: true,
-            missingTranslationHandler: {provide: MissingTranslationHandler, useClass:MissingHandler}
+            missingTranslationHandler: {provide: MissingTranslationHandler, useClass: MissingHandler}
         }),
     ],
     exports : [

@@ -29,38 +29,33 @@ export class TabcontainerPage {
     tabItems: TabItemContext[] = [
         {
             component: TransferTabPage,
-            icon: "nwallet-transfer",
+            icon: 'nwallet-transfer',
         },
         {
             component: WalletBuyPage,
-            icon: "nwallet-buy",
+            icon: 'nwallet-buy',
         },
         {
             component: WalletPage,
-            icon: "nwallet-home",
+            icon: 'nwallet-home',
         },
         {
             component: WalletLoanPage,
-            icon: "nwallet-loan",
+            icon: 'nwallet-loan',
         },
         {
             component: AccountTabPage,
-            icon: "nwallet-account",
+            icon: 'nwallet-account',
         },
     ];
 
     constructor(public navCtrl: NavController, public navParams: NavParams, private appService: AppServiceProvider, private account: AccountProvider, private logger: Logger) {
         this.selectedIndex = 2;
-        this.account;
     }
 
-    chat() {
-        this.appService;
-        this.logger;
-    }
+    chat() {}
 
     public changeTransition(event: any): void {
-        event;
         // var index = event.index;
         // const direction = index < this.selectedIndex ? 'left' : 'right';
         // const e = event;

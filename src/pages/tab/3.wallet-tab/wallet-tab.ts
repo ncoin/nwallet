@@ -77,7 +77,7 @@ export class WalletPage {
         }
 
         this.nCash = nCash;
-    };
+    }
 
     public onSelectWallet(wallet: NWallet.AssetContext) {
         this.navCtrl.push(

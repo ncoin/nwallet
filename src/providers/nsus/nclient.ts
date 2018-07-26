@@ -1,5 +1,9 @@
 import { EventTypes } from '../../interfaces/events';
-import { Observable, Subscription } from 'rxjs';
+import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
+import 'rxjs/add/Observable/timer';
+import 'rxjs/add/operator/map';
+
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Asset } from 'stellar-sdk';
 import { Injectable } from '@angular/core';
@@ -53,18 +57,17 @@ export class NClientProvider {
 
             this.subscriptions.push(subscription);
         });
-    };
+    }
 
     public async unSubscribes(account: NWallet.Account): Promise<void> {
-        account;
         this.subscriptions.forEach(subscription => {
             subscription.unsubscribe();
         });
     }
 
     public async getAssets(accountId: string): Promise<NWallet.AssetContext[]> {
-        const convert = (data: Object[]): NWallet.AssetContext[] => {
-            return data.map(data => {
+        const convert = (datas: Object[]): NWallet.AssetContext[] => {
+            return datas.map(data => {
                 const asset = data['asset'];
                 const amount = data['amount'];
                 const item = getOrAddWalletItem(asset['code'], asset['issuer'], data['native']);
@@ -156,7 +159,7 @@ export class NClientProvider {
                 this.logger.error(`[nclient] request get ${type} xdr failed`, response);
                 return undefined;
             });
-    };
+    }
 
     public executeXDR = async (requestType: NWallet.Protocol.XdrRequestTypes, params: Object): Promise<boolean> => {
         const type = this.getKeyFromValue(NWallet.Protocol.XdrRequestTypes, requestType);
@@ -176,5 +179,5 @@ export class NClientProvider {
                 this.logger.error(`[nclient] execute ${type} xdr failed`, response);
                 return false;
             });
-    };
+    }
 }

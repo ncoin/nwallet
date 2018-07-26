@@ -6,6 +6,8 @@ import { Injectable } from '@angular/core';
 import { Device } from '@ionic-native/device';
 
 export class Token {
+    static readonly Empty = <Token>undefined;
+
     private access_token: string;
     private token_type: string;
     /** exprire seconds */
@@ -14,14 +16,12 @@ export class Token {
     private jti: string;
     private expiredDate: number;
 
+    // todo extract --sky`
     static capitalize(value: string) {
         return value.charAt(0).toUpperCase() + value.slice(1);
     }
 
     public getAuth(): string {
-        //aa
-        this.scope;
-        this.jti;
         return `${Token.capitalize(this.token_type)} ${this.access_token}`;
     }
 
@@ -33,12 +33,14 @@ export class Token {
         return Date.now() > this.expiredDate;
     }
 }
-// for test (remove me) --sky
+// for test (remove me) --sky`
 
 const nonceRange = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
 export function getNonce(): string {
-    if (env.name !== 'dev') throw new Error('invalid environment');
+    if (env.name !== 'dev') {
+        throw new Error('invalid environment');
+    }
     let nonce = '';
     for (let i = 0; i < 20; i++) {
         nonce += nonceRange.charAt(Math.floor(Math.random() * nonceRange.length));
@@ -64,8 +66,8 @@ export class TokenProvider {
 
         const account = await this.account.getAccount();
         this.logger.debug('[token] issue token ...');
-        const token = await this.http
-            .post(
+        const issuedToken = await this.http
+            .post<Token>(
                 env.endpoint.token(),
                 {
                     coin_symbol: 'XLM',
@@ -81,17 +83,17 @@ export class TokenProvider {
                 },
             )
             .toPromise()
-            .then((token: Token) => {
-                token = Object.assign(new Token(), token);
+            .then(tokenData => {
+                const token = Object.assign(new Token(), tokenData);
                 this.logger.debug('[token] issue token done');
                 token.setExpiration();
                 return token;
             })
             .catch((response: HttpErrorResponse) => {
                 this.logger.error('[token] issue token failed', response);
-                return undefined;
+                return Token.Empty;
             });
 
-        return token;
+        return issuedToken;
     }
 }

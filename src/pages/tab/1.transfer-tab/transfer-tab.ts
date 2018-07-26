@@ -19,9 +19,8 @@ export class TransferTabPage {
     constructor(public navCtrl: NavController, private logger: Logger, private toast: ToastController) {}
 
     public async doInfinite(infinite: InfiniteScroll): Promise<void> {
-        //this.logger.debug('[wallet-detail-page]has next', this.hasNext);
+        // this.logger.debug('[wallet-detail-page]has next', this.hasNext);
 
-        this.toast;
         this.logger.debug('load');
         setTimeout(() => {
 

@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
-import { Animate } from './animate/animate';
+import { AnimateDirective } from './animate/animate';
 @NgModule({
     declarations: [
-        Animate,
+        AnimateDirective,
     ],
     exports: [
-        Animate
+        AnimateDirective
     ]
 })
 export class NWalletDirectiveModule {}
