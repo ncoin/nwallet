@@ -31,6 +31,7 @@ $color-title: #fff5df;
 $color-title-second: #ded1b6;
 
 $color-danger: #cc0e28;
+
 $icon-border-radius: 50%;
 $txp-icon-border-radius: 2rem;
 $toolbar-background: #2a3f90;
@@ -39,11 +40,11 @@ $toolbar-scanner: rgba(30, 49, 134, 0.8);
 $colors: (
     primary: $color-primary,
     secondary: $color-secondary,
-    danger: $color-danger,
     light: $color-secondary-light,
     dark: $color-secondary-dark,
     title: $color-title,
     title-second: $color-title-second,
+    danger: $color-danger,
 
     blank: #488aff,
     light-grey: #aaaaaa,
