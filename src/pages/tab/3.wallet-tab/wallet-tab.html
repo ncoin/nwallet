@@ -9,16 +9,36 @@
     <p>{{account.signature.public}}</p>
     <p>secret</p>
     <p>{{account.signature.secret}}</p> -->
-    <ion-item no-lines>
-        <div item-start>
-            <div text-left>
-                <span translate>Total</span> :
-                <br>
-                <span>{{totalPrice}}</span>
-            </div>
-        </div>
-        <button item-end> + </button>
-    </ion-item>
+    <!--<ion-item no-lines>-->
+        <!--<div float-left class="total">-->
+            <!--<ion-row class="label">-->
+                <!--<span translate>Total</span>-->
+                <!--<span>:</span>-->
+            <!--</ion-row>-->
+            <!--<ion-row class="price">-->
+                <!--$<span>{{totalPrice}}</span>-->
+            <!--</ion-row>-->
+        <!--</div>-->
+        <!--<div float-right><button type="button" class="btn-add-wallet"></button></div>-->
+    <!--</ion-item>-->
+
+    <ion-grid no-padding>
+        <ion-row align-items-center>
+            <ion-col float-left class="total">
+                <ion-row class="label">
+                    <span translate>Total</span>
+                    <span>:</span>
+                </ion-row>
+                <ion-row class="price">
+                    <span>$</span>
+                    <span>{{totalPrice}}</span>
+                </ion-row>
+            </ion-col>
+            <ion-col float-right class="total-btn">
+                <button type="button" class="btn-add-wallet"></button>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
     <ion-slides pager>
         <ion-slide *ngFor="let walletPage of walletPages">
             <ion-list>

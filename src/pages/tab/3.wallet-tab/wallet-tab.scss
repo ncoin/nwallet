@@ -1,4 +1,35 @@
-tab-wallet {}
+tab-wallet {
+    .total {
+
+    }
+    .total .label {
+        color: #faf2e4;
+        font-size: 16px;
+        font-weight: 600;
+        padding-right: 15px;
+        padding-bottom: 5px;
+    }
+    .total .price {
+        color: #ffcd83;
+        font-size: 24px;
+        font-weight: 800;
+        padding-right: 15px;
+    }
+
+    .total-btn {
+        width: 40px;
+        max-width: 40px;
+        height: 40px;
+        max-height: 40px;
+    }
+    .total-btn .btn-add-wallet {
+        width: 40px;
+        height: 40px;
+        background: transparent url("../assets/img/btn_plus.png") no-repeat;
+        background-size: cover;
+        padding: 0;
+    }
+}
 
 ion-slide.swiper-slide {
     //align-items: flex-start;
@@ -18,5 +49,5 @@ div.swiper-wrapper {
 div.swiper-pagination {
     align-content: flex-end;
     height: auto;
-    bottom: 0rem !important;
+    bottom: 0 !important;
  }
