@@ -9,8 +9,8 @@
         <img src="assets/img/title_transfer.png">
     </ion-title>
 </ion-header>
-<ion-content padding>
-    <ion-grid style="background-color: green; height: 15%;" ion-fixed>
+<ion-content>
+    <ion-grid style="background-color: rgba(100,100,100,0.5); height: 90px;" ion-fixed>
         <ion-row style="height: 60%;">
             <ion-col>
                 <button>receive</button>
@@ -24,49 +24,22 @@
         </ion-row>
         <ion-row style="height: 40%;">
             <ion-col offset-2>
-                <div id="history" style="background-color : yellow">History</div>
+                <div id="history">History</div>
             </ion-col>
             <ion-col col-2>
-                <div id="history-icon" style="background-color: orange;">icon</div>
+                <div id="history-icon">icon</div>
             </ion-col>
         </ion-row>
     </ion-grid>
-    <div style="position: relative; top: 15%;">
-        <ion-list>
-            <button ion-item>aaaa</button>
-            <button ion-item>aaaa</button>
-            <button ion-item>aaaa</button>
-            <button ion-item>aaaa</button>
-            <button ion-item>aaaa</button>
-            <button ion-item>aaaa</button>
-            <button ion-item>aaaa</button>
-            <button ion-item>aaaa</button>
-            <button ion-item>aaaa</button>
-            <button ion-item>aaaa</button>
-            <button ion-item>aaaa</button>
-            <button ion-item>aaaa</button>
-            <button ion-item>aaaa</button>
-            <button ion-item>aaaa</button>
-            <button ion-item>aaaa</button>
-            <button ion-item>aaaa</button>
-            <button ion-item>aaaa</button>
-            <button ion-item>aaaa</button>
-            <button ion-item>aaaa</button>
-            <button ion-item>aaaa</button>
-            <button ion-item>aaaa</button>
-            <button ion-item>aaaa</button>
-            <button ion-item>aaaa</button>
-            <button ion-item>aaaa</button>
-            <button ion-item>aaaa</button>
-            <button ion-item>aaaa</button>
-            <button ion-item>aaaa</button>
-            <button ion-item>aaaa</button>
-            <button ion-item>aaaa</button>
-            <button ion-item>aaaa</button>
-            <button ion-item>aaaa</button>
-            <button ion-item>aaaa</button>
-            <button ion-item>aaaa</button>
-            <button ion-item>bbbb</button>
+    <div>
+        <ion-list *ngIf="transactionMaps && transactionMaps.length > 0">
+            <ion-item-group *ngFor="let map of transactionMaps" >
+                <ion-item-divider sticky color="secondary" style="background-color: rgba(100,100,100,1);">{{map.date | date: 'dd MMMM yyyy'}}</ion-item-divider>
+                <button *ngFor="let transaction of map.transactions" ion-item (click)="onExploreTransaction(transaction)">
+                    <div item-start>{{transaction.transaction}}</div>
+                    <div item-end>{{transaction.amount}} {{transaction.asset_code}}</div>
+                </button>
+            </ion-item-group>
         </ion-list>
         <ion-infinite-scroll (ionInfinite)="doInfinite($event)" style="background-color: red">
             <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="more Transactions ..."></ion-infinite-scroll-content>

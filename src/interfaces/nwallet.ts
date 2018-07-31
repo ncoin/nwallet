@@ -115,15 +115,47 @@ export namespace NWallet.Protocol {
         Loan = 'loans/ncash/stellar/',
     }
 
-    // todo
-
-    export interface Response {
-        id: string;
+    export enum Types {
+        Transfer = 'transactions/stellar/accounts/',
     }
 
-    // todo
+    export interface RequestBase {
+        [param: string]: string | string[];
+    }
+
+    // tslint:disable-next-line:no-empty-interface
+    export interface Response {
+    }
+
     export interface XDRResponse extends Response {
+        id: string;
         xdr: string;
+    }
+
+    export interface TransactionRequest extends RequestBase {
+        asset_issuer?: string;
+        asset_code?: string;
+        limit?: string;
+        skip?: string;
+        order?: string;
+    }
+
+    export interface TransactionResponse extends Response {
+        transactions: Transaction[];
+    }
+
+    export interface Transaction {
+        id: string;
+        public_key: string;
+        category: string;
+        transaction: string;
+        asset_code: string;
+        asset_issuer: string;
+        amount: number;
+        counterpart: string;
+        transaction_hash: string;
+        created_by: string;
+        created_date: Date;
     }
 }
 

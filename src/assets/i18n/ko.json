@@ -2,7 +2,7 @@
   "NWallet": "NWallet",
   "NCH": "NCash",
   "NCN": "NCoin",
-  "XLM": "스텔라루멘",
+  "XLM": "Stellar Lumen",
   "CreateAccount": "Create Account",
   "ImportAccount": "Import Account",
   "Logout": "Logout",
@@ -13,12 +13,12 @@
   "Receive": "Receive",
   "Buy": "Buy",
   "Loan": "Loan",
-  "Account": "계쩡",
+  "Account": "Account",
   "Currency": "Currency",
   "Buying": "Buying",
   "Paying": "Paying",
   "Transfer": "Transfer",
   "CurrentLanguage": "한국어",
-  "Language": "언어",
+  "Language": "Language",
   "BuyWith": "Buy with"
 }

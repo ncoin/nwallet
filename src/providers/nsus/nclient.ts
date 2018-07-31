@@ -1,9 +1,5 @@
 import { EventTypes } from '../../interfaces/events';
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
-import 'rxjs/add/Observable/timer';
-import 'rxjs/add/operator/map';
-
+import { Observable, Subscription } from 'rxjs';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Asset } from 'stellar-sdk';
 import { Injectable } from '@angular/core';
@@ -12,6 +8,8 @@ import { env } from '../../environments/environment';
 import { NWallet, getOrAddWalletItem } from '../../interfaces/nwallet';
 import { EventProvider } from '../common/event/event';
 import { TokenProvider } from '../token/token';
+import { ParameterExpr, createExpr } from 'forge';
+import * as _ from 'lodash';
 
 @Injectable()
 export class NClientProvider {
@@ -47,7 +45,7 @@ export class NClientProvider {
                     account.wallets.length = 0;
                     account.wallets.push(...assets);
                     this.event.publish(EventTypes.NWallet.account_refresh_wallet, assets);
-                }),
+                })
             );
 
             const subscription = timer.subscribe(async () => {
@@ -98,6 +96,45 @@ export class NClientProvider {
                 this.logger.error('[nclient] get asset failed', error);
                 return [];
             });
+    }
+
+    // tslint:disable-next-line:max-line-length
+    private get = async <TResponse>(address: NWallet.Protocol.Types, accountId: string = '', expr: ParameterExpr<NWallet.Protocol.RequestBase>): Promise<TResponse> => {
+        const type = this.getKeyFromValue(NWallet.Protocol.Types, address);
+        const request = createExpr(expr);
+        this.logger.debug(`[nclient] get ${type} ...`);
+
+        return await this.http
+            .get<TResponse>(env.endpoint.api(`${address}${accountId}`), {
+                params: request,
+                headers: {
+                    Authorization: await this.getToken(),
+                },
+            })
+            .toPromise()
+            .then(response => {
+                this.logger.debug(`[nclient] get ${type} done`);
+                return response;
+            })
+            .catch((response: HttpErrorResponse) => {
+                this.logger.debug(`[nclient] get ${type} failed`, response);
+                return undefined;
+            });
+    }
+
+    public getTransfers = async (accountId: string, request: ParameterExpr<NWallet.Protocol.TransactionRequest>): Promise<NWallet.Protocol.TransactionResponse> => {
+        return await this.get<NWallet.Protocol.TransactionResponse>(NWallet.Protocol.Types.Transfer, accountId, request).then(response => {
+            if (response) {
+                const transactions = response.transactions.map(t => {
+                    t.created_date = new Date(t.created_date);
+                    return t;
+                });
+
+                response.transactions = transactions;
+            }
+
+            return response;
+        });
     }
 
     public async getTransactions(accountId: string, asset: Asset, pageToken?: string): Promise<NWallet.Transactions.Context> {

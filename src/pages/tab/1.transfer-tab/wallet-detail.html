@@ -1,12 +1,15 @@
 <ng-template #native>{{wallet.item.asset.code | translate}}</ng-template>
 <ng-template #notnative>{{wallet.item.asset.code}}</ng-template>
-<ion-header no-border>
-    <ion-navbar border-bottom>
-        <ion-title>
-            <div *ngIf="wallet.item.isNative; then native ; else notnative"></div>
+<ion-header>
+    <ion-navbar>
+        <ion-title style="pointer-events: none">
+            <img src="assets/img/title_wallet.png" />
         </ion-title>
     </ion-navbar>
-    <div align="right" style="margin: 0% 3% 3% 0">
+</ion-header>
+<ion-content>
+    <div align="right" style="margin: 0% 3% 3% 0" ion-fixed>
+        <div *ngIf="wallet.item.isNative; then native ; else notnative"></div>
         <ion-label>
             {{wallet | assetFormat}}
         </ion-label>
@@ -17,8 +20,6 @@
     <ion-label style="margin: 0 0 3% 3%"> >
         <span translate>TransactionHistory</span>
     </ion-label>
-</ion-header>
-<ion-content>
     <ion-list *ngIf="histories && histories[0]" padding-horizontal>
         <!-- <div style="display:flex; justify-content: space-between">
                 <div>{{history.type}}</div>

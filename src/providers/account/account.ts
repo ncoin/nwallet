@@ -32,6 +32,11 @@ export class AccountProvider {
         return this.account;
     }
 
+    public getId(): string {
+        return this.account.signature.public;
+    }
+
+
 
     // todo decoration --sky`
     private checkAccount(): void {

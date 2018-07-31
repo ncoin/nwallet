@@ -1,3 +1,4 @@
+import { createExpr, ParameterExpr, Task } from 'forge';
 import { EventProvider } from '../common/event/event';
 import { AccountProvider } from '../account/account';
 import { NClientProvider } from '../nsus/nclient';
@@ -21,8 +22,7 @@ export class AppServiceProvider {
         private connector: NClientProvider,
         private account: AccountProvider,
         private event: EventProvider,
-    ) {
-    }
+    ) {}
 
     public async flushApplication(): Promise<void> {
         await this.preference.clear();
@@ -50,10 +50,20 @@ export class AppServiceProvider {
         this.event.publish(EventTypes.App.user_logout);
     }
 
-    public async getTransactions(asset: Asset, pageToken?: string) {
-        // todo fixme
+    public async getTransfer(skip: number = 0): Promise<NWallet.Protocol.Transaction[]> {
         const account = await this.account.getAccount();
-        return await this.connector.getTransactions(account.signature.public, asset, pageToken);
+        const response = await this.connector.getTransfers(account.signature.public, expr => {
+            expr.limit = '20';
+            // expr.order = 'desc';
+            // e.asset_code = asset.getCode();
+            expr.skip = skip.toString();
+        });
+
+        return response ? response.transactions : [];
+    }
+
+    public async getTransactions(asset: Asset, pageToken?: string) {
+        return await this.connector.getTransactions(this.account.getId(), asset, pageToken);
     }
 
     private async requestTrust(): Promise<void> {
@@ -62,6 +72,7 @@ export class AppServiceProvider {
 
     public async requestBuy(asset: Asset, amount: number): Promise<void> {
         await this.processXdr(NWallet.Protocol.XdrRequestTypes.Buy, {
+            public_key : this.account.getId(),
             amount: amount,
             asset_code: asset.getCode(),
         });
@@ -69,6 +80,7 @@ export class AppServiceProvider {
 
     public async requestLoan(asset: Asset, amount: number): Promise<void> {
         await this.processXdr(NWallet.Protocol.XdrRequestTypes.Loan, {
+            public_key : this.account.getId(),
             amount: amount,
             asset_code: asset.getCode(),
         });
@@ -76,7 +88,6 @@ export class AppServiceProvider {
 
     private async processXdr(requestType: NWallet.Protocol.XdrRequestTypes, params: Object): Promise<void> {
         const account = await this.account.getAccount();
-        params['public_key'] = account.signature.public;
         const xdrResponse = await this.connector.requestXDR(requestType, params);
 
         if (xdrResponse) {
