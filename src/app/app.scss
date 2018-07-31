@@ -87,15 +87,17 @@ ion-header {
     background: $background-color url('../assets/img/headers_bg.png') no-repeat bottom center;
     background-size: cover;
     height: 80px;
+    max-height: 80px;
     overflow: hidden;
 }
 ion-header ion-title {
     text-align: center;
 }
+ion-header ion-navbar img,
 ion-header ion-title img {
-    max-width: 100%;
     min-width: 290px;
-    min-height: 80px;
+    height: 80px;
+    max-width: 100%;
     max-height: 80px;
 }
 ion-header.header-ios {
@@ -104,18 +106,18 @@ ion-header.header-ios {
 ion-header ion-navbar.nwallet-start {
     background: $background-color url('../assets/img/title_nwallet.png') no-repeat center center;
     background-size: contain;
-    max-width: 100%;
     min-width: 290px;
-    min-height: 80px !important;
+    height: 80px !important;
+    max-width: 100%;
     max-height: 80px;
 }
 
 // Tabs
-ion-tabs .tabbar .tab-button {
-    padding: 0 !important;
+ion-tabs[name=conference] .tabbar .tab-button {
+    padding: 0;
 }
-a.tab-button:hover{
-    opacity: 1 !important;
+ion-tabs[name=conference] .tabbar a.tab-button:hover{
+    opacity: 1;
 }
 .tab-button .tab-button-icon.icon{
     padding: 0;
@@ -124,14 +126,14 @@ a.tab-button:hover{
 .tabs-ios[tabsLayout=title-hide] .tab-button, .tabs-ios .tab-button.icon-only{
     min-height: $tabs-tab-min-height;
 }
-#tab-t0-2{
+ion-tabs[name=conference] .tabbar a.tab-button:nth-child(3){
     overflow: visible;
     min-width: 102px !important;
 }
-#tab-t0-0,
-#tab-t0-1,
-#tab-t0-3,
-#tab-t0-4{
+ion-tabs[name=conference] .tabbar a.tab-button:first-child,
+ion-tabs[name=conference] .tabbar a.tab-button:nth-child(2),
+ion-tabs[name=conference] .tabbar a.tab-button:nth-child(4),
+ion-tabs[name=conference] .tabbar a.tab-button:nth-child(5){
     min-width: 44px !important;
 }
 .ion-ios-nwallet-home,
@@ -177,15 +179,15 @@ a.tab-button:hover{
     background-size: cover;
 }
 
-#tab-t0-0.tab-button[aria-selected=true],
-#tab-t0-1.tab-button[aria-selected=true],
-#tab-t0-3.tab-button[aria-selected=true],
-#tab-t0-4.tab-button[aria-selected=true] {
+ion-tabs[name=conference] .tabbar a.tab-button:first-child[aria-selected=true],
+ion-tabs[name=conference] .tabbar a.tab-button:nth-child(2)[aria-selected=true],
+ion-tabs[name=conference] .tabbar a.tab-button:nth-child(4)[aria-selected=true],
+ion-tabs[name=conference] .tabbar a.tab-button:nth-child(5)[aria-selected=true] {
     background: rgba(0, 0, 0, 0.5);
 }
-#tab-t0-2.tab-button[aria-selected=true] .ion-ios-nwallet-home,
-#tab-t0-2.tab-button[aria-selected=true] .ion-ios-nwallet-home-outline,
-#tab-t0-2.tab-button[aria-selected=true] .ion-md-nwallet-home {
+ion-tabs[name=conference] .tabbar a.tab-button:nth-child(3)[aria-selected=true] .ion-ios-nwallet-home,
+ion-tabs[name=conference] .tabbar a.tab-button:nth-child(3)[aria-selected=true] .ion-ios-nwallet-home-outline,
+ion-tabs[name=conference] .tabbar a.tab-button:nth-child(3)[aria-selected=true] .ion-md-nwallet-home {
     position: absolute;
     top: -10px;
     width: 102px !important;
@@ -193,33 +195,33 @@ a.tab-button:hover{
     background: $background-color url('../assets/img/tabs_icons_wallet_on.png') no-repeat;
     background-size: cover;
 }
-#tab-t0-0.tab-button[aria-selected=true] .ion-ios-nwallet-transfer,
-#tab-t0-0.tab-button[aria-selected=true] .ion-ios-nwallet-transfer-outline,
-#tab-t0-0.tab-button[aria-selected=true] .ion-md-nwallet-transfer {
+ion-tabs[name=conference] .tabbar a.tab-button:first-child[aria-selected=true] .ion-ios-nwallet-transfer,
+ion-tabs[name=conference] .tabbar a.tab-button:first-child[aria-selected=true] .ion-ios-nwallet-transfer-outline,
+ion-tabs[name=conference] .tabbar a.tab-button:first-child[aria-selected=true] .ion-md-nwallet-transfer {
     width: 40px !important;
     height: 40px !important;
     background: $background-color url('../assets/img/tabs_icons_transfer_on.png') no-repeat;
     background-size: cover;
 }
-#tab-t0-1.tab-button[aria-selected=true] .ion-ios-nwallet-buy,
-#tab-t0-1.tab-button[aria-selected=true] .ion-ios-nwallet-buy-outline,
-#tab-t0-1.tab-button[aria-selected=true] .ion-md-nwallet-buy {
+ion-tabs[name=conference] .tabbar a.tab-button:nth-child(2)[aria-selected=true] .ion-ios-nwallet-buy,
+ion-tabs[name=conference] .tabbar a.tab-button:nth-child(2)[aria-selected=true] .ion-ios-nwallet-buy-outline,
+ion-tabs[name=conference] .tabbar a.tab-button:nth-child(2)[aria-selected=true] .ion-md-nwallet-buy {
     width: 44px !important;
     height: 48px !important;
     background: $background-color url('../assets/img/tabs_icons_buy_on.png') no-repeat;
     background-size: cover;
 }
-#tab-t0-3.tab-button[aria-selected=true] .ion-ios-nwallet-loan,
-#tab-t0-3.tab-button[aria-selected=true] .ion-ios-nwallet-loan-outline,
-#tab-t0-3.tab-button[aria-selected=true] .ion-md-nwallet-loan {
+ion-tabs[name=conference] .tabbar a.tab-button:nth-child(4)[aria-selected=true] .ion-ios-nwallet-loan,
+ion-tabs[name=conference] .tabbar a.tab-button:nth-child(4)[aria-selected=true] .ion-ios-nwallet-loan-outline,
+ion-tabs[name=conference] .tabbar a.tab-button:nth-child(4)[aria-selected=true] .ion-md-nwallet-loan {
     width: 44px !important;
     height: 40px !important;
     background: $background-color url('../assets/img/tabs_icons_loan_on.png') no-repeat;
     background-size: cover;
 }
-#tab-t0-4.tab-button[aria-selected=true] .ion-ios-nwallet-account,
-#tab-t0-4.tab-button[aria-selected=true] .ion-ios-nwallet-account-outline,
-#tab-t0-4.tab-button[aria-selected=true] .ion-md-nwallet-account {
+ion-tabs[name=conference] .tabbar a.tab-button:nth-child(5)[aria-selected=true] .ion-ios-nwallet-account,
+ion-tabs[name=conference] .tabbar a.tab-button:nth-child(5)[aria-selected=true] .ion-ios-nwallet-account-outline,
+ion-tabs[name=conference] .tabbar a.tab-button:nth-child(5)[aria-selected=true] .ion-md-nwallet-account {
     width: 39px !important;
     height: 40px !important;
     background: $background-color url('../assets/img/tabs_icons_account_on.png') no-repeat;
