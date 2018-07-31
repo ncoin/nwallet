@@ -1,14 +1,40 @@
 <ng-template #native>{{asset.item.asset.code | translate}}</ng-template>
 <ng-template #notnative>{{asset.item.asset.code}}</ng-template>
-<ion-card>
-    <ion-card-content>
-        <button ion-item style="text-align: right">
+<!--<ion-card>-->
+    <!--<ion-card-content>-->
+        <!--<button ion-item detail-none text-right>-->
+            <!--<ion-label text-left *ngIf="asset.item.isNative;then native; else notnative"></ion-label>-->
+            <!--<div item-end>-->
+                <!--<ion-label>{{asset | assetFormat}}</ion-label>-->
+                <!--<ion-label>{{asset | assetToUSD}}</ion-label>-->
+            <!--</div>-->
+        <!--</button>-->
+        <!--<ng-content></ng-content>-->
+    <!--</ion-card-content>-->
+<!--</ion-card>-->
+
+<ion-grid no-padding>
+    <ion-row class="card">
+        <ion-col col-auto>
             <ion-label text-left *ngIf="asset.item.isNative;then native; else notnative"></ion-label>
-            <div item-end>
-                <ion-label>{{asset | assetFormat}}</ion-label>
-                <ion-label>{{asset | assetToUSD}}</ion-label>
-            </div>
-        </button>
-        <ng-content></ng-content>
-    </ion-card-content>
-</ion-card>
+        </ion-col>
+        <ion-col>
+            <ion-row>
+                <ion-col class="amount-asset" no-padding col-12 text-right>{{asset | assetFormat}}</ion-col>
+            </ion-row>
+            <ion-row>
+                <ion-col class="amount-usd" no-padding col-12 text-right>{{asset | assetToUSD}}</ion-col>
+            </ion-row>
+        </ion-col>
+    </ion-row>
+    <ion-row class="holder" *ngIf="asset.item.asset.code!='NCH'">
+        <ion-col col-12>
+            <img src="assets/img/wallet_card_holder.png" />
+        </ion-col>
+    </ion-row>
+    <ion-row class="holder" *ngIf="asset.item.asset.code=='NCH'">
+        <ion-col col-12>
+            <img src="assets/img/wallet_ncash_holder.png" />
+        </ion-col>
+    </ion-row>
+</ion-grid>

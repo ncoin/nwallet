@@ -42,6 +42,7 @@
             </ion-col>
         </ion-row>
     </ion-grid>
+
     <ion-slides pager>
         <ion-slide *ngFor="let walletPage of walletPages">
             <ion-list>
@@ -49,7 +50,8 @@
             </ion-list>
         </ion-slide>
     </ion-slides>
+
     <div *ngIf="nCash && nCash.item">
-        <nw-asset-item [asset]="nCash" (click)="onSelectWallet(nCash)"></nw-asset-item>
+        <nw-asset-item class="ncash" [asset]="nCash" (click)="onSelectWallet(nCash)"></nw-asset-item>
     </div>
 </ion-content>

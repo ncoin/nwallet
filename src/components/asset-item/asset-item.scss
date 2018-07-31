@@ -1,3 +1,51 @@
-asset-item {
+// variables
+$nwallet-card-border-radius: 5px;
 
+$ncash-border-start: #2f2c2a;
+$ncash-border-mid: #c8c6c5;
+$ncash-border-end: #33302e;
+$ncash-background-start: #0f0f0f;
+$ncash-background-mid: #1d1919;
+$ncash-background-end: #232221;
+
+nw-asset-item {
+    width: 100%;
+    display: block;
+    color: color($colors, primary);
+}
+
+// ncash
+nw-asset-item.ncash {
+    margin-top: 2rem;
+}
+nw-asset-item.ncash ion-grid ion-row.card {
+    position: relative;
+    -moz-border-radius: $nwallet-card-border-radius $nwallet-card-border-radius 0 0;
+    -webkit-border-radius: $nwallet-card-border-radius $nwallet-card-border-radius 0 0;
+    border-radius: $nwallet-card-border-radius $nwallet-card-border-radius 0 0;
+    border: 2px solid transparent;
+    background: -moz-linear-gradient(right, $ncash-background-start 0%, $ncash-background-mid 50%, $ncash-background-end 100%);
+    background: -webkit-linear-gradient(right, $ncash-background-start 0%, $ncash-background-mid 50%, $ncash-background-end 100%);
+    background: linear-gradient(to right, $ncash-background-start 0%, $ncash-background-mid 50%, $ncash-background-end 100%);
+    background-clip: padding-box;
+}
+nw-asset-item.ncash ion-grid ion-row.card::after {
+    position: absolute;
+    top: -2px;
+    bottom: 0;
+    left: -2px;
+    right: -2px;
+    background: -moz-linear-gradient(right, $ncash-border-start 0%, $ncash-border-mid 50%, $ncash-border-end 100%);
+    background: -webkit-linear-gradient(right, $ncash-border-start 0%, $ncash-border-mid 50%, $ncash-border-end 100%);
+    background: linear-gradient(to right, $ncash-border-start 0%, $ncash-border-mid 50%, $ncash-border-end 100%);
+    content: '';
+    z-index: -1;
+    -moz-border-radius: $nwallet-card-border-radius $nwallet-card-border-radius 0 0;
+    -webkit-border-radius: $nwallet-card-border-radius $nwallet-card-border-radius 0 0;
+    border-radius: $nwallet-card-border-radius $nwallet-card-border-radius 0 0;
+}
+
+// card(coin) holder
+ion-row.holder ion-col img {
+    width: 100%;
 }
