@@ -14,7 +14,7 @@
         </ion-card>
         <ion-card>
             <ion-card-content>
-                <button ion-item>
+                <button ion-item class="btn default">
                     <ion-label>{{'Language' | translate}}</ion-label>
                     <ion-select interface="popover" [(ngModel)]="currentLanguage">
                         <ion-option *ngFor="let language of supportedLanguagesPair" [value]="language" (ionSelect)="onLanguageChanged(language)">{{language.value}}</ion-option>
@@ -24,21 +24,21 @@
         </ion-card>
         <ion-card>
             <ion-card-content>
-                <button ion-item>
+                <button ion-item class="btn default">
                     <span translate>PinSetting</span>
                 </button>
             </ion-card-content>
         </ion-card>
         <ion-card>
             <ion-card-content>
-                <button ion-item>
+                <button ion-item class="btn default">
                     <span translate>WalletBackup</span>
                 </button>
             </ion-card-content>
         </ion-card>
         <ion-card>
             <ion-card-content>
-                <button ion-item (click)="setNotification(!_enablePushNotification)">
+                <button ion-item class="btn default" (click)="setNotification(!_enablePushNotification)">
                     <ion-label>
                         <span translate>EnablePushNotifications</span>
                     </ion-label>
@@ -48,7 +48,7 @@
         </ion-card>
         <ion-card>
             <ion-card-content>
-                <button ion-item (click)="onLogout()">
+                <button ion-item class="btn default" (click)="onLogout()">
                     <span translate>Logout</span>
                 </button>
             </ion-card-content>
