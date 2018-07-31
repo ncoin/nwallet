@@ -5,6 +5,17 @@ page-tutorial {
     border-color: transparent;
   }
 
+    ion-buttons {
+        position: relative;
+        width: 100%;
+        height: 100%;
+    }
+    button[ion-button] {
+        left: initial;
+        right: 0;
+        top: 27%;
+    }
+
   .slide-zoom {
     height: 100%;
   }
