@@ -1,5 +1,9 @@
-<ng-template #native>{{wallet.item.asset.code | translate}}</ng-template>
-<ng-template #notnative>{{wallet.item.asset.code}}</ng-template>
+<ng-template #normalRatio>
+    <div>green</div>
+</ng-template>
+<ng-template #warnRatio>
+    <div>red</div>
+</ng-template>
 <ion-header>
     <ion-title>
         <img src="assets/img/title_loan_ncash.png">
@@ -30,7 +34,21 @@
             <span>{{'LoanStatus' | translate}}</span>
         </div>
         <div class="loan-fixed-content loan-column">
-            Item NCH Colltr.% Condition
+            <div style="width: 10%">
+            </div>
+            <div style="width: 40%; text-align: center">
+                item
+            </div>
+            <div style="width: 30%; text-align: center">
+                nch
+            </div>
+            <div style="width: 12%; text-align: center">
+                Colltr. %
+            </div>
+            <div style="width: 12%; text-align: right">
+                Condition
+            </div>
+
         </div>
         <div class="loan-fixed-footer" style="background-color: yellowgreen; height: 50px; position: absolute; bottom: 0px; width: 100%">
             <Button style="display: flex" (click)="onClick()">
@@ -40,8 +58,12 @@
     </div>
     <div style="background-color: tomato;">
         <ion-list *ngIf="loanStatuses && loanStatuses.length > 0">
-            <ion-item *ngFor="let loan of loanStatuses">
-                {{loan.collateral_amount}} {{loan.collateral_asset_code}} {{loan.amount}} {{loan.coin_symbol}} {{loan.collateral_rate}}%
+            <ion-item class="loan-item" *ngFor="let loan of loanStatuses">
+                <div *ngIf="loan.collateral_rate > loan.warning_rate; then normalRatio; else warnRatio"></div>
+                <div style="width: 40%; text-align: right"> {{loan.collateral_amount}} {{loan.collateral_asset_code}} </div>
+                <div style="width: 30%; text-align: right"> {{loan.amount}} {{loan.coin_symbol}} </div>
+                <div style="width: 12%"> {{loan.collateral_rate}}% </div>
+                <div item-end>graph</div>
             </ion-item>
         </ion-list>
         <ion-infinite-scroll (ionInfinite)="doInfinite($event)" style="background-color: red">
