@@ -1,3 +1,4 @@
+import { PreferenceProvider, Preference } from './../../../providers/common/preference/preference';
 import { TranslateService } from '@ngx-translate/core';
 import { AppConfigProvider } from '../../../providers/app/app.config';
 import { Logger } from '../../../providers/common/logger/logger';
@@ -58,7 +59,7 @@ export class AccountTabPage {
     }
 
     public onLanguageChanged(language: { key: string; value: string }): void {
-        this.translate.use(language.key);
+        this.appConfig.saveLanguage(language.key);
     }
 
     public async onLogout(): Promise<void> {

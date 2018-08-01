@@ -1,9 +1,10 @@
 import { AppServiceProvider } from '../../../providers/app/app.service';
 import { AccountProvider } from '../../../providers/account/account';
 import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams, Navbar, AlertController, LoadingController, InfiniteScroll } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Navbar, AlertController, LoadingController, InfiniteScroll, ToastController } from 'ionic-angular';
 import { NWallet } from '../../../interfaces/nwallet';
 import { Logger } from '../../../providers/common/logger/logger';
+import { createExpr } from '../../../../node_modules/forge';
 
 @IonicPage()
 @Component({
@@ -29,7 +30,8 @@ export class WalletLoanPage {
         private appService: AppServiceProvider,
         private alert: AlertController,
         private loading: LoadingController,
-        private logger: Logger
+        private logger: Logger,
+        private toast: ToastController
     ) {
         this.init();
     }
@@ -44,7 +46,13 @@ export class WalletLoanPage {
     ionViewDidEnter() {}
 
     public onClick(): void {
-        this.logger.debug('[wallet-loan-page] onclick');
+        const t = this.toast.create(createExpr(e => {
+            e.position = 'middle';
+            e.message = '[wallet-loan-page] onclick';
+            e.duration = 1000;
+        }));
+
+        t.present();
     }
 
     public async doInfinite(infinite: InfiniteScroll): Promise<void> {

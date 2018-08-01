@@ -56,7 +56,7 @@
             </Button>
         </div>
     </div>
-    <div style="background-color: tomato;">
+    <div>
         <ion-list *ngIf="loanStatuses && loanStatuses.length > 0">
             <button ion-item class="loan-item" *ngFor="let loan of loanStatuses">
                 <div *ngIf="loan.collateral_rate > loan.warning_rate; then normalRatio; else warnRatio"></div>

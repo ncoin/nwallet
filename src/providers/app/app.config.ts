@@ -35,9 +35,16 @@ export class AppConfigProvider {
         this.logger.debug('[appconfig] current language :', this.translate.getDefaultLang());
     }
 
+    public async saveLanguage(languageKey: string) {
+        this.translate.use(languageKey);
+        this.preference.set(Preference.App.language, languageKey);
+    }
+
     public async hasSeenTutorial(): Promise<boolean> {
         return await this.preference.get(Preference.App.hasSeenTutorial);
     }
+
+
 
     public async setPushNotification(isEnable: boolean): Promise<boolean> {
         // todo request --sky
