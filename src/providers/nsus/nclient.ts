@@ -1,3 +1,4 @@
+import { LoanStatusResponse, Collateral } from './../../interfaces/nwallet';
 import { EventTypes } from '../../interfaces/events';
 import { Observable, Subscription } from 'rxjs';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
@@ -32,7 +33,9 @@ export class NClientProvider {
 
     private async getToken(): Promise<string> {
         const token = await this.token.getToken();
-        return token.getAuth();
+        if (token) {
+            return token.getAuth();
+        }
     }
 
     public fetchStreams = async (account: NWallet.Account): Promise<boolean> => {
@@ -99,9 +102,9 @@ export class NClientProvider {
     }
 
     // tslint:disable-next-line:max-line-length
-    private get = async <TResponse>(address: NWallet.Protocol.Types, accountId: string = '', expr: ParameterExpr<NWallet.Protocol.RequestBase>): Promise<TResponse> => {
+    private get = async <TResponse>(address: NWallet.Protocol.Types, accountId: string = '', expr: ParameterExpr<NWallet.Protocol.RequestBase> = undefined): Promise<TResponse> => {
         const type = this.getKeyFromValue(NWallet.Protocol.Types, address);
-        const request = createExpr(expr);
+        const request = expr ? createExpr(expr) : undefined;
         this.logger.debug(`[nclient] get ${type} ...`);
 
         return await this.http
@@ -131,6 +134,52 @@ export class NClientProvider {
                 });
 
                 response.transactions = transactions;
+            }
+
+            return response;
+        });
+    }
+
+    public getCollaterals = async () => {
+        return await this.get<NWallet.Protocol.Collateral[]>(NWallet.Protocol.Types.Collateral, '').then(collaterals => {
+            if (collaterals && collaterals.length > 0) {
+                collaterals = collaterals.map(e => {
+                    e.created_date = new Date(e.created_date);
+                    if (e.last_modified_date) {
+                        e.last_modified_date = new Date(e.last_modified_date);
+                    }
+                    return e;
+                });
+            }
+
+            return collaterals;
+        });
+    }
+
+    public getCurrentLoanStatus = async (accountId: string): Promise<NWallet.Protocol.LoanStatusResponse> => {
+        return await this.get<NWallet.Protocol.LoanStatusResponse>(NWallet.Protocol.Types.LoanStatus, accountId).then(response => {
+            if (response) {
+                const transactions = response.loans.map(e => {
+                    e.loaned_date = new Date(e.loaned_date);
+                    return e;
+                });
+
+                response.loans = transactions;
+            }
+
+            return response;
+        });
+    }
+
+    public getLoanDetail = async (accountId: string, id: string): Promise<NWallet.Protocol.LoanStatusResponse> => {
+        return await this.get<NWallet.Protocol.LoanStatusResponse>(NWallet.Protocol.Types.LoanStatus, `${accountId}/${id}`).then(response => {
+            if (response) {
+                const transactions = response.loans.map(e => {
+                    e.loaned_date = new Date(e.loaned_date);
+                    return e;
+                });
+
+                response.loans = transactions;
             }
 
             return response;

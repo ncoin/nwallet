@@ -85,11 +85,14 @@ export class WalletBuyPage {
     }
 
     public async onBuyRequest() {
+
+        let nchAmount = Number.parseFloat(this.expectedNCHContext.amount.toString());
+        nchAmount = Math.floor(nchAmount * 1000000) / 1000000;
         const alert = this.alert.create({
             title: 'buy NCash',
             message:
                 `PAYING : \n ${this._sourceAssetAmount} ${this.sourceAsset.item.asset.code}\n` +
-                `<p>BUY : ${this.expectedNCHContext.amount} ${this.expectedNCHContext.item.asset.code}</p>`,
+                `<p>BUY : ${nchAmount} ${this.expectedNCHContext.item.asset.code}</p>`,
             buttons: [
                 {
                     text: 'CANCEL',
@@ -102,7 +105,7 @@ export class WalletBuyPage {
                             content: 'please wait ...',
                         });
                         loader.present();
-                        await this.appService.requestBuy(this._sourceAsset.item.asset, Number.parseFloat(this._sourceAssetAmount.toString()));
+                        await this.appService.requestBuy(this._sourceAsset.item.asset, nchAmount);
                         this.navCtrl.popToRoot();
                         loader.dismiss();
                     },

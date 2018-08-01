@@ -82,10 +82,10 @@ export class AppServiceProvider {
         this.processXdr(NWallet.Protocol.XdrRequestTypes.Trust, {});
     }
 
-    public async requestBuy(asset: Asset, amount: number): Promise<void> {
+    public async requestBuy(asset: Asset, nchAmount: number): Promise<void> {
         await this.processXdr(NWallet.Protocol.XdrRequestTypes.Buy, {
             public_key : this.account.getId(),
-            amount: amount,
+            amount: nchAmount,
             asset_code: asset.getCode(),
         });
     }

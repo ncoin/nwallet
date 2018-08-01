@@ -11,7 +11,7 @@
             <div>Icon</div>
             <span>{{'GetANewLoan' | translate}}</span>
         </div>
-        <ion-scroll class="dock loan-fixed-content" style=" height: 30rem; width: 100%" scrollY="true">
+        <ion-scroll class="dock loan-fixed-content" scrollY="true">
             <div class="collateral" *ngFor="let collateral of collaterals">
                 {{collateral.asset_code}} {{collateral.collateral_rate}}%
             </div>
