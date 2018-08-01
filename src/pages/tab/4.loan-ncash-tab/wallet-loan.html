@@ -6,29 +6,31 @@
     </ion-title>
 </ion-header>
 <ion-content padding>
-    <div class="loan-fixed" ion-fixed style="background-color: red; display: contents">
+    <div class="loan-fixed" ion-fixed>
         <div class="loan-fixed-header">
-            <div>Icon</div><span>{{'GetANewLoan' | translate}}</span>
+            <div>Icon</div>
+            <span>{{'GetANewLoan' | translate}}</span>
         </div>
         <ion-scroll class="dock loan-fixed-content" style=" height: 30rem; width: 100%" scrollY="true">
             <div class="collateral" *ngFor="let collateral of collaterals">
-                    {{collateral.asset_code}}
-                    {{collateral.collateral_rate}}%
+                {{collateral.asset_code}} {{collateral.collateral_rate}}%
             </div>
             <div class="collateral" *ngFor="let collateral of collaterals">
-                    {{collateral.asset_code}}
-                    {{collateral.collateral_rate}}%
+                {{collateral.asset_code}} {{collateral.collateral_rate}}%
             </div>
             <div class="collateral" *ngFor="let collateral of collaterals">
-                    {{collateral.asset_code}}
-                    {{collateral.collateral_rate}}%
-            </div>            <div class="collateral" *ngFor="let collateral of collaterals">
-                    {{collateral.asset_code}}
-                    {{collateral.collateral_rate}}%
+                {{collateral.asset_code}} {{collateral.collateral_rate}}%
+            </div>
+            <div class="collateral" *ngFor="let collateral of collaterals">
+                {{collateral.asset_code}} {{collateral.collateral_rate}}%
             </div>
         </ion-scroll>
         <div class="loan-fixed-content">
-            > <span>{{'LoanStatus' | translate}}</span>
+            >
+            <span>{{'LoanStatus' | translate}}</span>
+        </div>
+        <div class="loan-fixed-content loan-column">
+            Item NCH Colltr.% Condition
         </div>
         <div class="loan-fixed-footer" style="background-color: yellowgreen; height: 50px; position: absolute; bottom: 0px; width: 100%">
             <Button style="display: flex" (click)="onClick()">
@@ -37,13 +39,9 @@
         </div>
     </div>
     <div style="background-color: tomato;">
-        <ion-list *ngIf="loanStatuses && loanStatuses.length > 0" >
-            <ion-item *ngFor="let loan of loanStatuses" >
-                {{loan.collateral_amount}}
-                {{loan.collateral_asset_code}}
-                {{loan.amount}}
-                {{loan.coin_symbol}}
-                {{loan.collateral_rate}}%
+        <ion-list *ngIf="loanStatuses && loanStatuses.length > 0">
+            <ion-item *ngFor="let loan of loanStatuses">
+                {{loan.collateral_amount}} {{loan.collateral_asset_code}} {{loan.amount}} {{loan.coin_symbol}} {{loan.collateral_rate}}%
             </ion-item>
         </ion-list>
         <ion-infinite-scroll (ionInfinite)="doInfinite($event)" style="background-color: red">
