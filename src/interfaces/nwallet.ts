@@ -117,6 +117,9 @@ export namespace NWallet.Protocol {
 
     export enum Types {
         Transfer = 'transactions/stellar/accounts/',
+        LoanStatus = 'loans/ncash/stellar/',
+        LoanDetail = 'loans/ncash/stellar/',
+        Collateral = 'loans/ncash/collateral'
     }
 
     export interface RequestBase {
@@ -124,8 +127,7 @@ export namespace NWallet.Protocol {
     }
 
     // tslint:disable-next-line:no-empty-interface
-    export interface Response {
-    }
+    export interface Response {}
 
     export interface XDRResponse extends Response {
         id: string;
@@ -142,6 +144,42 @@ export namespace NWallet.Protocol {
 
     export interface TransactionResponse extends Response {
         transactions: Transaction[];
+    }
+
+    export interface LoanStatusResponse extends Response {
+        loans: LoanStatus[];
+    }
+
+    export interface Collateral {
+        coin_symbol: string;
+        asset_code: string;
+        asset_issuer: string;
+        collateral_rate: number;
+        warning_rate: number;
+        liquidation_rate: number;
+        created_by: string;
+        created_date: Date;
+        last_modified_by: string;
+        last_modified_date: Date;
+    }
+
+    export interface LoanStatus {
+        id: number;
+        public_key: string;
+        coin_symbol: string;
+        collateral_issuer: string;
+        collateral_asset_code: string;
+        collateral_amount: number;
+        collateral_price: number;
+        collateral_rate: number;
+        warning_rate: number;
+        liquidation_rate: number;
+        amount: number;
+        fee: number;
+        loaned_date: Date;
+        transaction_hash: string;
+        add_collateral_amount: number;
+        sum_collateral_amount: number;
     }
 
     export interface Transaction {

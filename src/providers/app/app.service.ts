@@ -1,4 +1,3 @@
-import { createExpr, ParameterExpr, Task } from 'forge';
 import { EventProvider } from '../common/event/event';
 import { AccountProvider } from '../account/account';
 import { NClientProvider } from '../nsus/nclient';
@@ -60,6 +59,19 @@ export class AppServiceProvider {
         });
 
         return response ? response.transactions : [];
+    }
+
+    public async getCollaterals() {
+        const response = await this.connector.getCollaterals();
+        return response ? response : [];
+    }
+    public async getCurrentLoanStatus() {
+        const response = await this.connector.getCurrentLoanStatus(this.account.getId());
+        return response ? response.loans : [];
+    }
+
+    public async getLoanHistories() {
+
     }
 
     public async getTransactions(asset: Asset, pageToken?: string) {

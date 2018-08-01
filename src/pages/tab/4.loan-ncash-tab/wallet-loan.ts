@@ -1,7 +1,7 @@
 import { AppServiceProvider } from '../../../providers/app/app.service';
 import { AccountProvider } from '../../../providers/account/account';
 import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams, Navbar, AlertController, LoadingController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Navbar, AlertController, LoadingController, InfiniteScroll } from 'ionic-angular';
 import { NWallet } from '../../../interfaces/nwallet';
 import { Logger } from '../../../providers/common/logger/logger';
 
@@ -11,6 +11,10 @@ import { Logger } from '../../../providers/common/logger/logger';
     templateUrl: 'wallet-loan.html',
 })
 export class WalletLoanPage {
+
+    public loanStatuses: NWallet.Protocol.LoanStatus[];
+     // todo move to collateral provider --sky`
+    public collaterals: NWallet.Protocol.Collateral[];
     @ViewChild(Navbar) navBar: Navbar;
 
     private _nchAmount = 0;
@@ -27,17 +31,34 @@ export class WalletLoanPage {
         private loading: LoadingController,
         private logger: Logger
     ) {
-
+        this.init();
     }
 
-    ionViewDidEnter() {
-
+    private async init(): Promise<void> {
+        this.loanStatuses = await this.appService.getCurrentLoanStatus();
+        this.loanStatuses.push(...this.loanStatuses);
+        this.loanStatuses.push(...this.loanStatuses);
+        this.collaterals = await this.appService.getCollaterals();
     }
+
+    ionViewDidEnter() {}
 
     public onClick(): void {
         this.logger.debug('[wallet-loan-page] onclick');
     }
 
+    public async doInfinite(infinite: InfiniteScroll): Promise<void> {
+
+        const loanStatuses = await this.appService.getCurrentLoanStatus();
+        if (loanStatuses.length < 1) {
+            this.logger.debug('[transfer-tab-page] response transfers length =', loanStatuses.length);
+            infinite.enable(false);
+            return;
+        }
+
+        this.loanStatuses.push(...loanStatuses);
+        infinite.complete();
+    }
 
     public set nchAmount(value: number) {
         this._nchAmount = value;

@@ -11,18 +11,21 @@
             <div>Icon</div><span>{{'GetANewLoan' | translate}}</span>
         </div>
         <ion-scroll class="dock loan-fixed-content" style=" height: 30rem; width: 100%" scrollY="true">
-            <div class="colleteral"></div>
-            <div class="colleteral"></div>
-            <div class="colleteral"></div>
-            <div class="colleteral"></div>
-            <div class="colleteral"></div>
-            <div class="colleteral"></div>
-            <div class="colleteral"></div>
-            <div class="colleteral"></div>
-            <div class="colleteral"></div>
-            <div class="colleteral"></div>
-            <div class="colleteral"></div>
-            <div class="colleteral"></div>
+            <div class="collateral" *ngFor="let collateral of collaterals">
+                    {{collateral.asset_code}}
+                    {{collateral.collateral_rate}}%
+            </div>
+            <div class="collateral" *ngFor="let collateral of collaterals">
+                    {{collateral.asset_code}}
+                    {{collateral.collateral_rate}}%
+            </div>
+            <div class="collateral" *ngFor="let collateral of collaterals">
+                    {{collateral.asset_code}}
+                    {{collateral.collateral_rate}}%
+            </div>            <div class="collateral" *ngFor="let collateral of collaterals">
+                    {{collateral.asset_code}}
+                    {{collateral.collateral_rate}}%
+            </div>
         </ion-scroll>
         <div class="loan-fixed-content">
             > <span>{{'LoanStatus' | translate}}</span>
@@ -34,33 +37,16 @@
         </div>
     </div>
     <div style="background-color: tomato;">
-        <Button style="display: flex" (click)="onClick()">
-            Loan History >s
-        </Button>
-        <ion-list>
-            <ion-item>item</ion-item>
-            <ion-item>item</ion-item>
-            <ion-item>item</ion-item>
-            <ion-item>item</ion-item>
-            <ion-item>item</ion-item>
-            <ion-item>item</ion-item>
-            <ion-item>item</ion-item>
-            <ion-item>item</ion-item>
-            <ion-item>item</ion-item>
-            <ion-item>item</ion-item>
-            <ion-item>item</ion-item>
-            <ion-item>item</ion-item>
-            <ion-item>item</ion-item>
-            <ion-item>item</ion-item>
-            <ion-item>item</ion-item>
-            <ion-item>item</ion-item>
-            <ion-item>item</ion-item>
-            <ion-item>item</ion-item>
-            <ion-item>item</ion-item>
-            <ion-item>item</ion-item>
-            <ion-item>item</ion-item>
+        <ion-list *ngIf="loanStatuses && loanStatuses.length > 0" >
+            <ion-item *ngFor="let loan of loanStatuses" >
+                {{loan.collateral_amount}}
+                {{loan.collateral_asset_code}}
+                {{loan.amount}}
+                {{loan.coin_symbol}}
+                {{loan.collateral_rate}}%
+            </ion-item>
         </ion-list>
-        <ion-infinite-scroll style="background-color: red">
+        <ion-infinite-scroll (ionInfinite)="doInfinite($event)" style="background-color: red">
             <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="more Transactions ..."></ion-infinite-scroll-content>
         </ion-infinite-scroll>
     </div>
