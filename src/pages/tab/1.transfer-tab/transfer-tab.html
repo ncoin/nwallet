@@ -10,38 +10,51 @@
     </ion-title>
 </ion-header>
 <ion-content>
-    <ion-grid style="background-color: rgba(100,100,100,0.5); height: 90px;" ion-fixed>
-        <ion-row style="height: 60%;">
+    <ion-grid ion-fixed class="transfer-fixed-header">
+        <ion-row class="buttons">
             <ion-col>
-                <button>receive</button>
+                <button>
+                    <ion-label><img src="assets/img/transfer_icons_receive.png" /></ion-label>
+                    <ion-label>RECEIVE</ion-label>
+                </button>
             </ion-col>
             <ion-col>
-                <button>exchange</button>
+                <button>
+                    <ion-label><img src="assets/img/transfer_icons_exchange.png" /></ion-label>
+                    <ion-label>EXCHANGE</ion-label>
+                </button>
             </ion-col>
             <ion-col>
-                <button>send</button>
+                <button>
+                    <ion-label><img src="assets/img/transfer_icons_send.png" /></ion-label>
+                    <ion-label>SEND</ion-label>
+                </button>
             </ion-col>
         </ion-row>
-        <ion-row style="height: 40%;">
+        <ion-row class="columns">
             <ion-col offset-2>
-                <div id="history">History</div>
+                <div id="history">HISTORY</div>
             </ion-col>
             <ion-col col-2>
-                <div id="history-icon">icon</div>
+                <div id="history-icon">
+                    <fa-icon name="filter" size="2x"></fa-icon>
+                </div>
             </ion-col>
         </ion-row>
     </ion-grid>
     <div>
         <ion-list *ngIf="transactionMaps && transactionMaps.length > 0">
-            <ion-item-group *ngFor="let map of transactionMaps" >
-                <ion-item-divider sticky color="secondary" style="background-color: rgba(100,100,100,1);">{{map.date | date: 'dd MMMM yyyy'}}</ion-item-divider>
-                <button *ngFor="let transaction of map.transactions" ion-item (click)="onExploreTransaction(transaction)">
+            <ion-item-group class="content-history" *ngFor="let map of transactionMaps" >
+                <ion-item-divider class="content-history-date" sticky>{{map.date | date: 'dd MMMM
+                    yyyy'}}</ion-item-divider>
+                <button ion-item detail-none *ngFor="let transaction of map.transactions"
+                        (click)="onExploreTransaction(transaction)">
                     <div item-start>{{transaction.transaction}}</div>
                     <div item-end>{{transaction.amount}} {{transaction.asset_code}}</div>
                 </button>
             </ion-item-group>
         </ion-list>
-        <ion-infinite-scroll (ionInfinite)="doInfinite($event)" style="background-color: red">
+        <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
             <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="more Transactions ..."></ion-infinite-scroll-content>
         </ion-infinite-scroll>
     </div>

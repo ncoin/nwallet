@@ -273,7 +273,7 @@ ion-tabs[name=conference] .tabbar a.tab-button:nth-child(5)[aria-selected=true] 
 .bar-button-default-wp,
 .bar-button-clear-wp-default,
 .bar-button-wp-default {
-    color: #97866f;
+    color: $color-bar-button-default;
     position: absolute;
     left: 5px;
 }

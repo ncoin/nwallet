@@ -32,13 +32,25 @@ $color-title-second: #ded1b6;
 
 $color-danger: #cc0e28;
 
+$color-bar-button-default: #97866f;
+
+$color-title-background-root: #352e26;
+$color-title-background-sub: #49413a;
+$color-title-border-root: #5c5042;
+$color-title-border-sub: #352f29;
+$color-title-border-active: #777777;
+$color-title-border-status: #8b785f;
+
+$color-content-background-primary: #373432;
+$color-content-border: #484441;
+
 $icon-border-radius: 50%;
 $txp-icon-border-radius: 2rem;
 $toolbar-background: #2a3f90;
 $toolbar-scanner: rgba(30, 49, 134, 0.8);
 $text-color : $color-primary;
 $colors: (
-    primary: $color-danger,
+    primary: $color-primary,
     secondary: $color-secondary,
     light: $color-secondary-light,
     dark: $color-secondary-dark,
