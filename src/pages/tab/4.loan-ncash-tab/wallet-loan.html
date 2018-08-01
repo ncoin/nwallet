@@ -58,13 +58,13 @@
     </div>
     <div style="background-color: tomato;">
         <ion-list *ngIf="loanStatuses && loanStatuses.length > 0">
-            <ion-item class="loan-item" *ngFor="let loan of loanStatuses">
+            <button ion-item class="loan-item" *ngFor="let loan of loanStatuses">
                 <div *ngIf="loan.collateral_rate > loan.warning_rate; then normalRatio; else warnRatio"></div>
                 <div style="width: 40%; text-align: right"> {{loan.collateral_amount}} {{loan.collateral_asset_code}} </div>
                 <div style="width: 30%; text-align: right"> {{loan.amount}} {{loan.coin_symbol}} </div>
                 <div style="width: 12%"> {{loan.collateral_rate}}% </div>
                 <div item-end>graph</div>
-            </ion-item>
+            </button>
         </ion-list>
         <ion-infinite-scroll (ionInfinite)="doInfinite($event)" style="background-color: red">
             <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="more Transactions ..."></ion-infinite-scroll-content>
