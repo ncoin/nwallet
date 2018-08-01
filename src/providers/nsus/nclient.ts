@@ -1,4 +1,3 @@
-import { LoanStatusResponse, Collateral } from './../../interfaces/nwallet';
 import { EventTypes } from '../../interfaces/events';
 import { Observable, Subscription } from 'rxjs';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
