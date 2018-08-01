@@ -40,8 +40,6 @@ export class WalletPage {
     ionViewDidEnter() {
         if (!this.subscription) {
             this.subscription = this.event.subscribe(EventTypes.NWallet.account_refresh_wallet, this.refreshWallets);
-            // const account = await this.account.getAccount();
-            // this.refreshWallets(account.wallets.slice());
         }
     }
 

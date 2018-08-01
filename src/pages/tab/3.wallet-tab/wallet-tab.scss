@@ -30,106 +30,15 @@ tab-wallet {
         padding: 0;
     }
 
-
-
-    nw-asset-item > .card-ios,
-    nw-asset-item > .card-md,
-    nw-asset-item > .card-wp {
-        width: 100%;
-        margin: 0;
+    ion-slides.slides {
+        height: auto;
     }
 
-    nw-asset-item .card-ios .item-ios.item-block .item-inner,
-    nw-asset-item .card-md .item-md.item-block .item-inner,
-    nw-asset-item .card-wp .item-wp.item-block .item-inner {
-        color: color($colors, primary);
+    div.swiper-wrapper {
+        margin: 2rem 0 0 0;
     }
-
-    // NCash
-    /*
-    nw-asset-item.ncash {
-        margin-top: 30px;
+    div.swiper-pagination {
+        align-content: flex-end;
+        height: auto;
     }
-
-    nw-asset-item.ncash .card-ios,
-    nw-asset-item.ncash .card-md,
-    nw-asset-item.ncash .card-wp {
-        background: transparent url("../assets/img/wallet_ncash_bg.png") no-repeat;
-        -webkit-background-size: cover;
-        background-size: cover;
-    }
-    nw-asset-item.ncash .card-ios {
-        padding-bottom: 50px;
-    }
-    nw-asset-item.ncash .card-md {
-        padding-bottom: 53px;
-    }
-    nw-asset-item.ncash .card-wp {
-        padding-bottom: 47px;
-    }
-
-    nw-asset-item.ncash .card-content-ios,
-    nw-asset-item.ncash .card-content-md,
-    nw-asset-item.ncash .card-content-wp {
-        padding: 0;
-    }
-    nw-asset-item.ncash .card-ios .item-ios.item-block .item-inner .input-wrapper,
-    nw-asset-item.ncash .card-md .item-md.item-block .item-inner .input-wrapper,
-    nw-asset-item.ncash .card-wp .item-wp.item-block .item-inner .input-wrapper {
-        display: inline;
-        text-align: left;
-        padding-top: 23px;
-        padding-left: 45px;
-        font-weight: 500;
-        color: rgba(255,255,255,0.7);
-        font-size: 1.8rem;
-    }
-
-    nw-asset-item.ncash .card-ios .item-ios [item-end],
-    nw-asset-item.ncash .card-md .item-md [item-end],
-    nw-asset-item.ncash .card-wp .item-wp [item-end] {
-        margin: 0;
-        padding: 23px 8px 0 8px;
-    }
-    nw-asset-item.ncash .card-ios .item-ios [item-end] .label-ios,
-    nw-asset-item.ncash .card-md .item-md [item-end] .label-md,
-    nw-asset-item.ncash .card-wp .item-wp [item-end] .label-wp {
-        margin: 0;
-    }
-    nw-asset-item.ncash .card-ios .item-ios [item-end] .label-ios:first-child,
-    nw-asset-item.ncash .card-md .item-md [item-end] .label-md:first-child,
-    nw-asset-item.ncash .card-wp .item-wp [item-end] .label-wp:first-child {
-        font-size: 1.8rem;
-        color: rgba(255, 255, 255, 0.97);
-        font-weight: 900;
-    }
-    nw-asset-item.ncash .card-ios .item-ios [item-end] .label-ios:last-child,
-    nw-asset-item.ncash .card-md .item-md [item-end] .label-md:last-child,
-    nw-asset-item.ncash .card-wp .item-wp [item-end] .label-wp:last-child {
-        font-size: 1.5rem;
-        color: rgba(255, 255, 255, 0.55);
-        font-weight: 500;
-    }
-    */
 }
-
-ion-slide.swiper-slide {
-    //align-items: flex-start;
-}
-
-ion-slides.slides {
-    height: auto;
-}
-
-div.slide-zoom {
-    min-height: 40rem;
-}
-
-div.swiper-wrapper {
-    margin: 0 0 1rem 0;
-}
-div.swiper-pagination {
-    align-content: flex-end;
-    height: auto;
-    bottom: 0 !important;
- }

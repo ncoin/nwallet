@@ -90,6 +90,7 @@ ion-header {
     max-height: 80px;
     overflow: hidden;
 }
+ion-header ion-navbar,
 ion-header ion-title {
     text-align: center;
 }
@@ -243,16 +244,16 @@ ion-tabs[name=conference] .tabbar a.tab-button:nth-child(5)[aria-selected=true] 
 // buttons
 .btn {
     border: 0;
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
+    -webkit-border-radius: $basic-button-radius;
+    -moz-border-radius: $basic-button-radius;
+    border-radius: $basic-button-radius;
     margin-bottom: 10px;
 }
 .btn.default {
-    background: #49413a;
-    -webkit-box-shadow: #736961 0 1px 0 inset;
-    -moz-box-shadow: #736961 0 1px 0 inset;
-    box-shadow: #736961 0 1px 0 inset;
+    background: $basic-button-default-background;
+    -webkit-box-shadow: $basic-button-default-shadow 0 1px 0 inset;
+    -moz-box-shadow: $basic-button-default-shadow 0 1px 0 inset;
+    box-shadow: $basic-button-default-shadow 0 1px 0 inset;
 }
 .btn.default h3,
 .btn.default span {

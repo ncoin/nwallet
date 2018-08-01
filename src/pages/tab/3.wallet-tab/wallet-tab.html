@@ -1,10 +1,7 @@
 <ion-header >
-    <ion-navbar>
-        <ion-title>
-            <img src="assets/img/title_wallet.png" />
-        </ion-title>
-    </ion-navbar>
-
+    <ion-title>
+        <img src="assets/img/title_wallet.png" />
+    </ion-title>
 </ion-header>
 
 <ion-content padding>
@@ -46,7 +43,8 @@
     <ion-slides pager>
         <ion-slide *ngFor="let walletPage of walletPages">
             <ion-list>
-                <nw-asset-item *ngFor="let wallet of walletPage.wallets" [asset]="wallet" (click)="onSelectWallet(wallet)"></nw-asset-item>
+                <nw-asset-item class="basic" *ngFor="let wallet of walletPage.wallets" [asset]="wallet"
+                                (click)="onSelectWallet(wallet)"></nw-asset-item>
             </ion-list>
         </ion-slide>
     </ion-slides>

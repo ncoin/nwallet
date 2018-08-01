@@ -1,5 +1,8 @@
 // variables
-$nwallet-card-border-radius: 5px;
+$nwallet-card-border-radius: 1rem 1rem 0 0;
+$nwallet-card-margin: 0 0.4rem -1rem 0.4rem;
+$nwallet-card-shadow: rgba(0, 0, 0, 0.75) 0 -2px 6px -1px;
+$nwallet-card-bevel: rgba(255, 255, 255, 0.3) 0 1px 0 inset;
 
 $ncash-border-start: #2f2c2a;
 $ncash-border-mid: #c8c6c5;
@@ -8,44 +11,175 @@ $ncash-background-start: #0f0f0f;
 $ncash-background-mid: #1d1919;
 $ncash-background-end: #232221;
 
+$ncash-border-inner-start: #504330;
+$ncash-border-inner-2nd: #ffd08d;
+$ncash-border-inner-3rd: #836127;
+$ncash-border-inner-4th: #9b814e;
+$ncash-border-inner-end: #473826;
+
 nw-asset-item {
     width: 100%;
     display: block;
     color: color($colors, primary);
 }
 
+// card(coin) holder
+ion-row.holder ion-col img {
+    width: 100%;
+}
+
 // ncash
 nw-asset-item.ncash {
     margin-top: 2rem;
 }
-nw-asset-item.ncash ion-grid ion-row.card {
+nw-asset-item.ncash div.card {
     position: relative;
-    -moz-border-radius: $nwallet-card-border-radius $nwallet-card-border-radius 0 0;
-    -webkit-border-radius: $nwallet-card-border-radius $nwallet-card-border-radius 0 0;
-    border-radius: $nwallet-card-border-radius $nwallet-card-border-radius 0 0;
-    border: 2px solid transparent;
+    padding: 0.8rem;
+    margin: $nwallet-card-margin;
+    -moz-border-radius: $nwallet-card-border-radius;
+    -webkit-border-radius: $nwallet-card-border-radius;
+    border-radius: $nwallet-card-border-radius;
+    border: 1px solid transparent;
     background: -moz-linear-gradient(right, $ncash-background-start 0%, $ncash-background-mid 50%, $ncash-background-end 100%);
     background: -webkit-linear-gradient(right, $ncash-background-start 0%, $ncash-background-mid 50%, $ncash-background-end 100%);
     background: linear-gradient(to right, $ncash-background-start 0%, $ncash-background-mid 50%, $ncash-background-end 100%);
     background-clip: padding-box;
+    -webkit-box-shadow: $nwallet-card-shadow;
+    -moz-box-shadow: $nwallet-card-shadow;
+    box-shadow: $nwallet-card-shadow;
 }
-nw-asset-item.ncash ion-grid ion-row.card::after {
+nw-asset-item.ncash div.card::after {
     position: absolute;
-    top: -2px;
+    top: -1px;
     bottom: 0;
-    left: -2px;
-    right: -2px;
+    left: -1px;
+    right: -1px;
     background: -moz-linear-gradient(right, $ncash-border-start 0%, $ncash-border-mid 50%, $ncash-border-end 100%);
     background: -webkit-linear-gradient(right, $ncash-border-start 0%, $ncash-border-mid 50%, $ncash-border-end 100%);
     background: linear-gradient(to right, $ncash-border-start 0%, $ncash-border-mid 50%, $ncash-border-end 100%);
     content: '';
     z-index: -1;
-    -moz-border-radius: $nwallet-card-border-radius $nwallet-card-border-radius 0 0;
-    -webkit-border-radius: $nwallet-card-border-radius $nwallet-card-border-radius 0 0;
-    border-radius: $nwallet-card-border-radius $nwallet-card-border-radius 0 0;
+    -moz-border-radius: $nwallet-card-border-radius;
+    -webkit-border-radius: $nwallet-card-border-radius;
+    border-radius: $nwallet-card-border-radius;
 }
 
-// card(coin) holder
-ion-row.holder ion-col img {
-    width: 100%;
+nw-asset-item.ncash .inner-line .inner-line-content {
+    position: relative;
+    -moz-border-radius: $nwallet-card-border-radius;
+    -webkit-border-radius: $nwallet-card-border-radius;
+    border-radius: $nwallet-card-border-radius;
+    border: 3px solid transparent;
+    background: -moz-linear-gradient(right, $ncash-background-start 0%, $ncash-background-mid 50%, $ncash-background-end 100%);
+    background: -webkit-linear-gradient(right, $ncash-background-start 0%, $ncash-background-mid 50%, $ncash-background-end 100%);
+    background: linear-gradient(to right, $ncash-background-start 0%, $ncash-background-mid 50%, $ncash-background-end 100%);
+    background-clip: padding-box;
+}
+nw-asset-item.ncash .inner-line .inner-line-content {
+    padding: 2rem 1.2rem 2.5rem;
+}
+nw-asset-item.ncash .inner-line {
+    margin-bottom: -10px;
+    background: -moz-linear-gradient(
+            right,
+            $ncash-border-inner-start 0%,
+            $ncash-border-inner-2nd 30%,
+            $ncash-border-inner-3rd 50%,
+            $ncash-border-inner-4th 80%,
+            $ncash-border-inner-end 100%
+    );
+    background: -webkit-linear-gradient(
+            right,
+            $ncash-border-inner-start 0%,
+            $ncash-border-inner-2nd 30%,
+            $ncash-border-inner-3rd 50%,
+            $ncash-border-inner-4th 80%,
+            $ncash-border-inner-end 100%
+    );
+    background: linear-gradient(
+            to right,
+            $ncash-border-inner-start 0%,
+            $ncash-border-inner-2nd 30%,
+            $ncash-border-inner-3rd 50%,
+            $ncash-border-inner-4th 80%,
+            $ncash-border-inner-end 100%
+    );
+    -moz-border-radius: $nwallet-card-border-radius;
+    -webkit-border-radius: $nwallet-card-border-radius;
+    border-radius: $nwallet-card-border-radius;
+}
+
+nw-asset-item.ncash .asset-info .asset-symbol {
+    display: inline-block;
+    float: left;
+}
+nw-asset-item.ncash .asset-info .asset-name {
+    font-weight: 500;
+    color: rgba(255,255,255,0.7);
+    font-size: 2rem;
+    line-height: 28px;
+    float: left;
+    margin-left: 0.5rem;
+}
+nw-asset-item.ncash .price-info .price-asset {
+    font-size: 1.8rem;
+    color: rgba(255, 255, 255, 0.97);
+    font-weight: 900;
+    line-height: 28px;
+}
+nw-asset-item.ncash .price-info .price-usd {
+    font-size: 1.5rem;
+    color: rgba(255, 255, 255, 0.55);
+    font-weight: 500;
+}
+
+// general coins
+nw-asset-item.basic div.card{
+    position: relative;
+    padding: 1rem 1rem 1.6rem;
+    margin: $nwallet-card-margin;
+    -moz-border-radius: $nwallet-card-border-radius;
+    -webkit-border-radius: $nwallet-card-border-radius;
+    border-radius: $nwallet-card-border-radius;
+    -webkit-box-shadow: $nwallet-card-bevel, $nwallet-card-shadow;
+    -moz-box-shadow: $nwallet-card-bevel, $nwallet-card-shadow;
+    box-shadow: $nwallet-card-bevel, $nwallet-card-shadow;
+}
+nw-asset-item.basic:nth-child(1) div.card {
+    background: #504c43;
+}
+nw-asset-item.basic:nth-child(2) div.card {
+    background: #445355;
+}
+nw-asset-item.basic:nth-child(3) div.card {
+    background: #936c35;
+}
+
+
+nw-asset-item.basic .asset-info .asset-symbol {
+    display: inline-block;
+    float: left;
+}
+nw-asset-item.basic .asset-info .asset-symbol img {
+    height: 24px;
+    max-height: 24px;
+}
+nw-asset-item.basic .asset-info .asset-name {
+    font-weight: 500;
+    color: rgba(255,255,255,0.7);
+    font-size: 1.8rem;
+    line-height: 24px;
+    float: left;
+    margin-left: 0.5rem;
+}
+nw-asset-item.basic .price-info .price-asset {
+    font-size: 1.6rem;
+    color: rgba(255, 255, 255, 0.97);
+    font-weight: 900;
+    line-height: 24px;
+}
+nw-asset-item.basic .price-info .price-usd {
+    font-size: 1.3rem;
+    color: rgba(255, 255, 255, 0.55);
+    font-weight: 500;
 }
