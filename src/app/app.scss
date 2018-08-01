@@ -256,6 +256,7 @@ ion-tabs[name=conference] .tabbar a.tab-button:nth-child(5)[aria-selected=true] 
     box-shadow: $basic-button-default-shadow 0 1px 0 inset;
 }
 .btn.default h3,
+.btn.default ion-label,
 .btn.default span {
     color: #d8d5d1;
     font-weight: 500;
@@ -285,6 +286,15 @@ ion-tabs[name=conference] .tabbar a.tab-button:nth-child(5)[aria-selected=true] 
 .list-ios > .item-block:last-child,
 .list-ios > .item-wrapper:last-child .item-block {
     border-bottom: 0;
+}
+
+.list-md[inset] .item:first-child,
+.list-wp[inset] .item:first-child,
+.list-mp[inset] .item:last-child,
+.list-wp[inset] .item:last-child {
+    -webkit-border-radius: $basic-button-radius;
+    -moz-border-radius: $basic-button-radius;
+    border-radius: $basic-button-radius;
 }
 
 
@@ -384,5 +394,164 @@ ion-tabs[name=conference] .tabbar a.tab-button:nth-child(5)[aria-selected=true] 
 .item-md.item-input.ng-invalid.ng-touched:not(.input-has-focus):not(.item-input-has-focus) .text-input,
 .item-wp.item-input.ng-invalid.ng-touched:not(.input-has-focus):not(.item-input-has-focus) .text-input {
     border-color: color($colors, danger);
+}
+
+
+// select
+.select-wp.select-language .select-text {
+    text-align: right;
+}
+.select-ios.select-language .select-icon .select-icon-inner,
+.select-md.select-language .select-icon .select-icon-inner {
+    color: #d8d5d1;
+}
+.select-wp.select-language .select-icon .select-icon-inner {
+    border-color: #d8d5d1;
+}
+
+
+// popover
+.popover-md .popover-content,
+.popover-wp .popover-content {
+    border: 2px solid $popover-border-color;
+}
+
+
+// radio
+.radio-md .radio-icon,
+.radio-wp .radio-icon {
+    border-color: #fff;
+}
+.radio-md .radio-inner,
+.radio-wp .radio-inner {
+    background-color: #fff;
+}
+
+
+// toggle
+$toggle-border-radius: 50%;
+
+$toggle-icon-shadow: rgba(255, 255, 255, 0.2) 0 0 1px 0px;
+$toggle-inner-shadow: rgba(0, 0, 0, 0.4) 1px 2px 2px inset;
+$toggle-inner-out-shadow: rgba(0, 0, 0, 0.23) 0 0 3px 1px;
+$toggle-inner-background: #27211d;
+
+$toggle-circle-1st: #f4e8a8;
+$toggle-circle-2nd: #615a47;
+$toggle-circle-3rd: #49331e;
+$toggle-circle-4th: #91876a;
+
+$toggle-icon-background-off: rgba(255, 255, 255, 0.5);
+$toggle-icon-background-on: #364231;
+
+.item-ios .toggle-ios,
+.item-md .toggle-md,
+.item-wp .toggle-wp {
+    margin: 0;
+    padding: 6px 8px 5px 16px;
+    height: 24px;
+}
+.item-ios .toggle-ios {
+    width: 43px;
+}
+.item-md .toggle-md {
+    width: 40px;
+}
+.item-wp .toggle-wp {
+    width: 46px;
+}
+
+.toggle-ios .toggle-icon,
+.toggle-md .toggle-icon,
+.toggle-wp .toggle-icon {
+    border: 0;
+    background-color: $toggle-icon-background-off;
+    -webkit-box-shadow: $toggle-inner-shadow, $toggle-icon-shadow;
+    -moz-box-shadow: $toggle-inner-shadow, $toggle-icon-shadow;
+    box-shadow: $toggle-inner-shadow, $toggle-icon-shadow;
+}
+
+.toggle-ios .toggle-icon::before,
+.toggle-md .toggle-icon::before,
+.toggle-pw .toggle-icon::before{
+    content: none;
+}
+
+.toggle-ios .toggle-inner,
+.toggle-md .toggle-inner,
+.toggle-wp .toggle-inner {
+    position: relative;
+    left: 6px;
+    top: 6px;
+    width: 14px;
+    height: 14px;
+    background-color: $toggle-inner-background;
+    border-radius: $toggle-border-radius;
+    -webkit-box-shadow: $toggle-inner-shadow;
+    -moz-box-shadow: $toggle-inner-shadow;
+    box-shadow: $toggle-inner-shadow;
+    contain: initial;
+
+    &:before {
+        position: absolute;
+        content: "";
+        width: 16px;
+        height: 16px;
+        top: -2px;
+        left: -2px;
+        background-color: $toggle-inner-background;
+        border-radius: 50%;
+        z-index: -1;
+    }
+
+    &:after {
+        position: absolute;
+        content: "";
+        width: 20px;
+        height: 20px;
+        top: -4px;
+        left: -4px;
+        border-radius: $toggle-border-radius;
+        background-image: -moz-linear-gradient(
+                right bottom,
+                $toggle-circle-1st 0%,
+                $toggle-circle-2nd 30%,
+                $toggle-circle-3rd 60%,
+                $toggle-circle-4th 100%
+        );
+        background-image: -webkit-linear-gradient(
+                right bottom,
+                $toggle-circle-1st 0%,
+                $toggle-circle-2nd 30%,
+                $toggle-circle-3rd 60%,
+                $toggle-circle-4th 100%
+        );
+        background-image: linear-gradient(
+                to right bottom,
+                $toggle-circle-1st 0%,
+                $toggle-circle-2nd 30%,
+                $toggle-circle-3rd 60%,
+                $toggle-circle-4th 100%
+        );
+        -webkit-box-shadow: $toggle-inner-out-shadow;
+        -moz-box-shadow: $toggle-inner-out-shadow;
+        box-shadow: $toggle-inner-out-shadow;
+        z-index: -2;
+    }
+}
+
+.toggle-ios.toggle-activated .toggle-icon::before,
+.toggle-ios.toggle-checked .toggle-icon::before,
+.toggle-md.toggle-activated .toggle-icon::before,
+.toggle-md.toggle-checked .toggle-icon::before,
+.toggle-wp.toggle-activated .toggle-icon::before,
+.toggle-wp.toggle-checked .toggle-icon::before {
+    content: none;
+}
+
+.toggle-ios.toggle-checked .toggle-icon,
+.toggle-md.toggle-checked .toggle-icon,
+.toggle-wp.toggle-checked .toggle-icon {
+    background-color: $toggle-icon-background-on;
 }
 

@@ -143,10 +143,35 @@ $card-wp-background-color: $background-color;
 $card-wp-box-shadow: none;
 $card-wp-box-shadow-color: $background-color;
 
-
 // buttons
 $basic-button-radius: 0.5rem;
 $basic-button-default-background: #49413a;
 $basic-button-default-shadow: #736961;
+
+
+// select
+$select-wp-border-width: 0;
+$select-wp-margin: 0;
+$select-wp-margin-bottom: $select-wp-margin;
+$select-wp-margin-end: $select-wp-margin;
+$select-wp-margin-left: $select-wp-margin;
+$select-wp-margin-right: $select-wp-margin;
+$select-wp-margin-start: $select-wp-margin;
+$select-wp-margin-top: $select-wp-margin;
+
+
+// popover
+$popover-background: #8b785f;
+$popover-radius: 10px;
+$popover-border-color: rgba(217, 189, 145, 0.8);
+
+$popover-ios-background: $popover-background;
+$popover-md-background: $popover-background;
+$popover-wp-background: $popover-background;
+$popover-ios-border-radius: $popover-radius;
+$popover-md-border-radius: $popover-radius;
+$popover-wp-border-radius: $popover-radius;
+
+
 
 // END
