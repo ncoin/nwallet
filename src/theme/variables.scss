@@ -88,6 +88,11 @@ $toolbar-md-active-color: #fff;
 @import "noto-sans";
 
 
+// font awesome
+$fa-font-path: $font-path;
+@import "font-awesome";
+
+
 // Overriding Ionic Sass Variables
 // START
 
