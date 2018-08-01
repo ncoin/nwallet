@@ -5,55 +5,63 @@
         <img src="assets/img/title_loan_ncash.png">
     </ion-title>
 </ion-header>
-
-
-<ion-content padding scroll="=false">
-    <div>
-        <div style="margin: 3% 0% 2% 0%">:: {{'Colleteral'| translate}} {{'Currency' | translate }}</div>
-        <ion-item>
-            <ion-label>
-                <div *ngIf="wallet.item.isNative; then native ; else notnative"></div>
-            </ion-label>
-            <ion-select [(ngModel)]="wallet" interface="popover">
-                <ion-option *ngFor="let walleta of wallets" [value]="walleta">{{walleta.item.asset.code}}</ion-option>
-            </ion-select>
-        </ion-item>
-        <ion-item no-lines>
-            <ion-label>> {{ 'Balance' | translate }}</ion-label>
-            <div item-end>
-                <ion-label item-end style="text-align: right">{{wallet | assetFormat}}</ion-label>
-            </div>
-        </ion-item>
-        <ion-item no-lines>
-            <ion-label>> {{'Available' | translate}}</ion-label>
-            <div item-end>
-                <ion-label style="text-align: right">{{wallet | assetFormat}}</ion-label>
-                <ion-label style="text-align: right">{{wallet | assetToUSD}}</ion-label>
-            </div>
-        </ion-item>
-        <ion-item>
-            <ion-label floating>{{ 'Amount' | translate }} </ion-label>
-            <ion-input [(ngModel)]="nchAmount" type="number" required min="0" max="1000" autocomplete="true"></ion-input>
-        </ion-item>
-        <ion-label style="margin: 5% 0% 0% 0%">
-            :: {{ 'Loan' | translate | uppercase }} {{ 'Currency' |translate | uppercase}}
-        </ion-label>
-        <ion-item no-lines>
-            <ion-label item-start>
-                {{expectSpendWallet.item.asset.code}}
-            </ion-label>
-            <div item-end>
-                <ion-label style="text-align: right">
-                    {{expectSpendWallet| assetFormat}}
-                </ion-label>
-            </div>
-        </ion-item>
+<ion-content padding>
+    <div class="loan-fixed" ion-fixed style="background-color: red; display: contents">
+        <div class="loan-fixed-header">
+            <div>Icon</div><span>{{'GetANewLoan' | translate}}</span>
+        </div>
+        <ion-scroll class="dock loan-fixed-content" style=" height: 30rem; width: 100%" scrollY="true">
+            <div class="colleteral"></div>
+            <div class="colleteral"></div>
+            <div class="colleteral"></div>
+            <div class="colleteral"></div>
+            <div class="colleteral"></div>
+            <div class="colleteral"></div>
+            <div class="colleteral"></div>
+            <div class="colleteral"></div>
+            <div class="colleteral"></div>
+            <div class="colleteral"></div>
+            <div class="colleteral"></div>
+            <div class="colleteral"></div>
+        </ion-scroll>
+        <div class="loan-fixed-content">
+            > <span>{{'LoanStatus' | translate}}</span>
+        </div>
+        <div class="loan-fixed-footer" style="background-color: yellowgreen; height: 50px; position: absolute; bottom: 0px; width: 100%">
+            <Button style="display: flex" (click)="onClick()">
+                Loan History >ss
+            </Button>
+        </div>
     </div>
-    <!-- todo use related grid later [sky] -->
-    <button ion-button block (click)="onLoanRequest()" style="
-                position:  absolute;
-                width: 90%;
-                left:  5%; bottom : 10%;">
-        {{'Loan' | translate}} {{'NCH'|translate }}
-    </button>
+    <div style="background-color: tomato;">
+        <Button style="display: flex" (click)="onClick()">
+            Loan History >s
+        </Button>
+        <ion-list>
+            <ion-item>item</ion-item>
+            <ion-item>item</ion-item>
+            <ion-item>item</ion-item>
+            <ion-item>item</ion-item>
+            <ion-item>item</ion-item>
+            <ion-item>item</ion-item>
+            <ion-item>item</ion-item>
+            <ion-item>item</ion-item>
+            <ion-item>item</ion-item>
+            <ion-item>item</ion-item>
+            <ion-item>item</ion-item>
+            <ion-item>item</ion-item>
+            <ion-item>item</ion-item>
+            <ion-item>item</ion-item>
+            <ion-item>item</ion-item>
+            <ion-item>item</ion-item>
+            <ion-item>item</ion-item>
+            <ion-item>item</ion-item>
+            <ion-item>item</ion-item>
+            <ion-item>item</ion-item>
+            <ion-item>item</ion-item>
+        </ion-list>
+        <ion-infinite-scroll style="background-color: red">
+            <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="more Transactions ..."></ion-infinite-scroll-content>
+        </ion-infinite-scroll>
+    </div>
 </ion-content>

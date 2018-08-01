@@ -3,13 +3,7 @@ import { AccountProvider } from '../../../providers/account/account';
 import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams, Navbar, AlertController, LoadingController } from 'ionic-angular';
 import { NWallet } from '../../../interfaces/nwallet';
-
-/**
- * Generated class for the WalletLoanPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import { Logger } from '../../../providers/common/logger/logger';
 
 @IonicPage()
 @Component({
@@ -31,30 +25,19 @@ export class WalletLoanPage {
         private appService: AppServiceProvider,
         private alert: AlertController,
         private loading: LoadingController,
+        private logger: Logger
     ) {
-        this._wallet = this.account.getNativeWallet();
-        this.expectSpendWallet = <NWallet.AssetContext>{
-            item: this._wallet.item,
-            amount: '0',
-        };
 
-        const availables = account.account.wallets.filter(wallet => {
-            return wallet.item.asset.code !== 'NCH' && wallet.item.isNative;
-        });
-        this.wallets.push(...availables);
     }
 
     ionViewDidEnter() {
-        this._wallet = this.account.getNativeWallet();
-        this.expectSpendWallet = <NWallet.AssetContext>{
-            item: this._wallet.item,
-            amount: '0',
-        };
 
-        this.wallets = this.account.account.wallets.filter(wallet => {
-            return wallet.item.asset.code !== 'NCH';
-        });
     }
+
+    public onClick(): void {
+        this.logger.debug('[wallet-loan-page] onclick');
+    }
+
 
     public set nchAmount(value: number) {
         this._nchAmount = value;
