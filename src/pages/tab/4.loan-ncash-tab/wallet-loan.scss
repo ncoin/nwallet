@@ -9,11 +9,7 @@ page-wallet-loan {
             margin-top: 0rem !important;
             margin-bottom: 0rem !important;
             pointer-events: auto;
-            // * {
-            //     pointer-events: auto;
-            // }
         }
-
         .loan-fixed {
             width: 100%;
             height: 100%;
@@ -29,16 +25,15 @@ page-wallet-loan {
                 justify-content: center;
             }
             .dock {
+                font-size: 3.2vw;
                 width: 100%;
-                height: 100%;
-                height: 30rem;
-                width: 100%;
+                height: 14em;
                 .collateral {
                     float: left;
                     width: 30%;
-                    height: 120px;
-                    max-height: 120px;
-                    margin: 10px 1.5% 10px 1.5%;
+                    font-size: 3.2vw;
+                    height: 5.5em;
+                    margin: 0.5em 1.5% 0.5em 1.5%;
                     background-color: gray;
                     display: flex;
                     justify-content: center;
@@ -48,23 +43,23 @@ page-wallet-loan {
             .loan-column {
                 display: flex;
                 justify-content: space-between;
-                padding : 0 2rem 0 2rem;
+                padding: 0 2rem 0 2rem;
             }
             .loan-fixed-footer {
                 pointer-events: auto;
             }
         }
     }
-
     .scroll-content {
-        margin-top: 43rem !important;
+        font-size: 3.2vw;
+        margin-top: 20em !important;
         margin-bottom: 13rem !important;
         pointer-events: auto;
         * {
             pointer-events: auto;
         }
     }
-    .loan-item{
+    .loan-item {
         ion-label {
             display: flex;
             justify-content: space-between;
