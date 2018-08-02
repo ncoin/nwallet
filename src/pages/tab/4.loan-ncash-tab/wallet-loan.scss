@@ -6,8 +6,8 @@ page-wallet-loan {
             //pointer-events: none;
         }
         .scroll-content {
-            margin-top: 0rem !important;
-            margin-bottom: 0rem !important;
+            margin-top: 0 !important;
+            margin-bottom: 0 !important;
             pointer-events: auto;
         }
         .loan-fixed {
@@ -23,21 +23,45 @@ page-wallet-loan {
             .loan-fixed-header {
                 display: flex;
                 justify-content: center;
+
+                .btn-new-loan {
+                    width: 70%;
+                    margin: 20px 0 15px;
+                    background-color: #806035;
+                    border-radius: 1rem;
+                }
+                .btn-new-loan span {
+                    display: inline-block;
+                    color: #fafafa;
+                    font-size: 1.8rem;
+                }
+                .btn-new-loan span img {
+                    max-height: 24px;
+                    margin-right: 5px;
+                    vertical-align: middle;
+                }
             }
             .dock {
                 font-size: 3.2vw;
                 width: 100%;
                 height: 14em;
+                .scroll-content {
+                    margin-top: 0 !important;
+                    margin-bottom: 0 !important;
+                    padding: 0 16px;
+                }
                 .collateral {
                     float: left;
                     width: 30%;
                     font-size: 3.2vw;
+                    color: #fcfcfc;
+                    font-weight: 600;
                     height: 5.5em;
                     margin: 0.5em 1.5% 0.5em 1.5%;
-                    background-color: gray;
                     display: flex;
                     justify-content: center;
                     align-items: center;
+                    border-radius: 1rem;
                 }
             }
             .loan-column {

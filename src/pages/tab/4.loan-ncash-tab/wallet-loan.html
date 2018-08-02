@@ -12,22 +12,26 @@
 <ion-content padding>
     <div class="loan-fixed" ion-fixed>
         <div class="loan-fixed-header">
-            <div>Icon</div>
-            <span>{{'GetANewLoan' | translate}}</span>
+            <button type="button" class="btn default btn-new-loan" text-center>
+                <ion-label>
+                    <span><img src="assets/img/loan_add_icon.png" /></span>
+                    <span>{{'GetANewLoan' | translate}}</span>
+                </ion-label>
+            </button>
         </div>
         <ion-scroll class="dock loan-fixed-content" scrollY="true">
-            <div class="collateral" *ngFor="let collateral of collaterals">
+            <button class="btn default collateral" *ngFor="let collateral of collaterals">
                 {{collateral.asset_code}} {{collateral.collateral_rate}}%
-            </div>
-            <div class="collateral" *ngFor="let collateral of collaterals">
+            </button>
+            <button class="btn default collateral" *ngFor="let collateral of collaterals">
                 {{collateral.asset_code}} {{collateral.collateral_rate}}%
-            </div>
-            <div class="collateral" *ngFor="let collateral of collaterals">
+            </button>
+            <button class="btn default collateral" *ngFor="let collateral of collaterals">
                 {{collateral.asset_code}} {{collateral.collateral_rate}}%
-            </div>
-            <div class="collateral" *ngFor="let collateral of collaterals">
+            </button>
+            <button class="btn default collateral" *ngFor="let collateral of collaterals">
                 {{collateral.asset_code}} {{collateral.collateral_rate}}%
-            </div>
+            </button>
         </ion-scroll>
         <div class="loan-fixed-content">
             >
