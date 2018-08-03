@@ -20,7 +20,7 @@ export class AppServiceProvider {
         private logger: Logger,
         private connector: NClientProvider,
         private account: AccountProvider,
-        private event: EventProvider,
+        private event: EventProvider
     ) {}
 
     public async flushApplication(): Promise<void> {
@@ -36,16 +36,21 @@ export class AppServiceProvider {
         await this.account.setAccount(account);
         await this.connector.fetchJobs(account);
         this.requestTrust();
-        this.logger.debug('[appService] login done');
+        this.logger.debug('[app-service] login done');
         this.event.publish(EventTypes.App.user_login);
     }
 
-    public async logout(account: NWallet.Account): Promise<void> {
+    public async logout(): Promise<void> {
+        if (!this.account.account) {
+            throw new Error('[app-service] invalid logout operation. account not exists');
+        }
+
+        this.logger.debug('logout', this.account.account.signature.public);
         await this.preference.remove(Preference.Nwallet.walletAccount);
+
         // todo unsubscribe
-        await this.connector.unSubscribes(account);
+        await this.connector.unSubscribes(this.account.account);
         this.account.flush();
-        this.logger.debug('logout', account.signature.public);
         this.event.publish(EventTypes.App.user_logout);
     }
 
@@ -70,9 +75,7 @@ export class AppServiceProvider {
         return response ? response.loans : [];
     }
 
-    public async getLoanHistories() {
-
-    }
+    public async getLoanHistories() {}
 
     public async getTransactions(asset: Asset, pageToken?: string) {
         return await this.connector.getTransactions(this.account.getId(), asset, pageToken);
@@ -84,7 +87,7 @@ export class AppServiceProvider {
 
     public async requestBuy(asset: Asset, nchAmount: number): Promise<void> {
         await this.processXdr(NWallet.Protocol.XdrRequestTypes.Buy, {
-            public_key : this.account.getId(),
+            public_key: this.account.getId(),
             amount: nchAmount,
             asset_code: asset.getCode(),
         });
@@ -92,7 +95,7 @@ export class AppServiceProvider {
 
     public async requestLoan(asset: Asset, amount: number): Promise<void> {
         await this.processXdr(NWallet.Protocol.XdrRequestTypes.Loan, {
-            public_key : this.account.getId(),
+            public_key: this.account.getId(),
             amount: amount,
             asset_code: asset.getCode(),
         });

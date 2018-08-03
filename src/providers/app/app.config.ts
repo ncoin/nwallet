@@ -1,4 +1,4 @@
-import { EventProvider } from './../common/event/event';
+import { EventProvider } from '../common/event/event';
 import { PreferenceProvider, Preference } from '../common/preference/preference';
 import { Injectable } from '@angular/core';
 import { Logger } from '../common/logger/logger';
@@ -43,8 +43,6 @@ export class AppConfigProvider {
     public async hasSeenTutorial(): Promise<boolean> {
         return await this.preference.get(Preference.App.hasSeenTutorial);
     }
-
-
 
     public async setPushNotification(isEnable: boolean): Promise<boolean> {
         // todo request --sky

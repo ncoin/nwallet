@@ -1,14 +1,15 @@
-import { WalletBuyPage } from '../2.buy-ncash-tab/wallet-buy';
 import { AccountProvider } from '../../../providers/account/account';
 import { AppServiceProvider } from '../../../providers/app/app.service';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { AccountTabPage } from '../5.account-tab/account-tab';
-import { WalletTabPages, WalletPage } from '../3.wallet-tab/wallet-tab';
-import { Logger } from '../../../providers/common/logger/logger';
-import { WalletLoanPage } from '../4.loan-ncash-tab/wallet-loan';
-import { TransferTabPage } from '../1.transfer-tab/transfer-tab';
 
+import { Logger } from '../../../providers/common/logger/logger';
+
+import { TransferHistoryTabPage } from '../1.transfer-tab/transfer-history-tab';
+import { BuyNcashTabPage } from '../2.buy-ncash-tab/buy-ncash-tab';
+import { WalletTabPages, WalletMainTabPage } from '../3.wallet-tab/wallet-main-tab';
+import { LoanNcashTabPage } from '../4.loan-ncash-tab/loan-ncash-tab';
+import { AccountTabPage } from '../5.account-tab/account-tab';
 export interface TabItemContext {
     // title: "Schedule",
     // name: "TabsPage",
@@ -28,19 +29,19 @@ export class TabcontainerPage {
     selectedIndex: number;
     tabItems: TabItemContext[] = [
         {
-            component: TransferTabPage,
+            component: TransferHistoryTabPage,
             icon: 'nwallet-transfer',
         },
         {
-            component: WalletBuyPage,
+            component: BuyNcashTabPage,
             icon: 'nwallet-buy',
         },
         {
-            component: WalletPage,
+            component: WalletMainTabPage,
             icon: 'nwallet-home',
         },
         {
-            component: WalletLoanPage,
+            component: LoanNcashTabPage,
             icon: 'nwallet-loan',
         },
         {
@@ -62,4 +63,4 @@ export class TabcontainerPage {
     }
 }
 
-export const NWalletTabPages = [TabcontainerPage, TransferTabPage, WalletBuyPage, WalletLoanPage, AccountTabPage, ...WalletTabPages];
+export const NWalletTabPages = [TabcontainerPage, TransferHistoryTabPage, BuyNcashTabPage, LoanNcashTabPage, AccountTabPage, ...WalletTabPages];

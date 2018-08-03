@@ -1,4 +1,4 @@
-import { PreferenceProvider, Preference } from './../../../providers/common/preference/preference';
+import { PreferenceProvider, Preference } from '../../../providers/common/preference/preference';
 import { TranslateService } from '@ngx-translate/core';
 import { AppConfigProvider } from '../../../providers/app/app.config';
 import { Logger } from '../../../providers/common/logger/logger';
@@ -11,7 +11,7 @@ import { Constants } from '../../../environments/template';
 
 @IonicPage()
 @Component({
-    selector: 'page-account-tab',
+    selector: 'account-tab',
     templateUrl: 'account-tab.html',
 })
 export class AccountTabPage {
@@ -32,11 +32,10 @@ export class AccountTabPage {
     constructor(
         public navCtrl: NavController,
         private appService: AppServiceProvider,
-        private account: AccountProvider,
         private appConfig: AppConfigProvider,
         private logger: Logger,
         private toast: ToastController,
-        private translate: TranslateService,
+        private translate: TranslateService
     ) {
         this.init();
     }
@@ -63,8 +62,7 @@ export class AccountTabPage {
     }
 
     public async onLogout(): Promise<void> {
-        const account = await this.account.getAccount();
-        await this.appService.logout(account);
+        await this.appService.logout();
 
         this.navCtrl.setRoot(EntrancePage, undefined, {
             animate: true,

@@ -5,7 +5,7 @@ import { NWalletPipesModule } from '../pipes/pipes.module';
 import { CreateAccountPage } from './1.account/createaccount';
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
-import { TutorialPage } from './etc.tutorial/tutorial';
+import { TutorialPage } from './0.tutorial/tutorial';
 import { EntrancePage } from './0.entrance/entrance';
 import { ImportAccountPage } from './1.account/importaccount';
 import { FingerprintModalPage } from './1.security/fingerprint/fingerprint';

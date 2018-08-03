@@ -14,7 +14,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 
 import { EntrancePage } from '../pages/0.entrance/entrance';
-import { TutorialPage } from '../pages/etc.tutorial/tutorial';
+import { TutorialPage } from '../pages/0.tutorial/tutorial';
 import { AppConfigProvider } from '../providers/app/app.config';
 
 @Component({
@@ -41,8 +41,6 @@ export class NWalletApp implements OnDestroy {
         private appService: AppServiceProvider,
         private event: EventProvider
     ) {
-
-
         this.initialize();
     }
 
@@ -64,16 +62,13 @@ export class NWalletApp implements OnDestroy {
 
     private async onPlatformReady(): Promise<void> {
         this.subscribeEvents();
-
-        await this.appConfig.loadAll();
-        await this.preparePage();
+        await Promise.all([this.appConfig.loadAll(), this.preparePage()]);
         this.prepareSecurity();
-        this.logger.debug('[app-page] platform ready now');
+        this.logger.debug('[app-page] platform on ready');
         this.splashScreen.hide();
     }
 
     private subscribeEvents(): void {
-
         this.event.subscribe(EventTypes.App.user_login, () => {
             this.rootPage = TabcontainerPage;
         });
@@ -85,9 +80,8 @@ export class NWalletApp implements OnDestroy {
     private async preparePage(): Promise<void> {
         const account = await this.account.getAccount();
         if (account) {
-            this.logger.debug('[app-page] prepare wallet page');
+            this.logger.debug('[app-page] prepare wallet page (login)');
             await this.appService.login(account);
-            this.logger.debug('[app-page] login');
         } else {
             this.logger.debug('[app-page] prepare entrance page');
             this.rootPage = EntrancePage;
@@ -102,6 +96,7 @@ export class NWalletApp implements OnDestroy {
     }
 
     private prepareSecurity(): void {
+        // todo persistence --sky`
         this.resumeSubscription = this.platform.resume.subscribe(() => {
             this.lock.tryLockModalOpen();
         });

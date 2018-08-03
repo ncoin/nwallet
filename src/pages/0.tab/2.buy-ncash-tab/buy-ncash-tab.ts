@@ -7,10 +7,10 @@ import { NWallet, getOrAddWalletItem } from '../../../interfaces/nwallet';
 
 @IonicPage()
 @Component({
-    selector: 'page-wallet-buy',
-    templateUrl: 'wallet-buy.html',
+    selector: 'buy-ncash-tab',
+    templateUrl: 'buy-ncash-tab.html',
 })
-export class WalletBuyPage {
+export class BuyNcashTabPage {
     @ViewChild(Navbar) navBar: Navbar;
 
     private _sourceAssetAmount = 0;

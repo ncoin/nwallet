@@ -1,7 +1,6 @@
 import { EventTypes } from '../../../interfaces/events';
-import { WalletLoanPage } from '../4.loan-ncash-tab/wallet-loan';
-import { WalletBuyPage } from '../2.buy-ncash-tab/wallet-buy';
-import { WalletDetailPage } from '../1.transfer-tab/wallet-detail';
+import { LoanNcashTabPage } from '../4.loan-ncash-tab/loan-ncash-tab';
+import { BuyNcashTabPage } from '../2.buy-ncash-tab/buy-ncash-tab';
 import { Logger } from '../../../providers/common/logger/logger';
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
@@ -21,10 +20,10 @@ export interface WalletSlide {
 }
 
 @Component({
-    selector: 'tab-wallet',
-    templateUrl: 'wallet-tab.html',
+    selector: 'wallet-main-tab',
+    templateUrl: 'wallet-main-tab.html',
 })
-export class WalletPage {
+export class WalletMainTabPage {
     walletPages: WalletSlide[] = [];
     nCash: NWallet.AssetContext;
     totalPrice: string;
@@ -80,15 +79,15 @@ export class WalletPage {
     }
 
     public onSelectWallet(wallet: NWallet.AssetContext) {
-        this.navCtrl.push(
-            WalletDetailPage,
-            { wallet: wallet },
-            {
-                animate: true,
-                animation: 'ios-transition',
-            },
-        );
+        // this.navCtrl.push(
+        //     WalletDetailPage,
+        //     { wallet: wallet },
+        //     {
+        //         animate: true,
+        //         animation: 'ios-transition',
+        //     },
+        // );
     }
 }
 
-export const WalletTabPages = [WalletPage, WalletDetailPage, WalletBuyPage, WalletLoanPage];
+export const WalletTabPages = [WalletMainTabPage, /*WalletDetailPage,*/ BuyNcashTabPage, LoanNcashTabPage];

@@ -4,14 +4,14 @@ import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams, Navbar, AlertController, LoadingController, InfiniteScroll, ToastController } from 'ionic-angular';
 import { NWallet } from '../../../interfaces/nwallet';
 import { Logger } from '../../../providers/common/logger/logger';
-import { createExpr } from '../../../../node_modules/forge';
+import { createExpr } from 'forge';
 
 @IonicPage()
 @Component({
-    selector: 'page-wallet-loan',
-    templateUrl: 'wallet-loan.html',
+    selector: 'loan-ncash-tab',
+    templateUrl: 'loan-ncash-tab.html',
 })
-export class WalletLoanPage {
+export class LoanNcashTabPage {
 
     public loanStatuses: NWallet.Protocol.LoanStatus[];
      // todo move to collateral provider --sky`

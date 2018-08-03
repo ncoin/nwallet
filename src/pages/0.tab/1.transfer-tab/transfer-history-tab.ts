@@ -1,4 +1,4 @@
-import { Logger } from './../../../providers/common/logger/logger';
+import { Logger } from '../../../providers/common/logger/logger';
 import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, Navbar, InfiniteScroll } from 'ionic-angular';
 import { AppServiceProvider } from '../../../providers/app/app.service';
@@ -14,10 +14,10 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
 
 @IonicPage()
 @Component({
-    selector: 'page-transfer-tab',
-    templateUrl: 'transfer-tab.html',
+    selector: 'transfer-history-tab',
+    templateUrl: 'transfer-history-tab.html',
 })
-export class TransferTabPage {
+export class TransferHistoryTabPage {
     public transactionMaps: Array<{ date: string; transactions: NWallet.Protocol.Transaction[] }> = new Array<{ date: string; transactions: NWallet.Protocol.Transaction[] }>();
     private skip = 0;
     @ViewChild(Navbar) navBar: Navbar;
