@@ -9,70 +9,67 @@
         <img src="assets/img/title_loan_ncash.png">
     </ion-title>
 </ion-header>
-<ion-content padding>
-    <div class="loan-fixed" ion-fixed>
-        <div class="loan-fixed-header">
-            <button type="button" class="btn default btn-new-loan" text-center>
+<ion-content padding class="no-scroll-container">
+    <div class="content-layout">
+        <div class="new-loan-area">
+            <button type="button" class="btn default new-loan-btn" text-center>
                 <ion-label>
                     <span><img src="assets/img/loan_add_icon.png" /></span>
                     <span>{{'GetANewLoan' | translate}}</span>
                 </ion-label>
             </button>
         </div>
-        <ion-scroll class="dock loan-fixed-content" scrollY="true">
-            <button class="btn default collateral" *ngFor="let collateral of collaterals">
-                {{collateral.asset_code}} {{collateral.collateral_rate}}%
-            </button>
-            <button class="btn default collateral" *ngFor="let collateral of collaterals">
-                {{collateral.asset_code}} {{collateral.collateral_rate}}%
-            </button>
-            <button class="btn default collateral" *ngFor="let collateral of collaterals">
-                {{collateral.asset_code}} {{collateral.collateral_rate}}%
-            </button>
-            <button class="btn default collateral" *ngFor="let collateral of collaterals">
-                {{collateral.asset_code}} {{collateral.collateral_rate}}%
-            </button>
-        </ion-scroll>
-        <div class="loan-fixed-content">
-            >
-            <span>{{'LoanStatus' | translate}}</span>
+        <div class="collateral-loan-area">
+            <div class="collateral-loan-group" *ngFor="let collateral of collaterals">
+                <div class="collateral-icon">
+                    <fa-icon name="bitcoin" class="fa-2x"></fa-icon>
+                </div>
+                <div class="collateral">
+                    {{collateral.asset_code}} {{collateral.collateral_rate}}%
+                </div>
+            </div>
         </div>
-        <div class="loan-fixed-content loan-column">
-            <div style="width: 10%">
+        <div class="loan-status-area">
+            <div class="loan-status-header">
+                > <span>{{'LoanStatus' | translate}}</span>
             </div>
-            <div style="width: 40%; text-align: center">
-                item
+            <div class="loan-status-column">
+                <div>
+                    Status
+                </div>
+                <div>
+                    ITEM
+                </div>
+                <div>
+                    NCH
+                </div>
+                <div>
+                    Colltr. %
+                </div>
+                <div>
+                    Condition
+                </div>
             </div>
-            <div style="width: 30%; text-align: center">
-                nch
-            </div>
-            <div style="width: 12%; text-align: center">
-                Colltr. %
-            </div>
-            <div style="width: 12%; text-align: right">
-                Condition
-            </div>
-
+            <ion-content>
+                <ion-list *ngIf="loanStatuses && loanStatuses.length > 0">
+                    <div class="loan-status-item" *ngFor="let loan of loanStatuses">
+                        <div *ngIf="loan.collateral_rate > loan.warning_rate; then normalRatio; else warnRatio"></div>
+                        <div> {{loan.collateral_amount}} {{loan.collateral_asset_code}} </div>
+                        <div> {{loan.amount}} {{loan.coin_symbol}} </div>
+                        <div> {{loan.collateral_rate}}% </div>
+                        <div>graph</div>
+                    </div>
+                </ion-list>
+                <ion-infinite-scroll (ionInfinite)="doInfinite($event)" style="background-color: red">
+                    <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="more Transactions ..."></ion-infinite-scroll-content>
+                </ion-infinite-scroll>
+            </ion-content>
         </div>
-        <div class="loan-fixed-footer" style="background-color: yellowgreen; height: 50px; position: absolute; bottom: 0px; width: 100%">
-            <Button style="display: flex" (click)="onClick()">
-                Loan History >ss
-            </Button>
+        <div class="loan-history-area">
+            <div class="loan-history-header">
+                <span>{{'LoanHistory' | translate}}</span> >
+            </div>
         </div>
-    </div>
-    <div>
-        <ion-list *ngIf="loanStatuses && loanStatuses.length > 0">
-            <button ion-item class="loan-item" *ngFor="let loan of loanStatuses">
-                <div *ngIf="loan.collateral_rate > loan.warning_rate; then normalRatio; else warnRatio"></div>
-                <div style="width: 40%; text-align: right"> {{loan.collateral_amount}} {{loan.collateral_asset_code}} </div>
-                <div style="width: 30%; text-align: right"> {{loan.amount}} {{loan.coin_symbol}} </div>
-                <div style="width: 12%"> {{loan.collateral_rate}}% </div>
-                <div item-end>graph</div>
-            </button>
-        </ion-list>
-        <ion-infinite-scroll (ionInfinite)="doInfinite($event)" style="background-color: red">
-            <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="more Transactions ..."></ion-infinite-scroll-content>
-        </ion-infinite-scroll>
     </div>
 </ion-content>
 <ion-footer></ion-footer>
