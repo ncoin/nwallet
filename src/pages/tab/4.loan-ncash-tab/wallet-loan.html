@@ -14,7 +14,9 @@
         <div class="new-loan-area">
             <button type="button" class="btn default new-loan-btn" text-center>
                 <ion-label>
-                    <span><img src="assets/img/loan_add_icon.png" /></span>
+                    <span>
+                        <img src="assets/img/loan_add_icon.png" />
+                    </span>
                     <span>{{'GetANewLoan' | translate}}</span>
                 </ion-label>
             </button>
@@ -28,10 +30,26 @@
                     {{collateral.asset_code}} {{collateral.collateral_rate}}%
                 </div>
             </div>
+            <div class="collateral-loan-group" *ngFor="let collateral of collaterals">
+                    <div class="collateral-icon">
+                        <fa-icon name="bitcoin" class="fa-2x"></fa-icon>
+                    </div>
+                    <div class="collateral">
+                        {{collateral.asset_code}} {{collateral.collateral_rate}}%
+                    </div>
+                </div><div class="collateral-loan-group" *ngFor="let collateral of collaterals">
+                        <div class="collateral-icon">
+                            <fa-icon name="bitcoin" class="fa-2x"></fa-icon>
+                        </div>
+                        <div class="collateral">
+                            {{collateral.asset_code}} {{collateral.collateral_rate}}%
+                        </div>
+                    </div>
         </div>
         <div class="loan-status-area">
             <div class="loan-status-header">
-                > <span>{{'LoanStatus' | translate}}</span>
+                >
+                <span>{{'LoanStatus' | translate}}</span>
             </div>
             <div class="loan-status-column">
                 <div>
@@ -67,9 +85,8 @@
         </div>
         <div class="loan-history-area">
             <div class="loan-history-header">
-                <span>{{'LoanHistory' | translate}}</span> >
+                <button (click)="onClick()">{{'LoanHistory' | translate}} ></button>
             </div>
         </div>
     </div>
 </ion-content>
-<ion-footer></ion-footer>

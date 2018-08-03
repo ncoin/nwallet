@@ -7,12 +7,10 @@ page-wallet-loan {
             pointer-events: auto;
         }
     }
-
     .content-layout {
         display: flex;
         flex-direction: column;
         height: 100%;
-
         /* New Loan Area */
         .new-loan-area {
             border: 1px solid green;
@@ -33,14 +31,13 @@ page-wallet-loan {
                 vertical-align: middle;
             }
         }
-
         /* Collateral Loan Area */
         .collateral-loan-area {
             border: 1px solid red;
             display: flex;
             flex-wrap: wrap;
-            justify-content: start;
-            width: 100%;
+            justify-content: space-around;
+            width: 99%;
             min-height: 21%;
             overflow-y: auto;
             padding-top: 3px;
@@ -58,12 +55,8 @@ page-wallet-loan {
                     margin-left: 5px;
                     flex-basis: 20%;
                 }
-                .collateral {
-                    margin-left: 5px;
-                }
             }
         }
-
         /* Loan Status Area */
         .loan-status-area {
             border: 1px solid blue;
@@ -89,121 +82,22 @@ page-wallet-loan {
                 width: 100%;
                 justify-content: space-between;
             }
-
             .scroll-content {
                 overflow: scroll;
                 margin-top: 0px !important;
                 margin-bottom: 0px !important;
             }
         }
-
         /* Loan History Area */
         .loan-history-area {
             border: 1px solid yellow;
-            padding-top: 3px;
-
             .loan-history-header {
-                font-size: 4.2vw;
-                text-align: right;
+                button {
+                    font-size: 4.2vw;
+                    float: right;
+                }
+
             }
         }
     }
-
-
-
-
-
-
-
-    /*
-    .fixed-content {
-        z-index: 2;
-        pointer-events: none;
-        * {
-            //pointer-events: none;
-        }
-        .scroll-content {
-            margin-top: 0 !important;
-            margin-bottom: 0 !important;
-            pointer-events: auto;
-        }
-        .loan-fixed {
-            width: 100%;
-            height: 100%;
-            button {
-                width: 100%;
-                height: 100%;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-            }
-            .loan-fixed-header {
-                display: flex;
-                justify-content: center;
-
-                .btn-new-loan {
-                    width: 70%;
-                    margin: 20px 0 15px;
-                    background-color: #806035;
-                    border-radius: 1rem;
-                }
-                .btn-new-loan span {
-                    display: inline-block;
-                    color: #fafafa;
-                    font-size: 1.8rem;
-                }
-                .btn-new-loan span img {
-                    max-height: 24px;
-                    margin-right: 5px;
-                    vertical-align: middle;
-                }
-            }
-            .dock {
-                font-size: 3.2vw;
-                width: 100%;
-                height: 14em;
-                .scroll-content {
-                    margin-top: 0 !important;
-                    margin-bottom: 0 !important;
-                    padding: 0 16px;
-                }
-                .collateral {
-                    float: left;
-                    width: 30%;
-                    font-size: 3.2vw;
-                    color: #fcfcfc;
-                    font-weight: 600;
-                    height: 5.5em;
-                    margin: 0.5em 1.5% 0.5em 1.5%;
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    border-radius: 1rem;
-                }
-            }
-            .loan-column {
-                display: flex;
-                justify-content: space-between;
-                padding: 0 2rem 0 2rem;
-            }
-            .loan-fixed-footer {
-                pointer-events: auto;
-            }
-        }
-    }
-    .no-scroll {
-        .scroll-content {
-            font-size: 3.2vw;
-            overflow: hidden;
-            pointer-events: auto;
-        }
-    }
-
-    .loan-item {
-        ion-label {
-            display: flex;
-            justify-content: space-between;
-        }
-    }
-    */
 }
