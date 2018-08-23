@@ -1,15 +1,15 @@
-import { Animate } from '../../../../directives/animate/animate';
-import { Component, Input, QueryList, SimpleChanges, ViewChildren } from '@angular/core';
+import { AnimateDirective } from '../../../../directives/animate/animate';
+import { Component, Input, QueryList, SimpleChanges, ViewChildren, OnChanges } from '@angular/core';
 
 @Component({
     selector: 'pin-dots',
     templateUrl: 'pin-dots.html',
 })
-export class PinDots {
+export class PinDotsComponent implements OnChanges {
     public dotArray = new Array(4);
 
     @Input() pin: string;
-    @ViewChildren(Animate) dots: QueryList<Animate>;
+    @ViewChildren(AnimateDirective) dots: QueryList<AnimateDirective>;
 
     ngOnChanges(changes: SimpleChanges) {
         const pinChanges = changes.pin;

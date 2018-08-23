@@ -5,15 +5,15 @@ import { NWalletPipesModule } from '../pipes/pipes.module';
 import { CreateAccountPage } from './1.account/createaccount';
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
-import { TutorialPage } from './etc.tutorial/tutorial';
+import { TutorialPage } from './0.tutorial/tutorial';
 import { EntrancePage } from './0.entrance/entrance';
 import { ImportAccountPage } from './1.account/importaccount';
 import { FingerprintModalPage } from './1.security/fingerprint/fingerprint';
-import { PinPad } from './1.security/pin/pin-pad/pin-pad';
-import { PinDots } from './1.security/pin/pin-dot/pin-dots';
+import { PinPadComponent } from './1.security/pin/pin-pad/pin-pad';
+import { PinDotsComponent } from './1.security/pin/pin-dot/pin-dots';
 import { PinModalPage } from './1.security/pin/pin';
 import { NWalletSharedModule } from '../shared/shared.module';
-import { NWalletTabPages } from './tab/tabcontainer';
+import { NWalletTabPages } from './0.tab/0.container/tabcontainer';
 import { NWalletComponents } from '../components/components.module';
 
 
@@ -24,8 +24,8 @@ import { NWalletComponents } from '../components/components.module';
         CreateAccountPage,
         ImportAccountPage,
         FingerprintModalPage,
-        PinDots,
-        PinPad,
+        PinDotsComponent,
+        PinPadComponent,
         PinModalPage,
         ...NWalletTabPages,
         ...NWalletComponents
@@ -39,10 +39,10 @@ import { NWalletComponents } from '../components/components.module';
         IonicPageModule.forChild(CreateAccountPage),
         IonicPageModule.forChild(ImportAccountPage),
         IonicPageModule.forChild(FingerprintModalPage),
-        IonicPageModule.forChild(PinDots),
-        IonicPageModule.forChild(PinPad),
+        IonicPageModule.forChild(PinDotsComponent),
+        IonicPageModule.forChild(PinPadComponent),
         IonicPageModule.forChild(PinModalPage),
-        //IonicPageModule.forChild(NWalletTabPages),
+        // IonicPageModule.forChild(NWalletTabPages),
 
     ],
     entryComponents: [TutorialPage, EntrancePage,  ...NWalletTabPages],

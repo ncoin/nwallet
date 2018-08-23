@@ -11,7 +11,7 @@ export interface PinButton {
     selector: 'pin-pad',
     templateUrl: 'pin-pad.html'
 })
-export class PinPad {
+export class PinPadComponent {
     keystrokeSubject: Subject<string> = new Subject<string>();
     @Output() keystroke: Observable<string> = this.keystrokeSubject.asObservable();
     public buttonRows: PinButton[][] = [

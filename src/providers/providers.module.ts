@@ -6,7 +6,6 @@ import { AppConfigProvider } from './app/app.config';
 import { AccountProvider } from './account/account';
 import { PreferenceProvider } from './common/preference/preference';
 import { NClientProvider } from './nsus/nclient';
-import { CurrencyProvider } from './currency/currency';
 import { LockProvider } from './common/lock/lock';
 import { PlatformProvider } from './common/platform/platform';
 import { EventProvider } from './common/event/event';
@@ -19,7 +18,6 @@ import { EventProvider } from './common/event/event';
         AccountProvider,
         AppServiceProvider,
         AppConfigProvider,
-        CurrencyProvider,
         PlatformProvider,
         LockProvider,
         TokenProvider,

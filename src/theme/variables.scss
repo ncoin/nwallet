@@ -22,14 +22,43 @@ $headings-font-weight: 300;
 // to match your app's branding. Ionic uses a Sass map of
 // colors so you can add, rename and remove colors as needed.
 // The "primary" color is the only required color in the map.
-$color-primary: #647ce8;
+
+$color-primary: #fff;
+$color-secondary: #9f9f9f;
+$color-secondary-light: #c0bfbf;
+$color-secondary-dark: #7e7e7e;
+$color-title: #fff5df;
+$color-title-second: #ded1b6;
+
+$color-danger: #cc0e28;
+
+$color-bar-button-default: #97866f;
+
+$color-title-background-root: #352e26;
+$color-title-background-sub: #49413a;
+$color-title-border-root: #5c5042;
+$color-title-border-sub: #352f29;
+$color-title-border-active: #777777;
+$color-title-border-status: #8b785f;
+
+$color-content-background-primary: #373432;
+$color-content-border: #484441;
+
+$icon-border-radius: 50%;
+$txp-icon-border-radius: 2rem;
+$toolbar-background: #2a3f90;
+$toolbar-scanner: rgba(30, 49, 134, 0.8);
+$text-color : $color-primary;
 $colors: (
+    primary: $color-primary,
+    secondary: $color-secondary,
+    light: $color-secondary-light,
+    dark: $color-secondary-dark,
+    title: $color-title,
+    title-second: $color-title-second,
+    danger: $color-danger,
+
     blank: #488aff,
-    primary: #488aff,
-    secondary: #32db64,
-    danger: #f53d3d,
-    light: #f4f4f4,
-    dark: #222,
     light-grey: #aaaaaa,
     favorite: #69BB7B,
     twitter: #1da1f4,
@@ -37,14 +66,6 @@ $colors: (
     vimeo: #23b6ea,
     facebook: #3b5998
 );
-
-$color-primary: #647ce8;
-$color-secondary: #1a3a8b;
-$color-secondary-dark: #111b49;
-$icon-border-radius: 50%;
-$txp-icon-border-radius: 2rem;
-$toolbar-background: #2a3f90;
-$toolbar-scanner: rgba(30, 49, 134, 0.8);
 
 // App iOS Variables
 // --------------------------------------------------
@@ -79,37 +100,37 @@ $toolbar-md-active-color: #fff;
 @import "noto-sans";
 
 
+// font awesome
+$fa-font-path: $font-path;
+@import "font-awesome";
+
+
 // Overriding Ionic Sass Variables
 // START
 
+// Global
 $background-color: transparent;
+$content-ios-transition-background: $background-color;
 
-$tabs-tab-min-height: 80px;
+// Toolbar
+$toolbar-padding: 0;
+$toolbar-ios-padding: $toolbar-padding;
+$toolbar-md-padding: $toolbar-padding;
+$toolbar-wp-padding: $toolbar-padding;
+
+$toolbar-background: transparent;
+$toolbar-md-background: $toolbar-background;
+
+// Tab
+$tabs-tab-min-height: 70px;
 $tabs-ios-tab-min-height: $tabs-tab-min-height;
 $tabs-md-tab-min-height: $tabs-tab-min-height;
 $tabs-wp-tab-min-height: $tabs-tab-min-height;
 
+$tabs-tab-color-active: transparent;
+$tabs-tab-color-inactive: transparent;
+
 $tabs-tab-padding: 0;
-$tabs-ios-tab-padding: $tabs-tab-padding;
-$tabs-ios-tab-padding-bottom: $tabs-tab-padding;
-$tabs-ios-tab-padding-end: $tabs-tab-padding;
-$tabs-ios-tab-padding-start: $tabs-tab-padding;
-$tabs-ios-tab-padding-top: $tabs-tab-padding;
-$tabs-md-tab-padding: $tabs-tab-padding;
-$tabs-md-tab-padding-active: $tabs-tab-padding;
-$tabs-md-tab-padding-active-bottom: $tabs-tab-padding;
-$tabs-md-tab-padding-active-end: $tabs-tab-padding;
-$tabs-md-tab-padding-active-start: $tabs-tab-padding;
-$tabs-md-tab-padding-active-top: $tabs-tab-padding;
-$tabs-md-tab-padding-bottom: $tabs-tab-padding;
-$tabs-md-tab-padding-end: $tabs-tab-padding;
-$tabs-md-tab-padding-start: $tabs-tab-padding;
-$tabs-md-tab-padding-top: $tabs-tab-padding;
-$tabs-wp-tab-padding: $tabs-tab-padding;
-$tabs-wp-tab-padding-bottom: $tabs-tab-padding;
-$tabs-wp-tab-padding-end: $tabs-tab-padding;
-$tabs-wp-tab-padding-start: $tabs-tab-padding;
-$tabs-wp-tab-padding-top: $tabs-tab-padding;
 
 $tabs-border-color: transparent;
 $tabs-ios-border-color: transparent;
@@ -118,5 +139,51 @@ $tabs-wp-border-color: transparent;
 $tabs-wp-tab-border: 0;
 
 $tabs-background: transparent url("../assets/img/tabs_bg.png") repeat-x bottom;
+
+$tabs-md-tab-icon-transform-y-active: 0;
+
+// card
+$card-ios-background-color: $background-color;
+$card-ios-box-shadow: none;
+$card-ios-box-shadow-color: $background-color;
+
+$card-md-background-color: $background-color;
+$card-md-box-shadow: none;
+$card-md-box-shadow-color: $background-color;
+
+$card-wp-background-color: $background-color;
+$card-wp-box-shadow: none;
+$card-wp-box-shadow-color: $background-color;
+
+// buttons
+$basic-button-radius: 0.5rem;
+$basic-button-default-background: #49413a;
+$basic-button-default-shadow: rgba(255, 255, 255, 0.2);
+
+
+// select
+$select-wp-border-width: 0;
+$select-wp-margin: 0;
+$select-wp-margin-bottom: $select-wp-margin;
+$select-wp-margin-end: $select-wp-margin;
+$select-wp-margin-left: $select-wp-margin;
+$select-wp-margin-right: $select-wp-margin;
+$select-wp-margin-start: $select-wp-margin;
+$select-wp-margin-top: $select-wp-margin;
+
+
+// popover
+$popover-background: #8b785f;
+$popover-radius: 10px;
+$popover-border-color: rgba(217, 189, 145, 0.8);
+
+$popover-ios-background: $popover-background;
+$popover-md-background: $popover-background;
+$popover-wp-background: $popover-background;
+$popover-ios-border-radius: $popover-radius;
+$popover-md-border-radius: $popover-radius;
+$popover-wp-border-radius: $popover-radius;
+
+
 
 // END

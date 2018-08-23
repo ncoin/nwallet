@@ -1,24 +1,27 @@
+import { Subscription } from 'rxjs/Subscription';
 import { EventTypes } from '../interfaces/events';
 import { EventProvider } from '../providers/common/event/event';
 import { AppServiceProvider } from '../providers/app/app.service';
-import { TabcontainerPage } from '../pages/tab/tabcontainer';
+import { TabcontainerPage } from '../pages/0.tab/0.container/tabcontainer';
 import { AccountProvider } from '../providers/account/account';
 import { LockProvider } from '../providers/common/lock/lock';
-import { Subscription } from 'rxjs';
+
 import { Logger } from '../providers/common/logger/logger';
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, OnDestroy } from '@angular/core';
 
 import { Nav, Platform } from 'ionic-angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
+import { StatusBar } from '@ionic-native/status-bar';
 
 import { EntrancePage } from '../pages/0.entrance/entrance';
-import { TutorialPage } from '../pages/etc.tutorial/tutorial';
+import { TutorialPage } from '../pages/0.tutorial/tutorial';
 import { AppConfigProvider } from '../providers/app/app.config';
 
 @Component({
     templateUrl: 'app.template.html',
 })
-export class NWalletApp {
+// tslint:disable-next-line:component-class-suffix
+export class NWalletApp implements OnDestroy {
     // the root nav is a child of the root app component
     // @ViewChild(Nav) gets a reference to the app's root nav
     @ViewChild(Nav) nav: Nav;
@@ -30,6 +33,7 @@ export class NWalletApp {
     constructor(
         public platform: Platform,
         private splashScreen: SplashScreen,
+        private statusBar: StatusBar,
         private logger: Logger,
         private lock: LockProvider,
         private account: AccountProvider,
@@ -44,6 +48,10 @@ export class NWalletApp {
         this.platform
             .ready()
             .then(() => {
+                this.statusBar.overlaysWebView(false);
+                this.statusBar.backgroundColorByHexString('#000');
+                this.statusBar.styleLightContent();
+
                 this.logger.debug('[app-page] prepare platform');
                 this.onPlatformReady();
             })
@@ -54,16 +62,13 @@ export class NWalletApp {
 
     private async onPlatformReady(): Promise<void> {
         this.subscribeEvents();
-
-        await this.appConfig.loadAll();
-        await this.preparePage();
+        await Promise.all([this.appConfig.loadAll(), this.preparePage()]);
         this.prepareSecurity();
-        this.logger.debug('[app-page] platform ready now');
+        this.logger.debug('[app-page] platform on ready');
         this.splashScreen.hide();
     }
 
     private subscribeEvents(): void {
-
         this.event.subscribe(EventTypes.App.user_login, () => {
             this.rootPage = TabcontainerPage;
         });
@@ -75,9 +80,8 @@ export class NWalletApp {
     private async preparePage(): Promise<void> {
         const account = await this.account.getAccount();
         if (account) {
-            this.logger.debug('[app-page] prepare wallet page');
+            this.logger.debug('[app-page] prepare wallet page (login)');
             await this.appService.login(account);
-            this.logger.debug('[app-page] login');
         } else {
             this.logger.debug('[app-page] prepare entrance page');
             this.rootPage = EntrancePage;
@@ -92,6 +96,7 @@ export class NWalletApp {
     }
 
     private prepareSecurity(): void {
+        // todo persistence --sky`
         this.resumeSubscription = this.platform.resume.subscribe(() => {
             this.lock.tryLockModalOpen();
         });

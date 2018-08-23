@@ -1,0 +1,103 @@
+loan-ncash-tab {
+    /* Layout - Content */
+    .no-scroll-container {
+        .scroll-content {
+            font-size: 3.2vw;
+            overflow: hidden;
+            pointer-events: auto;
+        }
+    }
+    .content-layout {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        /* New Loan Area */
+        .new-loan-area {
+            border: 1px solid green;
+            text-align: center;
+            .new-loan-btn {
+                width: 90%;
+                background-color: #806035;
+                border-radius: 1rem;
+            }
+            .new-loan-btn span {
+                display: inline-block;
+                color: #fafafa;
+                font-size: 1.5rem;
+            }
+            .new-loan-btn span img {
+                max-height: 20px;
+                margin-right: 5px;
+                vertical-align: middle;
+            }
+        }
+        /* Collateral Loan Area */
+        .collateral-loan-area {
+            border: 1px solid red;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            width: 99%;
+            min-height: 21%;
+            overflow-y: auto;
+            padding-top: 3px;
+            padding-bottom: 3px;
+            .collateral-loan-group {
+                display: flex;
+                flex-basis: 29%;
+                padding: 5px;
+                color: #0f0f0f;
+                background-color: #eeeeee;
+                border-radius: 5px;
+                margin: 6px;
+                align-items: center;
+                .collateral-icon {
+                    margin-left: 5px;
+                    flex-basis: 20%;
+                }
+            }
+        }
+        /* Loan Status Area */
+        .loan-status-area {
+            border: 1px solid blue;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            padding-top: 5px;
+            .loan-status-header {
+                font-size: 4.2vw;
+                padding: 5px 0px 5px 0px;
+            }
+            .loan-status-column {
+                font-size: 3.5vw;
+                display: flex;
+                text-align: center;
+                width: 100%;
+                justify-content: space-between;
+            }
+            .loan-status-item {
+                font-size: 3.5vw;
+                display: flex;
+                text-align: right;
+                width: 100%;
+                justify-content: space-between;
+            }
+            .scroll-content {
+                overflow: scroll;
+                margin-top: 0px !important;
+                margin-bottom: 0px !important;
+            }
+        }
+        /* Loan History Area */
+        .loan-history-area {
+            border: 1px solid yellow;
+            .loan-history-header {
+                button {
+                    font-size: 4.2vw;
+                    float: right;
+                }
+
+            }
+        }
+    }
+}

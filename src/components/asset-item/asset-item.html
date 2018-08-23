@@ -1,12 +1,47 @@
-<ion-card>
-    <ion-card-content>
-        <button ion-item style="text-align: right" >
-            <ion-label text-left>{{asset.item | assetName}}</ion-label>
-            <div item-end>
-                <ion-label>{{asset | assetFormat}}</ion-label>
-                <ion-label>{{asset | assetToUSD}}</ion-label>
-            </div>
-        </button>
-        <ng-content></ng-content>
-    </ion-card-content>
-</ion-card>
+<ng-template #native>{{asset.item.asset.code | translate}}</ng-template>
+<ng-template #notnative>{{asset.item.asset.code}}</ng-template>
+<!--<ion-card>-->
+    <!--<ion-card-content>-->
+        <!--<button ion-item detail-none text-right>-->
+            <!--<ion-label text-left *ngIf="asset.item.isNative;then native; else notnative"></ion-label>-->
+            <!--<div item-end>-->
+                <!--<ion-label>{{asset | assetFormat}}</ion-label>-->
+                <!--<ion-label>{{asset | assetToUSD}}</ion-label>-->
+            <!--</div>-->
+        <!--</button>-->
+        <!--<ng-content></ng-content>-->
+    <!--</ion-card-content>-->
+<!--</ion-card>-->
+
+<div class="card">
+    <ion-grid no-padding class="inner-line">
+        <ion-row class="inner-line-content">
+            <ion-col col-auto class="asset-info">
+                <span class="asset-symbol"><img src="assets/img/symbol_NCH.png" height="28" /></span>
+                <span class="asset-name"><span *ngIf="asset.item.isNative;then native; else notnative"></span></span>
+            </ion-col>
+            <ion-col class="price-info">
+                <ion-row>
+                    <ion-col class="price-asset" no-padding col-12 text-right>{{asset | assetFormat}}</ion-col>
+                </ion-row>
+                <ion-row>
+                    <ion-col class="price-usd" no-padding col-12 text-right>{{asset | assetToUSD}}</ion-col>
+                </ion-row>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+</div>
+<div>
+    <ion-grid no-padding>
+        <ion-row class="holder" *ngIf="asset.item.asset.code!='NCH'">
+            <ion-col col-12>
+                <img src="assets/img/wallet_card_holder.png" />
+            </ion-col>
+        </ion-row>
+        <ion-row class="holder" *ngIf="asset.item.asset.code=='NCH'">
+            <ion-col col-12>
+                <img src="assets/img/wallet_ncash_holder.png" />
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+</div>

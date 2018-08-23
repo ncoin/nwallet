@@ -18,5 +18,7 @@
   "Buying": "Buying",
   "Paying": "Paying",
   "Transfer": "Transfer",
-  "CurrentLanguage": "Русский"
+  "CurrentLanguage": "Русский",
+  "Language": "Language",
+  "BuyWith": "Buy with"
 }

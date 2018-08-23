@@ -3,16 +3,11 @@ import { NWalletSharedModule } from '../shared/shared.module';
 import { env } from '../environments/environment';
 import { NWalletPageModule } from '../pages/pages.module';
 import { NgModule, ErrorHandler, enableProdMode } from '@angular/core';
-
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
-
 import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { SplashScreen } from '@ionic-native/splash-screen';
-
 import { IonicStorageModule } from '@ionic/storage';
-
 import { NWalletApp } from './app.component';
-
 import { NWalletProvidersModule } from '../providers/providers.module';
 import { FingerprintAIO } from '@ionic-native/fingerprint-aio';
 import { StatusBar } from '@ionic-native/status-bar';
@@ -52,7 +47,7 @@ BootStrap();
                     //     segment: 'wallet'
                     // }
                 ],
-            },
+            }
         ),
     ],
     bootstrap: [IonicApp],
@@ -67,10 +62,10 @@ function BootStrap() {
     }
 
     if (env.network === 'test') {
-        //todo move location
+        // todo move location
         Stellar.Network.useTestNetwork();
     } else {
-        //todo move location
+        // todo move location
         Stellar.Network.usePublicNetwork();
     }
 }

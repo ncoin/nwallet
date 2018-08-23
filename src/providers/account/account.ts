@@ -14,8 +14,6 @@ export class AccountProvider {
     }
 
     private async init(): Promise<void> {
-        this.event;
-        this.logger;
         this.account = await this.preference.get(Preference.Nwallet.walletAccount);
     }
 
@@ -34,10 +32,29 @@ export class AccountProvider {
         return this.account;
     }
 
-    public getNativeWallet(): NWallet.AssetContext {
+    public getId(): string {
+        return this.account.signature.public;
+    }
+
+
+
+    // todo decoration --sky`
+    private checkAccount(): void {
         if (!this.account) {
             throw new Error('[account] account not exist!');
         }
+    }
+
+    // public getAsset(): NWallet.AssetContext {
+    //     this.checkAccount();
+
+    //     return this.account.wallets.find(wallet => {
+    //         return wallet.item.asset.isNative() === true;
+    //     });
+    // }
+
+    public getNativeWallet(): NWallet.AssetContext {
+        this.checkAccount();
 
         return this.account.wallets.find(wallet => {
             return wallet.item.asset.isNative() === true;

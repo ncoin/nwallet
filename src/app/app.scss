@@ -72,6 +72,7 @@
 /* layout */
 body {
     background: $background-color;
+    min-width: 320px;
 }
 ion-app {
     background: url('../assets/img/bg.png') no-repeat top center;
@@ -84,12 +85,473 @@ ion-app {
 // Headers
 ion-header {
     background: $background-color url('../assets/img/headers_bg.png') no-repeat bottom center;
+    background-size: cover;
+    height: 80px;
+    max-height: 80px;
+    overflow: hidden;
 }
+ion-header ion-navbar,
 ion-header ion-title {
     text-align: center;
 }
+ion-header ion-navbar img,
 ion-header ion-title img {
+    min-width: 290px;
+    height: 80px;
     max-width: 100%;
-    min-height: 60px;
+    max-height: 80px;
+}
+ion-header.header-ios {
+    padding-top: 0;
+}
+ion-header ion-navbar.nwallet-start {
+    background: $background-color url('../assets/img/title_nwallet.png') no-repeat center center;
+    background-size: contain;
+    min-width: 290px;
+    height: 80px !important;
+    max-width: 100%;
+    max-height: 80px;
+}
+
+// Tabs
+ion-tabs[name=conference] .tabbar .tab-button {
+    padding: 0;
+}
+ion-tabs[name=conference] .tabbar a.tab-button:hover{
+    opacity: 1;
+}
+.tab-button .tab-button-icon.icon{
+    padding: 0;
+    margin: 0;
+}
+.tabs-ios[tabsLayout=title-hide] .tab-button, .tabs-ios .tab-button.icon-only{
+    min-height: $tabs-tab-min-height;
+}
+ion-tabs[name=conference] .tabbar a.tab-button:nth-child(3){
+    overflow: visible;
+    min-width: 102px !important;
+}
+ion-tabs[name=conference] .tabbar a.tab-button:first-child,
+ion-tabs[name=conference] .tabbar a.tab-button:nth-child(2),
+ion-tabs[name=conference] .tabbar a.tab-button:nth-child(4),
+ion-tabs[name=conference] .tabbar a.tab-button:nth-child(5){
+    min-width: 44px !important;
+}
+.ion-ios-nwallet-home,
+.ion-ios-nwallet-home-outline,
+.ion-md-nwallet-home {
+    position: absolute;
+    top: -10px;
+    width: 102px !important;
+    height: 79px !important;
+    background: $background-color url('../assets/img/tabs_icons_wallet_off.png') no-repeat;
+    background-size: cover;
+}
+.ion-ios-nwallet-transfer,
+.ion-ios-nwallet-transfer-outline,
+.ion-md-nwallet-transfer {
+    width: 40px !important;
+    height: 40px !important;
+    background: $background-color url('../assets/img/tabs_icons_transfer_off.png') no-repeat;
+    background-size: cover;
+}
+.ion-ios-nwallet-buy,
+.ion-ios-nwallet-buy-outline,
+.ion-md-nwallet-buy {
+    width: 44px !important;
+    height: 48px !important;
+    background: $background-color url('../assets/img/tabs_icons_buy_off.png') no-repeat;
+    background-size: cover;
+}
+.ion-ios-nwallet-loan,
+.ion-ios-nwallet-loan-outline,
+.ion-md-nwallet-loan {
+    width: 44px !important;
+    height: 40px !important;
+    background: $background-color url('../assets/img/tabs_icons_loan_off.png') no-repeat;
+    background-size: cover;
+}
+.ion-ios-nwallet-account,
+.ion-ios-nwallet-account-outline,
+.ion-md-nwallet-account {
+    width: 39px !important;
+    height: 40px !important;
+    background: $background-color url('../assets/img/tabs_icons_account_off.png') no-repeat;
+    background-size: cover;
+}
+
+ion-tabs[name=conference] .tabbar a.tab-button:first-child[aria-selected=true],
+ion-tabs[name=conference] .tabbar a.tab-button:nth-child(2)[aria-selected=true],
+ion-tabs[name=conference] .tabbar a.tab-button:nth-child(4)[aria-selected=true],
+ion-tabs[name=conference] .tabbar a.tab-button:nth-child(5)[aria-selected=true] {
+    background: rgba(0, 0, 0, 0.5);
+}
+ion-tabs[name=conference] .tabbar a.tab-button:nth-child(3)[aria-selected=true] .ion-ios-nwallet-home,
+ion-tabs[name=conference] .tabbar a.tab-button:nth-child(3)[aria-selected=true] .ion-ios-nwallet-home-outline,
+ion-tabs[name=conference] .tabbar a.tab-button:nth-child(3)[aria-selected=true] .ion-md-nwallet-home {
+    position: absolute;
+    top: -10px;
+    width: 102px !important;
+    height: 79px !important;
+    background: $background-color url('../assets/img/tabs_icons_wallet_on.png') no-repeat;
+    background-size: cover;
+}
+ion-tabs[name=conference] .tabbar a.tab-button:first-child[aria-selected=true] .ion-ios-nwallet-transfer,
+ion-tabs[name=conference] .tabbar a.tab-button:first-child[aria-selected=true] .ion-ios-nwallet-transfer-outline,
+ion-tabs[name=conference] .tabbar a.tab-button:first-child[aria-selected=true] .ion-md-nwallet-transfer {
+    width: 40px !important;
+    height: 40px !important;
+    background: $background-color url('../assets/img/tabs_icons_transfer_on.png') no-repeat;
+    background-size: cover;
+}
+ion-tabs[name=conference] .tabbar a.tab-button:nth-child(2)[aria-selected=true] .ion-ios-nwallet-buy,
+ion-tabs[name=conference] .tabbar a.tab-button:nth-child(2)[aria-selected=true] .ion-ios-nwallet-buy-outline,
+ion-tabs[name=conference] .tabbar a.tab-button:nth-child(2)[aria-selected=true] .ion-md-nwallet-buy {
+    width: 44px !important;
+    height: 48px !important;
+    background: $background-color url('../assets/img/tabs_icons_buy_on.png') no-repeat;
+    background-size: cover;
+}
+ion-tabs[name=conference] .tabbar a.tab-button:nth-child(4)[aria-selected=true] .ion-ios-nwallet-loan,
+ion-tabs[name=conference] .tabbar a.tab-button:nth-child(4)[aria-selected=true] .ion-ios-nwallet-loan-outline,
+ion-tabs[name=conference] .tabbar a.tab-button:nth-child(4)[aria-selected=true] .ion-md-nwallet-loan {
+    width: 44px !important;
+    height: 40px !important;
+    background: $background-color url('../assets/img/tabs_icons_loan_on.png') no-repeat;
+    background-size: cover;
+}
+ion-tabs[name=conference] .tabbar a.tab-button:nth-child(5)[aria-selected=true] .ion-ios-nwallet-account,
+ion-tabs[name=conference] .tabbar a.tab-button:nth-child(5)[aria-selected=true] .ion-ios-nwallet-account-outline,
+ion-tabs[name=conference] .tabbar a.tab-button:nth-child(5)[aria-selected=true] .ion-md-nwallet-account {
+    width: 39px !important;
+    height: 40px !important;
+    background: $background-color url('../assets/img/tabs_icons_account_on.png') no-repeat;
+    background-size: cover;
+}
+
+
+// paging bullet
+.swiper-pagination-bullet{
+    background: #fff;
+    opacity: 0.3;
+}
+.swiper-pagination-bullet-active {
+    background: #fff;
+    opacity: 1;
+}
+
+
+// buttons
+.btn {
+    border: 0;
+    -webkit-border-radius: $basic-button-radius;
+    -moz-border-radius: $basic-button-radius;
+    border-radius: $basic-button-radius;
+    margin-bottom: 10px;
+}
+.btn.default {
+    background: $basic-button-default-background;
+    -webkit-box-shadow: $basic-button-default-shadow 0 1px 0 inset;
+    -moz-box-shadow: $basic-button-default-shadow 0 1px 0 inset;
+    box-shadow: $basic-button-default-shadow 0 1px 0 inset;
+}
+.btn.default h3,
+.btn.default ion-label,
+.btn.default span {
+    color: #d8d5d1;
+    font-weight: 500;
+}
+
+
+// ionic buttons
+.bar-button-default-ios,
+.bar-button-default.bar-button-ios-default,
+.bar-button-clear-ios-default,
+.bar-button-default-md,
+.bar-button-clear-md-default,
+.bar-button-md-default,
+.bar-button-default-wp,
+.bar-button-clear-wp-default,
+.bar-button-wp-default {
+    color: $color-bar-button-default;
+    position: absolute;
+    left: 5px;
+}
+
+
+// ios list
+.list-ios > .item-block:first-child {
+    border-top: 0;
+}
+.list-ios > .item-block:last-child,
+.list-ios > .item-wrapper:last-child .item-block {
+    border-bottom: 0;
+}
+
+.list-md[inset] .item:first-child,
+.list-wp[inset] .item:first-child,
+.list-mp[inset] .item:last-child,
+.list-wp[inset] .item:last-child {
+    -webkit-border-radius: $basic-button-radius;
+    -moz-border-radius: $basic-button-radius;
+    border-radius: $basic-button-radius;
+}
+
+
+// toolbar
+.toolbar-title-wp,
+.toolbar-title-md{
+    padding: 0;
+}
+
+
+// item block
+.item-ios,
+.item-md,
+.item-wp {
+    background: transparent;
+}
+.item-ios.item-block .item-inner,
+.item-md.item-block .item-inner,
+.item-wp.item-block .item-inner {
+    border: 0;
+}
+
+
+// form element
+.text-input {
+    border-left: 0;
+    border-right: 0;
+    border-top: 0;
+    border-bottom: #f6f6f6 1px solid;
+    background: -webkit-linear-gradient(0deg, #ddddde 0, #eae7e2 100%);
+    background: -moz-linear-gradient(90deg, #ddddde 0, #eae7e2 100%);
+    background: linear-gradient(90deg, #ddddde 0, #eae7e2 100%);
+    color: color($colors, dark);
+}
+.text-input-ios,
+.text-input-md,
+.text-input-wp {
+    padding: 4px 8px;
+}
+
+.item-input-has-focus .label-md[stacked],
+.input-has-focus .label-md[stacked],
+.item-input-has-focus .label-md[floating],
+.input-has-focus .label-md[floating],
+.item-input-has-focus .label-wp[stacked],
+.input-has-focus .label-wp[stacked],
+.item-input-has-focus .label-wp[floating],
+.input-has-focus .label-wp[floating] {
+    color: color($colors, title-second);
+}
+
+.item-md.item-input.item-input-has-focus .item-inner,
+.item-md.item-input.input-has-focus .item-inner,
+.item-md.item-input.ng-invalid.ng-touched:not(.input-has-focus):not(.item-input-has-focus) .item-inner,
+.list-md .item-input.item-input-has-focus:last-child,
+.list-md .item-input.input-has-focus:last-child,
+.list-md .item-input.item-input-has-focus:last-child .item-inner,
+.list-md .item-input.input-has-focus:last-child .item-inner,
+.item-md.item-input.ng-valid.item-input-has-value:not(.input-has-focus):not(.item-input-has-focus) .item-inner,
+.item-md.item-input.ng-valid.input-has-value:not(.input-has-focus):not(.item-input-has-focus) .item-inner,
+.list-md .item-input.ng-valid.item-input-has-value:not(.input-has-focus):not(.item-input-has-focus):last-child,
+.list-md .item-input.ng-valid.input-has-value:not(.input-has-focus):not(.item-input-has-focus):last-child,
+.list-md .item-input.ng-valid.item-input-has-value:not(.input-has-focus):not(.item-input-has-focus):last-child .item-inner,
+.list-md .item-input.ng-valid.input-has-value:not(.input-has-focus):not(.item-input-has-focus):last-child .item-inner,
+.item-ios.item-input.ng-invalid.ng-touched:not(.input-has-focus):not(.item-input-has-focus) .item-inner,
+.item-md.item-input.ng-invalid.ng-touched:not(.input-has-focus):not(.item-input-has-focus) .item-inner,
+.item-wp.item-input.ng-invalid.ng-touched:not(.input-has-focus):not(.item-input-has-focus) .item-inner,
+.list-ios .item-input.ng-invalid.ng-touched:not(.input-has-focus):not(.item-input-has-focus):last-child,
+.list-md .item-input.ng-invalid.ng-touched:not(.input-has-focus):not(.item-input-has-focus):last-child,
+.list-wp .item-input.ng-invalid.ng-touched:not(.input-has-focus):not(.item-input-has-focus):last-child,
+.list-ios .item-input.ng-invalid.ng-touched:not(.input-has-focus):not(.item-input-has-focus):last-child .item-inner,
+.list-md .item-input.ng-invalid.ng-touched:not(.input-has-focus):not(.item-input-has-focus):last-child .item-inner,
+.list-wp .item-input.ng-invalid.ng-touched:not(.input-has-focus):not(.item-input-has-focus):last-child .item-inner {
+    border-bottom: 0;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+
+.item-ios.item-input.item-input-has-focus .text-input,
+.item-ios.item-input.input-has-focus .text-input,
+.item-md.item-input.item-input-has-focus .text-input,
+.item-md.item-input.input-has-focus .text-input,
+.item-wp.item-input.item-input-has-focus .text-input,
+.item-wp.item-input.input-has-focus .text-input {
+    border-color: #fff;
+}
+
+.item-ios.item-input.ng-valid.item-input-has-value:not(.input-has-focus):not(.item-input-has-focus) .text-input,
+.item-ios.item-input.ng-valid.input-has-value:not(.input-has-focus):not(.item-input-has-focus) .text-input,
+.item-md.item-input.ng-valid.item-input-has-value:not(.input-has-focus):not(.item-input-has-focus) .text-input,
+.item-md.item-input.ng-valid.input-has-value:not(.input-has-focus):not(.item-input-has-focus) .text-input,
+.item-wp.item-input.ng-valid.item-input-has-value:not(.input-has-focus):not(.item-input-has-focus) .text-input,
+.item-wp.item-input.ng-valid.input-has-value:not(.input-has-focus):not(.item-input-has-focus) .text-input {
+    border-color: #32db64;
+}
+.item-ios.item-input.ng-invalid.ng-touched:not(.input-has-focus):not(.item-input-has-focus) .text-input,
+.item-md.item-input.ng-invalid.ng-touched:not(.input-has-focus):not(.item-input-has-focus) .text-input,
+.item-wp.item-input.ng-invalid.ng-touched:not(.input-has-focus):not(.item-input-has-focus) .text-input {
+    border-color: color($colors, danger);
+}
+
+
+// select
+.select-wp.select-language .select-text {
+    text-align: right;
+}
+.select-ios.select-language .select-icon .select-icon-inner,
+.select-md.select-language .select-icon .select-icon-inner {
+    color: #d8d5d1;
+}
+.select-wp.select-language .select-icon .select-icon-inner {
+    border-color: #d8d5d1;
+}
+
+
+// popover
+.popover-md .popover-content,
+.popover-wp .popover-content {
+    border: 2px solid $popover-border-color;
+}
+
+
+// radio
+.radio-md .radio-icon,
+.radio-wp .radio-icon {
+    border-color: #fff;
+}
+.radio-md .radio-inner,
+.radio-wp .radio-inner {
+    background-color: #fff;
+}
+
+
+// toggle
+$toggle-border-radius: 50%;
+
+$toggle-icon-shadow: rgba(255, 255, 255, 0.2) 0 0 1px 0px;
+$toggle-inner-shadow: rgba(0, 0, 0, 0.4) 1px 2px 2px inset;
+$toggle-inner-out-shadow: rgba(0, 0, 0, 0.23) 0 0 3px 1px;
+$toggle-inner-background: #27211d;
+
+$toggle-circle-1st: #f4e8a8;
+$toggle-circle-2nd: #615a47;
+$toggle-circle-3rd: #49331e;
+$toggle-circle-4th: #91876a;
+
+$toggle-icon-background-off: rgba(255, 255, 255, 0.5);
+$toggle-icon-background-on: #364231;
+
+.item-ios .toggle-ios,
+.item-md .toggle-md,
+.item-wp .toggle-wp {
+    margin: 0;
+    padding: 6px 8px 5px 16px;
+    height: 24px;
+}
+.item-ios .toggle-ios {
+    width: 43px;
+}
+.item-md .toggle-md {
+    width: 40px;
+}
+.item-wp .toggle-wp {
+    width: 46px;
+}
+
+.toggle-ios .toggle-icon,
+.toggle-md .toggle-icon,
+.toggle-wp .toggle-icon {
+    border: 0;
+    background-color: $toggle-icon-background-off;
+    -webkit-box-shadow: $toggle-inner-shadow, $toggle-icon-shadow;
+    -moz-box-shadow: $toggle-inner-shadow, $toggle-icon-shadow;
+    box-shadow: $toggle-inner-shadow, $toggle-icon-shadow;
+}
+
+.toggle-ios .toggle-icon::before,
+.toggle-md .toggle-icon::before,
+.toggle-pw .toggle-icon::before{
+    content: none;
+}
+
+.toggle-ios .toggle-inner,
+.toggle-md .toggle-inner,
+.toggle-wp .toggle-inner {
+    position: relative;
+    left: 6px;
+    top: 6px;
+    width: 14px;
+    height: 14px;
+    background-color: $toggle-inner-background;
+    border-radius: $toggle-border-radius;
+    -webkit-box-shadow: $toggle-inner-shadow;
+    -moz-box-shadow: $toggle-inner-shadow;
+    box-shadow: $toggle-inner-shadow;
+    contain: initial;
+
+    &:before {
+        position: absolute;
+        content: "";
+        width: 16px;
+        height: 16px;
+        top: -2px;
+        left: -2px;
+        background-color: $toggle-inner-background;
+        border-radius: 50%;
+        z-index: -1;
+    }
+
+    &:after {
+        position: absolute;
+        content: "";
+        width: 20px;
+        height: 20px;
+        top: -4px;
+        left: -4px;
+        border-radius: $toggle-border-radius;
+        background-image: -moz-linear-gradient(
+                right bottom,
+                $toggle-circle-1st 0%,
+                $toggle-circle-2nd 30%,
+                $toggle-circle-3rd 60%,
+                $toggle-circle-4th 100%
+        );
+        background-image: -webkit-linear-gradient(
+                right bottom,
+                $toggle-circle-1st 0%,
+                $toggle-circle-2nd 30%,
+                $toggle-circle-3rd 60%,
+                $toggle-circle-4th 100%
+        );
+        background-image: linear-gradient(
+                to right bottom,
+                $toggle-circle-1st 0%,
+                $toggle-circle-2nd 30%,
+                $toggle-circle-3rd 60%,
+                $toggle-circle-4th 100%
+        );
+        -webkit-box-shadow: $toggle-inner-out-shadow;
+        -moz-box-shadow: $toggle-inner-out-shadow;
+        box-shadow: $toggle-inner-out-shadow;
+        z-index: -2;
+    }
+}
+
+.toggle-ios.toggle-activated .toggle-icon::before,
+.toggle-ios.toggle-checked .toggle-icon::before,
+.toggle-md.toggle-activated .toggle-icon::before,
+.toggle-md.toggle-checked .toggle-icon::before,
+.toggle-wp.toggle-activated .toggle-icon::before,
+.toggle-wp.toggle-checked .toggle-icon::before {
+    content: none;
+}
+
+.toggle-ios.toggle-checked .toggle-icon,
+.toggle-md.toggle-checked .toggle-icon,
+.toggle-wp.toggle-checked .toggle-icon {
+    background-color: $toggle-icon-background-on;
 }
 

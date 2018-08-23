@@ -3,7 +3,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { Vibration } from '@ionic-native/vibration';
 import { NavController, NavParams, Platform, ViewController } from 'ionic-angular';
 
-import { Animate } from '../../../directives/animate/animate';
+import { AnimateDirective } from '../../../directives/animate/animate';
 // import { ConfigProvider } from '../../../providers/config/config';
 // import { PersistenceProvider } from '../../../providers/persistence/persistence';
 // import { Logger } from '../../../providers/common/logger/logger';
@@ -26,7 +26,7 @@ export class PinModalPage {
     public incorrect: boolean;
     public unregister;
 
-    @ViewChild(Animate) pinCode: Animate;
+    @ViewChild(AnimateDirective) pinCode: AnimateDirective;
 
     constructor(
         // private configProvider: ConfigProvider,
@@ -82,18 +82,25 @@ export class PinModalPage {
             clearInterval(this.countDown);
         }
         this.unregister();
-        if (this.action === 'lockSetUp') this.viewCtrl.dismiss(cancelClicked);
-        else this.navCtrl.pop({ animate: true });
+        if (this.action === 'lockSetUp') {
+            this.viewCtrl.dismiss(cancelClicked);
+        } else {
+            this.navCtrl.pop({ animate: true });
+        }
     }
 
     public newEntry(value: string): void {
-        if (this.disableButtons) return;
+        if (this.disableButtons) {
+            return;
+        }
         if (value === 'delete') {
             return this.delete();
         }
         this.incorrect = false;
         this.currentPin = this.currentPin + value;
-        if (!this.isComplete()) return;
+        if (!this.isComplete()) {
+            return;
+        }
         if (this.action === 'checkPin' || this.action === 'lockSetUp') {
             setTimeout(() => {
                 this.checkIfCorrect();
@@ -105,8 +112,9 @@ export class PinModalPage {
                     this.confirmingPin = true;
                     this.firstPinEntered = this.currentPin;
                     this.currentPin = '';
-                } else if (this.firstPinEntered === this.currentPin) this.save();
-                else {
+                } else if (this.firstPinEntered === this.currentPin) {
+                    this.save();
+                } else {
                     this.firstPinEntered = this.currentPin = '';
                     this.incorrect = true;
                     this.confirmingPin = false;
@@ -154,13 +162,18 @@ export class PinModalPage {
     // }
 
     public delete(): void {
-        if (this.disableButtons) return;
+        if (this.disableButtons) {
+            return;
+        }
         this.currentPin = this.currentPin.substring(0, this.currentPin.length - 1);
     }
 
     private isComplete(): boolean {
-        if (this.currentPin.length < 4) return false;
-        else return true;
+        if (this.currentPin.length < 4) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
     public save(): void {
