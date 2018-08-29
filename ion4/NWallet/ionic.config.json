@@ -1,0 +1,8 @@
+{
+  "name": "NWallet",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "angular",
+  "pro_id": "c1b0e6f2"
+}
