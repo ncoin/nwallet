@@ -1,8 +1,7 @@
 {
-  "name": "nwallet",
-  "integrations": {
-    "cordova": {}
-  },
-  "type": "ionic-angular",
-  "app_id": ""
+    "name": "nwallet",
+    "integrations": {
+        "cordova": {}
+    },
+    "type": "ionic-angular"
 }

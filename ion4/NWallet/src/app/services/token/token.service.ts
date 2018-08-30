@@ -1,10 +1,10 @@
-import { AccountProvider } from '../account/account';
+import { AccountService } from '../account/account.service';
 import { env } from '../../environments/environment';
-import { Logger } from '../common/logger/logger';
+import { LoggerService } from '../common/logger/logger.service';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Device } from '@ionic-native/device';
-import { Keypair } from '../../../node_modules/@types/stellar-sdk';
+import { Keypair } from 'stellar-sdk';
 
 export class Token {
     static readonly Empty = <Token>undefined;
@@ -50,9 +50,9 @@ export function getNonce(): string {
 }
 
 @Injectable()
-export class TokenProvider {
+export class TokenService {
     private token: Token;
-    constructor(private http: HttpClient, private logger: Logger, private device: Device, private account: AccountProvider) {}
+    constructor(private http: HttpClient, private logger: LoggerService, private device: Device, private account: AccountService) {}
 
     public async getToken(): Promise<Token> {
         if (!this.token || this.token.isExpired()) {
