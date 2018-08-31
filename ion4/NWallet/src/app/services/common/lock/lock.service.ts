@@ -25,7 +25,6 @@ export class LockService {
     }
 
     private isSecurityAvailable(): boolean {
-
         // todo
         this.logger.debug('[lock] security check', this.platform.isMobile);
         return false;

@@ -115,13 +115,13 @@
         "directive-selector": [
             true,
             "attribute",
-            "app",
+            "nw",
             "camelCase"
         ],
         "component-selector": [
             true,
             "element",
-            "app",
+            "nw",
             "page",
             "kebab-case"
         ],
@@ -133,6 +133,7 @@
         "no-output-rename": true,
         "use-life-cycle-interface": true,
         "use-pipe-transform-interface": true,
+        "component-class-suffix": [true, "Page", "Component"],
         "directive-class-suffix": true
     }
 }
