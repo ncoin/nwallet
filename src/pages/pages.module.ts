@@ -1,7 +1,3 @@
-import { NWalletDirectiveModule } from '../directives/directive.module';
-
-// import { PinModalPage } from './1.security/pin/pin';
-import { NWalletPipesModule } from '../pipes/pipes.module';
 import { CreateAccountPage } from './1.account/createaccount';
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
@@ -15,6 +11,7 @@ import { PinModalPage } from './1.security/pin/pin';
 import { NWalletSharedModule } from '../shared/shared.module';
 import { NWalletTabPages } from './0.tab/0.container/tabcontainer';
 import { NWalletComponentsModule } from '../components/components.module';
+import { TranslateModule } from '@ngx-translate/core';
 
 
 @NgModule({
@@ -32,6 +29,7 @@ import { NWalletComponentsModule } from '../components/components.module';
     imports: [
         NWalletSharedModule,
         NWalletComponentsModule,
+        TranslateModule.forChild(),
         IonicPageModule.forChild(TutorialPage),
         IonicPageModule.forChild(EntrancePage),
         IonicPageModule.forChild(CreateAccountPage),
