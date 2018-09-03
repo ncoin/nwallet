@@ -4,7 +4,7 @@ import { NgModule } from '@angular/core';
 import { TranslateModule, TranslateLoader, MissingTranslationHandler, MissingTranslationHandlerParams } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
-function createTranslateLoader(http: HttpClient) {
+export function createTranslateLoader(http: HttpClient) {
     return new TranslateHttpLoader(http, 'assets/i18n/', '.json');
 }
 
@@ -15,7 +15,6 @@ export class MissingHandler implements MissingTranslationHandler {
 }
 
 @NgModule({
-
     imports: [
         BrowserModule,
         HttpClientModule,
@@ -26,11 +25,9 @@ export class MissingHandler implements MissingTranslationHandler {
                 deps: [HttpClient],
             },
             useDefaultLang: true,
-            missingTranslationHandler: {provide: MissingTranslationHandler, useClass: MissingHandler}
+            missingTranslationHandler: { provide: MissingTranslationHandler, useClass: MissingHandler },
         }),
     ],
-    exports : [
-        TranslateModule, BrowserModule, HttpClientModule
-    ]
+    exports: [TranslateModule, BrowserModule, HttpClientModule],
 })
 export class NWalletSharedModule {}

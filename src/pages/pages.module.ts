@@ -14,7 +14,7 @@ import { PinDotsComponent } from './1.security/pin/pin-dot/pin-dots';
 import { PinModalPage } from './1.security/pin/pin';
 import { NWalletSharedModule } from '../shared/shared.module';
 import { NWalletTabPages } from './0.tab/0.container/tabcontainer';
-import { NWalletComponents } from '../components/components.module';
+import { NWalletComponentsModule } from '../components/components.module';
 
 
 @NgModule({
@@ -28,12 +28,10 @@ import { NWalletComponents } from '../components/components.module';
         PinPadComponent,
         PinModalPage,
         ...NWalletTabPages,
-        ...NWalletComponents
     ],
     imports: [
-        NWalletPipesModule,
-        NWalletDirectiveModule,
         NWalletSharedModule,
+        NWalletComponentsModule,
         IonicPageModule.forChild(TutorialPage),
         IonicPageModule.forChild(EntrancePage),
         IonicPageModule.forChild(CreateAccountPage),

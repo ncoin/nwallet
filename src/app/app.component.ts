@@ -87,12 +87,12 @@ export class NWalletApp implements OnDestroy {
             this.rootPage = EntrancePage;
         }
 
-        const hasSeenTutorial = await this.appConfig.hasSeenTutorial();
-        if (!hasSeenTutorial) {
-            this.logger.debug('[app-page] prepare tutorial page');
-            this.nav.push(TutorialPage, undefined, undefined, () => {});
-            return;
-        }
+        // const hasSeenTutorial = await this.appConfig.hasSeenTutorial();
+        // if (!hasSeenTutorial) {
+        //     this.logger.debug('[app-page] prepare tutorial page');
+        //     this.nav.push(TutorialPage, undefined, undefined, () => {});
+        //     return;
+        // }
     }
 
     private prepareSecurity(): void {
