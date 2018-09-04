@@ -7,6 +7,7 @@ import * as _ from 'lodash';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { ReceivePage } from './receive/receive.page';
 import { NWTransition, NWModalTransition } from '../../../tools/extension/transition';
+import { SendPage } from './send/send.page';
 /**
  * Generated class for the WalletDetailPage page.
  *
@@ -70,7 +71,7 @@ export class TransferHistoryTabPage {
             location: 'no',
             clearcache: 'yes',
             footer: 'yes',
-            toolbar: 'no',
+            toolbar: 'yes',
             closebuttoncaption: 'done',
         });
 
@@ -84,6 +85,10 @@ export class TransferHistoryTabPage {
     public onReceiveClick(): void {
         const modal = this.modal.create(ReceivePage, {}, NWModalTransition.Slide());
         modal.present();
-        // this.navCtrl.push(ReceivePage, {}, NWTransition.Slide());
+    }
+
+    public onSendClick(): void {
+        const modal = this.modal.create(SendPage, {}, NWModalTransition.Slide());
+        modal.present();
     }
 }

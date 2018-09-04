@@ -17,7 +17,7 @@ import { Device } from '@ionic-native/device';
 import { TranslateModule, TranslateLoader, MissingTranslationHandler, MissingTranslationHandlerParams } from '@ngx-translate/core';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-import { NgxQRCodeModule } from 'ngx-qrcode2';
+import { QRScanner } from '@ionic-native/qr-scanner';
 BootStrap();
 export class MissingHandler implements MissingTranslationHandler {
     handle(params: MissingTranslationHandlerParams) {
@@ -73,7 +73,7 @@ export class MissingHandler implements MissingTranslationHandler {
     ],
     bootstrap: [IonicApp],
     entryComponents: [NWalletApp],
-    providers: [{ provide: ErrorHandler, useClass: IonicErrorHandler }, InAppBrowser, SplashScreen, FingerprintAIO, StatusBar, Vibration, Device, Clipboard],
+providers: [{ provide: ErrorHandler, useClass: IonicErrorHandler }, InAppBrowser, SplashScreen, FingerprintAIO, StatusBar, Vibration, Device, Clipboard, QRScanner],
 })
 export class AppModule {}
 

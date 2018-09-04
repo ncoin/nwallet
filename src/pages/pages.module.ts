@@ -14,6 +14,8 @@ import { NWalletTabPages } from './0.tab/0.container/tabcontainer';
 import { NWalletComponentsModule } from '../components/components.module';
 import { TranslateModule } from '@ngx-translate/core';
 import { ReceivePage } from './0.tab/1.transfer-tab/receive/receive.page';
+import { SendPage } from './0.tab/1.transfer-tab/send/send.page';
+import { QRScanPage } from './qrscan/qrscan.page';
 
 @NgModule({
     declarations: [
@@ -27,6 +29,8 @@ import { ReceivePage } from './0.tab/1.transfer-tab/receive/receive.page';
         PinModalPage,
         ...NWalletTabPages,
         ReceivePage,
+        SendPage,
+        QRScanPage
     ],
     imports: [
         NWalletSharedModule,
@@ -42,6 +46,8 @@ import { ReceivePage } from './0.tab/1.transfer-tab/receive/receive.page';
         IonicPageModule.forChild(PinModalPage),
         IonicPageModule.forChild(NWalletTabPages),
         IonicPageModule.forChild(ReceivePage),
+        IonicPageModule.forChild(SendPage),
+        IonicPageModule.forChild(QRScanPage),
 
     ],
     entryComponents: [TutorialPage, EntrancePage,  ...NWalletTabPages],

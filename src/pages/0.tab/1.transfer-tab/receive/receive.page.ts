@@ -2,12 +2,6 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ViewController, ToastController } from 'ionic-angular';
 import { AccountProvider } from '../../../../providers/account/account';
 import { Clipboard } from '@ionic-native/clipboard';
-/**
- * Generated class for the ReceivePage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
 
 @IonicPage()
 @Component({
@@ -29,10 +23,6 @@ export class ReceivePage {
     ) {
         this.qrData = account.getId();
         this.createdCode = account.getId();
-    }
-
-    ionViewDidLoad() {
-        console.log('ionViewDidLoad ReceivePage');
     }
 
     onCreateCode() {
