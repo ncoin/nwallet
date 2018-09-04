@@ -59,6 +59,7 @@
         "ionic-angular": "3.9.2",
         "ionicons": "3.0.0",
         "js-xdr": "^1.0.3",
+        "ngx-qrcode2": "0.0.9",
         "rxjs": "5.5.2",
         "stellar-base": "^0.7.8",
         "stellar-sdk": "^0.8.2",
