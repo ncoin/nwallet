@@ -111,4 +111,5 @@
     <engine name="ios" spec="4.5.5" />
     <engine name="android" spec="^7.1.1" />
     <plugin name="cordova-plugin-qrscanner" spec="^2.6.0" />
+    <plugin name="cordova-clipboard" spec="^1.2.1" />
 </widget>
