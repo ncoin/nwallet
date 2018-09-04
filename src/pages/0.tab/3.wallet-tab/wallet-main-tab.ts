@@ -65,7 +65,9 @@ export class WalletMainTabPage {
 
         this.totalPrice = totalAmount.toString();
 
-        assets.splice(assets.indexOf(nCash), 1);
+        if (assets.indexOf(nCash) > -1) {
+            assets.splice(assets.indexOf(nCash), 1);
+        }
 
         this.walletPages.length = 0;
         let sliceWallet = assets.splice(0, 3);
@@ -90,4 +92,4 @@ export class WalletMainTabPage {
     }
 }
 
-export const WalletTabPages = [WalletMainTabPage, /*WalletDetailPage,*/];
+export const WalletTabPages = [WalletMainTabPage /*WalletDetailPage,*/];

@@ -1,13 +1,14 @@
 page-send {
     .content {
-        background-color: white;
+        background: url('../assets/img/bg.png') no-repeat top center;
+        background-size: cover;
     }
 
     ion-card-content button {
         background-color: transparent;
     }
 
-    ngx-qrcode .qrcode{
+    ngx-qrcode .qrcode {
         width: 70%;
         height: 70%;
     }
@@ -17,4 +18,3 @@ page-send {
         min-width: 36px;
     }
 }
-

@@ -13,13 +13,24 @@
     <ion-label> > {{'BuyWith' | translate}}</ion-label>
     <ion-item>
         <ion-label>
-            <span translate>Amount</span>
+            <span translate>RecipientAddress</span>
         </ion-label>
         <ion-input [(ngModel)]="recipientAddress" type="text" text-right></ion-input>
-        <ion-select item-end [(ngModel)]="sendAsset" interface="popover">
+
+
+
+    </ion-item>
+
+    <ion-item>
+        <ion-label>
+            <span translate>Currency</span>
+        </ion-label>
+        <ion-input [(ngModel)]="sendAmount" type="number" text-right></ion-input>
+
+        <ion-select item-end [(ngModel)]="sendAsset" interface="popover" >
             <ion-option *ngFor="let asset of availableAssets" [value]="asset" (ionSelect)="onAssetChanged()">{{asset.item.asset.code}}</ion-option>
         </ion-select>
-        <ion-input [(ngModel)]="sendAmount" type="number" text-right></ion-input>
+
     </ion-item>
     <ion-card-content>
         <button ion-label (click)="onScanClick()">
