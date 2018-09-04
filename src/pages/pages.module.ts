@@ -1,3 +1,4 @@
+import { AccountTabPage } from './0.tab/5.account-tab/account-tab';
 import { CreateAccountPage } from './1.account/createaccount';
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
@@ -12,7 +13,7 @@ import { NWalletSharedModule } from '../shared/shared.module';
 import { NWalletTabPages } from './0.tab/0.container/tabcontainer';
 import { NWalletComponentsModule } from '../components/components.module';
 import { TranslateModule } from '@ngx-translate/core';
-
+import { ReceivePage } from './0.tab/1.transfer-tab/receive/receive.page';
 
 @NgModule({
     declarations: [
@@ -25,6 +26,7 @@ import { TranslateModule } from '@ngx-translate/core';
         PinPadComponent,
         PinModalPage,
         ...NWalletTabPages,
+        ReceivePage,
     ],
     imports: [
         NWalletSharedModule,
@@ -38,7 +40,8 @@ import { TranslateModule } from '@ngx-translate/core';
         IonicPageModule.forChild(PinDotsComponent),
         IonicPageModule.forChild(PinPadComponent),
         IonicPageModule.forChild(PinModalPage),
-        // IonicPageModule.forChild(NWalletTabPages),
+        IonicPageModule.forChild(NWalletTabPages),
+        IonicPageModule.forChild(ReceivePage),
 
     ],
     entryComponents: [TutorialPage, EntrancePage,  ...NWalletTabPages],

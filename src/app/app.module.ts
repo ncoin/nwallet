@@ -1,3 +1,4 @@
+import { Clipboard } from '@ionic-native/clipboard';
 import Stellar from 'stellar-sdk';
 import { NWalletSharedModule } from '../shared/shared.module';
 import { env } from '../environments/environment';
@@ -16,7 +17,7 @@ import { Device } from '@ionic-native/device';
 import { TranslateModule, TranslateLoader, MissingTranslationHandler, MissingTranslationHandlerParams } from '@ngx-translate/core';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-
+import { NgxQRCodeModule } from 'ngx-qrcode2';
 BootStrap();
 export class MissingHandler implements MissingTranslationHandler {
     handle(params: MissingTranslationHandlerParams) {
@@ -57,6 +58,7 @@ export class MissingHandler implements MissingTranslationHandler {
                 ],
             }
         ),
+
         TranslateModule.forRoot({
             loader: {
                 provide: TranslateLoader,
@@ -71,7 +73,7 @@ export class MissingHandler implements MissingTranslationHandler {
     ],
     bootstrap: [IonicApp],
     entryComponents: [NWalletApp],
-    providers: [{ provide: ErrorHandler, useClass: IonicErrorHandler }, InAppBrowser, SplashScreen, FingerprintAIO, StatusBar, Vibration, Device],
+    providers: [{ provide: ErrorHandler, useClass: IonicErrorHandler }, InAppBrowser, SplashScreen, FingerprintAIO, StatusBar, Vibration, Device, Clipboard],
 })
 export class AppModule {}
 

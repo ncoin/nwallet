@@ -1,0 +1,39 @@
+<!--
+  Generated template for the ReceivePage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+    <ion-navbar>
+        <ion-title>receive</ion-title>
+        <ion-buttons left>
+            <button class="my-style-for-modal" ion-button icon-only (click)="onClose()">
+                <ion-icon name="arrow-back"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+    <ion-card *ngIf="createdCode">
+        <ngx-qrcode [(qrc-value)]="createdCode"></ngx-qrcode>
+        <ion-card-content>
+            <button ion-label (click)="onTabToCopyClicked()">
+                    <p>Tab to Copy:</p>
+                    <p>{{ createdCode }}</p>
+            </button>
+        </ion-card-content>
+    </ion-card>
+    <ion-card *ngIf="scannedCode">
+        <ion-card-content>
+            Result from Scan: {{ scannedCode }}
+        </ion-card-content>
+    </ion-card>
+</ion-content>
+
+<ion-footer>
+    <button ion-button full (click)="onClose()" color="dark">
+        Okay
+    </button>
+</ion-footer>

@@ -90,4 +90,4 @@ export class WalletMainTabPage {
     }
 }
 
-export const WalletTabPages = [WalletMainTabPage, /*WalletDetailPage,*/ BuyNcashTabPage, LoanNcashTabPage];
+export const WalletTabPages = [WalletMainTabPage, /*WalletDetailPage,*/];
