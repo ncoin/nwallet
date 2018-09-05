@@ -15,7 +15,7 @@ import { NWModalTransition } from '../../../../tools/extension/transition';
 })
 export class SendPage {
     public recipientAddress = '';
-    public sendAmount = 0;
+    public sendAmount = '0';
     public sendAsset: NWallet.AssetContext;
     public availableAssets: NWallet.AssetContext[];
     public canGoBack: boolean;
@@ -42,7 +42,7 @@ export class SendPage {
     }
 
     public onAssetChanged(): void {
-        this.sendAsset.amount = '0';
+        this.sendAmount = '0';
     }
 
     public onScanClick(): void {
@@ -73,6 +73,10 @@ export class SendPage {
             .catch(error => {
                 this.logger.error('[send-page] qrscan prepare error', error);
             });
+    }
+
+    public onMaxClick(): void {
+        this.sendAmount = this.sendAsset.amount;
     }
 
     public onClose(): void {

@@ -16,7 +16,7 @@
         </ion-row>
         <ion-row>
             <ion-col>
-                <ion-select item-end [(ngModel)]="sendAsset" interface="popover" >
+                <ion-select item-end [(ngModel)]="sendAsset" interface="popover">
                     <ion-option *ngFor="let asset of availableAssets" [value]="asset" (ionSelect)="onAssetChanged()">{{asset.item.asset.code}}</ion-option>
                 </ion-select>
             </ion-col>
@@ -45,13 +45,13 @@
         <ion-row>
             <ion-col>
                 <div style="float: right">
-                    Available: 1.00 BTC
+                    {{'Available' | translate }} : {{sendAsset.amount}} {{ sendAsset.item.asset.code}}
                 </div>
             </ion-col>
         </ion-row>
         <ion-row>
             <ion-col>
-                <div style="float: right; font-style: italic; color: #da6464;" >
+                <div style="float: right; font-style: italic; color: #da6464; font-size: 1.7em" (click)="onMaxClick()">
                     Max
                 </div>
             </ion-col>
