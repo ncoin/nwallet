@@ -18,8 +18,8 @@
         <ion-row class="inner-line-content">
             <ion-col col-auto class="asset-info">
                 <span class="asset-symbol">
-                    <img src="assets/img/symbol_{{asset.item.asset.code}}.png" height="28" *ngIf="(asset.item.asset.code=='NCH' || asset.item.asset.code=='BTC' || asset.item.asset.code=='ETH' || asset.item.asset.code=='NCN')" />
-                    <img src="assets/img/symbol_NCN.png" height="28"*ngIf="(asset.item.asset.code!='NCH' && asset.item.asset.code!='BTC' && asset.item.asset.code!='ETH' && asset.item.asset.code!='NCN')" />
+                    <img src="assets/img/symbol_{{asset.item.asset.code}}.png" height="28" *ngIf="(asset.item.asset.code=='NCH' || asset.item.asset.code=='XLM' || asset.item.asset.code=='BTC' || asset.item.asset.code=='ETH' || asset.item.asset.code=='NCN')" />
+                    <img src="assets/img/symbol_NCN.png" height="28"*ngIf="(asset.item.asset.code!='NCH' && asset.item.asset.code!='BTC' && asset.item.asset.code!='XLM' && asset.item.asset.code!='ETH' && asset.item.asset.code!='NCN')" />
                 </span>
                 <span class="asset-name"><span *ngIf="asset.item.isNative;then native; else notnative"></span></span>
             </ion-col>

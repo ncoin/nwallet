@@ -23,5 +23,8 @@
   "BuyWith": "Buy with",
   "BTC": "Bitcoin",
   "ETH": "Ethereum",
-  "Total": "합계"
+  "Total": "합계",
+  "RecipientAddress": "RECIPIENT'S ADDRESS",
+  "RecipientAddressPlaceHolder": "주소를 입력 또는 선택해주세요.",
+  "Amount": "수량"
 }

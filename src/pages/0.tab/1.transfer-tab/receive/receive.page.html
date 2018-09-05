@@ -1,22 +1,20 @@
 <ion-header>
-    <ion-navbar>
-        <ion-title>receive</ion-title>
-        <ion-buttons left>
-            <button class="my-style-for-modal" ion-button icon-only (click)="onClose()">
-                <ion-icon name="arrow-back"></ion-icon>
-            </button>
-        </ion-buttons>
-    </ion-navbar>
+    <ion-title>
+        <div class="content-left">
+            <fa-icon name="angle-double-left" (click)="onClose()"></fa-icon>
+        </div>
+        <div class="content-center">
+            <img src="assets/img/title_receive.png">
+        </div>
+    </ion-title>
 </ion-header>
 
 <ion-content padding>
     <ion-card *ngIf="createdCode">
         <ngx-qrcode [(qrc-value)]="createdCode"></ngx-qrcode>
         <ion-card-content>
-            <button ion-label (click)="onTabToCopyClicked()">
-                    <p>Tab to Copy:</p>
-                    <p>{{ createdCode }}</p>
-            </button>
+            <div class="tab-copy-text"><button (click)="onTabToCopyClicked()">Tab to Copy:</button></div>
+            <div class="code-text" (click)="onTabToCopyClicked()">{{ createdCode }}</div>
         </ion-card-content>
     </ion-card>
     <ion-card *ngIf="scannedCode">

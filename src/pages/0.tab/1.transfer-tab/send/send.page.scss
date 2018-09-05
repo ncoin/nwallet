@@ -9,12 +9,35 @@ page-send {
     }
 
     ngx-qrcode .qrcode {
-        width: 70%;
-        height: 70%;
     }
 
     ion-buttons button[icon-only].my-style-for-modal {
         margin: 0 6px;
         min-width: 36px;
+
+        height: 100%;
+        color: #816B4B;
+    }
+
+    .content-left {
+        position: absolute;
+        height: 100%;
+        z-index: 100;
+        display: flex;
+        top: -5px;
+        margin-left: 15px;
+        font-size: 2.2em;
+        color: #816B4B;
+        fa-icon {
+            margin: auto;
+        }
+        fa-icon:hover {
+            color: #F1C279;
+        }
+    }
+
+    .content-center {
+        position: relative;
+        text-align: center;
     }
 }
