@@ -57,7 +57,7 @@ export class SendPage {
                         const qrCodeModal = this.modal.create(QRScanPage, {}, NWModalTransition.Slide());
                         qrCodeModal.onDidDismiss((dismissParam, role) => {
                             this.logger.debug('[send-page] qrscan result', dismissParam, role);
-                            this.recipientAddress = dismissParam.data.qrCode;
+                            this.recipientAddress = dismissParam.qrCode;
                         });
                         qrCodeModal.present();
                     } else if (status.denied) {

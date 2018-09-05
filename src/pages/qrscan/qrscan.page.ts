@@ -27,9 +27,7 @@ export class QRScanPage {
         const subscription = this.qrScanner.scan().subscribe(data => {
             this.logger.debug('qrdata', data);
             this.qrScanner.hide();
-            this.onClose({
-                qrCode: data,
-            });
+            this.onClose(data);
             subscription.unsubscribe();
         });
 
