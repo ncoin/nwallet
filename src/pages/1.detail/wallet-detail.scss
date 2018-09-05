@@ -1,0 +1,98 @@
+wallet-detail {
+    ion-grid {
+        * {
+            width: 100%;
+            height: 100%;
+        }
+
+        .symbol-text {
+            font-size: 1.4em;
+        }
+
+        .ticker-text {
+            font-weight: bold;
+            font-size: 1.8em;
+        }
+
+        .currency-text {
+            font-size: 0.8em;
+            color: #7e7e7e;
+        }
+
+        .content-left {
+            position: absolute;
+        }
+
+        .content-center {
+            position: relative;
+            text-align: center;
+        }
+    }
+
+    #history {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: color($colors, title);
+        font-size: 1.8rem;
+        font-weight: 800;
+    }
+
+    #history-icon {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        text-align: center;
+        color: #8e7954;
+        text-shadow: #000 0 0 4px;
+        padding-top: 5px;
+        cursor: pointer;
+    }
+
+    .scroll-content {
+        margin-top: 220px !important;
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    ion-item-group.content-history ion-item-divider.content-history-date {
+        background: $color-title-background-sub;
+        color: color($colors, title);
+        font-size: 1.5rem;
+        border-bottom: $color-title-border-sub 1px solid;
+        padding: 0;
+    }
+    ion-item-group.content-history ion-item-divider.content-history-date .item-inner {
+        border-left: $color-title-border-status 10px solid;
+        padding-left: 16px;
+    }
+    ion-item-group.content-history ion-item-divider.content-history-date .item-inner .label-ios,
+    ion-item-group.content-history ion-item-divider.content-history-date .item-inner .label-md,
+    ion-item-group.content-history ion-item-divider.content-history-date .item-inner .label-wp {
+        margin: 20px 8px 8px 0;
+        font-weight: 600;
+        text-transform: uppercase;
+    }
+
+    ion-item-group.content-history .item-ios,
+    ion-item-group.content-history .item-md,
+    ion-item-group.content-history .item-wp {
+        background: $color-content-background-primary;
+        border-bottom: $color-content-border 1px solid;
+    }
+    ion-item-group.content-history .item-ios:last-child,
+    ion-item-group.content-history .item-md:last-child,
+    ion-item-group.content-history .item-wp:last-child {
+        border-bottom: 0;
+    }
+    ion-item-group.content-history .item-ios [item-start],
+    ion-item-group.content-history .item-md [item-start],
+    ion-item-group.content-history .item-wp [item-start] {
+        color: color($colors, light);
+    }
+    ion-item-group.content-history .item-ios [item-end],
+    ion-item-group.content-history .item-md [item-end],
+    ion-item-group.content-history .item-wp [item-end] {
+        color: color($colors, primary);
+    }
+}
