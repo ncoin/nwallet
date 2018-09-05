@@ -20,5 +20,8 @@
   "Transfer": "Transfer",
   "CurrentLanguage": "Nederlands",
   "Language": "Language",
-  "BuyWith": "Buy with"
+  "BuyWith": "Buy with",
+  "BTC": "Bitcoin",
+  "ETH": "Ethereum",
+  "Total": "Total"
 }
