@@ -26,5 +26,6 @@
   "Total": "Total",
   "RecipientAddress": "RECIPIENT'S ADDRESS",
   "RecipientAddressPlaceHolder": "Enter or select the address",
-  "Amount": "Amount"
+  "Amount": "Amount",
+  "Available": "Available"
 }
