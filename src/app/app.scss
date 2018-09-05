@@ -162,6 +162,7 @@ ion-tabs[name=conference] .tabbar a.tab-button:nth-child(5){
     height: 48px !important;
     background: $background-color url('../assets/img/tabs_icons_buy_off.png') no-repeat;
     background-size: cover;
+    opacity: 0.5;
 }
 .ion-ios-nwallet-loan,
 .ion-ios-nwallet-loan-outline,
@@ -170,6 +171,7 @@ ion-tabs[name=conference] .tabbar a.tab-button:nth-child(5){
     height: 40px !important;
     background: $background-color url('../assets/img/tabs_icons_loan_off.png') no-repeat;
     background-size: cover;
+    opacity: 0.5;
 }
 .ion-ios-nwallet-account,
 .ion-ios-nwallet-account-outline,

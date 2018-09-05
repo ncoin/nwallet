@@ -16,6 +16,7 @@ export interface TabItemContext {
     component: any;
     icon: string;
     params?: any;
+    enable: string;
     // tabComponent: SchedulePage,
     // index: 0,
 }
@@ -31,22 +32,27 @@ export class TabcontainerPage {
         {
             component: TransferHistoryTabPage,
             icon: 'nwallet-transfer',
+            enable: 'true',
         },
         {
             component: BuyNcashTabPage,
             icon: 'nwallet-buy',
+            enable: 'false',
         },
         {
             component: WalletMainTabPage,
             icon: 'nwallet-home',
+            enable: 'true',
         },
         {
             component: LoanNcashTabPage,
             icon: 'nwallet-loan',
+            enable: 'false',
         },
         {
             component: AccountTabPage,
             icon: 'nwallet-account',
+            enable: 'true',
         },
     ];
 
