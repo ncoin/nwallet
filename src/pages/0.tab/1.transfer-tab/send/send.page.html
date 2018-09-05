@@ -1,37 +1,36 @@
 <ion-header>
-    <ion-navbar>
-        <ion-title>send</ion-title>
-        <ion-buttons left>
-            <button class="my-style-for-modal" ion-button icon-only (click)="onClose()">
-                <ion-icon name="arrow-back"></ion-icon>
-            </button>
-        </ion-buttons>
-    </ion-navbar>
+    <div class="content-left">
+        <fa-icon name="angle-double-left" (click)="onClose()"></fa-icon>
+    </div>
+    <div class="content-center">
+        <img src="assets/img/title_send.png">
+    </div>
 </ion-header>
 
 <ion-content padding>
-    <ion-label> > {{'BuyWith' | translate}}</ion-label>
-    <ion-item>
-        <ion-label>
-            <span translate>RecipientAddress</span>
-        </ion-label>
-        <ion-input [(ngModel)]="recipientAddress" type="text" text-right></ion-input>
-
-
-
-    </ion-item>
-
-    <ion-item>
-        <ion-label>
-            <span translate>Currency</span>
-        </ion-label>
-        <ion-input [(ngModel)]="sendAmount" type="number" text-right></ion-input>
-
-        <ion-select item-end [(ngModel)]="sendAsset" interface="popover" >
-            <ion-option *ngFor="let asset of availableAssets" [value]="asset" (ionSelect)="onAssetChanged()">{{asset.item.asset.code}}</ion-option>
-        </ion-select>
-
-    </ion-item>
+    <ion-list>
+        <ion-item>
+            <ion-label stacked>
+                <fa-icon name="angle-right" style="margin-right: 6px;"></fa-icon><span translate>Currency</span>
+            </ion-label>
+            <ion-select item-end [(ngModel)]="sendAsset" interface="popover" >
+                <ion-option *ngFor="let asset of availableAssets" [value]="asset" (ionSelect)="onAssetChanged()">{{asset.item.asset.code}}</ion-option>
+            </ion-select>
+        </ion-item>
+        <ion-item>
+            <ion-label stacked>
+                <fa-icon name="angle-right" style="margin-right: 6px;"></fa-icon><span translate>RecipientAddress</span>
+            </ion-label>
+            <ion-input [(ngModel)]="recipientAddress" type="text" placeholder="{{'RecipientAddressPlaceHolder' | translate}}">
+            </ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label stacked>
+                <fa-icon name="angle-right" style="margin-right: 6px;"></fa-icon><span translate>Amount</span>
+            </ion-label>
+            <ion-input [(ngModel)]="sendAmount" type="number" text-right></ion-input>
+        </ion-item>
+    </ion-list>
     <ion-card-content>
         <button ion-label (click)="onScanClick()">
             <p>Tab to Copy:</p>
