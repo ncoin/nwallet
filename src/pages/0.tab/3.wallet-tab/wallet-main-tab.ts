@@ -1,6 +1,7 @@
 import { EventTypes } from '../../../interfaces/events';
 import { LoanNcashTabPage } from '../4.loan-ncash-tab/loan-ncash-tab';
 import { BuyNcashTabPage } from '../2.buy-ncash-tab/buy-ncash-tab';
+import { WalletDetailPage } from '../../1.detail/wallet-detail';
 import { Logger } from '../../../providers/common/logger/logger';
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
@@ -49,13 +50,15 @@ export class WalletMainTabPage {
 
     async init(): Promise<void> {
         const account = await this.account.getAccount();
-        this.refreshWallets(account.wallets.slice());
+        if (account && account.wallets) {
+            this.refreshWallets(account.wallets.slice());
+        }
     }
 
     private refreshWallets = (assets: NWallet.AssetContext[]): void => {
         this.logger.debug('[wallet-tab] on refresh assets');
         const nCash = assets.find(wallet => {
-            return wallet.item.isNative === true && wallet.item.asset.code === 'NCH';
+            return wallet.item.isNative === true && wallet.item.asset.code === 'NCN';
         });
 
         let totalAmount = 0;
@@ -63,7 +66,7 @@ export class WalletMainTabPage {
             totalAmount += Number.parseFloat(wallet.amount) * wallet.item.price;
         });
 
-        this.totalPrice = totalAmount.toString();
+        this.totalPrice = totalAmount.toFixed(2).toString();
 
         assets.splice(assets.indexOf(nCash), 1);
 
@@ -79,15 +82,16 @@ export class WalletMainTabPage {
     }
 
     public onSelectWallet(wallet: NWallet.AssetContext) {
-        // this.navCtrl.push(
-        //     WalletDetailPage,
-        //     { wallet: wallet },
-        //     {
-        //         animate: true,
-        //         animation: 'ios-transition',
-        //     },
-        // );
+        console.log('onSelectWallet', wallet);
+        this.navCtrl.push(
+              WalletDetailPage,
+             { wallet: wallet },
+             {
+                 animate: true,
+                 animation: 'ios-transition',
+             },
+        );
     }
 }
 
-export const WalletTabPages = [WalletMainTabPage, /*WalletDetailPage,*/ BuyNcashTabPage, LoanNcashTabPage];
+export const WalletTabPages = [WalletMainTabPage, WalletDetailPage, BuyNcashTabPage, LoanNcashTabPage];
