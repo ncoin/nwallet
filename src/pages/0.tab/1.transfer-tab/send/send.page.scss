@@ -8,31 +8,13 @@ page-send {
         height: 100%;
     }
 
-
-    ion-title *{
-        color: color($colors, title);
-    }
-
-
     ion-navbar ion-buttons {
         display: flex;
         align-items: center;
     }
 
-
     ion-card-content button {
         background-color: transparent;
-    }
-
-    ngx-qrcode .qrcode {
-    }
-
-    ion-buttons button[icon-only].my-style-for-modal {
-        margin: 0 6px;
-        min-width: 36px;
-
-        height: 100%;
-        color: #816B4B;
     }
 
     .content-left {
@@ -40,13 +22,14 @@ page-send {
         height: 100%;
         z-index: 100;
         display: flex;
-        top: -5px;
+        top: -2px;
         margin-left: 15px;
-        font-size: 2.2em;
+        font-size: 2em;
         color: #816B4B;
         fa-icon {
             margin: auto;
         }
+
         fa-icon:hover {
             color: #F1C279;
         }

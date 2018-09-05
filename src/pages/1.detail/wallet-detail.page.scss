@@ -10,6 +10,8 @@ wallet-detail {
 
     ion-title *{
         color: color($colors, title);
+        font-size: 1.7em;
+        letter-spacing: 2px;
     }
 
     ion-navbar ion-buttons {
