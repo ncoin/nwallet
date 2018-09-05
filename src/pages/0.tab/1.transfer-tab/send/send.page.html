@@ -8,35 +8,41 @@
 </ion-header>
 
 <ion-content padding>
-    <ion-list>
-        <ion-item>
-            <ion-label stacked>
+    <ion-grid>
+        <ion-row>
+            <ion-col>
                 <fa-icon name="angle-right" style="margin-right: 6px;"></fa-icon><span translate>Currency</span>
-            </ion-label>
-            <ion-select item-end [(ngModel)]="sendAsset" interface="popover" >
-                <ion-option *ngFor="let asset of availableAssets" [value]="asset" (ionSelect)="onAssetChanged()">{{asset.item.asset.code}}</ion-option>
-            </ion-select>
-        </ion-item>
-        <ion-item>
-            <ion-label stacked>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col>
+                <ion-select item-end [(ngModel)]="sendAsset" interface="popover" >
+                    <ion-option *ngFor="let asset of availableAssets" [value]="asset" (ionSelect)="onAssetChanged()">{{asset.item.asset.code}}</ion-option>
+                </ion-select>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col>
                 <fa-icon name="angle-right" style="margin-right: 6px;"></fa-icon><span translate>RecipientAddress</span>
-            </ion-label>
-            <ion-input [(ngModel)]="recipientAddress" type="text" placeholder="{{'RecipientAddressPlaceHolder' | translate}}">
-            </ion-input>
-        </ion-item>
-        <ion-item>
-            <ion-label stacked>
+                <fa-icon name="qrcode" style="float: right;" (click)="onScanClick()"></fa-icon>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col>
+                <ion-input [(ngModel)]="recipientAddress" type="text" placeholder="{{'RecipientAddressPlaceHolder' | translate}}"></ion-input>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col>
                 <fa-icon name="angle-right" style="margin-right: 6px;"></fa-icon><span translate>Amount</span>
-            </ion-label>
-            <ion-input [(ngModel)]="sendAmount" type="number" text-right></ion-input>
-        </ion-item>
-    </ion-list>
-    <ion-card-content>
-        <button ion-label (click)="onScanClick()">
-            <p>Tab to Copy:</p>
-        </button>
-    </ion-card-content>
-
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col>
+                <ion-input [(ngModel)]="sendAmount" type="number" text-right></ion-input>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
 </ion-content>
 <ion-footer>
     <button ion-button full (click)="onClose()" color="dark" disabled>
