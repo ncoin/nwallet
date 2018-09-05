@@ -3,7 +3,7 @@
     <name>NWallet</name>
     <description>An Wallet application for the NCoin.</description>
     <author email="emailhere@ncoin.com" href="http://ionicframework.com/">NCoin front team</author>
-    <content original-src="index.html" src="http://192.168.5.11:8100" />
+    <content src="index.html" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />

@@ -3,6 +3,20 @@ page-receive {
         background-color: white;
     }
 
+    ion-navbar {
+        height: 100%;
+    }
+
+    ion-title *{
+        color: color($colors, title);
+    }
+
+    ion-navbar ion-buttons {
+        display: flex;
+        align-items: center;
+    }
+
+
     ion-card-content button {
         background-color: transparent;
     }
