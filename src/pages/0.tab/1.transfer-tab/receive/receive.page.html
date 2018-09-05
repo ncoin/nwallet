@@ -1,6 +1,8 @@
 <ion-header>
     <ion-navbar>
-        <ion-title><div>Receive</div></ion-title>
+        <ion-title>
+            <img src="assets/img/title_receive.png">
+        </ion-title>
         <ion-buttons left>
             <button class="my-style-for-modal" ion-button icon-only (click)="onClose()">
                 <ion-icon name="arrow-back"></ion-icon>
@@ -14,8 +16,8 @@
         <ngx-qrcode [(qrc-value)]="createdCode"></ngx-qrcode>
         <ion-card-content>
             <button ion-label (click)="onTabToCopyClicked()">
-                    <p>Tab to Copy:</p>
-                    <p>{{ createdCode }}</p>
+                <p>Tab to Copy:</p>
+                <p>{{ createdCode }}</p>
             </button>
         </ion-card-content>
     </ion-card>
