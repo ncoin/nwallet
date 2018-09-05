@@ -46,8 +46,6 @@ export class WalletDetailPage {
     private async init(): Promise<void> {
         const transactions = await this.appService.getTransfer();
         this.arrange(transactions);
-        this.arrange(transactions);
-        this.arrange(transactions);
     }
 
     private arrange(transactions: NWallet.Protocol.Transaction[]): void {
@@ -71,7 +69,7 @@ export class WalletDetailPage {
 
     public async doInfinite(infinite: InfiniteScroll): Promise<void> {
         this.logger.debug('[transfer-tab-page] request transfers skip =', this.skip);
-        const transactions = await this.appService.getTransfer(0);
+        const transactions = await this.appService.getTransfer(this.skip);
         if (transactions.length < 1) {
             this.logger.debug('[transfer-tab-page] response transfers length =', transactions.length);
             infinite.enable(false);
