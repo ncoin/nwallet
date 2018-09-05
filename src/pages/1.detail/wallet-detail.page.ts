@@ -1,11 +1,14 @@
+import { SendPage } from './../0.tab/1.transfer-tab/send/send.page';
+import { ReceivePage } from './../0.tab/1.transfer-tab/receive/receive.page';
 import { Logger } from '../../providers/common/logger/logger';
 import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController, Navbar, InfiniteScroll, NavParams, ViewController } from 'ionic-angular';
+import { IonicPage, NavController, Navbar, InfiniteScroll, NavParams, ViewController, ModalController } from 'ionic-angular';
 import { AppServiceProvider } from '../../providers/app/app.service';
 import { NWallet } from '../../interfaces/nwallet';
 import * as _ from 'lodash';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { WalletMainTabPage } from '../0.tab/3.wallet-tab/wallet-main-tab';
+import { NWModalTransition } from '../../tools/extension/transition';
 /**
  * Generated class for the WalletDetailPage page.
  *
@@ -25,7 +28,14 @@ export class WalletDetailPage {
     @ViewChild(Navbar)
     navBar: Navbar;
 
-    constructor(public viewCtrl: ViewController, private logger: Logger, private appService: AppServiceProvider, private browser: InAppBrowser, private navParams: NavParams) {
+    constructor(
+        public viewCtrl: ViewController,
+        private logger: Logger,
+        private appService: AppServiceProvider,
+        private browser: InAppBrowser,
+        navParams: NavParams,
+        private modal: ModalController
+    ) {
         const wallet = navParams.get('wallet');
         if (wallet.item.asset.code === 'XLM' || wallet.item.asset.code === 'NCN') {
             this.init();
@@ -35,6 +45,8 @@ export class WalletDetailPage {
 
     private async init(): Promise<void> {
         const transactions = await this.appService.getTransfer();
+        this.arrange(transactions);
+        this.arrange(transactions);
         this.arrange(transactions);
     }
 
@@ -59,7 +71,7 @@ export class WalletDetailPage {
 
     public async doInfinite(infinite: InfiniteScroll): Promise<void> {
         this.logger.debug('[transfer-tab-page] request transfers skip =', this.skip);
-        const transactions = await this.appService.getTransfer(this.skip);
+        const transactions = await this.appService.getTransfer(0);
         if (transactions.length < 1) {
             this.logger.debug('[transfer-tab-page] response transfers length =', transactions.length);
             infinite.enable(false);
@@ -84,6 +96,16 @@ export class WalletDetailPage {
         });
 
         browser.show();
+    }
+
+    public onReceiveClick(): void {
+        const modal = this.modal.create(ReceivePage, { asset: this.asset }, NWModalTransition.Slide());
+        modal.present();
+    }
+
+    public onSendClick(): void {
+        const modal = this.modal.create(SendPage, { asset: this.asset }, NWModalTransition.Slide());
+        modal.present();
     }
 
     public onClose() {

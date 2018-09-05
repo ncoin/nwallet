@@ -2,7 +2,7 @@ import { NWallet } from './../../../../interfaces/nwallet';
 import { AccountProvider } from './../../../../providers/account/account';
 import { QRScanPage } from './../../../qrscan/qrscan.page';
 import { Component } from '@angular/core';
-import { IonicPage, ViewController,  ModalController } from 'ionic-angular';
+import { IonicPage, ViewController, ModalController, NavParams } from 'ionic-angular';
 
 import { QRScanner } from '@ionic-native/qr-scanner';
 import { Logger } from '../../../../providers/common/logger/logger';
@@ -19,9 +19,22 @@ export class SendPage {
     public sendAsset: NWallet.AssetContext;
     public availableAssets: NWallet.AssetContext[];
 
-    constructor(private viewCtrl: ViewController, private qrScanner: QRScanner, private modal: ModalController, private logger: Logger, private account: AccountProvider) {
-        this.availableAssets = this.account.getNativeAssets();
-        this.sendAsset = this.availableAssets[0];
+    constructor(
+        private viewCtrl: ViewController,
+        private qrScanner: QRScanner,
+        private modal: ModalController,
+        private logger: Logger,
+        private account: AccountProvider,
+        navParams: NavParams
+    ) {
+        const asset = navParams.get('asset') as NWallet.AssetContext;
+        if (asset) {
+            this.availableAssets = [asset];
+            this.sendAsset = asset;
+        } else {
+            this.availableAssets = this.account.getNativeAssets();
+            this.sendAsset = this.availableAssets[0];
+        }
     }
 
     public onAssetChanged(): void {

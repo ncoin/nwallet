@@ -10,7 +10,7 @@
         </ion-buttons>
     </ion-navbar>
 </ion-header>
-<ion-content>
+<ion-content padding>
     <ion-grid ion-fixed class="wallet-fixed-header">
         <ion-row>
             <ion-col class="content-center ticker-text">
@@ -40,3 +40,21 @@
         </ion-infinite-scroll>
     </div>
 </ion-content>
+<ion-footer>
+    <ion-grid class="transfer-fixed-header">
+        <ion-row class="buttons">
+            <ion-col>
+                <button id="receiveButton" (click)="onReceiveClick()">
+                    <ion-label><img src="assets/img/transfer_icons_receive.png" /></ion-label>
+                    <ion-label>RECEIVE</ion-label>
+                </button>
+            </ion-col>
+            <ion-col>
+                <button id="sendButton" (click)="onSendClick()">
+                    <ion-label><img src="assets/img/transfer_icons_send.png" /></ion-label>
+                    <ion-label>SEND</ion-label>
+                </button>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+</ion-footer>
