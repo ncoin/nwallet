@@ -8,6 +8,10 @@ wallet-detail {
         height: 100%;
     }
 
+    ion-title *{
+        color: color($colors, title);
+    }
+
     ion-navbar ion-buttons {
         display: flex;
         align-items: center;
@@ -45,6 +49,7 @@ wallet-detail {
         .content-center {
             position: relative;
             text-align: center;
+            color: color($colors, primary);
         }
     }
 

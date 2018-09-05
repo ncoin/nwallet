@@ -8,6 +8,12 @@ page-send {
         height: 100%;
     }
 
+
+    ion-title *{
+        color: color($colors, title);
+    }
+
+
     ion-navbar ion-buttons {
         display: flex;
         align-items: center;
