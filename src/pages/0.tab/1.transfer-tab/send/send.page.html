@@ -1,7 +1,7 @@
 <ion-header>
-    <div *ngIf="canGoBack" class="content-left">
+    <!--<div *ngIf="canGoBack" class="content-left">
         <fa-icon name="chevron-left" (click)="onClose()"></fa-icon>
-    </div>
+    </div>-->
     <div class="content-center">
         <img src="assets/img/title_send.png">
     </div>
@@ -40,6 +40,20 @@
         <ion-row>
             <ion-col>
                 <ion-input [(ngModel)]="sendAmount" type="number" text-right></ion-input>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col>
+                <div style="float: right">
+                    Available: 1.00 BTC
+                </div>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col>
+                <div style="float: right; font-style: italic; color: #da6464;" >
+                    Max
+                </div>
             </ion-col>
         </ion-row>
     </ion-grid>
