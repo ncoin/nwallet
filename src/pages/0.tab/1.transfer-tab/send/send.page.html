@@ -1,5 +1,5 @@
 <ion-header>
-    <div class="content-left">
+    <div *ngIf="canGoBack" class="content-left">
         <fa-icon name="chevron-left" (click)="onClose()"></fa-icon>
     </div>
     <div class="content-center">
@@ -44,7 +44,7 @@
         </ion-row>
     </ion-grid>
 </ion-content>
-<ion-footer>
+<ion-footer *ngIf="canGoBack">
     <button ion-button full (click)="onClose()" color="dark" disabled>
         Next
     </button>

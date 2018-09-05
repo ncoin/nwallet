@@ -12,6 +12,7 @@ export class ReceivePage {
     qrData = null;
     createdCode = null;
     scannedCode = null;
+    public canGoBack: boolean;
 
     constructor(
         public navCtrl: NavController,
@@ -23,6 +24,8 @@ export class ReceivePage {
     ) {
         this.qrData = account.getId();
         this.createdCode = account.getId();
+
+        this.canGoBack = this.navCtrl['index'] ? false : true;
     }
 
     onCreateCode() {
@@ -36,21 +39,33 @@ export class ReceivePage {
     }
 
     public onTabToCopyClicked(): void {
+        this.toast
+            .create({
+                message: '' + this.navCtrl.canGoBack(),
+                duration: 3000,
+                position: 'middle',
+            })
+            .present();
+
         this.clipboard
             .copy(this.qrData)
             .then(() => {
-                this.toast.create({
-                    message: 'copied!',
-                    duration: 3000,
-                    position: 'middle',
-                }).present();
+                this.toast
+                    .create({
+                        message: 'copied!',
+                        duration: 3000,
+                        position: 'middle',
+                    })
+                    .present();
             })
             .catch(err => {
-                this.toast.create({
-                    message: 'failed to copy!',
-                    duration: 3000,
-                    position: 'middle',
-                }).present();
+                this.toast
+                    .create({
+                        message: 'failed to copy!',
+                        duration: 3000,
+                        position: 'middle',
+                    })
+                    .present();
             });
     }
 }

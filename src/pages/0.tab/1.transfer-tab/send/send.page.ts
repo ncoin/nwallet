@@ -2,7 +2,7 @@ import { NWallet } from './../../../../interfaces/nwallet';
 import { AccountProvider } from './../../../../providers/account/account';
 import { QRScanPage } from './../../../qrscan/qrscan.page';
 import { Component } from '@angular/core';
-import { IonicPage, ViewController, ModalController, NavParams } from 'ionic-angular';
+import { IonicPage, ViewController, ModalController, NavParams, NavController } from 'ionic-angular';
 
 import { QRScanner } from '@ionic-native/qr-scanner';
 import { Logger } from '../../../../providers/common/logger/logger';
@@ -18,8 +18,10 @@ export class SendPage {
     public sendAmount = 0;
     public sendAsset: NWallet.AssetContext;
     public availableAssets: NWallet.AssetContext[];
+    public canGoBack: boolean;
 
     constructor(
+        private navCtrl: NavController,
         private viewCtrl: ViewController,
         private qrScanner: QRScanner,
         private modal: ModalController,
@@ -35,6 +37,8 @@ export class SendPage {
             this.availableAssets = this.account.getNativeAssets();
             this.sendAsset = this.availableAssets[0];
         }
+        // todo fixme --sky
+        this.canGoBack = this.navCtrl['index'] ? false : true;
     }
 
     public onAssetChanged(): void {
