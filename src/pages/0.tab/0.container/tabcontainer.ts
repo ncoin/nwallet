@@ -16,7 +16,7 @@ export interface TabItemContext {
     component: any;
     icon: string;
     params?: any;
-    enable: string;
+    isEnable: boolean;
     // tabComponent: SchedulePage,
     // index: 0,
 }
@@ -32,27 +32,27 @@ export class TabcontainerPage {
         {
             component: TransferHistoryTabPage,
             icon: 'nwallet-transfer',
-            enable: 'true',
+            isEnable: true,
         },
         {
             component: BuyNcashTabPage,
             icon: 'nwallet-buy',
-            enable: 'false',
+            isEnable: false,
         },
         {
             component: WalletMainTabPage,
             icon: 'nwallet-home',
-            enable: 'true',
+            isEnable: true,
         },
         {
             component: LoanNcashTabPage,
             icon: 'nwallet-loan',
-            enable: 'false',
+            isEnable: false,
         },
         {
             component: AccountTabPage,
             icon: 'nwallet-account',
-            enable: 'true',
+            isEnable: true,
         },
     ];
 

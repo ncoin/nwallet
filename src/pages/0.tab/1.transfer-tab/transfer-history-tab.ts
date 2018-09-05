@@ -1,10 +1,13 @@
 import { Logger } from '../../../providers/common/logger/logger';
 import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController, Navbar, InfiniteScroll } from 'ionic-angular';
+import { IonicPage, NavController, Navbar, InfiniteScroll, ModalController } from 'ionic-angular';
 import { AppServiceProvider } from '../../../providers/app/app.service';
 import { NWallet } from '../../../interfaces/nwallet';
 import * as _ from 'lodash';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
+import { ReceivePage } from './receive/receive.page';
+import { NWTransition, NWModalTransition } from '../../../tools/extension/transition';
+import { SendPage } from './send/send.page';
 /**
  * Generated class for the WalletDetailPage page.
  *
@@ -22,7 +25,7 @@ export class TransferHistoryTabPage {
     private skip = 0;
     @ViewChild(Navbar) navBar: Navbar;
 
-    constructor(public navCtrl: NavController, private logger: Logger, private appService: AppServiceProvider, private browser: InAppBrowser) {
+    constructor(public navCtrl: NavController, private logger: Logger, private appService: AppServiceProvider, private browser: InAppBrowser, private modal: ModalController) {
         this.init();
     }
 
@@ -68,7 +71,7 @@ export class TransferHistoryTabPage {
             location: 'no',
             clearcache: 'yes',
             footer: 'yes',
-            toolbar: 'no',
+            toolbar: 'yes',
             closebuttoncaption: 'done',
         });
 
@@ -77,5 +80,15 @@ export class TransferHistoryTabPage {
         });
 
         browser.show();
+    }
+
+    public onReceiveClick(): void {
+        const modal = this.modal.create(ReceivePage, {}, NWModalTransition.Slide());
+        modal.present();
+    }
+
+    public onSendClick(): void {
+        const modal = this.modal.create(SendPage, {}, NWModalTransition.Slide());
+        modal.present();
     }
 }

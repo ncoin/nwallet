@@ -13,7 +13,7 @@
     <ion-grid ion-fixed class="transfer-fixed-header">
         <ion-row class="buttons">
             <ion-col>
-                <button>
+                <button (click)="onReceiveClick()">
                     <ion-label><img src="assets/img/transfer_icons_receive.png" /></ion-label>
                     <ion-label>RECEIVE</ion-label>
                 </button>
@@ -25,7 +25,7 @@
                 </button>
             </ion-col>
             <ion-col>
-                <button>
+                <button (click)="onSendClick()">
                     <ion-label><img src="assets/img/transfer_icons_send.png" /></ion-label>
                     <ion-label>SEND</ion-label>
                 </button>
