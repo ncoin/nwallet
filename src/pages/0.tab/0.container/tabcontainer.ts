@@ -10,6 +10,8 @@ import { BuyNcashTabPage } from '../2.buy-ncash-tab/buy-ncash-tab';
 import { WalletTabPages, WalletMainTabPage } from '../3.wallet-tab/wallet-main-tab';
 import { LoanNcashTabPage } from '../4.loan-ncash-tab/loan-ncash-tab';
 import { AccountTabPage } from '../5.account-tab/account-tab';
+import { ReceivePage } from '../1.transfer-tab/receive/receive.page';
+import { SendPage } from '../1.transfer-tab/send/send.page';
 export interface TabItemContext {
     // title: "Schedule",
     // name: "TabsPage",
@@ -35,9 +37,9 @@ export class TabcontainerPage {
             isEnable: true,
         },
         {
-            component: BuyNcashTabPage,
+            component: ReceivePage,
             icon: 'nwallet-buy',
-            isEnable: false,
+            isEnable: true,
         },
         {
             component: WalletMainTabPage,
@@ -45,9 +47,9 @@ export class TabcontainerPage {
             isEnable: true,
         },
         {
-            component: LoanNcashTabPage,
+            component: SendPage,
             icon: 'nwallet-loan',
-            isEnable: false,
+            isEnable: true,
         },
         {
             component: AccountTabPage,
