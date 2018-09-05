@@ -1,13 +1,14 @@
 import { EventTypes } from '../../../interfaces/events';
 import { LoanNcashTabPage } from '../4.loan-ncash-tab/loan-ncash-tab';
 import { BuyNcashTabPage } from '../2.buy-ncash-tab/buy-ncash-tab';
-import { WalletDetailPage } from '../../1.detail/wallet-detail';
+import { WalletDetailPage } from '../../1.detail/wallet-detail.page';
 import { Logger } from '../../../providers/common/logger/logger';
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, ModalController } from 'ionic-angular';
 import { NWallet } from '../../../interfaces/nwallet';
 import { EventProvider } from '../../../providers/common/event/event';
 import { AccountProvider } from '../../../providers/account/account';
+import { NWModalTransition } from '../../../tools/extension/transition';
 
 /**
  * Generated class for the WalletPage page.
@@ -29,7 +30,7 @@ export class WalletMainTabPage {
     nCash: NWallet.AssetContext;
     totalPrice: string;
     private subscription: any;
-    constructor(public navCtrl: NavController, private event: EventProvider, private logger: Logger, private account: AccountProvider) {
+    constructor(public navCtrl: NavController, private event: EventProvider, private logger: Logger, private account: AccountProvider, private modalCtrl: ModalController) {
         this.init();
     }
 
@@ -82,15 +83,10 @@ export class WalletMainTabPage {
     }
 
     public onSelectWallet(wallet: NWallet.AssetContext) {
-        console.log('onSelectWallet', wallet);
-        this.navCtrl.push(
-              WalletDetailPage,
-             { wallet: wallet },
-             {
-                 animate: true,
-                 animation: 'ios-transition',
-             },
-        );
+
+        const modal = this.modalCtrl.create(WalletDetailPage, { wallet: wallet}, NWModalTransition.Slide());
+        modal.present();
+
     }
 }
 

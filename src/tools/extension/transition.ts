@@ -15,6 +15,8 @@ import { NavOptions, ModalOptions } from 'ionic-angular';
 //     updateUrl?: boolean;
 //     isNavRoot?: boolean;
 // }
+
+// todo rearchitecturing --sky`
 export namespace NWTransition {
     // this.navCtrl.push(
     //     WalletDetailPage,

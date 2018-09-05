@@ -17,8 +17,6 @@
         </ion-label>
         <ion-input [(ngModel)]="recipientAddress" type="text" text-right></ion-input>
 
-
-
     </ion-item>
 
     <ion-item>
@@ -27,7 +25,7 @@
         </ion-label>
         <ion-input [(ngModel)]="sendAmount" type="number" text-right></ion-input>
 
-        <ion-select item-end [(ngModel)]="sendAsset" interface="popover" >
+        <ion-select item-end [(ngModel)]="sendAsset" interface="popover">
             <ion-option *ngFor="let asset of availableAssets" [value]="asset" (ionSelect)="onAssetChanged()">{{asset.item.asset.code}}</ion-option>
         </ion-select>
 

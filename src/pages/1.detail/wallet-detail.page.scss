@@ -1,4 +1,24 @@
 wallet-detail {
+
+    .content {
+        background: url('../assets/img/bg.png') no-repeat top center;
+        background-size: cover;
+    }
+
+    ion-navbar {
+        height: 100%;
+    }
+
+    ion-navbar ion-buttons {
+        display: flex;
+        align-items: center;
+    }
+
+    ion-buttons button[icon-only].my-style-for-modal {
+        margin: 0 6px;
+        min-width: 36px;
+    }
+
     ion-grid {
         * {
             width: 100%;

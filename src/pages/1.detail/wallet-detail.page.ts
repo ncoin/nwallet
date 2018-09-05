@@ -1,6 +1,6 @@
 import { Logger } from '../../providers/common/logger/logger';
 import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController, Navbar, InfiniteScroll, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, Navbar, InfiniteScroll, NavParams, ViewController } from 'ionic-angular';
 import { AppServiceProvider } from '../../providers/app/app.service';
 import { NWallet } from '../../interfaces/nwallet';
 import * as _ from 'lodash';
@@ -16,25 +16,24 @@ import { WalletMainTabPage } from '../0.tab/3.wallet-tab/wallet-main-tab';
 @IonicPage()
 @Component({
     selector: 'wallet-detail',
-    templateUrl: 'wallet-detail.html',
+    templateUrl: 'wallet-detail.page.html',
 })
 export class WalletDetailPage {
     public transactionMaps: Array<{ date: string; transactions: NWallet.Protocol.Transaction[] }> = new Array<{ date: string; transactions: NWallet.Protocol.Transaction[] }>();
     private skip = 0;
-    private asset = {};
-    @ViewChild(Navbar) navBar: Navbar;
+    public asset: NWallet.AssetContext;
+    @ViewChild(Navbar)
+    navBar: Navbar;
 
-    constructor(public navCtrl: NavController, private logger: Logger, private appService: AppServiceProvider, private browser: InAppBrowser, private navParams: NavParams) {
+    constructor(public viewCtrl: ViewController, private logger: Logger, private appService: AppServiceProvider, private browser: InAppBrowser, private navParams: NavParams) {
         const wallet = navParams.get('wallet');
         if (wallet.item.asset.code === 'XLM' || wallet.item.asset.code === 'NCN') {
             this.init();
         }
         this.asset = wallet;
-        console.log('WalletDetailPage', navParams.get('wallet'));
     }
 
     private async init(): Promise<void> {
-        console.log(this);
         const transactions = await this.appService.getTransfer();
         this.arrange(transactions);
     }
@@ -87,15 +86,7 @@ export class WalletDetailPage {
         browser.show();
     }
 
-    public onBackButton() {
-        console.log('backbutton');
-        this.navCtrl.push(
-            WalletMainTabPage,
-            null,
-            {
-                animate: true,
-                animation: 'ios-transition',
-            },
-        );
+    public onClose() {
+        this.viewCtrl.dismiss();
     }
 }
