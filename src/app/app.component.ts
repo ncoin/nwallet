@@ -49,7 +49,7 @@ export class NWalletApp implements OnDestroy {
     private initialize(): void {
         this.loading = this.loadingCtrl.create({
             content: 'Loading Please Wait...'
-        }); 
+        });
         this.loading.present();
 
         this.platform
