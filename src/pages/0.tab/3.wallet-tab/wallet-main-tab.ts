@@ -83,10 +83,8 @@ export class WalletMainTabPage {
     }
 
     public onSelectWallet(wallet: NWallet.AssetContext) {
-
         const modal = this.modalCtrl.create(WalletDetailPage, { wallet: wallet}, NWModalTransition.Slide());
         modal.present();
-
     }
 }
 
