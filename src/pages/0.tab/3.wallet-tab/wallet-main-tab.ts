@@ -4,7 +4,7 @@ import { BuyNcashTabPage } from '../2.buy-ncash-tab/buy-ncash-tab';
 import { WalletDetailPage } from '../../1.detail/wallet-detail.page';
 import { Logger } from '../../../providers/common/logger/logger';
 import { Component } from '@angular/core';
-import { NavController, ModalController } from 'ionic-angular';
+import { NavController, ModalController, LoadingController, Loading  } from 'ionic-angular';
 import { NWallet } from '../../../interfaces/nwallet';
 import { EventProvider } from '../../../providers/common/event/event';
 import { AccountProvider } from '../../../providers/account/account';
@@ -30,7 +30,8 @@ export class WalletMainTabPage {
     nCash: NWallet.AssetContext;
     totalPrice: string;
     private subscription: any;
-    constructor(public navCtrl: NavController, private event: EventProvider, private logger: Logger, private account: AccountProvider, private modalCtrl: ModalController) {
+    private loading: Loading;
+    constructor(public navCtrl: NavController, private event: EventProvider, private logger: Logger, private account: AccountProvider, private modalCtrl: ModalController, public loadingCtrl: LoadingController) {
         this.init();
     }
 
@@ -50,9 +51,19 @@ export class WalletMainTabPage {
     }
 
     async init(): Promise<void> {
+        this.loading = this.loadingCtrl.create({
+            spinner: 'hide',
+            content: 'Loading Please Wait...'
+        });
+        this.loading.present();
+
         const account = await this.account.getAccount();
         if (account && account.wallets) {
             this.refreshWallets(account.wallets.slice());
+
+            setTimeout(() => {
+                this.loading.dismiss();
+            }, 1000);
         }
     }
 

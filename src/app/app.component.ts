@@ -26,7 +26,6 @@ export class NWalletApp implements OnDestroy {
     // @ViewChild(Nav) gets a reference to the app's root nav
     @ViewChild(Nav) nav: Nav;
     private resumeSubscription: Subscription;
-    private loading: Loading;
     // List of pages that can be navigated to from the left menu
     // the left menu only works after login
     // the login page disables the left menu
@@ -41,17 +40,11 @@ export class NWalletApp implements OnDestroy {
         private appConfig: AppConfigProvider,
         private appService: AppServiceProvider,
         private event: EventProvider,
-        public loadingCtrl: LoadingController
     ) {
         this.initialize();
     }
 
     private initialize(): void {
-        this.loading = this.loadingCtrl.create({
-            content: 'Loading Please Wait...'
-        });
-        this.loading.present();
-
         this.platform
             .ready()
             .then(() => {
@@ -61,9 +54,6 @@ export class NWalletApp implements OnDestroy {
 
                 this.logger.debug('[app-page] prepare platform');
                 this.onPlatformReady();
-                setTimeout(() => {
-                    this.loading.dismiss();
-                }, 1500);
             })
             .catch(error => {
                 this.logger.debug('[app-page] prepare platform failed.', error);
