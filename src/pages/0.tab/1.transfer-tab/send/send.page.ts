@@ -23,7 +23,6 @@ export class SendPage {
     constructor(
         private navCtrl: NavController,
         private viewCtrl: ViewController,
-        private qrScanner: QRScanner,
         private modal: ModalController,
         private logger: Logger,
         private account: AccountProvider,
@@ -47,32 +46,14 @@ export class SendPage {
 
     public onScanClick(): void {
         // todo [important] Guard impl!!
-        this.qrScanner
-            .prepare()
-            .then(status => {
-                if (status) {
-                    if (status.authorized) {
-                        this.logger.debug('[send-page] qrscan status authorized');
 
-                        const qrCodeModal = this.modal.create(QRScanPage, {}, NWModalTransition.Slide());
-                        qrCodeModal.onDidDismiss((dismissParam, role) => {
-                            this.logger.debug('[send-page] qrscan result', dismissParam, role);
-                            this.recipientAddress = dismissParam.qrCode;
-                        });
-                        qrCodeModal.present();
-                    } else if (status.denied) {
-                        this.logger.debug('[send-page] qrscan status denied');
-                        this.qrScanner.openSettings();
-                    } else {
-                        this.logger.warn('[send-page] qrscan status unknown', status);
-                    }
-                } else {
-                    this.logger.error('[send-page] qrscan status invalid', status);
-                }
-            })
-            .catch(error => {
-                this.logger.error('[send-page] qrscan prepare error', error);
-            });
+        const qrCodeModal = this.modal.create(QRScanPage, {}, NWModalTransition.Slide());
+        qrCodeModal.onDidDismiss((dismissParam, role) => {
+            this.logger.debug('[send-page] qrscan result', dismissParam, role);
+            this.recipientAddress = dismissParam.qrCode;
+        });
+
+        qrCodeModal.present();
     }
 
     public onMaxClick(): void {

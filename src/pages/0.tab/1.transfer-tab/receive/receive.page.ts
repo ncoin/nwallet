@@ -24,7 +24,6 @@ export class ReceivePage {
     ) {
         this.qrData = account.getId();
         this.createdCode = account.getId();
-
         this.canGoBack = this.navCtrl['index'] ? false : true;
     }
 
@@ -39,14 +38,6 @@ export class ReceivePage {
     }
 
     public onTabToCopyClicked(): void {
-        this.toast
-            .create({
-                message: '' + this.navCtrl.canGoBack(),
-                duration: 3000,
-                position: 'middle',
-            })
-            .present();
-
         this.clipboard
             .copy(this.qrData)
             .then(() => {
