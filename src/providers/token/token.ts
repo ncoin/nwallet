@@ -4,7 +4,7 @@ import { Logger } from '../common/logger/logger';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Device } from '@ionic-native/device';
-import { Keypair } from '../../../node_modules/@types/stellar-sdk';
+import { Keypair } from 'stellar-sdk';
 
 export class Token {
     static readonly Empty = <Token>undefined;
@@ -39,14 +39,12 @@ export class Token {
 const nonceRange = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
 export function getNonce(): string {
-    if (env.name !== 'dev') {
-        throw new Error('invalid environment');
-    }
     let nonce = '';
     for (let i = 0; i < 20; i++) {
         nonce += nonceRange.charAt(Math.floor(Math.random() * nonceRange.length));
     }
-    return nonce;
+
+    return `${env.name}_nonce_${nonce}`;
 }
 
 @Injectable()
@@ -74,7 +72,7 @@ export class TokenProvider {
                 env.endpoint.token(),
                 {
                     coin_symbol: 'XLM',
-                    device_id: env.name === 'dev' ? `develop_${id}` : this.device.uuid,
+                    device_id: id,
                     public_key: account.signature.public,
                     grant_type: 'password',
                 },

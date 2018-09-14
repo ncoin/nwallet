@@ -34,22 +34,23 @@
                     <span>{{totalPrice}}</span>
                 </ion-row>
             </ion-col>
+            <!--
             <ion-col float-right class="total-btn">
                 <button type="button" class="btn-add-wallet"></button>
             </ion-col>
+            -->
         </ion-row>
     </ion-grid>
 
     <ion-slides pager>
         <ion-slide *ngFor="let walletPage of walletPages">
             <ion-list>
-                <nw-asset-item class="basic" *ngFor="let wallet of walletPage.wallets" [asset]="wallet"
-                                (click)="onSelectWallet(wallet)"></nw-asset-item>
+                <nw-asset-item class="basic" *ngFor="let wallet of walletPage.wallets" [asset]="wallet"></nw-asset-item>
             </ion-list>
         </ion-slide>
     </ion-slides>
 
     <div *ngIf="nCash && nCash.item">
-        <nw-asset-item class="ncash" [asset]="nCash" (click)="onSelectWallet(nCash)"></nw-asset-item>
+        <nw-asset-item class="ncash" [asset]="nCash"></nw-asset-item>
     </div>
 </ion-content>

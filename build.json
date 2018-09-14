@@ -1,0 +1,16 @@
+{
+    "ios": {
+        "debug": {
+            "codeSignIdentity": "iPhone Developer: Sunghee Kang (7265AB9GAE)",
+            "provisioningProfile": "ef8c1708-2ee5-4c44-98c1-cac105dc784c",
+            "developmentTeam": "N9TV796V2R",
+            "packageType": "development"
+        },
+        "release": {
+            "codeSignIdentity": "iPhone Distribution: 2ACE Corporation",
+            "provisioningProfile": "247dc189-c0a0-4f64-8501-b9973e536ec7",
+            "developmentTeam": "N9TV796V2R",
+            "packageType": "enterprise"
+        }
+    }
+}

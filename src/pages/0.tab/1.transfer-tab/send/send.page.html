@@ -1,0 +1,67 @@
+<ion-header>
+    <ion-title>
+        <!--<div *ngIf="canGoBack" class="content-left">
+            <fa-icon name="chevron-left" (click)="onClose()"></fa-icon>
+        </div>-->
+        <div class="content-center">
+            <img src="assets/img/title_send.png">
+        </div>
+    </ion-title>
+</ion-header>
+
+<ion-content padding>
+    <ion-grid>
+        <ion-row>
+            <ion-col>
+                <fa-icon name="angle-right" style="margin-right: 6px;"></fa-icon><span translate>Currency</span>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col>
+                <ion-select item-end [(ngModel)]="sendAsset" interface="popover">
+                    <ion-option *ngFor="let asset of availableAssets" [value]="asset" (ionSelect)="onAssetChanged()">{{asset.item.asset.code}}</ion-option>
+                </ion-select>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col>
+                <fa-icon name="angle-right" style="margin-right: 6px;"></fa-icon><span translate>RecipientAddress</span>
+                <fa-icon name="qrcode" style="float: right;" (click)="onScanClick()"></fa-icon>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col>
+                <ion-input [(ngModel)]="recipientAddress" type="text" placeholder="{{'RecipientAddressPlaceHolder' | translate}}"></ion-input>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col>
+                <fa-icon name="angle-right" style="margin-right: 6px;"></fa-icon><span translate>Amount</span>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col>
+                <ion-input [(ngModel)]="sendAmount" type="number" text-right></ion-input>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col>
+                <div style="float: right">
+                    {{'Available' | translate }} : {{sendAsset.amount}} {{ sendAsset.item.asset.code}}
+                </div>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col>
+                <div style="float: right; font-style: italic; color: #da6464; font-size: 1.7em" (click)="onMaxClick()">
+                    Max
+                </div>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+</ion-content>
+<ion-footer *ngIf="canGoBack">
+    <button ion-button full (click)="onClose()" color="dark" disabled>
+        Next
+    </button>
+</ion-footer>

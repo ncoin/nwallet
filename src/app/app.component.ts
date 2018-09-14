@@ -9,7 +9,7 @@ import { LockProvider } from '../providers/common/lock/lock';
 import { Logger } from '../providers/common/logger/logger';
 import { Component, ViewChild, OnDestroy } from '@angular/core';
 
-import { Nav, Platform } from 'ionic-angular';
+import { Nav, Platform, LoadingController, Loading } from 'ionic-angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 
@@ -39,7 +39,7 @@ export class NWalletApp implements OnDestroy {
         private account: AccountProvider,
         private appConfig: AppConfigProvider,
         private appService: AppServiceProvider,
-        private event: EventProvider
+        private event: EventProvider,
     ) {
         this.initialize();
     }
@@ -87,12 +87,12 @@ export class NWalletApp implements OnDestroy {
             this.rootPage = EntrancePage;
         }
 
-        const hasSeenTutorial = await this.appConfig.hasSeenTutorial();
-        if (!hasSeenTutorial) {
-            this.logger.debug('[app-page] prepare tutorial page');
-            this.nav.push(TutorialPage, undefined, undefined, () => {});
-            return;
-        }
+        // const hasSeenTutorial = await this.appConfig.hasSeenTutorial();
+        // if (!hasSeenTutorial) {
+        //     this.logger.debug('[app-page] prepare tutorial page');
+        //     this.nav.push(TutorialPage, undefined, undefined, () => {});
+        //     return;
+        // }
     }
 
     private prepareSecurity(): void {
