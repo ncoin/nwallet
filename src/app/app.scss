@@ -158,17 +158,17 @@ ion-tabs[name=conference] .tabbar a.tab-button:nth-child(5){
 .ion-ios-nwallet-buy,
 .ion-ios-nwallet-buy-outline,
 .ion-md-nwallet-buy {
-    width: 44px !important;
+    width: 48px !important;
     height: 48px !important;
-    background: $background-color url('../assets/img/tabs_icons_buy_off.png') no-repeat;
+    background: $background-color url('../assets/img/tabs_icons_receive_off.png') no-repeat;
     background-size: cover;
 }
 .ion-ios-nwallet-loan,
 .ion-ios-nwallet-loan-outline,
 .ion-md-nwallet-loan {
-    width: 44px !important;
-    height: 40px !important;
-    background: $background-color url('../assets/img/tabs_icons_loan_off.png') no-repeat;
+    width: 48px !important;
+    height: 48px !important;
+    background: $background-color url('../assets/img/tabs_icons_send_off.png') no-repeat;
     background-size: cover;
 }
 .ion-ios-nwallet-account,
@@ -207,17 +207,17 @@ ion-tabs[name=conference] .tabbar a.tab-button:first-child[aria-selected=true] .
 ion-tabs[name=conference] .tabbar a.tab-button:nth-child(2)[aria-selected=true] .ion-ios-nwallet-buy,
 ion-tabs[name=conference] .tabbar a.tab-button:nth-child(2)[aria-selected=true] .ion-ios-nwallet-buy-outline,
 ion-tabs[name=conference] .tabbar a.tab-button:nth-child(2)[aria-selected=true] .ion-md-nwallet-buy {
-    width: 44px !important;
+    width: 48px !important;
     height: 48px !important;
-    background: $background-color url('../assets/img/tabs_icons_buy_on.png') no-repeat;
+    background: $background-color url('../assets/img/tabs_icons_receive_on.png') no-repeat;
     background-size: cover;
 }
 ion-tabs[name=conference] .tabbar a.tab-button:nth-child(4)[aria-selected=true] .ion-ios-nwallet-loan,
 ion-tabs[name=conference] .tabbar a.tab-button:nth-child(4)[aria-selected=true] .ion-ios-nwallet-loan-outline,
 ion-tabs[name=conference] .tabbar a.tab-button:nth-child(4)[aria-selected=true] .ion-md-nwallet-loan {
-    width: 44px !important;
-    height: 40px !important;
-    background: $background-color url('../assets/img/tabs_icons_loan_on.png') no-repeat;
+    width: 48px !important;
+    height: 48px !important;
+    background: $background-color url('../assets/img/tabs_icons_send_on.png') no-repeat;
     background-size: cover;
 }
 ion-tabs[name=conference] .tabbar a.tab-button:nth-child(5)[aria-selected=true] .ion-ios-nwallet-account,

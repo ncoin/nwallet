@@ -1,14 +1,13 @@
 import { Environments, Constants } from './template';
-
 import { Schema } from './schema';
 
-/** develop environment */
+/** stage environment */
 export const env: Environments = {
-    name: 'dev',
+    name: 'stage',
     network: Schema.network,
     endpoint: {
-        client: 'http://api.dev.ncoin.com:8080/wallet/api/',
-        auth: 'http://api.dev.ncoin.com:8080/',
+        client: 'https://api.stage.ncoin.com/wallet/api/',
+        auth: 'https://api.stage.ncoin.com/',
         api: (path: string) => `${env.endpoint.client}${path}`,
         token: () => `${env.endpoint.auth}${Constants.tokenPath}`,
     },

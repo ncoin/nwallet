@@ -1,36 +1,14 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
-import { TranslateModule, TranslateLoader, MissingTranslationHandler, MissingTranslationHandlerParams } from '@ngx-translate/core';
-import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-
-function createTranslateLoader(http: HttpClient) {
-    return new TranslateHttpLoader(http, 'assets/i18n/', '.json');
-}
-
-export class MissingHandler implements MissingTranslationHandler {
-    handle(params: MissingTranslationHandlerParams) {
-        return `@${params.key}`;
-    }
-}
+import { NgxQRCodeModule } from 'ngx-qrcode2';
 
 @NgModule({
-
     imports: [
         BrowserModule,
         HttpClientModule,
-        TranslateModule.forRoot({
-            loader: {
-                provide: TranslateLoader,
-                useFactory: createTranslateLoader,
-                deps: [HttpClient],
-            },
-            useDefaultLang: true,
-            missingTranslationHandler: {provide: MissingTranslationHandler, useClass: MissingHandler}
-        }),
+        NgxQRCodeModule
     ],
-    exports : [
-        TranslateModule, BrowserModule, HttpClientModule
-    ]
+    exports: [BrowserModule, HttpClientModule, NgxQRCodeModule],
 })
 export class NWalletSharedModule {}

@@ -20,5 +20,12 @@
   "Transfer": "Transfer",
   "CurrentLanguage": "한국어",
   "Language": "Language",
-  "BuyWith": "Buy with"
+  "BuyWith": "Buy with",
+  "BTC": "Bitcoin",
+  "ETH": "Ethereum",
+  "Total": "합계",
+  "RecipientAddress": "RECIPIENT'S ADDRESS",
+  "RecipientAddressPlaceHolder": "주소를 입력 또는 선택해주세요.",
+  "Amount": "수량",
+  "Available": "Available"
 }

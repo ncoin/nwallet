@@ -1,7 +1,4 @@
-import { NWalletDirectiveModule } from '../directives/directive.module';
-
-// import { PinModalPage } from './1.security/pin/pin';
-import { NWalletPipesModule } from '../pipes/pipes.module';
+import { AccountTabPage } from './0.tab/5.account-tab/account-tab';
 import { CreateAccountPage } from './1.account/createaccount';
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
@@ -14,8 +11,11 @@ import { PinDotsComponent } from './1.security/pin/pin-dot/pin-dots';
 import { PinModalPage } from './1.security/pin/pin';
 import { NWalletSharedModule } from '../shared/shared.module';
 import { NWalletTabPages } from './0.tab/0.container/tabcontainer';
-import { NWalletComponents } from '../components/components.module';
-
+import { NWalletComponentsModule } from '../components/components.module';
+import { TranslateModule } from '@ngx-translate/core';
+import { ReceivePage } from './0.tab/1.transfer-tab/receive/receive.page';
+import { SendPage } from './0.tab/1.transfer-tab/send/send.page';
+import { QRScanPage } from './qrscan/qrscan.page';
 
 @NgModule({
     declarations: [
@@ -28,12 +28,14 @@ import { NWalletComponents } from '../components/components.module';
         PinPadComponent,
         PinModalPage,
         ...NWalletTabPages,
-        ...NWalletComponents
+        ReceivePage,
+        SendPage,
+        QRScanPage
     ],
     imports: [
-        NWalletPipesModule,
-        NWalletDirectiveModule,
         NWalletSharedModule,
+        NWalletComponentsModule,
+        TranslateModule.forChild(),
         IonicPageModule.forChild(TutorialPage),
         IonicPageModule.forChild(EntrancePage),
         IonicPageModule.forChild(CreateAccountPage),
@@ -42,7 +44,10 @@ import { NWalletComponents } from '../components/components.module';
         IonicPageModule.forChild(PinDotsComponent),
         IonicPageModule.forChild(PinPadComponent),
         IonicPageModule.forChild(PinModalPage),
-        // IonicPageModule.forChild(NWalletTabPages),
+        IonicPageModule.forChild(NWalletTabPages),
+        IonicPageModule.forChild(ReceivePage),
+        IonicPageModule.forChild(SendPage),
+        IonicPageModule.forChild(QRScanPage),
 
     ],
     entryComponents: [TutorialPage, EntrancePage,  ...NWalletTabPages],

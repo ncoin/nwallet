@@ -1,0 +1,60 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title>
+            <div class="content-center" translate>{{asset.item.asset.code}}</div>
+        </ion-title>
+        <ion-buttons left>
+            <button class="my-style-for-modal" ion-button icon-only (click)="onClose()">
+                <ion-icon name="arrow-back"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+<ion-content padding>
+    <ion-grid ion-fixed class="wallet-fixed-header">
+        <ion-row>
+            <ion-col class="content-center ticker-text">
+                <div class="bold">{{asset | assetFormat}}</div>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col class="content-center currency-text">
+                <div>{{asset | assetToUSD}}</div>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+    <div>
+        <ion-list *ngIf="transactionMaps && transactionMaps.length > 0">
+            <ion-item-group class="content-history" *ngFor="let map of transactionMaps">
+                <ion-item-divider class="content-history-date" sticky>
+                    {{map.date | date: 'dd MMMM yyyy'}}
+                </ion-item-divider>
+                <button ion-item detail-none *ngFor="let transaction of map.transactions" (click)="onExploreTransaction(transaction)">
+                    <div item-start>{{transaction.transaction}}</div>
+                    <div item-end>{{transaction.amount}} {{transaction.asset_code}}</div>
+                </button>
+            </ion-item-group>
+        </ion-list>
+        <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+            <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="more Transactions ..."></ion-infinite-scroll-content>
+        </ion-infinite-scroll>
+    </div>
+</ion-content>
+<ion-footer>
+    <ion-grid class="transfer-fixed-header">
+        <ion-row class="buttons">
+            <ion-col>
+                <button id="receiveButton" (click)="onReceiveClick()">
+                    <ion-label><img src="assets/img/transfer_icons_receive.png" /></ion-label>
+                    <ion-label>RECEIVE</ion-label>
+                </button>
+            </ion-col>
+            <ion-col>
+                <button id="sendButton" (click)="onSendClick()">
+                    <ion-label><img src="assets/img/transfer_icons_send.png" /></ion-label>
+                    <ion-label>SEND</ion-label>
+                </button>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+</ion-footer>

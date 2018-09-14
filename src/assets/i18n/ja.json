@@ -20,5 +20,12 @@
   "Transfer": "Transfer",
   "CurrentLanguage": "日本語",
   "Language": "Language",
-  "BuyWith": "Buy with"
+  "BuyWith": "Buy with",
+  "BTC": "Bitcoin",
+  "ETH": "Ethereum",
+  "Total": "Total",
+  "RecipientAddress": "RECIPIENT'S ADDRESS",
+  "RecipientAddressPlaceHolder": "Enter or select the address",
+  "Amount": "Amount",
+  "Available": "Available"
 }

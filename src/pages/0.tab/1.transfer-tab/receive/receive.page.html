@@ -1,0 +1,31 @@
+<ion-header>
+    <ion-title>
+        <!--<div *ngIf="canGoBack" class="content-left">
+            <fa-icon name="chevron-left" (click)="onClose()"></fa-icon>
+        </div>-->
+        <div class="content-center">
+            <img src="assets/img/title_receive.png">
+        </div>
+    </ion-title>
+</ion-header>
+
+<ion-content padding>
+    <ion-card *ngIf="createdCode">
+        <ngx-qrcode [(qrc-value)]="createdCode"></ngx-qrcode>
+        <ion-card-content>
+            <div class="tab-copy-text"><button (click)="onTabToCopyClicked()">Tab to Copy:</button></div>
+            <div class="code-text" (click)="onTabToCopyClicked()">{{ createdCode }}</div>
+        </ion-card-content>
+    </ion-card>
+    <ion-card *ngIf="scannedCode">
+        <ion-card-content>
+            Result from Scan: {{ scannedCode }}
+        </ion-card-content>
+    </ion-card>
+</ion-content>
+
+<ion-footer *ngIf="canGoBack">
+    <button ion-button full (click)="onClose()" color="dark">
+        Okay
+    </button>
+</ion-footer>

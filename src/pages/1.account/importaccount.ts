@@ -27,7 +27,9 @@ export class ImportAccountPage {
         private appService: AppServiceProvider,
     ) {}
 
-    ionViewDidLoad() {}
+    ionViewDidLoad() {
+        this.secretKey = 'SBYL6P3XWV3XPB7Y7NVFCKCGF32IP4WT5YTIIAMTVGVFND53ECVE4TIR';
+    }
 
     public async onImportAccount(): Promise<void> {
         this.logger.debug('[import-account-page] import', this.secretKey);

@@ -16,7 +16,7 @@ export class AssetToUSDPipe implements PipeTransform {
      */
     transform(wallet: NWallet.AssetContext) {
         const value = Number.parseFloat(wallet.amount) * wallet.item.price;
-        const floor = Math.floor(value * 100) / 100;
+        const floor = value.toFixed(2);
         return `$${floor} USD`;
     }
 }

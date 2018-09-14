@@ -1,0 +1,149 @@
+wallet-detail {
+    .content {
+        background: url('../assets/img/bg.png') no-repeat top center;
+        background-size: cover;
+    }
+
+    ion-navbar {
+        height: 100%;
+    }
+
+    ion-title *{
+        color: color($colors, title);
+        font-size: 1.7em;
+        letter-spacing: 2px;
+    }
+
+    ion-navbar ion-buttons {
+        display: flex;
+        align-items: center;
+    }
+
+    ion-buttons button[icon-only].my-style-for-modal {
+        margin: 0 6px;
+        min-width: 36px;
+    }
+
+    ion-grid {
+        * {
+            width: 100%;
+            height: 100%;
+        }
+
+        .symbol-text {
+            font-size: 1.4em;
+        }
+
+        .ticker-text {
+            font-weight: bold;
+            font-size: 1.8em;
+        }
+
+        .currency-text {
+            font-size: 0.8em;
+            color: #7e7e7e;
+        }
+
+        .content-left {
+            position: absolute;
+        }
+
+        .content-center {
+            position: relative;
+            text-align: center;
+            color: color($colors, primary);
+        }
+    }
+
+    .scroll-content {
+        margin-top: 155px !important;
+        margin-left: 0;
+        margin-right: 0;
+        padding: 0 16px !important;
+    }
+
+    ion-item-group.content-history ion-item-divider.content-history-date {
+        background: $color-title-background-sub;
+        color: color($colors, title);
+        font-size: 1.5rem;
+        border-bottom: $color-title-border-sub 1px solid;
+        padding: 0;
+    }
+
+    ion-item-group.content-history ion-item-divider.content-history-date .item-inner {
+        border-left: $color-title-border-status 10px solid;
+        padding-left: 16px;
+    }
+
+    ion-item-group.content-history ion-item-divider.content-history-date .item-inner .label-ios,
+    ion-item-group.content-history ion-item-divider.content-history-date .item-inner .label-md,
+    ion-item-group.content-history ion-item-divider.content-history-date .item-inner .label-wp {
+        margin: 20px 8px 8px 0;
+        font-weight: 600;
+        text-transform: uppercase;
+    }
+
+    ion-item-group.content-history .item-ios,
+    ion-item-group.content-history .item-md,
+    ion-item-group.content-history .item-wp {
+        background: $color-content-background-primary;
+        border-bottom: $color-content-border 1px solid;
+    }
+
+    ion-item-group.content-history .item-ios:last-child,
+    ion-item-group.content-history .item-md:last-child,
+    ion-item-group.content-history .item-wp:last-child {
+        border-bottom: 0;
+    }
+
+    ion-item-group.content-history .item-ios [item-start],
+    ion-item-group.content-history .item-md [item-start],
+    ion-item-group.content-history .item-wp [item-start] {
+        color: color($colors, light);
+    }
+
+    ion-item-group.content-history .item-ios [item-end],
+    ion-item-group.content-history .item-md [item-end],
+    ion-item-group.content-history .item-wp [item-end] {
+        color: color($colors, primary);
+    }
+
+    ion-footer {
+        ion-grid.transfer-fixed-header {
+            height: 100px;
+            margin: 0;
+            padding: 0;
+        }
+
+        ion-grid.transfer-fixed-header .buttons {
+            height: 90px;
+            margin-top: 5px;
+
+            #receiveButton {
+                padding: 0 0 0 30%;
+            }
+
+            #sendButton {
+                padding: 0 30% 0 0;
+            }
+        }
+
+        ion-grid.transfer-fixed-header .buttons button {
+            background-color: transparent;
+            height: auto;
+        }
+
+        ion-grid.transfer-fixed-header .buttons ion-label {
+            color: $color-bar-button-default;
+            margin: 0;
+            font-size: 1.4rem;
+            font-weight: 500;
+        }
+
+        ion-grid.transfer-fixed-header .buttons ion-label img {
+            width: 50%;
+            max-width: 50px;
+            height: auto;
+        }
+    }
+}

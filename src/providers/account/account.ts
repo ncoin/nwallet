@@ -53,11 +53,22 @@ export class AccountProvider {
     //     });
     // }
 
+    /**
+     * deprecated
+     */
     public getNativeWallet(): NWallet.AssetContext {
         this.checkAccount();
 
         return this.account.wallets.find(wallet => {
             return wallet.item.asset.isNative() === true;
+        });
+    }
+
+    public getNativeAssets(): NWallet.AssetContext[] {
+        this.checkAccount();
+
+        return this.account.wallets.filter(wallet => {
+            return wallet.item.isNative;
         });
     }
 
