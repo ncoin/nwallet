@@ -1,6 +1,5 @@
-import { AccountService } from '../account/account.service';
-import { env } from '../../environments/environment';
-import { LoggerService } from '../common/logger/logger.service';
+import { LoggerService } from './../../cores/logger/logger.service';
+import { env } from '$environment';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Device } from '@ionic-native/device';

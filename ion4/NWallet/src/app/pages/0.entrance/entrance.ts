@@ -1,5 +1,5 @@
-import { ImportAccountPage } from '../1.account/importaccount';
-import { CreateAccountPage } from '../1.account/createaccount';
+import { ImportAccountPage } from '$pages/1.account/importaccount';
+import { CreateAccountPage } from '$pages/1.account/createaccount';
 import { Component } from '@angular/core';
 import { NavController, NavOptions } from 'ionic-angular';
 

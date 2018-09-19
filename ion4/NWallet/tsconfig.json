@@ -11,6 +11,17 @@
         "lib": [
             "es2017",
             "dom"
-        ]
+        ],
+        "baseUrl": "./",
+        "paths": {
+            "$environment": ["./src/environments/environment"],
+            "$services/*": ["./src/app/services/*"],
+            "$components/*": ["./src/app/components/*"],
+            "$pages/*": ["./src/app/pages/*"],
+            "$pipes/*": ["./src/app/pipes/*"],
+            "$directives/*": ["./src/app/directives/*"],
+            "$interfaces/*": ["./src/app/interfaces/*"],
+        }
+
     }
 }

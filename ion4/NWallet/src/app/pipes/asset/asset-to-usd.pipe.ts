@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { NWallet } from '../../interfaces/nwallet';
+import { NWallet } from '$interfaces/nwallet';
 
 /**
  * Generated class for the CurrencyFormatPipe pipe.

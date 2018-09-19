@@ -1,9 +1,8 @@
-import { LoggerService } from '../common/logger/logger.service';
-import { Events } from 'ionic-angular';
-import { NWallet } from '../../interfaces/nwallet';
 import { Injectable } from '@angular/core';
-import { PreferenceService, Preference } from '../common/preference/preference.service';
-import { Keypair } from 'stellar-sdk';
+import { LoggerService } from '$services/cores/logger/logger.service';
+import { PreferenceService, Preference } from '$services/cores/preference/preference.service';
+import { Events } from 'ionic-angular';
+import { NWallet } from '$interfaces/nwallet';
 
 @Injectable()
 export class AccountService {
@@ -36,8 +35,6 @@ export class AccountService {
         return this.account.signature.public;
     }
 
-
-
     // todo decoration --sky`
     private checkAccount(): void {
         if (!this.account) {
@@ -45,34 +42,12 @@ export class AccountService {
         }
     }
 
-    // public getAsset(): NWallet.AssetContext {
-    //     this.checkAccount();
-
-    //     return this.account.wallets.find(wallet => {
-    //         return wallet.item.asset.isNative() === true;
-    //     });
-    // }
-
     public getNativeWallet(): NWallet.AssetContext {
         this.checkAccount();
 
         return this.account.wallets.find(wallet => {
             return wallet.item.asset.isNative() === true;
         });
-    }
-
-    public generateSignature(secretKey?: string): NWallet.Signature {
-        let keyPair: Keypair;
-        if (secretKey) {
-            keyPair = Keypair.fromSecret(secretKey);
-        } else {
-            keyPair = Keypair.random();
-        }
-
-        return <NWallet.Signature>{
-            public: keyPair.publicKey(),
-            secret: keyPair.secret(),
-        };
     }
 
     public flush(): void {

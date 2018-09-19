@@ -1,8 +1,8 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { NWallet } from '../../interfaces/nwallet';
+import { NWallet } from '$interfaces/nwallet';
 
 @Pipe({
-    name: 'assetFormat',
+    name: 'assetFormat'
 })
 export class AssetFormatPipe implements PipeTransform {
     transform(wallet: NWallet.AssetContext) {

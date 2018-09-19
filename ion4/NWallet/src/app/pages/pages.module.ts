@@ -16,7 +16,6 @@ import { NWalletSharedModule } from '../shared/shared.module';
 import { NWalletTabPages } from './0.tab/0.container/tabcontainer';
 import { NWalletComponents } from '../components/components.module';
 
-
 @NgModule({
     declarations: [
         TutorialPage,
@@ -41,11 +40,9 @@ import { NWalletComponents } from '../components/components.module';
         IonicPageModule.forChild(FingerprintModalPage),
         IonicPageModule.forChild(PinDotsComponent),
         IonicPageModule.forChild(PinPadComponent),
-        IonicPageModule.forChild(PinModalPage),
+        IonicPageModule.forChild(PinModalPage)
         // IonicPageModule.forChild(NWalletTabPages),
-
     ],
-    entryComponents: [TutorialPage, EntrancePage,  ...NWalletTabPages],
+    entryComponents: [TutorialPage, EntrancePage, ...NWalletTabPages]
 })
 export class NWalletPageModule {}
-
