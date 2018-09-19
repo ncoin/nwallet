@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { LoggerService } from '$services/cores/logger/logger.service';
 import { PreferenceService, Preference } from '$services/cores/preference/preference.service';
 import { EventService } from '$services/cores/event/event.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Injectable({
     providedIn: 'root'
