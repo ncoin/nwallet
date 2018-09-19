@@ -1,0 +1,22 @@
+<ion-header class="nwallet-start">
+    <ion-title><img src="assets/img/title_add_wallet.png" /></ion-title>
+</ion-header>
+
+<ion-content>
+    <div class="logo">
+        <img src="assets/img/appicon.png">
+    </div>
+
+    <ion-card>
+        <ion-card-content>
+            <ion-list>
+                <button ion-item (click)="onImportAccount()" class="btn default">
+                    <h3>Import</h3>
+                </button>
+                <button ion-item (click)="onCreateAccount()" class="btn default">
+                    <h3>Create</h3>
+                </button>
+            </ion-list>
+        </ion-card-content>
+    </ion-card>
+</ion-content>

@@ -1,0 +1,54 @@
+<ion-header>
+    <ion-title>
+        <img src="assets/img/title_account.png" />
+    </ion-title>
+</ion-header>
+<ion-content padding>
+    <ion-list no-lines inset>
+        <button ion-item detail-none class="btn default">
+            <ion-label>
+                <fa-icon name="question"></fa-icon>
+                <span translate>Help</span>
+            </ion-label>
+        </button>
+
+        <button ion-item detail-none class="btn default">
+            <ion-label>
+                <fa-icon name="language"></fa-icon>
+                <span>{{'Language' | translate}}</span>
+            </ion-label>
+            <ion-select class="select-language" interface="popover" [(ngModel)]="currentLanguage">
+                <ion-option *ngFor="let language of supportedLanguagesPair" [value]="language" (ionSelect)="onLanguageChanged(language)">{{language.value}}</ion-option>
+            </ion-select>
+        </button>
+
+        <button ion-item detail-none class="btn default">
+            <ion-label>
+                <fa-icon name="lock"></fa-icon>
+                <span translate>PinSetting</span>
+            </ion-label>
+        </button>
+
+        <button ion-item detail-none class="btn default">
+            <ion-label>
+                <fa-icon name="download"></fa-icon>
+                <span translate>WalletBackup</span>
+            </ion-label>
+        </button>
+
+        <button ion-item detail-none class="btn default" (click)="setNotification(!_enablePushNotification)">
+            <ion-label>
+                <fa-icon name="bell"></fa-icon>
+                <span translate>EnablePushNotifications</span>
+            </ion-label>
+            <ion-toggle [(ngModel)]="enablePushNotification"></ion-toggle>
+        </button>
+
+        <button ion-item detail-none class="btn default" (click)="onLogout()">
+            <ion-label>
+                <fa-icon name="sign-out"></fa-icon>
+                <span translate>Logout</span>
+            </ion-label>
+        </button>
+    </ion-list>
+</ion-content>
