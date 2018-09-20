@@ -5,7 +5,7 @@ import { Logger } from '../../../providers/common/logger/logger';
 import { AccountProvider } from '../../../providers/account/account';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, ToastController } from 'ionic-angular';
-import { EntrancePage } from '../../0.entrance/entrance';
+import { EntrancePage } from '../../0.entrance/entrance.page';
 import { AppServiceProvider } from '../../../providers/app/app.service';
 import { Constants } from '../../../environments/template';
 

@@ -108,6 +108,7 @@ export class AppServiceProvider {
         if (xdrResponse) {
             const transaction = new Stellar.Transaction(xdrResponse.xdr);
             transaction.sign(Keypair.fromSecret(account.signature.secret));
+
             await this.connector.executeXDR(requestType, {
                 public_key: account.signature.public,
                 id: xdrResponse.id.toString(),

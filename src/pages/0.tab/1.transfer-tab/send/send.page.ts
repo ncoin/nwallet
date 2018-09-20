@@ -18,7 +18,7 @@ export class SendPage {
     public sendAmount = '0';
     public sendAsset: NWallet.AssetContext;
     public availableAssets: NWallet.AssetContext[];
-    public canGoBack: boolean;
+    public canBack: boolean;
 
     constructor(
         private navCtrl: NavController,
@@ -37,7 +37,7 @@ export class SendPage {
             this.sendAsset = this.availableAssets[0];
         }
         // todo fixme --sky
-        this.canGoBack = this.navCtrl['index'] ? false : true;
+        this.canBack = this.navCtrl['index'] ? false : true;
     }
 
     public onAssetChanged(): void {

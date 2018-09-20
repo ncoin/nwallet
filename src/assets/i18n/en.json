@@ -27,5 +27,6 @@
   "RecipientAddress": "RECIPIENT'S ADDRESS",
   "RecipientAddressPlaceHolder": "Enter or select the address",
   "Amount": "Amount",
-  "Available": "Available"
+  "Available": "Available",
+  "ContinueWithMobileNumber": "Continue with Mobile Number"
 }

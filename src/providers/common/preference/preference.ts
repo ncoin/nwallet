@@ -25,7 +25,10 @@ export namespace Preference.Nwallet {
 @Injectable()
 /** Storage strict type proxy */
 export class PreferenceProvider {
-    constructor(private storage: Storage) {}
+    constructor(private storage: Storage) {
+
+    }
+
 
     public get<T>(item: Preference.Item<T>): Promise<T> {
         return this.storage.get(item.name);

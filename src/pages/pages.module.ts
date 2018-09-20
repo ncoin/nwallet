@@ -3,7 +3,7 @@ import { CreateAccountPage } from './1.account/createaccount';
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 import { TutorialPage } from './0.tutorial/tutorial';
-import { EntrancePage } from './0.entrance/entrance';
+import { EntrancePage } from './0.entrance/entrance.page';
 import { ImportAccountPage } from './1.account/importaccount';
 import { FingerprintModalPage } from './1.security/fingerprint/fingerprint';
 import { PinPadComponent } from './1.security/pin/pin-pad/pin-pad';

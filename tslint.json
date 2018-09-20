@@ -117,7 +117,7 @@
             "check-type"
         ],
         "directive-selector": [true, "attribute", "app", "nw", "camelCase"],
-        "component-selector": [true, "element", "app", "nw", "kebab-case"],
+        "component-selector": [true, "element", "app", "nw", "page", "kebab-case"],
         "no-output-on-prefix": true,
         "use-input-property-decorator": true,
         "use-output-property-decorator": true,

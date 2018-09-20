@@ -5,28 +5,25 @@ import { NavController, NavOptions } from 'ionic-angular';
 
 @Component({
     selector: 'entrance',
-    templateUrl: 'entrance.html',
+    templateUrl: 'entrance.page.html',
 })
 /**
  * create account
  */
 export class EntrancePage {
-    constructor(
-        private nav: NavController,
-    ) {
-    }
+    constructor(private nav: NavController) {}
 
     public async onImportAccount(): Promise<void> {
-        await this.nav.push(ImportAccountPage, undefined, <NavOptions> {
+        await this.nav.push(ImportAccountPage, undefined, <NavOptions>{
             animate: true,
-            animation : 'wp-transition'
+            animation: 'wp-transition',
         });
     }
 
     public async onCreateAccount(): Promise<void> {
-        await this.nav.push(CreateAccountPage, undefined, <NavOptions> {
+        await this.nav.push(CreateAccountPage, undefined, <NavOptions>{
             animate: true,
-            animation : 'wp-transition'
+            animation: 'wp-transition',
         });
     }
 }
