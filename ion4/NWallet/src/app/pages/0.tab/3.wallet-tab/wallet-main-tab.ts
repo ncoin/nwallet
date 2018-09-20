@@ -1,12 +1,13 @@
-import { EventTypes } from '../../../interfaces/events';
 import { LoanNcashTabPage } from '../4.loan-ncash-tab/loan-ncash-tab';
 import { BuyNcashTabPage } from '../2.buy-ncash-tab/buy-ncash-tab';
-import { Logger } from '../../../services/common/logger/logger';
+import { WalletDetailPage } from '../../1.detail/wallet-detail.page';
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
-import { NWallet } from '../../../interfaces/nwallet';
-import { EventProvider } from '../../../services/common/event/event';
-import { AccountProvider } from '../../../services/account/account';
+import { NavController, ModalController, LoadingController, Loading } from 'ionic-angular';
+import { NWallet } from '$infrastructure/nwallet';
+import { LoggerService } from '$services/cores/logger/logger.service';
+import { AccountService } from '$services/app/account/account.service';
+import { EventService } from '$services/cores/event/event.service';
+import { EventTypes } from '$infrastructure/events';
 
 /**
  * Generated class for the WalletPage page.
@@ -21,14 +22,22 @@ export interface WalletSlide {
 
 @Component({
     selector: 'wallet-main-tab',
-    templateUrl: 'wallet-main-tab.html',
+    templateUrl: 'wallet-main-tab.html'
 })
 export class WalletMainTabPage {
     walletPages: WalletSlide[] = [];
     nCash: NWallet.AssetContext;
     totalPrice: string;
     private subscription: any;
-    constructor(public navCtrl: NavController, private event: EventProvider, private logger: Logger, private account: AccountProvider) {
+    private loading: Loading;
+    constructor(
+        public navCtrl: NavController,
+        private event: EventService,
+        private logger: LoggerService,
+        private account: AccountService,
+        private modalCtrl: ModalController,
+        public loadingCtrl: LoadingController
+    ) {
         this.init();
     }
 
@@ -48,14 +57,26 @@ export class WalletMainTabPage {
     }
 
     async init(): Promise<void> {
+        this.loading = this.loadingCtrl.create({
+            spinner: 'hide',
+            content: 'Loading Please Wait...'
+        });
+        this.loading.present();
+
         const account = await this.account.getAccount();
-        this.refreshWallets(account.wallets.slice());
+        if (account && account.wallets) {
+            this.refreshWallets(account.wallets.slice());
+
+            setTimeout(() => {
+                this.loading.dismiss();
+            }, 1000);
+        }
     }
 
     private refreshWallets = (assets: NWallet.AssetContext[]): void => {
         this.logger.debug('[wallet-tab] on refresh assets');
         const nCash = assets.find(wallet => {
-            return wallet.item.isNative === true && wallet.item.asset.code === 'NCH';
+            return wallet.item.isNative === true && wallet.item.asset.code === 'NCN';
         });
 
         let totalAmount = 0;
@@ -63,7 +84,7 @@ export class WalletMainTabPage {
             totalAmount += Number.parseFloat(wallet.amount) * wallet.item.price;
         });
 
-        this.totalPrice = totalAmount.toString();
+        this.totalPrice = totalAmount.toFixed(2).toString();
 
         assets.splice(assets.indexOf(nCash), 1);
 
@@ -76,18 +97,12 @@ export class WalletMainTabPage {
         }
 
         this.nCash = nCash;
-    }
+    };
 
     public onSelectWallet(wallet: NWallet.AssetContext) {
-        // this.navCtrl.push(
-        //     WalletDetailPage,
-        //     { wallet: wallet },
-        //     {
-        //         animate: true,
-        //         animation: 'ios-transition',
-        //     },
-        // );
+        const modal = this.modalCtrl.create(WalletDetailPage, { wallet: wallet }, NWModalTransition.Slide());
+        modal.present();
     }
 }
 
-export const WalletTabPages = [WalletMainTabPage, /*WalletDetailPage,*/ BuyNcashTabPage, LoanNcashTabPage];
+export const WalletTabPages = [WalletMainTabPage, WalletDetailPage, BuyNcashTabPage, LoanNcashTabPage];

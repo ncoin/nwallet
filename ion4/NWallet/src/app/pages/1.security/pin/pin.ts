@@ -4,9 +4,9 @@ import { Vibration } from '@ionic-native/vibration';
 import { NavController, NavParams, Platform, ViewController } from 'ionic-angular';
 
 import { AnimateDirective } from '../../../directives/animate/animate';
-// import { ConfigProvider } from '../../../services/config/config';
-// import { PersistenceProvider } from '../../../services/persistence/persistence';
-// import { Logger } from '../../../services/common/logger/logger';
+// import { ConfigProvider } from '../../../providers/config/config';
+// import { PersistenceProvider } from '../../../providers/persistence/persistence';
+// import { Logger } from '../../../providers/common/logger/logger';
 
 @Component({
     selector: 'page-pin',

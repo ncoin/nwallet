@@ -3,7 +3,6 @@ import { env } from '$environment';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Device } from '@ionic-native/device';
-import { Keypair } from 'stellar-sdk';
 
 export class Token {
     static readonly Empty = <Token>undefined;

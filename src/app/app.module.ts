@@ -73,7 +73,7 @@ export class MissingHandler implements MissingTranslationHandler {
     ],
     bootstrap: [IonicApp],
     entryComponents: [NWalletApp],
-providers: [{ provide: ErrorHandler, useClass: IonicErrorHandler }, InAppBrowser, SplashScreen, FingerprintAIO, StatusBar, Vibration, Device, Clipboard, QRScanner],
+    providers: [{ provide: ErrorHandler, useClass: IonicErrorHandler }, InAppBrowser, SplashScreen, FingerprintAIO, StatusBar, Vibration, Device, Clipboard, QRScanner],
 })
 export class AppModule {}
 

@@ -1,0 +1,67 @@
+page-receive {
+    .content {
+        background-color: white;
+    }
+
+    ion-navbar {
+        height: 100%;
+    }
+
+    ion-navbar ion-buttons {
+        display: flex;
+        align-items: center;
+    }
+
+
+    ion-card-content button {
+        background-color: transparent;
+    }
+
+    ngx-qrcode .qrcode{
+        width: 100%;
+        height: 100%;
+    }
+
+    ngx-qrcode .img{
+
+    }
+
+    .content-left {
+        position: absolute;
+        height: 100%;
+        z-index: 100;
+        display: flex;
+        top: -2px;
+        margin-left: 15px;
+        font-size: 1.8em;
+        color: #816B4B;
+        fa-icon {
+            margin: auto;
+        }
+
+        fa-icon:hover {
+            color: #F1C279;
+        }
+    }
+
+    .content-center {
+        position: relative;
+        text-align: center;
+    }
+
+    .tab-copy-text {
+        text-align: center;
+        font-style: italic;
+
+        button {
+            color: #7e7e7e;
+        }
+    }
+
+    .code-text {
+        text-align: center;
+        color: black;
+        font-size: 1.1em;
+    }
+}
+

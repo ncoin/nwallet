@@ -1,7 +1,7 @@
 import { FingerprintAIO } from '@ionic-native/fingerprint-aio';
 import { Component } from '@angular/core';
 import { Platform, NavController } from 'ionic-angular';
-import { Logger } from '../../../services/common/logger/logger';
+import { Logger } from '../../../providers/common/logger/logger';
 
 // fingerprint, pin both
 @Component({

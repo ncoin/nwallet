@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 
 import { MenuController, NavController, Slides, NavParams, NavOptions } from 'ionic-angular';
-import { AppServiceProvider } from '../../services/app/app.service';
+import { AppServiceProvider } from '../../providers/app/app.service';
 
 @Component({
     selector: 'page-tutorial',

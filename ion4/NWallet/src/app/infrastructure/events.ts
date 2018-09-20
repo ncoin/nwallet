@@ -1,6 +1,6 @@
 import { NWallet } from './nwallet';
 
-export class Events<T> {
+export class NWalletEvent<T> {
     lintVoid: T;
     constructor(private name: string) {
         this.lintVoid = undefined;
@@ -17,12 +17,12 @@ export const EventTypes = {
     },
 
     NWallet: {
-        account_create: new Events<string>('account_create'),
+        account_create: new NWalletEvent<string>('account_create'),
         account_import: set<string>('account_import'),
         account_refresh_wallet: set<NWallet.AssetContext[]>('account_refresh_wallet'),
     },
 };
 
-function set<T>(value: string): Events<T> {
-    return new Events<T>(value);
+function set<T>(value: string): NWalletEvent<T> {
+    return new NWalletEvent<T>(value);
 }

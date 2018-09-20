@@ -1,13 +1,10 @@
-import { PreferenceProvider, Preference } from '../../../services/common/preference/preference';
 import { TranslateService } from '@ngx-translate/core';
-import { AppConfigProvider } from '../../../services/app/app.config';
-import { Logger } from '../../../services/common/logger/logger';
-import { AccountProvider } from '../../../services/account/account';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, ToastController } from 'ionic-angular';
 import { EntrancePage } from '../../0.entrance/entrance';
-import { AppServiceProvider } from '../../../services/app/app.service';
-import { Constants } from '../../../environments/template';
+import { NWalletService } from '$services/app/nwallet.service';
+import { ConfigService } from '$services/app/config/config.service';
+import { LoggerService } from '$services/cores/logger/logger.service';
 
 @IonicPage()
 @Component({
@@ -31,9 +28,9 @@ export class AccountTabPage {
 
     constructor(
         public navCtrl: NavController,
-        private appService: AppServiceProvider,
-        private appConfig: AppConfigProvider,
-        private logger: Logger,
+        private appService: NWalletService,
+        private appConfig: ConfigService,
+        private logger: LoggerService,
         private toast: ToastController,
         private translate: TranslateService
     ) {

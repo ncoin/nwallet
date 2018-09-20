@@ -11,7 +11,7 @@
         "$pages/*": ["./app/pages/*"],
         "$pipes/*": ["./app/pipes/*"],
         "$directives/*": ["./app/directives/*"],
-        "$interfaces/*": ["./app/interfaces/*"],
+        "$infrastructure/*": ["./app/infrastructure/*"],
     }
   },
   "exclude": [

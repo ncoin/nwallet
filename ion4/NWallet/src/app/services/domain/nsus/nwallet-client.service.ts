@@ -1,16 +1,15 @@
-import { env } from './../../../../environments/environment';
-import { Asset } from 'stellar-sdk';
 import { Injectable } from '@angular/core';
-
-import { EventTypes } from '../../interfaces/events';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Subscription, Observable } from 'rxjs/rx';
+import * as _ from 'lodash';
+import { env } from '$environment';
+import { Asset } from 'stellar-sdk';
+import { ParameterExpr, createExpr } from 'forge';
+import { EventTypes } from '$infrastructure/events';
 import { LoggerService } from '../../cores/logger/logger.service';
 import { EventService } from '../../cores/event/event.service';
 import { TokenService } from '../token/token.service';
-import { ParameterExpr, createExpr } from 'forge';
-import * as _ from 'lodash';
-import { NWallet, getOrAddWalletItem } from '../../../interfaces/nwallet';
-import { Subscription, Observable } from 'rxjs/rx';
+import { NWallet, getOrAddWalletItem } from '$infrastructure/nwallet';
 
 @Injectable()
 export class NWalletClientService {
@@ -58,7 +57,7 @@ export class NWalletClientService {
 
             this.subscriptions.push(subscription);
         });
-    };
+    }
 
     public async unSubscribes(account: NWallet.Account): Promise<void> {
         this.subscriptions.forEach(subscription => {
@@ -127,7 +126,7 @@ export class NWalletClientService {
                 this.logger.debug(`[nclient] get ${type} failed`, response);
                 return undefined;
             });
-    };
+    }
 
     public getTransfers = async (
         accountId: string,
@@ -145,7 +144,7 @@ export class NWalletClientService {
 
             return response;
         });
-    };
+    }
 
     public getCollaterals = async () => {
         return await this.get<NWallet.Protocol.Collateral[]>(NWallet.Protocol.Types.Collateral, '').then(collaterals => {
@@ -161,7 +160,7 @@ export class NWalletClientService {
 
             return collaterals;
         });
-    };
+    }
 
     public getCurrentLoanStatus = async (accountId: string): Promise<NWallet.Protocol.LoanStatusResponse> => {
         return await this.get<NWallet.Protocol.LoanStatusResponse>(NWallet.Protocol.Types.LoanStatus, accountId).then(response => {
@@ -176,7 +175,7 @@ export class NWalletClientService {
 
             return response;
         });
-    };
+    }
 
     public getLoanDetail = async (accountId: string, id: string): Promise<NWallet.Protocol.LoanStatusResponse> => {
         return await this.get<NWallet.Protocol.LoanStatusResponse>(NWallet.Protocol.Types.LoanStatus, `${accountId}/${id}`).then(response => {
@@ -192,7 +191,7 @@ export class NWalletClientService {
             return response;
         });
         const asd = '';
-    };
+    }
     public async getTransactions(accountId: string, asset: Asset, pageToken?: string): Promise<NWallet.Transactions.Context> {
         const params = {
             limit: pageToken ? '10' : '15',

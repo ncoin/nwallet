@@ -1,6 +1,6 @@
 import { TranslateService } from '@ngx-translate/core';
 import { Pipe, PipeTransform } from '@angular/core';
-import { NWallet } from '$interfaces/nwallet';
+import { NWallet } from '$infrastructure/nwallet';
 
 /** obsoleted --sky` */
 @Pipe({

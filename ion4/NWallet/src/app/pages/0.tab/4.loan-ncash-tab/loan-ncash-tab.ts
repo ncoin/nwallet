@@ -1,10 +1,10 @@
-import { AppServiceProvider } from '../../../services/app/app.service';
-import { AccountProvider } from '../../../services/account/account';
 import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams, Navbar, AlertController, LoadingController, InfiniteScroll, ToastController } from 'ionic-angular';
-import { NWallet } from '../../../interfaces/nwallet';
-import { Logger } from '../../../services/common/logger/logger';
 import { createExpr } from 'forge';
+import { NWallet } from '$infrastructure/nwallet';
+import { AccountService } from '$services/app/account/account.service';
+import { NWalletService } from '$services/app/nwallet.service';
+import { LoggerService } from '$services/cores/logger/logger.service';
 
 @IonicPage()
 @Component({
@@ -26,11 +26,11 @@ export class LoanNcashTabPage {
     constructor(
         public navCtrl: NavController,
         public navParams: NavParams,
-        private account: AccountProvider,
-        private appService: AppServiceProvider,
+        private account: AccountService,
+        private appService: NWalletService,
         private alert: AlertController,
         private loading: LoadingController,
-        private logger: Logger,
+        private logger: LoggerService,
         private toast: ToastController
     ) {
         this.init();

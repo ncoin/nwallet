@@ -20,7 +20,7 @@
             "$pages/*": ["./src/app/pages/*"],
             "$pipes/*": ["./src/app/pipes/*"],
             "$directives/*": ["./src/app/directives/*"],
-            "$interfaces/*": ["./src/app/interfaces/*"],
+            "$infrastructure/*": ["./src/app/infrastructure/*"],
         }
 
     }

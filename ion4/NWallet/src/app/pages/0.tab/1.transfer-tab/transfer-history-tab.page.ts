@@ -1,10 +1,13 @@
-import { Logger } from '../../../services/common/logger/logger';
 import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, Navbar, InfiniteScroll } from 'ionic-angular';
-import { AppServiceProvider } from '../../../services/app/app.service';
-import { NWallet } from '../../../interfaces/nwallet';
+import { ModalController } from '@ionic/angular';
 import * as _ from 'lodash';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
+import { ReceivePage } from '$pages/0.tab/1.transfer-tab/receive/receive.page';
+import { SendPage } from '$pages/0.tab/1.transfer-tab/send/send.page';
+import { NWallet } from '$infrastructure/nwallet';
+import { LoggerService } from '$services/cores/logger/logger.service';
+import { NWalletService } from '$services/app/nwallet.service';
 /**
  * Generated class for the WalletDetailPage page.
  *
@@ -15,14 +18,24 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
 @IonicPage()
 @Component({
     selector: 'transfer-history-tab',
-    templateUrl: 'transfer-history-tab.html',
+    templateUrl: 'transfer-history-tab.html'
 })
 export class TransferHistoryTabPage {
-    public transactionMaps: Array<{ date: string; transactions: NWallet.Protocol.Transaction[] }> = new Array<{ date: string; transactions: NWallet.Protocol.Transaction[] }>();
+    public transactionMaps: Array<{ date: string; transactions: NWallet.Protocol.Transaction[] }> = new Array<{
+        date: string;
+        transactions: NWallet.Protocol.Transaction[];
+    }>();
     private skip = 0;
-    @ViewChild(Navbar) navBar: Navbar;
+    @ViewChild(Navbar)
+    navBar: Navbar;
 
-    constructor(public navCtrl: NavController, private logger: Logger, private appService: AppServiceProvider, private browser: InAppBrowser) {
+    constructor(
+        public navCtrl: NavController,
+        private logger: LoggerService,
+        private appService: NWalletService,
+        private browser: InAppBrowser,
+        private modal: ModalController
+    ) {
         this.init();
     }
 
@@ -68,14 +81,29 @@ export class TransferHistoryTabPage {
             location: 'no',
             clearcache: 'yes',
             footer: 'yes',
-            toolbar: 'no',
-            closebuttoncaption: 'done',
+            toolbar: 'yes',
+            closebuttoncaption: 'done'
         });
 
         browser.insertCSS({
-            code: 'body { margin-top : 50px;}',
+            code: 'body { margin-top : 50px;}'
         });
 
         browser.show();
+    }
+
+    public async onReceiveClick(): Promise<void> {
+        const modal = await this.modal.create({
+            component: ReceivePage
+        });
+        await modal.present();
+    }
+
+    public async onSendClick(): Promise<void> {
+        const modal = await this.modal.create({
+            component: SendPage
+        });
+
+        await modal.present();
     }
 }

@@ -1,8 +1,8 @@
-import { AppServiceProvider } from '../../services/app/app.service';
+import { AppServiceProvider } from '../../providers/app/app.service';
 import { Component } from '@angular/core';
 import { IonicPage, NavController } from 'ionic-angular';
-import { Logger } from '../../services/common/logger/logger';
-import { AccountProvider } from '../../services/account/account';
+import { Logger } from '../../providers/common/logger/logger';
+import { AccountProvider } from '../../providers/account/account';
 import { NWallet } from '../../interfaces/nwallet';
 
 /**
@@ -27,7 +27,9 @@ export class ImportAccountPage {
         private appService: AppServiceProvider,
     ) {}
 
-    ionViewDidLoad() {}
+    ionViewDidLoad() {
+        this.secretKey = 'SBYL6P3XWV3XPB7Y7NVFCKCGF32IP4WT5YTIIAMTVGVFND53ECVE4TIR';
+    }
 
     public async onImportAccount(): Promise<void> {
         this.logger.debug('[import-account-page] import', this.secretKey);

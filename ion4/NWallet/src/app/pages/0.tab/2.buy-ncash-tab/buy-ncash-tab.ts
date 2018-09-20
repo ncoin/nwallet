@@ -1,17 +1,18 @@
-import { AppServiceProvider } from '../../../services/app/app.service';
-// import { Logger } from '../../../services/common/logger/logger';
-import { AccountProvider } from '../../../services/account/account';
+// import { Logger } from '../../../providers/common/logger/logger';
 import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams, Navbar, AlertController, LoadingController } from 'ionic-angular';
-import { NWallet, getOrAddWalletItem } from '../../../interfaces/nwallet';
+import { NWalletService } from '$services/app/nwallet.service';
+import { AccountService } from '$services/app/account/account.service';
+import { NWallet, getOrAddWalletItem } from '$infrastructure/nwallet';
 
 @IonicPage()
 @Component({
     selector: 'buy-ncash-tab',
-    templateUrl: 'buy-ncash-tab.html',
+    templateUrl: 'buy-ncash-tab.html'
 })
 export class BuyNcashTabPage {
-    @ViewChild(Navbar) navBar: Navbar;
+    @ViewChild(Navbar)
+    navBar: Navbar;
 
     private _sourceAssetAmount = 0;
     private _sourceAsset: NWallet.AssetContext;
@@ -19,22 +20,21 @@ export class BuyNcashTabPage {
     expectedNCHContext: NWallet.AssetContext;
     expectedMaxNCHAmount: number;
 
-
     constructor(
-        private account: AccountProvider,
+        private account: AccountService,
         public navCtrl: NavController,
         public navParams: NavParams,
         // private logger: Logger,
         private alert: AlertController,
-        private appService: AppServiceProvider,
-        private loading: LoadingController,
+        private appService: NWalletService,
+        private loading: LoadingController
     ) {
         this._sourceAsset = this.account.getNativeWallet();
         const nch = getOrAddWalletItem(NWallet.Assets.NCH.code, NWallet.Assets.NCH.issuer, false);
 
         this.expectedNCHContext = <NWallet.AssetContext>{
             item: nch,
-            amount: '0',
+            amount: '0'
         };
         this.expectedMaxNCHAmount = Number.parseFloat(this.sourceAsset.amount) * this.sourceAsset.item.price;
 
@@ -85,7 +85,6 @@ export class BuyNcashTabPage {
     }
 
     public async onBuyRequest() {
-
         let nchAmount = Number.parseFloat(this.expectedNCHContext.amount.toString());
         nchAmount = Math.floor(nchAmount * 1000000) / 1000000;
         const alert = this.alert.create({
@@ -96,21 +95,21 @@ export class BuyNcashTabPage {
             buttons: [
                 {
                     text: 'CANCEL',
-                    handler: () => {},
+                    handler: () => {}
                 },
                 {
                     text: 'OK',
                     handler: async () => {
                         const loader = this.loading.create({
-                            content: 'please wait ...',
+                            content: 'please wait ...'
                         });
                         loader.present();
                         await this.appService.requestBuy(this._sourceAsset.item.asset, nchAmount);
                         this.navCtrl.popToRoot();
                         loader.dismiss();
-                    },
-                },
-            ],
+                    }
+                }
+            ]
         });
 
         alert.present();

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { LoggerService } from '$services/cores/logger/logger.service';
 import { PreferenceService, Preference } from '$services/cores/preference/preference.service';
 import { Events } from 'ionic-angular';
-import { NWallet } from '$interfaces/nwallet';
+import { NWallet } from '$infrastructure/nwallet';
 
 @Injectable()
 export class AccountService {
