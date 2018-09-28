@@ -11,6 +11,7 @@ import { AccountService } from '../../../providers/account/account.service';
 import { NWModalTransition } from '../../../tools/extension/transition';
 import { ManageWalletPage } from './manage-wallet/manage-wallet.page';
 import { AddWalletPage } from './add-wallet/add-wallet.page';
+import { NWAsset } from '../../../models/nwallet';
 
 /**
  * Generated class for the WalletPage page.
@@ -107,8 +108,9 @@ export class WalletMainTabPage {
         modal.present();
     }
 
-    public onClick_ManageWallet(): void {
-        this.navCtrl.push(ManageWalletPage, {}, {});
+    public async onClick_ManageWallet(): Promise<void> {
+        const modal = this.modalCtrl.create(ManageWalletPage, {}, {});
+        await modal.present();
     }
 }
 

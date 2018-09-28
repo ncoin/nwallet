@@ -1,3 +1,4 @@
+import { ModalPageBase } from './../../../0.base/modal.page';
 import { ViewChild } from '@angular/core';
 import { Component } from '@angular/core';
 import { NavController, ModalController, LoadingController, Loading, IonicPage } from 'ionic-angular';
@@ -10,17 +11,16 @@ import { Navbar } from 'ionic-angular/umd/navigation/nav-interfaces';
     selector: 'manage-wallet',
     templateUrl: 'manage-wallet.page.html',
 })
-export class ManageWalletPage {
-    constructor(
-        public navCtrl: NavController,
-        private logger: LoggerService,
-        private account: AccountService,
-        public loadingCtrl: LoadingController
-    ) {
+export class ManageWalletPage extends ModalPageBase {
+
+    public dd = false;
+    constructor(public navCtrl: NavController, public logger: LoggerService, private account: AccountService) {
+        super(navCtrl, logger);
         this.init();
     }
 
     ionViewDidLoad() {
+        super.ionViewDidLoad();
     }
 
     ionViewDidLeave() {}

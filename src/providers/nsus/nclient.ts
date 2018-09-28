@@ -91,6 +91,8 @@ export class NClientProvider {
                 },
             })
             .map(data => {
+                const item: NWAsset.Item = undefined;
+
                 const supportedCoins = convert(data['balances']['supportCoins']);
                 const unSupportCoins = convert(data['balances']['unSupportCoins']);
                 const returnCoins = supportedCoins.concat(unSupportCoins);

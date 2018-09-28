@@ -4,7 +4,7 @@ import { NWalletSharedModule } from '../shared/shared.module';
 import { env } from '../environments/environment';
 import { NWalletPageModule } from '../pages/pages.module';
 import { NgModule, ErrorHandler, enableProdMode } from '@angular/core';
-import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
+import { IonicApp, IonicModule, IonicErrorHandler, Config } from 'ionic-angular';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { IonicStorageModule } from '@ionic/storage';
@@ -18,6 +18,7 @@ import { TranslateModule, TranslateLoader, MissingTranslationHandler, MissingTra
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { QRScanner } from '@ionic-native/qr-scanner';
+import { NWPageTransitions } from '../transitions';
 BootStrap();
 export class MissingHandler implements MissingTranslationHandler {
     handle(params: MissingTranslationHandlerParams) {
@@ -73,9 +74,17 @@ export class MissingHandler implements MissingTranslationHandler {
     ],
     bootstrap: [IonicApp],
     entryComponents: [NWalletApp],
-providers: [{ provide: ErrorHandler, useClass: IonicErrorHandler }, InAppBrowser, SplashScreen, FingerprintAIO, StatusBar, Vibration, Device, Clipboard, QRScanner],
+    providers: [{ provide: ErrorHandler, useClass: IonicErrorHandler }, InAppBrowser, SplashScreen, FingerprintAIO, StatusBar, Vibration, Device, Clipboard, QRScanner],
 })
-export class AppModule {}
+export class AppModule {
+    constructor(config: Config) {
+        if (env.name === 'dev') {
+            NWPageTransitions.transitions.forEach(transition => {
+                config.setTransition(transition.NAME, transition);
+            });
+        }
+    }
+}
 
 function BootStrap() {
     if (env.name === 'prod') {
