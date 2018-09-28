@@ -56,7 +56,7 @@ export class MissingHandler implements MissingTranslationHandler {
                     //     name: 'WalletPage',
                     //     segment: 'wallet'
                     // }
-                ],
+                ]
             }
         ),
 
@@ -64,17 +64,30 @@ export class MissingHandler implements MissingTranslationHandler {
             loader: {
                 provide: TranslateLoader,
                 useFactory: createTranslateLoader,
-                deps: [HttpClient],
+                deps: [HttpClient]
             },
             useDefaultLang: true,
-            missingTranslationHandler: { provide: MissingTranslationHandler, useClass: MissingHandler },
+            missingTranslationHandler: {
+                provide: MissingTranslationHandler,
+                useClass: MissingHandler
+            }
         }),
         NWalletProvidersModule,
-        NWalletPageModule,
+        NWalletPageModule
     ],
     bootstrap: [IonicApp],
     entryComponents: [NWalletApp],
-    providers: [{ provide: ErrorHandler, useClass: IonicErrorHandler }, InAppBrowser, SplashScreen, FingerprintAIO, StatusBar, Vibration, Device, Clipboard, QRScanner],
+    providers: [
+        { provide: ErrorHandler, useClass: IonicErrorHandler },
+        InAppBrowser,
+        SplashScreen,
+        FingerprintAIO,
+        StatusBar,
+        Vibration,
+        Device,
+        Clipboard,
+        QRScanner
+    ]
 })
 export class AppModule {
     constructor(config: Config) {

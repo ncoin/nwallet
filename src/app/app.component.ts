@@ -18,13 +18,14 @@ import { TutorialPage } from '../pages/0.tutorial/tutorial';
 import { AppConfigProvider } from '../providers/app/app.config';
 
 @Component({
-    templateUrl: 'app.template.html',
+    templateUrl: 'app.template.html'
 })
 // tslint:disable-next-line:component-class-suffix
 export class NWalletApp implements OnDestroy {
     // the root nav is a child of the root app component
     // @ViewChild(Nav) gets a reference to the app's root nav
-    @ViewChild(Nav) nav: Nav;
+    @ViewChild(Nav)
+    nav: Nav;
     private resumeSubscription: Subscription;
     // List of pages that can be navigated to from the left menu
     // the left menu only works after login
@@ -39,7 +40,7 @@ export class NWalletApp implements OnDestroy {
         private account: AccountService,
         private appConfig: AppConfigProvider,
         private appService: AppServiceProvider,
-        private event: EventProvider,
+        private event: EventProvider
     ) {
         this.initialize();
     }
