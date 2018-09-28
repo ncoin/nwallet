@@ -1,6 +1,6 @@
 import { SendPage } from './../0.tab/1.transfer-tab/send/send.page';
 import { ReceivePage } from './../0.tab/1.transfer-tab/receive/receive.page';
-import { Logger } from '../../providers/common/logger/logger';
+import { LoggerService } from '../../providers/common/logger/logger.service';
 import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, Navbar, InfiniteScroll, NavParams, ViewController, ModalController } from 'ionic-angular';
 import { AppServiceProvider } from '../../providers/app/app.service';
@@ -30,7 +30,7 @@ export class WalletDetailPage {
 
     constructor(
         public viewCtrl: ViewController,
-        private logger: Logger,
+        private logger: LoggerService,
         private appService: AppServiceProvider,
         private browser: InAppBrowser,
         navParams: NavParams,

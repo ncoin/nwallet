@@ -2,13 +2,13 @@ import { PinModalPage } from '../../../pages/1.security/pin/pin';
 // import { FingerprintModalPage } from './../../../pages/1.security/fingerprint/fingerprint';
 import { Injectable } from '@angular/core';
 import { ModalController, ModalOptions } from 'ionic-angular';
-import { Logger } from '../logger/logger';
+import { LoggerService } from '../logger/logger.service';
 import { PlatformProvider } from '../platform/platform';
 
 @Injectable()
 export class LockProvider {
     public isModalProcessing: Boolean;
-    constructor(private logger: Logger, private modalController: ModalController, private platform: PlatformProvider) {}
+    constructor(private logger: LoggerService, private modalController: ModalController, private platform: PlatformProvider) {}
 
     public tryLockModalOpen(): void {
         if (this.isModalProcessing) {

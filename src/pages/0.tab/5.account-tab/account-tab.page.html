@@ -5,24 +5,24 @@
 </ion-header>
 <ion-content padding>
     <ion-list no-lines inset>
-        <button ion-item detail-none class="btn default">
+        <button ion-item detail-none class="btn default" (click)="onClick_MyInfo()">
             <ion-label>
                 <fa-icon name="question"></fa-icon>
-                <span translate>Help</span>
+                <span translate>MyInfo</span>
             </ion-label>
         </button>
 
         <button ion-item detail-none class="btn default">
             <ion-label>
                 <fa-icon name="language"></fa-icon>
-                <span>{{'Language' | translate}}</span>
+                <span translate>Language</span>
             </ion-label>
             <ion-select class="select-language" interface="popover" [(ngModel)]="currentLanguage">
                 <ion-option *ngFor="let language of supportedLanguagesPair" [value]="language" (ionSelect)="onLanguageChanged(language)">{{language.value}}</ion-option>
             </ion-select>
         </button>
 
-        <button ion-item detail-none class="btn default">
+        <!-- <button ion-item detail-none class="btn default">
             <ion-label>
                 <fa-icon name="lock"></fa-icon>
                 <span translate>PinSetting</span>
@@ -34,12 +34,12 @@
                 <fa-icon name="download"></fa-icon>
                 <span translate>WalletBackup</span>
             </ion-label>
-        </button>
+        </button> -->
 
-        <button ion-item detail-none class="btn default" (click)="setNotification(!_enablePushNotification)">
+        <button ion-item detail-none class="btn default" (click)="onClick_Notification(!_enablePushNotification)">
             <ion-label>
                 <fa-icon name="bell"></fa-icon>
-                <span translate>EnablePushNotifications</span>
+                <span translate>EnablePushNotification</span>
             </ion-label>
             <ion-toggle [(ngModel)]="enablePushNotification"></ion-toggle>
         </button>

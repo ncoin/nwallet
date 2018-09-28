@@ -3,10 +3,10 @@ import { EventTypes } from '../interfaces/events';
 import { EventProvider } from '../providers/common/event/event';
 import { AppServiceProvider } from '../providers/app/app.service';
 import { TabcontainerPage } from '../pages/0.tab/0.container/tabcontainer';
-import { AccountProvider } from '../providers/account/account';
+import { AccountService } from '../providers/account/account.service';
 import { LockProvider } from '../providers/common/lock/lock';
 
-import { Logger } from '../providers/common/logger/logger';
+import { LoggerService } from '../providers/common/logger/logger.service';
 import { Component, ViewChild, OnDestroy } from '@angular/core';
 
 import { Nav, Platform, LoadingController, Loading } from 'ionic-angular';
@@ -34,9 +34,9 @@ export class NWalletApp implements OnDestroy {
         public platform: Platform,
         private splashScreen: SplashScreen,
         private statusBar: StatusBar,
-        private logger: Logger,
+        private logger: LoggerService,
         private lock: LockProvider,
-        private account: AccountProvider,
+        private account: AccountService,
         private appConfig: AppConfigProvider,
         private appService: AppServiceProvider,
         private event: EventProvider,

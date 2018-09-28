@@ -1,4 +1,4 @@
-import { AccountTabPage } from './0.tab/5.account-tab/account-tab';
+import { AccountTabPage } from './0.tab/5.account-tab/account-tab.page';
 import { CreateAccountPage } from './1.account/createaccount';
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
@@ -30,7 +30,7 @@ import { QRScanPage } from './qrscan/qrscan.page';
         ...NWalletTabPages,
         ReceivePage,
         SendPage,
-        QRScanPage
+        QRScanPage,
     ],
     imports: [
         NWalletSharedModule,

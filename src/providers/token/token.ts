@@ -1,6 +1,6 @@
-import { AccountProvider } from '../account/account';
+import { AccountService } from '../account/account.service';
 import { env } from '../../environments/environment';
-import { Logger } from '../common/logger/logger';
+import { LoggerService } from '../common/logger/logger.service';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Device } from '@ionic-native/device';
@@ -50,7 +50,7 @@ export function getNonce(): string {
 @Injectable()
 export class TokenProvider {
     private token: Token;
-    constructor(private http: HttpClient, private logger: Logger, private device: Device, private account: AccountProvider) {}
+    constructor(private http: HttpClient, private logger: LoggerService, private device: Device, private account: AccountService) {}
 
     public async getToken(): Promise<Token> {
         if (!this.token || this.token.isExpired()) {

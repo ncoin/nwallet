@@ -1,10 +1,10 @@
 import { EventProvider } from '../common/event/event';
-import { AccountProvider } from '../account/account';
+import { AccountService } from '../account/account.service';
 import { NClientProvider } from '../nsus/nclient';
 import { Injectable } from '@angular/core';
 import { PreferenceProvider, Preference } from '../common/preference/preference';
 import { App } from 'ionic-angular';
-import { Logger } from '../common/logger/logger';
+import { LoggerService } from '../common/logger/logger.service';
 import { NWallet } from '../../interfaces/nwallet';
 import Stellar, { Asset, Keypair } from 'stellar-sdk';
 import { EventTypes } from '../../interfaces/events';
@@ -17,9 +17,9 @@ export class AppServiceProvider {
     constructor(
         private preference: PreferenceProvider,
         private app: App,
-        private logger: Logger,
+        private logger: LoggerService,
         private connector: NClientProvider,
-        private account: AccountProvider,
+        private account: AccountService,
         private event: EventProvider
     ) {}
 

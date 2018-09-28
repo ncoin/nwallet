@@ -1,7 +1,7 @@
 import { FingerprintAIO } from '@ionic-native/fingerprint-aio';
 import { Component } from '@angular/core';
 import { Platform, NavController } from 'ionic-angular';
-import { Logger } from '../../../providers/common/logger/logger';
+import { LoggerService } from '../../../providers/common/logger/logger.service';
 
 // fingerprint, pin both
 @Component({
@@ -12,7 +12,7 @@ export class FingerprintModalPage {
     public unregister: Function;
     public isFingerprintAvailable: boolean;
 
-    constructor(private fingerprint: FingerprintAIO, private platform: Platform, private navCtrl: NavController, private logger: Logger) {
+    constructor(private fingerprint: FingerprintAIO, private platform: Platform, private navCtrl: NavController, private logger: LoggerService) {
         this.unregister = this.platform.registerBackButtonAction(() => {});
         this.checkFingerprint();
     }

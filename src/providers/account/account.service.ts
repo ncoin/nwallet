@@ -1,4 +1,4 @@
-import { Logger } from '../common/logger/logger';
+import { LoggerService } from '../common/logger/logger.service';
 import { Events } from 'ionic-angular';
 import { NWallet } from '../../interfaces/nwallet';
 import { Injectable } from '@angular/core';
@@ -6,10 +6,10 @@ import { PreferenceProvider, Preference } from '../common/preference/preference'
 import { Keypair } from 'stellar-sdk';
 
 @Injectable()
-export class AccountProvider {
+export class AccountService {
     public account: NWallet.Account;
 
-    constructor(private event: Events, private preference: PreferenceProvider, private logger: Logger) {
+    constructor(private event: Events, private preference: PreferenceProvider, private logger: LoggerService) {
         this.init();
     }
 

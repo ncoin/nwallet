@@ -1,4 +1,4 @@
-import { Logger } from '../logger/logger';
+import { LoggerService } from '../logger/logger.service';
 import { Injectable } from '@angular/core';
 import { Platform } from 'ionic-angular';
 
@@ -13,7 +13,7 @@ export class PlatformProvider {
     public isMobile: boolean;
     public isDevel: boolean;
 
-    constructor(private platform: Platform, private logger: Logger) {
+    constructor(private platform: Platform, private logger: LoggerService) {
         let userAgent = navigator ? navigator.userAgent : null;
 
         if (!userAgent) {

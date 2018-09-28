@@ -1,6 +1,6 @@
 import { AppServiceProvider } from '../../../providers/app/app.service';
 // import { Logger } from '../../../providers/common/logger/logger';
-import { AccountProvider } from '../../../providers/account/account';
+import { AccountService } from '../../../providers/account/account.service';
 import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams, Navbar, AlertController, LoadingController } from 'ionic-angular';
 import { NWallet, getOrAddWalletItem } from '../../../interfaces/nwallet';
@@ -21,7 +21,7 @@ export class BuyNcashTabPage {
 
 
     constructor(
-        private account: AccountProvider,
+        private account: AccountService,
         public navCtrl: NavController,
         public navParams: NavParams,
         // private logger: Logger,

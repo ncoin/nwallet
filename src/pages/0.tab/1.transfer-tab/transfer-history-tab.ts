@@ -1,4 +1,4 @@
-import { Logger } from '../../../providers/common/logger/logger';
+import { LoggerService } from '../../../providers/common/logger/logger.service';
 import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, Navbar, InfiniteScroll, ModalController } from 'ionic-angular';
 import { AppServiceProvider } from '../../../providers/app/app.service';
@@ -23,9 +23,16 @@ import { SendPage } from './send/send.page';
 export class TransferHistoryTabPage {
     public transactionMaps: Array<{ date: string; transactions: NWallet.Protocol.Transaction[] }> = new Array<{ date: string; transactions: NWallet.Protocol.Transaction[] }>();
     private skip = 0;
-    @ViewChild(Navbar) navBar: Navbar;
+    @ViewChild(Navbar)
+    navBar: Navbar;
 
-    constructor(public navCtrl: NavController, private logger: Logger, private appService: AppServiceProvider, private browser: InAppBrowser, private modal: ModalController) {
+    constructor(
+        public navCtrl: NavController,
+        private logger: LoggerService,
+        private appService: AppServiceProvider,
+        private browser: InAppBrowser,
+        private modal: ModalController
+    ) {
         this.init();
     }
 

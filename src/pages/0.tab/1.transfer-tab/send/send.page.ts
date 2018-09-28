@@ -1,11 +1,11 @@
 import { NWallet } from './../../../../interfaces/nwallet';
-import { AccountProvider } from './../../../../providers/account/account';
+import { AccountService } from '../../../../providers/account/account.service';
 import { QRScanPage } from './../../../qrscan/qrscan.page';
 import { Component } from '@angular/core';
 import { IonicPage, ViewController, ModalController, NavParams, NavController } from 'ionic-angular';
 
 import { QRScanner } from '@ionic-native/qr-scanner';
-import { Logger } from '../../../../providers/common/logger/logger';
+import { LoggerService } from '../../../../providers/common/logger/logger.service';
 import { NWModalTransition } from '../../../../tools/extension/transition';
 
 @IonicPage()
@@ -24,8 +24,8 @@ export class SendPage {
         private navCtrl: NavController,
         private viewCtrl: ViewController,
         private modal: ModalController,
-        private logger: Logger,
-        private account: AccountProvider,
+        private logger: LoggerService,
+        private account: AccountService,
         navParams: NavParams
     ) {
         const asset = navParams.get('asset') as NWallet.AssetContext;

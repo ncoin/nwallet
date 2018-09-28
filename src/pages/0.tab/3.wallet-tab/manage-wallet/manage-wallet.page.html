@@ -1,0 +1,39 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title>
+            Manage Wallet
+        </ion-title>
+    </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+    <ion-grid no-padding>
+        <ion-row align-items-center>
+            <ion-col float-left class="total">
+                <ion-row class="label">
+                    <span translate>Total</span>
+                    <span>:</span>
+                </ion-row>
+                <ion-row class="price">
+                    <span>$</span>
+                </ion-row>
+            </ion-col>
+            <!--
+            <ion-col float-right class="total-btn">
+                <button type="button" class="btn-add-wallet"></button>
+            </ion-col>
+            -->
+        </ion-row>
+    </ion-grid>
+
+
+
+    <div *ngIf="nCash && nCash.item">
+        <nw-asset-item class="ncash" [asset]="nCash"></nw-asset-item>
+    </div>
+</ion-content>
+<ion-footer>
+    <ion-item>
+        <button ion-button>Add Wallets</button>
+    </ion-item>
+</ion-footer>

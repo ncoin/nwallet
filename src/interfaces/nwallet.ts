@@ -1,10 +1,6 @@
 import { Asset } from 'stellar-sdk';
 
 export namespace NWallet {
-
-}
-
-export namespace NWallet {
     export interface Account {
         isActivate: boolean;
         signature: Signature;
@@ -36,9 +32,10 @@ export namespace NWallet {
         price: number;
     }
 
-    export interface AssetContext {
-        item: AssetItem;
-        amount: string;
+    export class AssetContext {
+        constructor() {}
+        public item: AssetItem;
+        public amount: string;
     }
 
     // todo move to other namespace
@@ -119,7 +116,7 @@ export namespace NWallet.Protocol {
         Transfer = 'transactions/stellar/accounts/',
         LoanStatus = 'loans/ncash/stellar/',
         LoanDetail = 'loans/ncash/stellar/',
-        Collateral = 'loans/ncash/collateral'
+        Collateral = 'loans/ncash/collateral',
     }
 
     export interface RequestBase {
@@ -224,3 +221,4 @@ export function getOrAddWalletItem(code: string, issuer: string, isNative: boole
         }).get(key);
     }
 }
+

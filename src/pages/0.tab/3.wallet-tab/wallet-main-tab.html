@@ -1,7 +1,9 @@
-<ion-header >
-    <ion-title>
-        <img src="assets/img/title_wallet.png" />
-    </ion-title>
+<ion-header>
+    <ion-navbar>
+        <ion-title>
+            <img src="assets/img/title_wallet.png" />
+        </ion-title>
+    </ion-navbar>
 </ion-header>
 
 <ion-content padding>
@@ -10,16 +12,16 @@
     <p>secret</p>
     <p>{{account.signature.secret}}</p> -->
     <!--<ion-item no-lines>-->
-        <!--<div float-left class="total">-->
-            <!--<ion-row class="label">-->
-                <!--<span translate>Total</span>-->
-                <!--<span>:</span>-->
-            <!--</ion-row>-->
-            <!--<ion-row class="price">-->
-                <!--$<span>{{totalPrice}}</span>-->
-            <!--</ion-row>-->
-        <!--</div>-->
-        <!--<div float-right><button type="button" class="btn-add-wallet"></button></div>-->
+    <!--<div float-left class="total">-->
+    <!--<ion-row class="label">-->
+    <!--<span translate>Total</span>-->
+    <!--<span>:</span>-->
+    <!--</ion-row>-->
+    <!--<ion-row class="price">-->
+    <!--$<span>{{totalPrice}}</span>-->
+    <!--</ion-row>-->
+    <!--</div>-->
+    <!--<div float-right><button type="button" class="btn-add-wallet"></button></div>-->
     <!--</ion-item>-->
 
     <ion-grid no-padding>
@@ -34,11 +36,11 @@
                     <span>{{totalPrice}}</span>
                 </ion-row>
             </ion-col>
-            <!--
-            <ion-col float-right class="total-btn">
-                <button type="button" class="btn-add-wallet"></button>
+
+            <ion-col class="total-btn">
+                <ion-icon class="manage-wallet-icon" name="more" (click)="onClick_ManageWallet()"></ion-icon>
             </ion-col>
-            -->
+
         </ion-row>
     </ion-grid>
 

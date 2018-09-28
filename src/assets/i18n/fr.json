@@ -28,5 +28,7 @@
   "RecipientAddressPlaceHolder": "Enter or select the address",
   "Amount": "Amount",
   "Available": "Available",
-  "ContinueWithMobileNumber": "Continue with Mobile Number"
+  "ContinueWithMobileNumber": "Continue with Mobile Number",
+  "MyInfo": "My Info",
+  "EnablePushNotification": "Enable push notification"
 }

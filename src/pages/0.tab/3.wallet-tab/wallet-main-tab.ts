@@ -2,13 +2,15 @@ import { EventTypes } from '../../../interfaces/events';
 import { LoanNcashTabPage } from '../4.loan-ncash-tab/loan-ncash-tab';
 import { BuyNcashTabPage } from '../2.buy-ncash-tab/buy-ncash-tab';
 import { WalletDetailPage } from '../../1.detail/wallet-detail.page';
-import { Logger } from '../../../providers/common/logger/logger';
+import { LoggerService } from '../../../providers/common/logger/logger.service';
 import { Component } from '@angular/core';
-import { NavController, ModalController, LoadingController, Loading  } from 'ionic-angular';
+import { NavController, ModalController, LoadingController, Loading } from 'ionic-angular';
 import { NWallet } from '../../../interfaces/nwallet';
 import { EventProvider } from '../../../providers/common/event/event';
-import { AccountProvider } from '../../../providers/account/account';
+import { AccountService } from '../../../providers/account/account.service';
 import { NWModalTransition } from '../../../tools/extension/transition';
+import { ManageWalletPage } from './manage-wallet/manage-wallet.page';
+import { AddWalletPage } from './add-wallet/add-wallet.page';
 
 /**
  * Generated class for the WalletPage page.
@@ -31,7 +33,14 @@ export class WalletMainTabPage {
     totalPrice: string;
     private subscription: any;
     private loading: Loading;
-    constructor(public navCtrl: NavController, private event: EventProvider, private logger: Logger, private account: AccountProvider, private modalCtrl: ModalController, public loadingCtrl: LoadingController) {
+    constructor(
+        public navCtrl: NavController,
+        private event: EventProvider,
+        private logger: LoggerService,
+        private account: AccountService,
+        private modalCtrl: ModalController,
+        public loadingCtrl: LoadingController
+    ) {
         this.init();
     }
 
@@ -53,7 +62,7 @@ export class WalletMainTabPage {
     async init(): Promise<void> {
         this.loading = this.loadingCtrl.create({
             spinner: 'hide',
-            content: 'Loading Please Wait...'
+            content: 'Loading Please Wait...',
         });
         this.loading.present();
 
@@ -94,9 +103,13 @@ export class WalletMainTabPage {
     }
 
     public onSelectWallet(wallet: NWallet.AssetContext) {
-        const modal = this.modalCtrl.create(WalletDetailPage, { wallet: wallet}, NWModalTransition.Slide());
+        const modal = this.modalCtrl.create(WalletDetailPage, { wallet: wallet }, NWModalTransition.Slide());
         modal.present();
+    }
+
+    public onClick_ManageWallet(): void {
+        this.navCtrl.push(ManageWalletPage, {}, {});
     }
 }
 
-export const WalletTabPages = [WalletMainTabPage, WalletDetailPage, BuyNcashTabPage, LoanNcashTabPage];
+export const WalletTabPages = [WalletMainTabPage, WalletDetailPage, BuyNcashTabPage, LoanNcashTabPage, ManageWalletPage, AddWalletPage];

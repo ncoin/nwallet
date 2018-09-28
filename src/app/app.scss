@@ -1,14 +1,17 @@
 // Media of at most the maximum breakpoint width. No query for the largest breakpoint.
 // Makes the @content apply to the given breakpoint and narrower.
 @mixin media-breakpoint-down($name, $breakpoints: $grid-breakpoints) {
-  $max: breakpoint-max($name, $breakpoints);
-  @if $max {
-    @media (max-width: $max) {
-      @content;
+    $max: breakpoint-max($name, $breakpoints);
+
+    @if $max {
+        @media (max-width: $max) {
+            @content;
+        }
     }
-  } @else {
-    @content;
-  }
+
+    @else {
+        @content;
+    }
 }
 
 
@@ -21,8 +24,8 @@
 //    >> breakpoint-next(sm, $breakpoint-names: (xs sm md lg xl))
 //    md
 @function breakpoint-next($name, $breakpoints: $grid-breakpoints, $breakpoint-names: map-keys($breakpoints)) {
-  $n: index($breakpoint-names, $name);
-  @return if($n < length($breakpoint-names), nth($breakpoint-names, $n + 1), null);
+    $n: index($breakpoint-names, $name);
+    @return if($n < length($breakpoint-names), nth($breakpoint-names, $n + 1), null);
 }
 
 
@@ -32,40 +35,41 @@
 //    >> breakpoint-max(sm, (xs: 0, sm: 576px, md: 768px, lg: 992px, xl: 1200px))
 //    767px
 @function breakpoint-max($name, $breakpoints: $grid-breakpoints) {
-  $next: breakpoint-next($name, $breakpoints);
-  @return if($next, breakpoint-min($next, $breakpoints) - 1px, null);
+    $next: breakpoint-next($name, $breakpoints);
+    @return if($next, breakpoint-min($next, $breakpoints) - 1px, null);
 }
 
 
 // Creates text alignment classes based on screen size
 // TODO this would be nice to add to the framework
 @each $breakpoint in map-keys($grid-breakpoints) {
-  $infix: breakpoint-infix($breakpoint, $grid-breakpoints);
+    $infix: breakpoint-infix($breakpoint, $grid-breakpoints);
 
-  @include media-breakpoint-up($breakpoint, $grid-breakpoints) {
-    // Provide text `[text-{bp}]` attributes for aligning text based on screen size
-    [text#{$infix}-center] {
-      text-align: center;
+    @include media-breakpoint-up($breakpoint, $grid-breakpoints) {
+
+        // Provide text `[text-{bp}]` attributes for aligning text based on screen size
+        [text#{$infix}-center] {
+            text-align: center;
+        }
+
+        [text#{$infix}-left] {
+            text-align: left;
+        }
+
+        [text#{$infix}-right] {
+            text-align: right;
+        }
+
+        [hidden#{$infix}-up] {
+            display: none;
+        }
     }
 
-    [text#{$infix}-left] {
-      text-align: left;
+    @include media-breakpoint-down($breakpoint, $grid-breakpoints) {
+        [hidden#{$infix}-down] {
+            display: none;
+        }
     }
-
-    [text#{$infix}-right] {
-      text-align: right;
-    }
-
-    [hidden#{$infix}-up] {
-      display: none;
-    }
-  }
-
-  @include media-breakpoint-down($breakpoint, $grid-breakpoints) {
-    [hidden#{$infix}-down] {
-      display: none;
-    }
-  }
 }
 
 
@@ -74,6 +78,7 @@ body {
     background: $background-color;
     min-width: 320px;
 }
+
 ion-app {
     background: url('../assets/img/bg.png') no-repeat top center;
     background-size: cover;
@@ -81,6 +86,9 @@ ion-app {
 
 // fonts
 
+.toolbar-md {
+    min-height: 100%;
+}
 
 // Headers
 ion-header {
@@ -90,9 +98,13 @@ ion-header {
     max-height: 80px;
     overflow: hidden;
 }
+
 ion-header ion-navbar,
 ion-header ion-title {
     text-align: center;
+}
+ion-header ion-navbar button.back-button {
+    z-index: 1;
 }
 ion-header ion-navbar img,
 ion-header ion-title img {
@@ -101,9 +113,11 @@ ion-header ion-title img {
     max-width: 100%;
     max-height: 80px;
 }
+
 ion-header.header-ios {
     padding-top: 0;
 }
+
 ion-header ion-navbar.nwallet-start {
     background: $background-color url('../assets/img/title_nwallet.png') no-repeat center center;
     background-size: contain;
@@ -117,26 +131,33 @@ ion-header ion-navbar.nwallet-start {
 ion-tabs[name=conference] .tabbar .tab-button {
     padding: 0;
 }
-ion-tabs[name=conference] .tabbar a.tab-button:hover{
+
+ion-tabs[name=conference] .tabbar a.tab-button:hover {
     opacity: 1;
 }
-.tab-button .tab-button-icon.icon{
+
+.tab-button .tab-button-icon.icon {
     padding: 0;
     margin: 0;
 }
-.tabs-ios[tabsLayout=title-hide] .tab-button, .tabs-ios .tab-button.icon-only{
+
+.tabs-ios[tabsLayout=title-hide] .tab-button,
+.tabs-ios .tab-button.icon-only {
     min-height: $tabs-tab-min-height;
 }
-ion-tabs[name=conference] .tabbar a.tab-button:nth-child(3){
+
+ion-tabs[name=conference] .tabbar a.tab-button:nth-child(3) {
     overflow: visible;
     min-width: 102px !important;
 }
+
 ion-tabs[name=conference] .tabbar a.tab-button:first-child,
 ion-tabs[name=conference] .tabbar a.tab-button:nth-child(2),
 ion-tabs[name=conference] .tabbar a.tab-button:nth-child(4),
-ion-tabs[name=conference] .tabbar a.tab-button:nth-child(5){
+ion-tabs[name=conference] .tabbar a.tab-button:nth-child(5) {
     min-width: 44px !important;
 }
+
 .ion-ios-nwallet-home,
 .ion-ios-nwallet-home-outline,
 .ion-md-nwallet-home {
@@ -147,6 +168,7 @@ ion-tabs[name=conference] .tabbar a.tab-button:nth-child(5){
     background: $background-color url('../assets/img/tabs_icons_wallet_off.png') no-repeat;
     background-size: cover;
 }
+
 .ion-ios-nwallet-transfer,
 .ion-ios-nwallet-transfer-outline,
 .ion-md-nwallet-transfer {
@@ -155,6 +177,7 @@ ion-tabs[name=conference] .tabbar a.tab-button:nth-child(5){
     background: $background-color url('../assets/img/tabs_icons_transfer_off.png') no-repeat;
     background-size: cover;
 }
+
 .ion-ios-nwallet-buy,
 .ion-ios-nwallet-buy-outline,
 .ion-md-nwallet-buy {
@@ -163,6 +186,7 @@ ion-tabs[name=conference] .tabbar a.tab-button:nth-child(5){
     background: $background-color url('../assets/img/tabs_icons_receive_off.png') no-repeat;
     background-size: cover;
 }
+
 .ion-ios-nwallet-loan,
 .ion-ios-nwallet-loan-outline,
 .ion-md-nwallet-loan {
@@ -171,6 +195,7 @@ ion-tabs[name=conference] .tabbar a.tab-button:nth-child(5){
     background: $background-color url('../assets/img/tabs_icons_send_off.png') no-repeat;
     background-size: cover;
 }
+
 .ion-ios-nwallet-account,
 .ion-ios-nwallet-account-outline,
 .ion-md-nwallet-account {
@@ -186,6 +211,7 @@ ion-tabs[name=conference] .tabbar a.tab-button:nth-child(4)[aria-selected=true],
 ion-tabs[name=conference] .tabbar a.tab-button:nth-child(5)[aria-selected=true] {
     background: rgba(0, 0, 0, 0.5);
 }
+
 ion-tabs[name=conference] .tabbar a.tab-button:nth-child(3)[aria-selected=true] .ion-ios-nwallet-home,
 ion-tabs[name=conference] .tabbar a.tab-button:nth-child(3)[aria-selected=true] .ion-ios-nwallet-home-outline,
 ion-tabs[name=conference] .tabbar a.tab-button:nth-child(3)[aria-selected=true] .ion-md-nwallet-home {
@@ -196,6 +222,7 @@ ion-tabs[name=conference] .tabbar a.tab-button:nth-child(3)[aria-selected=true] 
     background: $background-color url('../assets/img/tabs_icons_wallet_on.png') no-repeat;
     background-size: cover;
 }
+
 ion-tabs[name=conference] .tabbar a.tab-button:first-child[aria-selected=true] .ion-ios-nwallet-transfer,
 ion-tabs[name=conference] .tabbar a.tab-button:first-child[aria-selected=true] .ion-ios-nwallet-transfer-outline,
 ion-tabs[name=conference] .tabbar a.tab-button:first-child[aria-selected=true] .ion-md-nwallet-transfer {
@@ -204,6 +231,7 @@ ion-tabs[name=conference] .tabbar a.tab-button:first-child[aria-selected=true] .
     background: $background-color url('../assets/img/tabs_icons_transfer_on.png') no-repeat;
     background-size: cover;
 }
+
 ion-tabs[name=conference] .tabbar a.tab-button:nth-child(2)[aria-selected=true] .ion-ios-nwallet-buy,
 ion-tabs[name=conference] .tabbar a.tab-button:nth-child(2)[aria-selected=true] .ion-ios-nwallet-buy-outline,
 ion-tabs[name=conference] .tabbar a.tab-button:nth-child(2)[aria-selected=true] .ion-md-nwallet-buy {
@@ -212,6 +240,7 @@ ion-tabs[name=conference] .tabbar a.tab-button:nth-child(2)[aria-selected=true] 
     background: $background-color url('../assets/img/tabs_icons_receive_on.png') no-repeat;
     background-size: cover;
 }
+
 ion-tabs[name=conference] .tabbar a.tab-button:nth-child(4)[aria-selected=true] .ion-ios-nwallet-loan,
 ion-tabs[name=conference] .tabbar a.tab-button:nth-child(4)[aria-selected=true] .ion-ios-nwallet-loan-outline,
 ion-tabs[name=conference] .tabbar a.tab-button:nth-child(4)[aria-selected=true] .ion-md-nwallet-loan {
@@ -220,6 +249,7 @@ ion-tabs[name=conference] .tabbar a.tab-button:nth-child(4)[aria-selected=true] 
     background: $background-color url('../assets/img/tabs_icons_send_on.png') no-repeat;
     background-size: cover;
 }
+
 ion-tabs[name=conference] .tabbar a.tab-button:nth-child(5)[aria-selected=true] .ion-ios-nwallet-account,
 ion-tabs[name=conference] .tabbar a.tab-button:nth-child(5)[aria-selected=true] .ion-ios-nwallet-account-outline,
 ion-tabs[name=conference] .tabbar a.tab-button:nth-child(5)[aria-selected=true] .ion-md-nwallet-account {
@@ -231,10 +261,11 @@ ion-tabs[name=conference] .tabbar a.tab-button:nth-child(5)[aria-selected=true] 
 
 
 // paging bullet
-.swiper-pagination-bullet{
+.swiper-pagination-bullet {
     background: #fff;
     opacity: 0.3;
 }
+
 .swiper-pagination-bullet-active {
     background: #fff;
     opacity: 1;
@@ -249,12 +280,14 @@ ion-tabs[name=conference] .tabbar a.tab-button:nth-child(5)[aria-selected=true] 
     border-radius: $basic-button-radius;
     margin-bottom: 10px;
 }
+
 .btn.default {
     background: $basic-button-default-background;
     -webkit-box-shadow: $basic-button-default-shadow 0 1px 0 inset;
     -moz-box-shadow: $basic-button-default-shadow 0 1px 0 inset;
     box-shadow: $basic-button-default-shadow 0 1px 0 inset;
 }
+
 .btn.default h3,
 .btn.default ion-label,
 .btn.default span {
@@ -280,11 +313,12 @@ ion-tabs[name=conference] .tabbar a.tab-button:nth-child(5)[aria-selected=true] 
 
 
 // ios list
-.list-ios > .item-block:first-child {
+.list-ios>.item-block:first-child {
     border-top: 0;
 }
-.list-ios > .item-block:last-child,
-.list-ios > .item-wrapper:last-child .item-block {
+
+.list-ios>.item-block:last-child,
+.list-ios>.item-wrapper:last-child .item-block {
     border-bottom: 0;
 }
 
@@ -300,7 +334,7 @@ ion-tabs[name=conference] .tabbar a.tab-button:nth-child(5)[aria-selected=true] 
 
 // toolbar
 .toolbar-title-wp,
-.toolbar-title-md{
+.toolbar-title-md {
     padding: 0;
 }
 
@@ -311,6 +345,7 @@ ion-tabs[name=conference] .tabbar a.tab-button:nth-child(5)[aria-selected=true] 
 .item-wp {
     background: transparent;
 }
+
 .item-ios.item-block .item-inner,
 .item-md.item-block .item-inner,
 .item-wp.item-block .item-inner {
@@ -329,6 +364,7 @@ ion-tabs[name=conference] .tabbar a.tab-button:nth-child(5)[aria-selected=true] 
     background: linear-gradient(90deg, #ddddde 0, #eae7e2 100%);
     color: color($colors, dark);
 }
+
 .text-input-ios,
 .text-input-md,
 .text-input-wp {
@@ -390,6 +426,7 @@ ion-tabs[name=conference] .tabbar a.tab-button:nth-child(5)[aria-selected=true] 
 .item-wp.item-input.ng-valid.input-has-value:not(.input-has-focus):not(.item-input-has-focus) .text-input {
     border-color: #32db64;
 }
+
 .item-ios.item-input.ng-invalid.ng-touched:not(.input-has-focus):not(.item-input-has-focus) .text-input,
 .item-md.item-input.ng-invalid.ng-touched:not(.input-has-focus):not(.item-input-has-focus) .text-input,
 .item-wp.item-input.ng-invalid.ng-touched:not(.input-has-focus):not(.item-input-has-focus) .text-input {
@@ -401,10 +438,12 @@ ion-tabs[name=conference] .tabbar a.tab-button:nth-child(5)[aria-selected=true] 
 .select-wp.select-language .select-text {
     text-align: right;
 }
+
 .select-ios.select-language .select-icon .select-icon-inner,
 .select-md.select-language .select-icon .select-icon-inner {
     color: #d8d5d1;
 }
+
 .select-wp.select-language .select-icon .select-icon-inner {
     border-color: #d8d5d1;
 }
@@ -422,6 +461,7 @@ ion-tabs[name=conference] .tabbar a.tab-button:nth-child(5)[aria-selected=true] 
 .radio-wp .radio-icon {
     border-color: #fff;
 }
+
 .radio-md .radio-inner,
 .radio-wp .radio-inner {
     background-color: #fff;
@@ -451,12 +491,15 @@ $toggle-icon-background-on: #364231;
     padding: 6px 8px 5px 16px;
     height: 24px;
 }
+
 .item-ios .toggle-ios {
     width: 43px;
 }
+
 .item-md .toggle-md {
     width: 40px;
 }
+
 .item-wp .toggle-wp {
     width: 46px;
 }
@@ -473,7 +516,7 @@ $toggle-icon-background-on: #364231;
 
 .toggle-ios .toggle-icon::before,
 .toggle-md .toggle-icon::before,
-.toggle-pw .toggle-icon::before{
+.toggle-pw .toggle-icon::before {
     content: none;
 }
 
@@ -512,27 +555,21 @@ $toggle-icon-background-on: #364231;
         top: -4px;
         left: -4px;
         border-radius: $toggle-border-radius;
-        background-image: -moz-linear-gradient(
-                right bottom,
-                $toggle-circle-1st 0%,
-                $toggle-circle-2nd 30%,
-                $toggle-circle-3rd 60%,
-                $toggle-circle-4th 100%
-        );
-        background-image: -webkit-linear-gradient(
-                right bottom,
-                $toggle-circle-1st 0%,
-                $toggle-circle-2nd 30%,
-                $toggle-circle-3rd 60%,
-                $toggle-circle-4th 100%
-        );
-        background-image: linear-gradient(
-                to right bottom,
-                $toggle-circle-1st 0%,
-                $toggle-circle-2nd 30%,
-                $toggle-circle-3rd 60%,
-                $toggle-circle-4th 100%
-        );
+        background-image: -moz-linear-gradient(right bottom,
+            $toggle-circle-1st 0%,
+            $toggle-circle-2nd 30%,
+            $toggle-circle-3rd 60%,
+            $toggle-circle-4th 100%);
+        background-image: -webkit-linear-gradient(right bottom,
+            $toggle-circle-1st 0%,
+            $toggle-circle-2nd 30%,
+            $toggle-circle-3rd 60%,
+            $toggle-circle-4th 100%);
+        background-image: linear-gradient(to right bottom,
+            $toggle-circle-1st 0%,
+            $toggle-circle-2nd 30%,
+            $toggle-circle-3rd 60%,
+            $toggle-circle-4th 100%);
         -webkit-box-shadow: $toggle-inner-out-shadow;
         -moz-box-shadow: $toggle-inner-out-shadow;
         box-shadow: $toggle-inner-out-shadow;
@@ -554,4 +591,3 @@ $toggle-icon-background-on: #364231;
 .toggle-wp.toggle-checked .toggle-icon {
     background-color: $toggle-icon-background-on;
 }
-

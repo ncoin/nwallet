@@ -28,5 +28,7 @@
   "RecipientAddressPlaceHolder": "주소를 입력 또는 선택해주세요.",
   "Amount": "수량",
   "Available": "Available",
-  "ContinueWithMobileNumber": "Continue with Mobile Number"
+  "ContinueWithMobileNumber": "Continue with Mobile Number",
+  "MyInfo": "My Info",
+  "EnablePushNotification": "Enable push notification"
 }

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ViewController, ToastController } from 'ionic-angular';
 import { QRScanner, QRScannerStatus } from '@ionic-native/qr-scanner';
-import { Logger } from '../../providers/common/logger/logger';
+import { LoggerService } from '../../providers/common/logger/logger.service';
 
 // todo [important] Guard impl!!
 @IonicPage()
@@ -16,7 +16,7 @@ export class QRScanPage {
         private viewCtrl: ViewController,
         private toast: ToastController,
         private qrScanner: QRScanner,
-        private logger: Logger
+        private logger: LoggerService
     ) {
         this.init();
     }

@@ -1,4 +1,4 @@
-wallet-main-tab {
+manage-wallet {
     .total {
 
     }
@@ -16,10 +16,18 @@ wallet-main-tab {
         padding-right: 15px;
     }
 
-    .manage-wallet-icon {
-        font-size: 24px;
-        float: right;
-        margin-right: 5px;
+    .total-btn {
+        width: 40px;
+        max-width: 40px;
+        height: 40px;
+        max-height: 40px;
+    }
+    .total-btn .btn-add-wallet {
+        width: 40px;
+        height: 40px;
+        background: transparent url("../assets/img/btn_plus.png") no-repeat;
+        background-size: cover;
+        padding: 0;
     }
 
     ion-slides.slides {

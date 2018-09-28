@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ViewController, ToastController } from 'ionic-angular';
-import { AccountProvider } from '../../../../providers/account/account';
+import { AccountService } from '../../../../providers/account/account.service';
 import { Clipboard } from '@ionic-native/clipboard';
 
 @IonicPage()
@@ -18,7 +18,7 @@ export class ReceivePage {
         public navCtrl: NavController,
         public navParams: NavParams,
         private viewCtrl: ViewController,
-        account: AccountProvider,
+        account: AccountService,
         private clipboard: Clipboard,
         private toast: ToastController
     ) {

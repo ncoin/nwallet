@@ -1,18 +1,15 @@
-import { PreferenceProvider, Preference } from '../../../providers/common/preference/preference';
-import { TranslateService } from '@ngx-translate/core';
 import { AppConfigProvider } from '../../../providers/app/app.config';
-import { Logger } from '../../../providers/common/logger/logger';
-import { AccountProvider } from '../../../providers/account/account';
+import { LoggerService } from '../../../providers/common/logger/logger.service';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, ToastController } from 'ionic-angular';
 import { EntrancePage } from '../../0.entrance/entrance.page';
 import { AppServiceProvider } from '../../../providers/app/app.service';
-import { Constants } from '../../../environments/template';
+import { MyInfoPage } from './my-info/my-info.page';
 
 @IonicPage()
 @Component({
     selector: 'account-tab',
-    templateUrl: 'account-tab.html',
+    templateUrl: 'account-tab.page.html',
 })
 export class AccountTabPage {
     _enablePushNotification: boolean;
@@ -26,35 +23,23 @@ export class AccountTabPage {
     public set enablePushNotification(value: boolean) {
         this.logger.debug('[account-tab] push notification set', value);
         this._enablePushNotification = value;
-        this.setNotification(value);
+        this.onClick_Notification(value);
     }
 
     constructor(
         public navCtrl: NavController,
         private appService: AppServiceProvider,
         private appConfig: AppConfigProvider,
-        private logger: Logger,
-        private toast: ToastController,
-        private translate: TranslateService
+        private logger: LoggerService,
+        private toast: ToastController
     ) {
         this.init();
     }
 
     private async init() {
-        const promises = Constants.supportedLanuages.map(async lang => {
-            const trans = await this.translate.getTranslation(lang).toPromise();
-            return { key: lang, value: trans.CurrentLanguage as string };
-        });
-
-        // prevent get traslation bug.. ask me --sky`
-        this.translate.getTranslation(this.translate.currentLang);
-
-        this.supportedLanguagesPair = await Promise.all(promises);
-        const currentLanguage = this.supportedLanguagesPair.find(pair => {
-            return pair.key === this.translate.currentLang;
-        });
-
-        this.currentLanguage = currentLanguage;
+        const languages = await this.appConfig.getCurrentLanguage();
+        this.supportedLanguagesPair = languages.languages;
+        this.currentLanguage = languages.currentLanguage;
     }
 
     public onLanguageChanged(language: { key: string; value: string }): void {
@@ -70,7 +55,17 @@ export class AccountTabPage {
         });
     }
 
-    private async setNotification(isEnable: boolean): Promise<void> {
+    public async onClick_MyInfo(): Promise<void> {
+        this.navCtrl.push(
+            MyInfoPage,
+            {},
+            {
+                animate: false,
+            }
+        );
+    }
+
+    public async onClick_Notification(isEnable: boolean): Promise<void> {
         const result = await this.appConfig.setPushNotification(isEnable);
         // wait result;
         const toast = this.toast.create({

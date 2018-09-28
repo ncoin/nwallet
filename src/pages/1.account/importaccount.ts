@@ -1,8 +1,8 @@
 import { AppServiceProvider } from '../../providers/app/app.service';
 import { Component } from '@angular/core';
 import { IonicPage, NavController } from 'ionic-angular';
-import { Logger } from '../../providers/common/logger/logger';
-import { AccountProvider } from '../../providers/account/account';
+import { LoggerService } from '../../providers/common/logger/logger.service';
+import { AccountService } from '../../providers/account/account.service';
 import { NWallet } from '../../interfaces/nwallet';
 
 /**
@@ -22,8 +22,8 @@ export class ImportAccountPage {
 
     constructor(
         public navCtrl: NavController,
-        public account: AccountProvider,
-        private logger: Logger,
+        public account: AccountService,
+        private logger: LoggerService,
         private appService: AppServiceProvider,
     ) {}
 

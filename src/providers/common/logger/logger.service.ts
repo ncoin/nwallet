@@ -12,7 +12,7 @@ interface LogLevel {
 }
 
 @Injectable()
-export class Logger {
+export class LoggerService {
     /* tslint:disable */
     public levels: any;
     public weight: any;

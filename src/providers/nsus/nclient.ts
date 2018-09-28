@@ -1,20 +1,23 @@
+import { Item } from './../../models/nwallet/asset';
 import { EventTypes } from '../../interfaces/events';
 import { Observable, Subscription } from 'rxjs';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Asset } from 'stellar-sdk';
 import { Injectable } from '@angular/core';
-import { Logger } from '../common/logger/logger';
+import { LoggerService } from '../common/logger/logger.service';
 import { env } from '../../environments/environment';
 import { NWallet, getOrAddWalletItem } from '../../interfaces/nwallet';
 import { EventProvider } from '../common/event/event';
 import { TokenProvider } from '../token/token';
 import { ParameterExpr, createExpr } from 'forge';
+
 import * as _ from 'lodash';
+import { NWAsset } from '../../models/nwallet';
 
 @Injectable()
 export class NClientProvider {
     private subscriptions: Subscription[] = [];
-    constructor(private logger: Logger, private http: HttpClient, private event: EventProvider, private token: TokenProvider) {}
+    constructor(private logger: LoggerService, private http: HttpClient, private event: EventProvider, private token: TokenProvider) {}
 
     private getKeyFromValue(enums: {}, value: any): string {
         return Object.keys(enums).filter(type => enums[type] === value)[0];
@@ -57,7 +60,7 @@ export class NClientProvider {
 
             this.subscriptions.push(subscription);
         });
-    }
+    };
 
     public async unSubscribes(account: NWallet.Account): Promise<void> {
         this.subscriptions.forEach(subscription => {
@@ -122,7 +125,7 @@ export class NClientProvider {
                 this.logger.debug(`[nclient] get ${type} failed`, response);
                 return undefined;
             });
-    }
+    };
 
     public getTransfers = async (accountId: string, request: ParameterExpr<NWallet.Protocol.TransactionRequest>): Promise<NWallet.Protocol.TransactionResponse> => {
         return await this.get<NWallet.Protocol.TransactionResponse>(NWallet.Protocol.Types.Transfer, accountId, request).then(response => {
@@ -137,7 +140,7 @@ export class NClientProvider {
 
             return response;
         });
-    }
+    };
 
     public getCollaterals = async () => {
         return await this.get<NWallet.Protocol.Collateral[]>(NWallet.Protocol.Types.Collateral, '').then(collaterals => {
@@ -153,7 +156,7 @@ export class NClientProvider {
 
             return collaterals;
         });
-    }
+    };
 
     public getCurrentLoanStatus = async (accountId: string): Promise<NWallet.Protocol.LoanStatusResponse> => {
         return await this.get<NWallet.Protocol.LoanStatusResponse>(NWallet.Protocol.Types.LoanStatus, accountId).then(response => {
@@ -168,7 +171,7 @@ export class NClientProvider {
 
             return response;
         });
-    }
+    };
 
     public getLoanDetail = async (accountId: string, id: string): Promise<NWallet.Protocol.LoanStatusResponse> => {
         return await this.get<NWallet.Protocol.LoanStatusResponse>(NWallet.Protocol.Types.LoanStatus, `${accountId}/${id}`).then(response => {
@@ -183,7 +186,7 @@ export class NClientProvider {
 
             return response;
         });
-    }
+    };
 
     public async getTransactions(accountId: string, asset: Asset, pageToken?: string): Promise<NWallet.Transactions.Context> {
         const params = {
@@ -244,7 +247,7 @@ export class NClientProvider {
                 this.logger.error(`[nclient] request get ${type} xdr failed`, response);
                 return undefined;
             });
-    }
+    };
 
     public executeXDR = async (requestType: NWallet.Protocol.XdrRequestTypes, params: Object): Promise<boolean> => {
         const type = this.getKeyFromValue(NWallet.Protocol.XdrRequestTypes, requestType);
@@ -264,5 +267,5 @@ export class NClientProvider {
                 this.logger.error(`[nclient] execute ${type} xdr failed`, response);
                 return false;
             });
-    }
+    };
 }

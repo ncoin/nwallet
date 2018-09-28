@@ -1,12 +1,13 @@
+import { Constants } from './../../environments/template';
 import { EventProvider } from '../common/event/event';
 import { PreferenceProvider, Preference } from '../common/preference/preference';
 import { Injectable } from '@angular/core';
-import { Logger } from '../common/logger/logger';
+import { LoggerService } from '../common/logger/logger.service';
 import { TranslateService } from '@ngx-translate/core';
 
 @Injectable()
 export class AppConfigProvider {
-    constructor(private logger: Logger, private translate: TranslateService, private preference: PreferenceProvider, private event: EventProvider) {}
+    constructor(private logger: LoggerService, private translate: TranslateService, private preference: PreferenceProvider, private event: EventProvider) {}
 
     public async loadAll(): Promise<void> {
         this.logger.debug('[appconfig] load providers');
@@ -33,6 +34,29 @@ export class AppConfigProvider {
         await this.translate.use(this.translate.getDefaultLang()).toPromise();
         this.translate.addLangs(['en', 'es', 'fr', 'de', 'it', 'ja', 'ko', 'nl', 'pl', 'pt', 'ru', 'zh-cn', 'zh-tw']);
         this.logger.debug('[appconfig] current language :', this.translate.getDefaultLang());
+    }
+
+    public async getCurrentLanguage(): Promise<{
+        languages: { key: string; value: string }[];
+        currentLanguage: { key: string; value: string };
+    }> {
+        const promises = Constants.supportedLanuages.map(async lang => {
+            const trans = await this.translate.getTranslation(lang).toPromise();
+            return { key: lang, value: trans.CurrentLanguage as string };
+        });
+
+        // prevent get traslation bug.. ask me --sky`
+        this.translate.getTranslation(this.translate.currentLang);
+
+        const languagePairs = await Promise.all(promises);
+        const currentLanguage = languagePairs.find(pair => {
+            return pair.key === this.translate.currentLang;
+        });
+
+        return {
+            languages: languagePairs,
+            currentLanguage: currentLanguage,
+        };
     }
 
     public async saveLanguage(languageKey: string) {

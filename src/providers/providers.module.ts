@@ -1,9 +1,9 @@
 import { TokenProvider } from './token/token';
 import { NgModule } from '@angular/core';
-import { Logger } from './common/logger/logger';
+import { LoggerService } from './common/logger/logger.service';
 import { AppServiceProvider } from './app/app.service';
 import { AppConfigProvider } from './app/app.config';
-import { AccountProvider } from './account/account';
+import { AccountService } from './account/account.service';
 import { PreferenceProvider } from './common/preference/preference';
 import { NClientProvider } from './nsus/nclient';
 import { LockProvider } from './common/lock/lock';
@@ -12,10 +12,10 @@ import { EventProvider } from './common/event/event';
 
 @NgModule({
     providers: [
-        Logger,
+        LoggerService,
         NClientProvider,
         PreferenceProvider,
-        AccountProvider,
+        AccountService,
         AppServiceProvider,
         AppConfigProvider,
         PlatformProvider,
