@@ -60,7 +60,7 @@ export class NClientProvider {
 
             this.subscriptions.push(subscription);
         });
-    };
+    }
 
     public async unSubscribes(account: NWallet.Account): Promise<void> {
         this.subscriptions.forEach(subscription => {

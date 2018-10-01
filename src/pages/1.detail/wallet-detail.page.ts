@@ -9,12 +9,6 @@ import * as _ from 'lodash';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { WalletMainTabPage } from '../0.tab/3.wallet-tab/wallet-main-tab';
 import { NWModalTransition } from '../../tools/extension/transition';
-/**
- * Generated class for the WalletDetailPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
 
 @IonicPage()
 @Component({
