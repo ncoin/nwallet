@@ -9,6 +9,6 @@ export const env: Environments = {
         client: 'https://api.stage.ncoin.com/wallet/api/',
         auth: 'https://api.stage.ncoin.com/',
         api: (path: string) => `${env.endpoint.client}${path}`,
-        token: () => `${env.endpoint.auth}${Constants.tokenPath}`,
-    },
+        token: () => `${env.endpoint.auth}${Constants.tokenPath}`
+    }
 };

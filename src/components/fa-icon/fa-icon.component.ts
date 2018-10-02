@@ -1,6 +1,34 @@
 import { Component, ElementRef, Input, OnChanges, SimpleChange, SimpleChanges, Renderer2 } from '@angular/core';
 import { Config, Ion } from 'ionic-angular';
 
+class FaIconComponentHelper {
+    static isInitialized = false;
+
+    static Init(renderer: Renderer2) {
+        if (FaIconComponentHelper.isInitialized) {
+            return;
+        }
+        Ion.prototype.setElementClass = function(className, isAdd) {
+            if (isAdd) {
+                renderer.addClass(this._elementRef.nativeElement, className);
+            } else {
+                renderer.removeClass(this._elementRef.nativeElement, className);
+            }
+        };
+        /** @hidden */
+        Ion.prototype.setElementAttribute = function(attributeName, attributeValue) {
+            renderer.setAttribute(this._elementRef.nativeElement, attributeName, attributeValue);
+        };
+        /** @hidden */
+        Ion.prototype.setElementStyle = function(property, value) {
+            renderer.setStyle(this._elementRef.nativeElement, property, value);
+        };
+
+        FaIconComponentHelper.isInitialized = true;
+    }
+}
+
+
 @Component({
     selector: 'fa-icon',
     template: '',
@@ -44,29 +72,3 @@ export class FaIconComponent extends Ion implements OnChanges {
     }
 }
 
-class FaIconComponentHelper {
-    static isInitialized = false;
-
-    static Init(renderer: Renderer2) {
-        if (FaIconComponentHelper.isInitialized) {
-            return;
-        }
-        Ion.prototype.setElementClass = function(className, isAdd) {
-            if (isAdd) {
-                renderer.addClass(this._elementRef.nativeElement, className);
-            } else {
-                renderer.removeClass(this._elementRef.nativeElement, className);
-            }
-        };
-        /** @hidden */
-        Ion.prototype.setElementAttribute = function(attributeName, attributeValue) {
-            renderer.setAttribute(this._elementRef.nativeElement, attributeName, attributeValue);
-        };
-        /** @hidden */
-        Ion.prototype.setElementStyle = function(property, value) {
-            renderer.setStyle(this._elementRef.nativeElement, property, value);
-        };
-
-        FaIconComponentHelper.isInitialized = true;
-    }
-}

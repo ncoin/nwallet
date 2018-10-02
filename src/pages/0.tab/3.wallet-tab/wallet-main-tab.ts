@@ -12,6 +12,7 @@ import { NWModalTransition } from '../../../tools/extension/transition';
 import { ManageWalletPage } from './manage-wallet/manage-wallet.page';
 import { AddWalletPage } from './add-wallet/add-wallet.page';
 import { NWAsset } from '../../../models/nwallet';
+import { ModalNavPage } from '../../0.base/modal-nav.page';
 
 /**
  * Generated class for the WalletPage page.
@@ -26,7 +27,7 @@ export interface WalletSlide {
 
 @Component({
     selector: 'wallet-main-tab',
-    templateUrl: 'wallet-main-tab.html',
+    templateUrl: 'wallet-main-tab.html'
 })
 export class WalletMainTabPage {
     walletPages: WalletSlide[] = [];
@@ -63,7 +64,7 @@ export class WalletMainTabPage {
     async init(): Promise<void> {
         this.loading = this.loadingCtrl.create({
             spinner: 'hide',
-            content: 'Loading Please Wait...',
+            content: 'Loading Please Wait...'
         });
         this.loading.present();
 
@@ -109,7 +110,7 @@ export class WalletMainTabPage {
     }
 
     public async onClick_ManageWallet(): Promise<void> {
-        const modal = this.modalCtrl.create(ManageWalletPage, {}, {});
+        const modal = this.modalCtrl.create(ModalNavPage, { page: ManageWalletPage }, {});
         await modal.present();
     }
 }

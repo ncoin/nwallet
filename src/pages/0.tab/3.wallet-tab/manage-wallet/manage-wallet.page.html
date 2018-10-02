@@ -6,34 +6,19 @@
     </ion-navbar>
 </ion-header>
 
+
 <ion-content padding>
-    <ion-grid no-padding>
-        <ion-row align-items-center>
-            <ion-col float-left class="total">
-                <ion-row class="label">
-                    <span translate>Total</span>
-                    <span>:</span>
-                </ion-row>
-                <ion-row class="price">
-                    <span>$</span>
-                </ion-row>
-            </ion-col>
-            <!--
-            <ion-col float-right class="total-btn">
-                <button type="button" class="btn-add-wallet"></button>
-            </ion-col>
-            -->
-        </ion-row>
-    </ion-grid>
-
-
-
-    <div *ngIf="nCash && nCash.item">
-        <nw-asset-item class="ncash" [asset]="nCash"></nw-asset-item>
+    <div *ngIf="assets && assets.length > 0">
+        <ion-list reorder="true" (ionItemReorder)="reorderItems($event)">
+            <!-- inactive item preload -->
+            <ion-item *ngFor="let asset of assets" [style.display]="asset.option.isActive ? 'block' : 'none'" (click)="onChangeVisibility(asset)">
+                <ion-label>{{asset.detail.symbol}}</ion-label>
+                <ion-label>{{asset.option.order}}</ion-label>
+                <ion-label>{{asset.option.isShow}}</ion-label>
+            </ion-item>
+        </ion-list>
     </div>
 </ion-content>
 <ion-footer>
-    <ion-item>
-        <button ion-button>Add Wallets</button>
-    </ion-item>
+    <button ion-button (click)="onClick_addWallets()">Add Wallets</button>
 </ion-footer>

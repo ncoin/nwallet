@@ -1,1 +1,1 @@
-import './implement/nw-asset';
+import './implement/inventory';

@@ -9,20 +9,14 @@ import { AccountService } from '../../../../providers/account/account.service';
 })
 export class AddWalletPage {
     totalPrice: string;
-    private subscription: any;
-    private loading: Loading;
     constructor(
         public navCtrl: NavController,
-        private logger: LoggerService,
-        private account: AccountService,
-        private modalCtrl: ModalController,
         public loadingCtrl: LoadingController
     ) {
         this.init();
     }
 
     ionViewDidLoad() {
-        this.navCtrl.getActive().showBackButton(false);
     }
 
     ionViewDidEnter() {}

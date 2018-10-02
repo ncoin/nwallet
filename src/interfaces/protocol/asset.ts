@@ -6,6 +6,8 @@ declare module '../../models/nwallet/asset' {
         detail: Detail;
         /** asset amount */
         amount: string;
+        /** asset option */
+        option: Option;
     }
 
     /** asset detail protocol */
