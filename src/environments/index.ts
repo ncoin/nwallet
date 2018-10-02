@@ -1,5 +1,5 @@
-import { Environments } from "./schema";
+// import { Environments } from "./schema";
 
-export const env: Environments = {
-    name : 'dev',
-}
+// export const env: Environments = {
+//     name : 'dev',
+// }

@@ -16,6 +16,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { ReceivePage } from './0.tab/1.transfer-tab/receive/receive.page';
 import { SendPage } from './0.tab/1.transfer-tab/send/send.page';
 import { QRScanPage } from './qrscan/qrscan.page';
+import { VerifyPhonePage } from './verify-phone/verify-phone.page';
 
 @NgModule({
     declarations: [
@@ -31,6 +32,7 @@ import { QRScanPage } from './qrscan/qrscan.page';
         ReceivePage,
         SendPage,
         QRScanPage,
+        VerifyPhonePage
     ],
     imports: [
         NWalletSharedModule,
@@ -48,7 +50,7 @@ import { QRScanPage } from './qrscan/qrscan.page';
         IonicPageModule.forChild(ReceivePage),
         IonicPageModule.forChild(SendPage),
         IonicPageModule.forChild(QRScanPage),
-
+        IonicPageModule.forChild(VerifyPhonePage)
     ],
     entryComponents: [TutorialPage, EntrancePage,  ...NWalletTabPages],
 })

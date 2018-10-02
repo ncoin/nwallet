@@ -1,29 +1,18 @@
-import { ImportAccountPage } from '../1.account/importaccount';
-import { CreateAccountPage } from '../1.account/createaccount';
 import { Component } from '@angular/core';
-import { NavController, NavOptions } from 'ionic-angular';
+import { NavController, NavOptions, ModalController } from 'ionic-angular';
+import { VerifyPhonePage } from '../verify-phone/verify-phone.page';
+import { NWTransition } from '../../tools/extension/transition';
 
 @Component({
     selector: 'entrance',
-    templateUrl: 'entrance.page.html',
+    templateUrl: 'entrance.page.html'
 })
 /**
  * create account
  */
 export class EntrancePage {
     constructor(private nav: NavController) {}
-
-    public async onImportAccount(): Promise<void> {
-        await this.nav.push(ImportAccountPage, undefined, <NavOptions>{
-            animate: true,
-            animation: 'wp-transition',
-        });
-    }
-
-    public async onCreateAccount(): Promise<void> {
-        await this.nav.push(CreateAccountPage, undefined, <NavOptions>{
-            animate: true,
-            animation: 'wp-transition',
-        });
+    public async onContinue(): Promise<void> {
+        this.nav.push(VerifyPhonePage, {}, NWTransition.Slide());
     }
 }

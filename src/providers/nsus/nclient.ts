@@ -17,7 +17,7 @@ import { NWAsset } from '../../models/nwallet';
 @Injectable()
 export class NClientProvider {
     private subscriptions: Subscription[] = [];
-    constructor(private logger: LoggerService, private http: HttpClient, private event: EventProvider, private token: TokenProvider) { }
+    constructor(private logger: LoggerService, private http: HttpClient, private event: EventProvider, private token: TokenProvider) {}
 
     private getKeyFromValue(enums: {}, value: any): string {
         return Object.keys(enums).filter(type => enums[type] === value)[0];
@@ -77,7 +77,7 @@ export class NClientProvider {
                 item.price = data['price'];
                 const wallet = <NWallet.AssetContext>{
                     item: item,
-                    amount: amount,
+                    amount: amount
                 };
 
                 return wallet;
@@ -87,8 +87,8 @@ export class NClientProvider {
         return this.http
             .get(env.endpoint.api(`accounts/stellar/${accountId}`), {
                 headers: {
-                    Authorization: await this.getToken(),
-                },
+                    Authorization: await this.getToken()
+                }
             })
             .map(data => {
                 const item: NWAsset.Item = undefined;
@@ -115,8 +115,8 @@ export class NClientProvider {
             .get<TResponse>(env.endpoint.api(`${address}${accountId}`), {
                 params: request,
                 headers: {
-                    Authorization: await this.getToken(),
-                },
+                    Authorization: await this.getToken()
+                }
             })
             .toPromise()
             .then(response => {
@@ -194,7 +194,7 @@ export class NClientProvider {
         const params = {
             limit: pageToken ? '10' : '15',
             order: 'desc',
-            asset_code: asset.getCode(),
+            asset_code: asset.getCode()
         };
 
         if (pageToken) {
@@ -207,8 +207,8 @@ export class NClientProvider {
             .get(env.endpoint.api(`transactions/stellar/accounts/${accountId}`), {
                 params: params,
                 headers: {
-                    Authorization: await this.getToken(),
-                },
+                    Authorization: await this.getToken()
+                }
             })
             .map(response => {
                 const transactions = response['transactions'];
@@ -217,7 +217,7 @@ export class NClientProvider {
                 return <NWallet.Transactions.Context>{
                     records: records,
                     pageToken: token,
-                    hasNext: records && records.length > 0,
+                    hasNext: records && records.length > 0
                 };
             })
             .toPromise()
@@ -237,8 +237,8 @@ export class NClientProvider {
         return this.http
             .post(env.endpoint.api(requestType), params, {
                 headers: {
-                    Authorization: await this.getToken(),
-                },
+                    Authorization: await this.getToken()
+                }
             })
             .toPromise()
             .then((response: NWallet.Protocol.XDRResponse) => {
@@ -257,8 +257,8 @@ export class NClientProvider {
         return this.http
             .put(env.endpoint.api(requestType), params, {
                 headers: {
-                    Authorization: await this.getToken(),
-                },
+                    Authorization: await this.getToken()
+                }
             })
             .toPromise()
             .then(response => {

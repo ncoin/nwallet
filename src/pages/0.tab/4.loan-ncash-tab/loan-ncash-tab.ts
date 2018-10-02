@@ -9,14 +9,14 @@ import { createExpr } from 'forge';
 @IonicPage()
 @Component({
     selector: 'loan-ncash-tab',
-    templateUrl: 'loan-ncash-tab.html',
+    templateUrl: 'loan-ncash-tab.html'
 })
 export class LoanNcashTabPage {
-
     public loanStatuses: NWallet.Protocol.LoanStatus[];
-     // todo move to collateral provider --sky`
+    // todo move to collateral provider --sky`
     public collaterals: NWallet.Protocol.Collateral[];
-    @ViewChild(Navbar) navBar: Navbar;
+    @ViewChild(Navbar)
+    navBar: Navbar;
 
     private _nchAmount = 0;
     private _wallet: NWallet.AssetContext;
@@ -46,17 +46,18 @@ export class LoanNcashTabPage {
     ionViewDidEnter() {}
 
     public onClick(): void {
-        const t = this.toast.create(createExpr(e => {
-            e.position = 'middle';
-            e.message = '[wallet-loan-page] onclick';
-            e.duration = 1000;
-        }));
+        const t = this.toast.create(
+            createExpr(e => {
+                e.position = 'middle';
+                e.message = '[wallet-loan-page] onclick';
+                e.duration = 1000;
+            })
+        );
 
         t.present();
     }
 
     public async doInfinite(infinite: InfiniteScroll): Promise<void> {
-
         const loanStatuses = await this.appService.getCurrentLoanStatus();
         if (loanStatuses.length < 1) {
             this.logger.debug('[transfer-tab-page] response transfers length =', loanStatuses.length);
@@ -91,7 +92,7 @@ export class LoanNcashTabPage {
         this.expectSpendWallet = <NWallet.AssetContext>{
             amount: totalPrice.toString(),
             item: this._wallet.item,
-            price: this.expectSpendWallet.item.price,
+            price: this.expectSpendWallet.item.price
         };
     }
 
@@ -102,21 +103,21 @@ export class LoanNcashTabPage {
             buttons: [
                 {
                     text: 'CANCEL',
-                    handler: () => {},
+                    handler: () => {}
                 },
                 {
                     text: 'OK',
                     handler: async () => {
                         const loader = this.loading.create({
-                            content: 'please wait ...',
+                            content: 'please wait ...'
                         });
                         loader.present();
                         await this.appService.requestLoan(this._wallet.item.asset, Number.parseFloat(this._nchAmount.toString()));
                         this.navCtrl.popToRoot();
                         loader.dismiss();
-                    },
-                },
-            ],
+                    }
+                }
+            ]
         });
 
         alert.present();
