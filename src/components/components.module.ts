@@ -5,10 +5,12 @@ import { NWalletPipesModule } from '../pipes/pipes.module';
 import { FaIconComponent } from './fa-icon/fa-icon.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { NWalletDirectiveModule } from '../directives/directive.module';
+import { KeyPadComponent } from './key-pad/key-pad.component';
 
+const COMPONENTS = [AssetItemComponent, FaIconComponent, KeyPadComponent];
 @NgModule({
-    declarations: [AssetItemComponent, FaIconComponent],
+    declarations: COMPONENTS,
     imports: [TranslateModule.forChild(), NWalletPipesModule, NWalletDirectiveModule, IonicModule],
-    exports: [AssetItemComponent, FaIconComponent, NWalletPipesModule, NWalletDirectiveModule],
+    exports: [...COMPONENTS, NWalletPipesModule, NWalletDirectiveModule],
 })
 export class NWalletComponentsModule {}

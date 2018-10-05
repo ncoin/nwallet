@@ -55,6 +55,6 @@ import { VerifyPhonePage } from './verify-phone/verify-phone.page';
         IonicPageModule.forChild(VerifyPhonePage),
         IonicPageModule.forChild(ModalNavPage)
     ],
-    entryComponents: [TutorialPage, EntrancePage, ...NWalletTabPages]
+    entryComponents: [TutorialPage, EntrancePage, ...NWalletTabPages, ModalNavPage]
 })
 export class NWalletPageModule {}

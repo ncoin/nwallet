@@ -44,25 +44,5 @@ export class CreateAccountPage {
         };
 
         this.appService.login(importAccount);
-
-        /*
-
-        setTimeout(async () => {
-            await this.appService.login(importAccount);
-        }, 1000);
-        */
-        /*
-        await this.preference.set(Preference.Nwallet.walletAccount, <NWallet.Account>{
-            isActivate: false,
-            signature: signature,
-            address: undefined,
-            profile: undefined,
-            wallets: undefined,
-        });
-
-        setTimeout(async () => {
-            await this.navCtrl.setRoot(TabcontainerPage, undefined, undefined);
-        }, 1000);
-        */
     }
 }

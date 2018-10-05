@@ -1,0 +1,28 @@
+page-modal-nav {
+    .content {
+        background: url('../assets/img/bg.png') no-repeat top center;
+        background-size: cover;
+    }
+
+    .none {
+        ion-header {
+            background: none;
+        }
+    }
+
+    .bar {
+        ion-header {
+            background: antiquewhite;
+        }
+    }
+
+    .canBack {
+        ion-header {
+            ion-navbar {
+                .back-button {
+                    display: inline-block;
+                }
+            }
+        }
+    }
+}

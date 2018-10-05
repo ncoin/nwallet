@@ -19,10 +19,6 @@
             "dom",
             "es2015"
         ]
-        // "paths": {
-        //     "$models/*": ["models/*"]
-        // }
-
     },
     "include": [
         "src/**/*.ts"
@@ -34,4 +30,5 @@
         ".tmp",
         "src/legacy**"
     ]
+
 }

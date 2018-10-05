@@ -48,6 +48,13 @@ export class ManageWalletPage {
 
         this.assets.splice(indexes.from, 1);
         this.assets.splice(indexes.to, 0, src);
+
+        let idx = 0;
+        this.assets.forEach(item => {
+            if (item.option.isActive) {
+                item.option.order = idx++;
+            }
+        });
     }
 
     public onClick_addWallets(): void {
