@@ -71,7 +71,7 @@
         "zone.js": "0.8.18"
     },
     "devDependencies": {
-        "@ionic/app-scripts": "3.1.11",
+        "@ionic/app-scripts": "^3.2.0",
         "@types/lodash": "^4.14.115",
         "@types/stellar-sdk": "^0.8.4",
         "codelyzer": "^4.4.2",
