@@ -35,7 +35,6 @@ export class AppServiceProvider {
     public async login(account: NWallet.Account): Promise<void> {
         await this.account.setAccount(account);
         await this.connector.fetchJobs(account);
-        this.requestTrust();
         this.logger.debug('[app-service] login done');
         this.event.publish(EventTypes.App.user_login);
     }
@@ -79,44 +78,5 @@ export class AppServiceProvider {
 
     public async getTransactions(asset: Asset, pageToken?: string) {
         return await this.connector.getTransactions(this.account.getId(), asset, pageToken);
-    }
-
-    private async requestTrust(): Promise<void> {
-        this.processXdr(NWallet.Protocol.XdrRequestTypes.Trust, { public_key : this.account.getId()});
-    }
-
-    public async requestBuy(asset: Asset, nchAmount: number): Promise<void> {
-        await this.processXdr(NWallet.Protocol.XdrRequestTypes.Buy, {
-            public_key: this.account.getId(),
-            amount: nchAmount,
-            asset_code: asset.getCode(),
-        });
-    }
-
-    public async requestLoan(asset: Asset, amount: number): Promise<void> {
-        await this.processXdr(NWallet.Protocol.XdrRequestTypes.Loan, {
-            public_key: this.account.getId(),
-            amount: amount,
-            asset_code: asset.getCode(),
-        });
-    }
-
-    private async processXdr(requestType: NWallet.Protocol.XdrRequestTypes, params: Object): Promise<void> {
-        const account = await this.account.getAccount();
-        const xdrResponse = await this.connector.requestXDR(requestType, params);
-
-        if (xdrResponse) {
-            const transaction = new Stellar.Transaction(xdrResponse.xdr);
-            transaction.sign(Keypair.fromSecret(account.signature.secret));
-
-            await this.connector.executeXDR(requestType, {
-                public_key: account.signature.public,
-                id: xdrResponse.id.toString(),
-                xdr: transaction
-                    .toEnvelope()
-                    .toXDR()
-                    .toString('base64'),
-            });
-        }
     }
 }

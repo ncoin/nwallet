@@ -69,13 +69,9 @@ export class WalletMainTabPage {
         this.loading.present();
 
         const account = await this.account.getAccount();
-        if (account && account.wallets) {
-            this.refreshWallets(account.wallets.slice());
-
-            setTimeout(() => {
-                this.loading.dismiss();
-            }, 1000);
-        }
+        setTimeout(() => {
+            this.loading.dismiss();
+        }, 1000);
     }
 
     private refreshWallets = (assets: NWallet.AssetContext[]): void => {

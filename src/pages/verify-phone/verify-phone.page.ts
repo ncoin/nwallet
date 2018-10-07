@@ -9,20 +9,18 @@ import { ModalNavPage } from '../0.base/modal-nav.page';
 @IonicPage()
 @Component({
     selector: 'page-verify-phone',
-    templateUrl: 'verify-phone.page.html',
+    templateUrl: 'verify-phone.page.html'
 })
 export class VerifyPhonePage extends ModalBasePage {
     public phoneNumber: string;
-    constructor(
-        navCtrl: NavController,
-        navParams: NavParams,
-        parent: ModalNavPage,
-        protected logger: LoggerService
-    ) {
+
+    constructor(navCtrl: NavController, navParams: NavParams, parent: ModalNavPage, protected logger: LoggerService) {
         super(navCtrl, navParams, parent);
-        this.canBack = false;
-        this.init();
+        console.log(this.params);
     }
 
+    public onInput(input: any): void {
+        this.logger.debug(input);
+    }
     private init(): void {}
 }

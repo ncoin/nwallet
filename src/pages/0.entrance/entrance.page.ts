@@ -23,12 +23,10 @@ export class EntrancePage {
                 ModalNavPage.resolveModal(VerifyPhonePage, param => {
                     param.canBack = true;
                     param.headerType = 'none';
+                    param.phoneNumber = '1234';
                 })
             );
             await modal.present();
-
-            // const nav = this.nav.push(ModalNavPage, ModalNavPage.resolveNav(VerifyPhonePage, param => {}));
-            // await modal.present();
         }
     }
 }

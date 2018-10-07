@@ -230,44 +230,4 @@ export class NClientProvider {
                 return undefined;
             });
     }
-
-    public requestXDR = async (requestType: NWallet.Protocol.XdrRequestTypes, params: Object): Promise<NWallet.Protocol.XDRResponse> => {
-        const type = this.getKeyFromValue(NWallet.Protocol.XdrRequestTypes, requestType);
-        this.logger.debug(`[nclient] request get ${type} xdr ...`);
-        return this.http
-            .post(env.endpoint.api(requestType), params, {
-                headers: {
-                    Authorization: await this.getToken()
-                }
-            })
-            .toPromise()
-            .then((response: NWallet.Protocol.XDRResponse) => {
-                this.logger.debug(`[nclient] request get ${type} xdr done`);
-                return response;
-            })
-            .catch((response: HttpErrorResponse) => {
-                this.logger.error(`[nclient] request get ${type} xdr failed`, response);
-                return undefined;
-            });
-    }
-
-    public executeXDR = async (requestType: NWallet.Protocol.XdrRequestTypes, params: Object): Promise<boolean> => {
-        const type = this.getKeyFromValue(NWallet.Protocol.XdrRequestTypes, requestType);
-        this.logger.debug(`[nclient] execute ${type} xdr ...`);
-        return this.http
-            .put(env.endpoint.api(requestType), params, {
-                headers: {
-                    Authorization: await this.getToken()
-                }
-            })
-            .toPromise()
-            .then(response => {
-                this.logger.debug(`[nclient] execute ${type} xdr done`);
-                return response['success'];
-            })
-            .catch((response: HttpErrorResponse) => {
-                this.logger.error(`[nclient] execute ${type} xdr failed`, response);
-                return false;
-            });
-    }
 }
