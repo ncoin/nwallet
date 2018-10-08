@@ -1,6 +1,5 @@
 <ion-header>
     <ion-navbar>
-        <ion-title>hehe</ion-title>
     </ion-navbar>
 </ion-header>
 <ion-content>
@@ -11,7 +10,12 @@
         EnterYourMobileNumber
     </div>
     <div>
-
+        <ion-item class="country-code">
+            <ion-select item-end [(ngModel)]="selectedCountry">
+                <ion-option *ngFor="let country of countries" [value]="country" >{{country.code}}</ion-option>
+            </ion-select>
+        </ion-item>
+        <ion-input class="phone-number" [readonly]="true" [value]="phoneNumber" placeholder="{{'MobileNumber' | translate}}"></ion-input>
     </div>
     <div>
         <button>
