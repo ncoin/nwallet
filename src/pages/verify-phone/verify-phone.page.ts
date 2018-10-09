@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ViewController, ToastController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ViewController, ToastController, PopoverController } from 'ionic-angular';
 import { QRScanner, QRScannerStatus } from '@ionic-native/qr-scanner';
 import { LoggerService } from '../../providers/common/logger/logger.service';
 import { ModalBasePage } from '../0.base/modal.page';
 import { ModalNavPage } from '../0.base/modal-nav.page';
+import { LocaleService, CountryService } from 'ng4-intl-phone';
+import { InternationalPhoneComponent } from '../../components/popovers/international-phone/international-phone';
 
 // todo [important] Guard impl!!
 @IonicPage()
@@ -12,23 +14,12 @@ import { ModalNavPage } from '../0.base/modal-nav.page';
     templateUrl: 'verify-phone.page.html'
 })
 export class VerifyPhonePage extends ModalBasePage {
+    public countryCode = '';
     public phoneNumber = '';
-    public countries = [
-        {
-            country: 'ko',
-            code: '82'
-        },
-        {
-            country: 'ko2',
-            code: '822'
-        }
-    ];
+    public selectedCountry: { country: string; code: string };
 
-    public selectedCountry: { country: string; code: string } = { country: 'de', code: '23' };
-
-    constructor(navCtrl: NavController, navParams: NavParams, parent: ModalNavPage, protected logger: LoggerService) {
+    constructor(navCtrl: NavController, navParams: NavParams, parent: ModalNavPage, private popover: PopoverController, protected logger: LoggerService) {
         super(navCtrl, navParams, parent);
-        console.log(this.params);
     }
 
     public onInput(input: any): void {
@@ -37,6 +28,18 @@ export class VerifyPhonePage extends ModalBasePage {
         } else {
             this.phoneNumber = this.phoneNumber + input;
         }
+    }
+
+    public async onCountryChanged(event: any): Promise<void> {
+        const popover = this.popover.create(InternationalPhoneComponent);
+        popover.onDidDismiss((data, role) => {
+            if (data) {
+                this.selectedCountry = data;
+            }
+        });
+        await popover.present({
+            ev: event
+        });
     }
     private init(): void {}
 }

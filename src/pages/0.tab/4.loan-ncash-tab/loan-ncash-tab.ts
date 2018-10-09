@@ -112,8 +112,8 @@ export class LoanNcashTabPage {
                             content: 'please wait ...'
                         });
                         loader.present();
-                        await this.appService.requestLoan(this._wallet.item.asset, Number.parseFloat(this._nchAmount.toString()));
-                        this.navCtrl.popToRoot();
+                        // await this.appService.requestLoan(this._wallet.item.asset, Number.parseFloat(this._nchAmount.toString()));
+                        // this.navCtrl.popToRoot();
                         loader.dismiss();
                     }
                 }

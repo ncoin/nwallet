@@ -105,8 +105,8 @@ export class BuyNcashTabPage {
                             content: 'please wait ...',
                         });
                         loader.present();
-                        await this.appService.requestBuy(this._sourceAsset.item.asset, nchAmount);
-                        this.navCtrl.popToRoot();
+                        // await this.appService.requestBuy(this._sourceAsset.item.asset, nchAmount);
+                        // this.navCtrl.popToRoot();
                         loader.dismiss();
                     },
                 },

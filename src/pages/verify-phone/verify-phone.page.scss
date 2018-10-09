@@ -2,8 +2,15 @@ page-verify-phone {
     .country-code {
         display: inline-block;
         width: 30%;
+        ion-select {
+            max-width: 100%;
+            padding : 4px;
+            color: $color-secondary;
+            background: white;
+            position: relative;
+        }
     }
-    phone-number {
+    .phone-number {
         display: inline-block;
         width: 60%;
     }
