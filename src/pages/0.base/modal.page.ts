@@ -1,6 +1,6 @@
+import { LoggerService } from './../../providers/common/logger/logger.service';
+import { Navbar, NavController } from 'ionic-angular';
 import { ViewChild, Component } from '@angular/core';
-import { Navbar, ViewController } from 'ionic-angular';
-import { NavController } from 'ionic-angular';
 import { NavParams } from 'ionic-angular/navigation/nav-params';
 import { Newable, ModalNavPage } from './modal-nav.page';
 import { ModalParameter } from './modal.parameter';

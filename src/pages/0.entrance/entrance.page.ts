@@ -5,7 +5,7 @@ import { NWTransition } from '../../tools/extension/transition';
 import { CreateAccountPage } from '../1.account/createaccount';
 import { ModalNavPage } from '../0.base/modal-nav.page';
 @Component({
-    selector: 'entrance',
+    selector: 'page-entrance',
     templateUrl: 'entrance.page.html'
 })
 /**

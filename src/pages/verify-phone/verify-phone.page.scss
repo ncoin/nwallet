@@ -1,17 +1,42 @@
 page-verify-phone {
-    .country-code {
-        display: inline-block;
-        width: 30%;
-        ion-select {
-            max-width: 100%;
-            padding : 4px;
+    .logo {
+        padding: 0 35% 0 35%;
+    }
+    .enter-mobile-number {
+        text-align: center;
+        font-size: 2rem;
+        margin: 6% 0 0 0;
+    }
+    .country {
+        width: 100%;
+        padding: 4% 3% 0% 3%;
+        .country-code-button {
+            display: inline-block;
+            font-size: 2.2rem;
+            width: 30%;
+
+            .country-code-logo {
+                float: left;
+            }
+
+            .country-code-dial {
+                float: right;
+                margin: 0 10px 0 0;
+            }
+        }
+
+        .phone-number {
+            width: 65%;
+            font-size: 2.3rem;
+
+            float: right;
             color: $color-secondary;
             background: white;
-            position: relative;
         }
     }
-    .phone-number {
-        display: inline-block;
-        width: 60%;
+    .next-button {
+        font-size: 2.5rem;
+        width: 95%;
+        margin: 5% 2.5% 0 2.5%;
     }
 }
