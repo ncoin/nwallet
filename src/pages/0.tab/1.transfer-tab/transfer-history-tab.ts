@@ -1,7 +1,7 @@
 import { LoggerService } from '../../../providers/common/logger/logger.service';
 import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, Navbar, InfiniteScroll, ModalController } from 'ionic-angular';
-import { AppServiceProvider } from '../../../providers/app/app.service';
+import { NWalletAppService } from '../../../providers/app/app.service';
 import { NWallet } from '../../../interfaces/nwallet';
 import * as _ from 'lodash';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
@@ -29,7 +29,7 @@ export class TransferHistoryTabPage {
     constructor(
         public navCtrl: NavController,
         private logger: LoggerService,
-        private appService: AppServiceProvider,
+        private appService: NWalletAppService,
         private browser: InAppBrowser,
         private modal: ModalController
     ) {

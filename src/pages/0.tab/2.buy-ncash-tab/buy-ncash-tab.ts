@@ -1,4 +1,4 @@
-import { AppServiceProvider } from '../../../providers/app/app.service';
+import { NWalletAppService } from '../../../providers/app/app.service';
 // import { Logger } from '../../../providers/common/logger/logger';
 import { AccountService } from '../../../providers/account/account.service';
 import { Component, ViewChild } from '@angular/core';
@@ -26,7 +26,7 @@ export class BuyNcashTabPage {
         public navParams: NavParams,
         // private logger: Logger,
         private alert: AlertController,
-        private appService: AppServiceProvider,
+        private appService: NWalletAppService,
         private loading: LoadingController,
     ) {
         this._sourceAsset = this.account.getNativeWallet();

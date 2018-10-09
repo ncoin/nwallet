@@ -1,4 +1,4 @@
-import { AppServiceProvider } from '../../../providers/app/app.service';
+import { NWalletAppService } from '../../../providers/app/app.service';
 import { AccountService } from '../../../providers/account/account.service';
 import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams, Navbar, AlertController, LoadingController, InfiniteScroll, ToastController } from 'ionic-angular';
@@ -27,7 +27,7 @@ export class LoanNcashTabPage {
         public navCtrl: NavController,
         public navParams: NavParams,
         private account: AccountService,
-        private appService: AppServiceProvider,
+        private appService: NWalletAppService,
         private alert: AlertController,
         private loading: LoadingController,
         private logger: LoggerService,

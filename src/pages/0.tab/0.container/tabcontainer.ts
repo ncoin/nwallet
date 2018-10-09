@@ -1,6 +1,6 @@
 import { MyInfoPage } from './../5.account-tab/my-info/my-info.page';
 import { AccountService } from '../../../providers/account/account.service';
-import { AppServiceProvider } from '../../../providers/app/app.service';
+import { NWalletAppService } from '../../../providers/app/app.service';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
@@ -62,7 +62,7 @@ export class TabcontainerPage {
     constructor(
         public navCtrl: NavController,
         public navParams: NavParams,
-        private appService: AppServiceProvider,
+        private appService: NWalletAppService,
         private account: AccountService,
         private logger: LoggerService
     ) {

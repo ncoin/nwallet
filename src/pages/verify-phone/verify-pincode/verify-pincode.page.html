@@ -1,0 +1,29 @@
+<ion-header>
+    <ion-navbar>
+    </ion-navbar>
+</ion-header>
+<ion-content padding>
+    <div>
+        The code is sent to
+        the mobile number below:
+    </div>
+    <div>
+        number
+    </div>
+    <div>
+        Please check your SMS inbox
+        and enter the code here:
+    </div>
+    <div class="pincodes">
+        <div>{{pinCode[0]}}</div>
+        <div>{{pinCode[1]}}</div>
+        <div>{{pinCode[2]}}</div>
+        <div>{{pinCode[3]}}</div>
+        <div>{{pinCode[4]}}</div>
+        <div>{{pinCode[5]}}</div>
+    </div>
+
+</ion-content>
+<ion-footer>
+    <nw-key-pad (keystroke)=onInput($event)></nw-key-pad>
+</ion-footer>

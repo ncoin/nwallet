@@ -1,5 +1,5 @@
 import { PreferenceProvider } from '../../providers/common/preference/preference';
-import { AppServiceProvider } from '../../providers/app/app.service';
+import { NWalletAppService } from '../../providers/app/app.service';
 import { AccountService } from '../../providers/account/account.service';
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
@@ -27,7 +27,7 @@ export class CreateAccountPage {
         private account: AccountService,
         private preference: PreferenceProvider,
         private logger: LoggerService,
-        private appService: AppServiceProvider
+        private appService: NWalletAppService
     ) {
         this.secretKey = 'SCADDA4KG2PE2LIWNI6KP3YALEXJP2IO273DFGCH3RCCYH3JABTTIG5U';
     }

@@ -8,14 +8,16 @@ import { LoggerService } from '../common/logger/logger.service';
 import { NWallet } from '../../interfaces/nwallet';
 import Stellar, { Asset, Keypair } from 'stellar-sdk';
 import { EventTypes } from '../../interfaces/events';
+import { NsusChannelService } from '../nsus/nsus-channel.service';
 
 /**
  * common business logic provider
  */
 @Injectable()
-export class AppServiceProvider {
+export class NWalletAppService {
     constructor(
         private preference: PreferenceProvider,
+        private channel: NsusChannelService,
         private app: App,
         private logger: LoggerService,
         private connector: NClientProvider,

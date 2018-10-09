@@ -1,6 +1,6 @@
 import { LoggerService } from '../../../../providers/common/logger/logger.service';
 import { AppConfigProvider } from './../../../../providers/app/app.config';
-import { AppServiceProvider } from './../../../../providers/app/app.service';
+import { NWalletAppService } from './../../../../providers/app/app.service';
 import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, ToastController, Navbar } from 'ionic-angular';
 

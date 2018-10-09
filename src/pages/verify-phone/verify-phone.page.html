@@ -18,12 +18,10 @@
         <input class="phone-number" [readonly]="true" [value]="phoneNumber" placeholder="{{'MobileNumber' | translate}}" />
     </div>
     <div>
-        <button class="next-button">
+        <button class="next-button" (click)="onClick_Next()">
             Next
         </button>
     </div>
-
-
 </ion-content>
 <ion-footer>
     <nw-key-pad (keystroke)=onInput($event)></nw-key-pad>

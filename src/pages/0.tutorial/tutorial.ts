@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 
 import { MenuController, NavController, Slides, NavParams, NavOptions } from 'ionic-angular';
-import { AppServiceProvider } from '../../providers/app/app.service';
+import { NWalletAppService } from '../../providers/app/app.service';
 
 @Component({
     selector: 'page-tutorial',
@@ -12,7 +12,7 @@ export class TutorialPage {
 
     @ViewChild('slides') slides: Slides;
 
-    constructor(public navCtrl: NavController, public navParams: NavParams, public menu: MenuController, private appService: AppServiceProvider) {}
+    constructor(public navCtrl: NavController, public navParams: NavParams, public menu: MenuController, private appService: NWalletAppService) {}
 
     async startApp() {
         await this.navCtrl.pop(<NavOptions>{

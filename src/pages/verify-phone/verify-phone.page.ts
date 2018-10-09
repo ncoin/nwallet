@@ -1,11 +1,13 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ViewController, ToastController, PopoverController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ViewController, ToastController, PopoverController, LoadingController } from 'ionic-angular';
 import { QRScanner, QRScannerStatus } from '@ionic-native/qr-scanner';
 import { LoggerService } from '../../providers/common/logger/logger.service';
 import { ModalBasePage } from '../0.base/modal.page';
 import { ModalNavPage } from '../0.base/modal-nav.page';
 import { LocaleService, CountryService } from 'ng4-intl-phone';
 import { InternationalPhoneComponent } from '../../components/popovers/international-phone/international-phone';
+import { VerifySuccessPage } from './verify-success/verify-success.page';
+import { VerifyPincodePage } from './verify-pincode/verify-pincode.page';
 
 // todo [important] Guard impl!!
 @IonicPage()
@@ -18,7 +20,14 @@ export class VerifyPhonePage extends ModalBasePage {
     public phoneNumber = '';
     public selectedCountry: { country: string; code: string };
 
-    constructor(navCtrl: NavController, navParams: NavParams, parent: ModalNavPage, private popover: PopoverController, protected logger: LoggerService) {
+    constructor(
+        navCtrl: NavController,
+        navParams: NavParams,
+        parent: ModalNavPage,
+        private popover: PopoverController,
+        protected logger: LoggerService,
+        private loading: LoadingController
+    ) {
         super(navCtrl, navParams, parent);
     }
 
@@ -41,5 +50,17 @@ export class VerifyPhonePage extends ModalBasePage {
             ev: event
         });
     }
+
+    public async onClick_Next(): Promise<void> {
+        const loading = this.loading.create({
+            duration : 1000
+        });
+        loading.present();
+        const result = await this.navCtrl.push(VerifySuccessPage);
+        loading.dismiss();
+        this.logger.debug('result', result);
+    }
     private init(): void {}
 }
+
+export const VERIFY_PHONE_PAGES = [VerifyPhonePage, VerifySuccessPage, VerifyPincodePage];

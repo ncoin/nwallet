@@ -3,7 +3,7 @@ import { ReceivePage } from './../0.tab/1.transfer-tab/receive/receive.page';
 import { LoggerService } from '../../providers/common/logger/logger.service';
 import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, Navbar, InfiniteScroll, NavParams, ViewController, ModalController } from 'ionic-angular';
-import { AppServiceProvider } from '../../providers/app/app.service';
+import { NWalletAppService } from '../../providers/app/app.service';
 import { NWallet } from '../../interfaces/nwallet';
 import * as _ from 'lodash';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
@@ -25,7 +25,7 @@ export class WalletDetailPage {
     constructor(
         public viewCtrl: ViewController,
         private logger: LoggerService,
-        private appService: AppServiceProvider,
+        private appService: NWalletAppService,
         private browser: InAppBrowser,
         navParams: NavParams,
         private modal: ModalController

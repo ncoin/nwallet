@@ -1,0 +1,19 @@
+page-verify-pincode {
+    $size-offset: 13vw;
+
+    .pincodes {
+        text-align: center;
+        margin-top: 6%;
+        div {
+            display: inline-block;
+            margin: 0 5px;
+            font-size: 3rem;
+            width: $size-offset;
+            line-height: $size-offset;
+            height: $size-offset;
+            border-radius: 10px;
+            background: red;
+            color: white;
+        }
+    }
+}

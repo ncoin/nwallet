@@ -1,4 +1,4 @@
-import { AppServiceProvider } from '../../providers/app/app.service';
+import { NWalletAppService } from '../../providers/app/app.service';
 import { Component } from '@angular/core';
 import { IonicPage, NavController } from 'ionic-angular';
 import { LoggerService } from '../../providers/common/logger/logger.service';
@@ -24,7 +24,7 @@ export class ImportAccountPage {
         public navCtrl: NavController,
         public account: AccountService,
         private logger: LoggerService,
-        private appService: AppServiceProvider,
+        private appService: NWalletAppService,
     ) {}
 
     ionViewDidLoad() {

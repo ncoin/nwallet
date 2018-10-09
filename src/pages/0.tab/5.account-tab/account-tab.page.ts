@@ -3,7 +3,7 @@ import { LoggerService } from '../../../providers/common/logger/logger.service';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, ToastController } from 'ionic-angular';
 import { EntrancePage } from '../../0.entrance/entrance.page';
-import { AppServiceProvider } from '../../../providers/app/app.service';
+import { NWalletAppService } from '../../../providers/app/app.service';
 import { MyInfoPage } from './my-info/my-info.page';
 
 @IonicPage()
@@ -28,7 +28,7 @@ export class AccountTabPage {
 
     constructor(
         public navCtrl: NavController,
-        private appService: AppServiceProvider,
+        private appService: NWalletAppService,
         private appConfig: AppConfigProvider,
         private logger: LoggerService,
         private toast: ToastController
