@@ -2,6 +2,17 @@ manage-wallet {
     .back-button {
         display: block;
     }
+    .refresh-button {
+        position: absolute;
+        top: 30px;
+        right: 4%;
+        background: transparent;
+        color: white;
+        font-size: 2rem;
+    }
+    .refresh-button:active {
+        color: yellow;
+    }
     .content {
         background: url('../assets/img/bg.png') no-repeat top center;
         background-size: cover;
@@ -31,7 +42,6 @@ manage-wallet {
                 grid-column: 4;
             }
         }
-
     }
 
     .add-wallets-button {
