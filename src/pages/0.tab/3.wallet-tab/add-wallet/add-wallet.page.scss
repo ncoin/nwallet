@@ -5,19 +5,21 @@ add-wallet {
     }
     .asset {
         height: 70px;
-        display: flex;
+        display: grid;
+        grid-template-columns: 70px 2fr 1fr;
         img {
-            display: inline-block;
             margin: auto 0 auto 0;
+            grid-column: 1;
         }
         div {
-            display: inline-block;
+            font-size: 2rem;
             margin: auto 0 auto 0;
+            grid-column: 2;
         }
         button {
-            display: inline-block;
-            //float: right;
             margin: auto 0 auto 0;
+
+            grid-column: 3;
         }
     }
 }
