@@ -7,9 +7,11 @@ add-wallet {
         height: 30px;
         display: grid;
         grid-template-columns: 10% 80% 10%;
+
         div {
             grid-column: 2;
             position: relative;
+
             ion-icon {
                 z-index: 1;
                 position: absolute;
@@ -34,18 +36,19 @@ add-wallet {
             height: 70px;
             display: grid;
             grid-template-columns: 70px 2fr 1fr;
+            background-color: green;
+            border-radius: 10px;
             img {
-                margin: auto 0 auto 0;
+                margin: auto 0 auto 5px;
                 grid-column: 1;
             }
             div {
                 font-size: 2rem;
-                margin: auto 0 auto 0;
+                margin: auto 0 auto 5px;
                 grid-column: 2;
             }
             button {
-                margin: auto 0 auto 0;
-
+                margin: auto 10px auto 0;
                 grid-column: 3;
             }
         }
