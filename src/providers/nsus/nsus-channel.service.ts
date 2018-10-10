@@ -1,15 +1,13 @@
 import { Injectable } from '@angular/core';
 import { NClientProvider } from './nclient';
+import { LoggerService } from '../common/logger/logger.service';
 
 @Injectable()
 export class NsusChannelService {
-    constructor(private nClient: NClientProvider) {}
+    constructor(private nClient: NClientProvider, private logger: LoggerService) {}
 
-    public async requestPhoneVerification(): Promise<boolean> {
-        return new Promise<boolean>(resolve => {
-            setTimeout(() => {
-                resolve(true);
-            }, 2000);
-        });
+    public async requestPhoneVerification(phoneNumber: string): Promise<boolean> {
+        this.logger.debug('[nsus-channel] phone number : ', phoneNumber);
+        return true;
     }
 }

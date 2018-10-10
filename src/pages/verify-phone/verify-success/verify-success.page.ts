@@ -17,21 +17,29 @@ import { VerifyPincodePage } from '../verify-pincode/verify-pincode.page';
     templateUrl: 'verify-success.page.html'
 })
 export class VerifySuccessPage {
+    private phoneNumber: string;
     constructor(
         private navCtrl: NavController,
         private navParams: NavParams,
         private logger: LoggerService,
         private channel: NsusChannelService,
         private viewCtrl: ViewController
-    ) {}
+    ) {
+        this.phoneNumber = this.navParams.get('phoneNumber');
+        this.logger.debug('[verify-success-page] constructor - phoneNumber : ', this.phoneNumber);
+    }
 
     public ionViewCanEnter(): Promise<boolean> {
-        return this.channel.requestPhoneVerification();
+        this.logger.debug('[verify-success-page] ionViewCanEnter - phoneNumber : ', this.phoneNumber);
+
+        return this.channel.requestPhoneVerification(this.phoneNumber);
     }
 
     public ionViewDidLoad() {
         setTimeout(() => {
-            this.navCtrl.push(VerifyPincodePage, { viewCtrl: this.viewCtrl });
+        this.logger.debug('[verify-success-page] ionViewDidLoad - phoneNumber : ', this.phoneNumber);
+
+            this.navCtrl.push(VerifyPincodePage, { viewCtrl: this.viewCtrl, phoneNumber: this.phoneNumber });
         }, 1000);
     }
 }

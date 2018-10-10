@@ -52,12 +52,16 @@ export class VerifyPhonePage extends ModalBasePage {
     }
 
     public async onClick_Next(): Promise<void> {
-        const loading = this.loading.create({
-            duration : 1000
+        // const loading = this.loading.create({
+        //     duration : 1000
+        // });
+        // loading.present();
+        this.logger.debug('[verify-phone-page] phoneNumber : ', this.phoneNumber);
+
+        const result = await this.navCtrl.push(VerifySuccessPage, {
+            phoneNumber : this.selectedCountry.code + this.phoneNumber,
         });
-        loading.present();
-        const result = await this.navCtrl.push(VerifySuccessPage);
-        loading.dismiss();
+        // loading.dismiss();
         this.logger.debug('result', result);
     }
     private init(): void {}
