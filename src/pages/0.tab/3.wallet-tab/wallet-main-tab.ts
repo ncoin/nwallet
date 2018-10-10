@@ -106,7 +106,13 @@ export class WalletMainTabPage {
     }
 
     public async onClick_ManageWallet(): Promise<void> {
-        const modal = this.modalCtrl.create(ModalNavPage, { page: ManageWalletPage }, {});
+        const modal = this.modalCtrl.create(
+            ModalNavPage,
+            ModalNavPage.resolveModal(ManageWalletPage, param => {
+                param.headerType = 'bar';
+                param.canBack = true;
+            }),
+        );
         await modal.present();
     }
 }

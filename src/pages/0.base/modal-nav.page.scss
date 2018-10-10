@@ -12,7 +12,14 @@ page-modal-nav {
 
     .bar {
         ion-header {
-            background: antiquewhite;
+        }
+    }
+    //fixme --sky`
+    ion-header {
+        ion-navbar {
+            .back-button {
+                display: none;
+            }
         }
     }
 

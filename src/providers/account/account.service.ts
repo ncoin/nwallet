@@ -4,9 +4,12 @@ import { NWallet } from '../../interfaces/nwallet';
 import { Injectable } from '@angular/core';
 import { PreferenceProvider, Preference } from '../common/preference/preference';
 import { Keypair } from 'stellar-sdk';
+import { NWAccount } from '../../models/nwallet';
 
 @Injectable()
 export class AccountService {
+    public account_new: NWAccount;
+    // todo remove me--sky`
     public account: NWallet.Account;
 
     constructor(private event: Events, private preference: PreferenceProvider, private logger: LoggerService) {
@@ -14,6 +17,7 @@ export class AccountService {
     }
 
     private async init(): Promise<void> {
+        this.account_new = new NWAccount();
         this.account = await this.preference.get(Preference.Nwallet.walletAccount);
     }
 
@@ -35,8 +39,6 @@ export class AccountService {
     public getId(): string {
         return this.account.signature.public;
     }
-
-
 
     // todo decoration --sky`
     private checkAccount(): void {
@@ -82,7 +84,7 @@ export class AccountService {
 
         return <NWallet.Signature>{
             public: keyPair.publicKey(),
-            secret: keyPair.secret(),
+            secret: keyPair.secret()
         };
     }
 

@@ -1,7 +1,7 @@
 <ion-header>
     <ion-navbar>
         <ion-title>
-            Manage Wallet
+            {{ 'ManageWallet' | translate}}
         </ion-title>
     </ion-navbar>
 </ion-header>
@@ -20,5 +20,5 @@
     </div>
 </ion-content>
 <ion-footer>
-    <button ion-button (click)="onClick_addWallets()">Add Wallets</button>
+    <button class="add-wallets-button" ion-button full (click)="onClick_addWallets()">Add Wallets</button>
 </ion-footer>

@@ -41,6 +41,8 @@ export class ModalNavPage {
     public constructor(protected navCtrl: NavController, protected logger: LoggerService, param: NavParams, private viewCtrl: ViewController) {
         this.rootPage = param.get('page');
         this.params = param.get('params');
+
+        // todo fixme
         this.params.navType = param.get('type');
     }
 

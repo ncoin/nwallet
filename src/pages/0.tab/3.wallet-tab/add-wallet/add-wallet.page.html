@@ -1,27 +1,23 @@
 <ion-header>
     <ion-navbar>
         <ion-title>
-            Add walletssssssssss
+            {{'AddWallet' | translate}}
         </ion-title>
     </ion-navbar>
 </ion-header>
 
 <ion-content padding>
-    <!-- <p>public</p>
-    <p>{{account.signature.public}}</p>
-    <p>secret</p>
-    <p>{{account.signature.secret}}</p> -->
-    <!--<ion-item no-lines>-->
-    <!--<div float-left class="total">-->
-    <!--<ion-row class="label">-->
-    <!--<span translate>Total</span>-->
-    <!--<span>:</span>-->
-    <!--</ion-row>-->
-    <!--<ion-row class="price">-->
-    <!--$<span>{{totalPrice}}</span>-->
-    <!--</ion-row>-->
-    <!--</div>-->
-    <!--<div float-right><button type="button" class="btn-add-wallet"></button></div>-->
-    <!--</ion-item>-->
+    <div *ngIf="assets && assets.length > 0">
+        <ion-list>
+            <!-- inactive item preload -->
+            <div *ngFor="let asset of assets" [style.display]="asset.option.isActive ? 'none' : 'block'">
+                <div class="asset">
+                    <img src="assets/img/symbol_BTC.png" />
+                    <div>{{asset.detail.symbol}}</div>
+                    <button (click)="onClick_AddAsset(asset)">Add</button>
+                </div>
 
+            </div>
+        </ion-list>
+    </div>
 </ion-content>

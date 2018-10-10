@@ -3,5 +3,21 @@ add-wallet {
         background: url('../assets/img/bg.png') no-repeat top center;
         background-size: cover;
     }
-
+    .asset {
+        height: 70px;
+        display: flex;
+        img {
+            display: inline-block;
+            margin: auto 0 auto 0;
+        }
+        div {
+            display: inline-block;
+            margin: auto 0 auto 0;
+        }
+        button {
+            display: inline-block;
+            //float: right;
+            margin: auto 0 auto 0;
+        }
+    }
 }

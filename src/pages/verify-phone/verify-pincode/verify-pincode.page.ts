@@ -45,7 +45,7 @@ export class VerifyPincodePage {
         }, 1000);
     }
 
-    public onClick_Next():void {
+    public onClick_Next(): void {
         this.isCountBegin = false;
     }
 

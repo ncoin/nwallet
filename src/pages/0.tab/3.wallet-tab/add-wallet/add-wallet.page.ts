@@ -1,27 +1,28 @@
 import { Component } from '@angular/core';
-import { NavController, ModalController, LoadingController, Loading, IonicPage } from 'ionic-angular';
-import { LoggerService } from '../../../../providers/common/logger/logger.service';
+import { NavController, ModalController,  IonicPage,  } from 'ionic-angular';
 import { AccountService } from '../../../../providers/account/account.service';
+import { NWAsset } from '../../../../models/nwallet';
 
+@IonicPage()
 @Component({
     selector: 'add-wallet',
-    templateUrl: 'add-wallet.page.html',
+    templateUrl: 'add-wallet.page.html'
 })
 export class AddWalletPage {
     totalPrice: string;
-    constructor(
-        public navCtrl: NavController,
-        public loadingCtrl: LoadingController
-    ) {
+
+    public assets: NWAsset.Item[] = [];
+    constructor(public navCtrl: NavController, private accont: AccountService) {
         this.init();
     }
 
-    ionViewDidLoad() {
+    async init(): Promise<void> {
+        const inventory = this.accont.account_new.inventory;
+        this.assets.push(...inventory.assetItems);
     }
 
-    ionViewDidEnter() {}
-
-    ionViewDidLeave() {}
-
-    async init(): Promise<void> {}
+    public onClick_AddAsset(asset: NWAsset.Item): void {
+        asset.option.isActive = true;
+        asset.option.isShow = true;
+    }
 }

@@ -1,37 +1,29 @@
-import { ViewChild } from '@angular/core';
 import { Component } from '@angular/core';
-import { NavController, ModalController, LoadingController, Loading, IonicPage, Navbar } from 'ionic-angular';
+import { NavController, ModalController, LoadingController, Loading, IonicPage, Navbar, NavParams } from 'ionic-angular';
 import { LoggerService } from '../../../../providers/common/logger/logger.service';
 import { AccountService } from '../../../../providers/account/account.service';
 import { NWAsset } from '../../../../models/nwallet';
-import { Inventory } from '../../../../models/nwallet/inventory';
 import { AddWalletPage } from '../add-wallet/add-wallet.page';
 import { NWTransition } from '../../../../tools/extension/transition';
 import { ModalNavPage } from '../../../0.base/modal-nav.page';
+import { ModalBasePage } from '../../../0.base/modal.page';
 
 @IonicPage()
 @Component({
     selector: 'manage-wallet',
     templateUrl: 'manage-wallet.page.html'
 })
-export class ManageWalletPage {
-    @ViewChild(Navbar)
-    navBar: Navbar;
+export class ManageWalletPage extends ModalBasePage {
     public assets: Array<NWAsset.Item>;
 
-    constructor(public navCtrl: NavController, public logger: LoggerService, private account: AccountService, private modalPage: ModalNavPage) {
+    constructor(public navCtrl: NavController, protected navParam: NavParams, public logger: LoggerService, private account: AccountService, parent: ModalNavPage) {
+        super(navCtrl, navParam, parent);
         this.assets = new Array<NWAsset.Item>();
         this.init();
     }
 
-    ionViewDidLoad() {
-        this.navBar.backButtonClick = () => {
-            this.modalPage.dismiss();
-        };
-    }
-
     async init(): Promise<void> {
-        const inven = new Inventory();
+        const inven = this.account.account_new.inventory;
         this.assets.push(...inven.assetItems);
     }
 
