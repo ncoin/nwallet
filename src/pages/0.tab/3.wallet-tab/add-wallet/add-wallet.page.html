@@ -7,7 +7,14 @@
 </ion-header>
 
 <ion-content padding>
-    <div *ngIf="assets && assets.length > 0">
+    <div class="search">
+        <div>
+            <ion-icon name="md-search"></ion-icon>
+            <input class="input" [(ngModel)]="searchText" type="text" placeholder="Search">
+        </div>
+    </div>
+
+    <div class="add-asset-list" *ngIf="assets && assets.length > 0">
         <ion-list>
             <!-- inactive item preload -->
             <div *ngFor="let asset of assets" [style.display]="asset.option.isActive ? 'none' : 'block'">

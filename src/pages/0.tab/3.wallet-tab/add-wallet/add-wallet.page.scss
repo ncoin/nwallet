@@ -3,23 +3,51 @@ add-wallet {
         background: url('../assets/img/bg.png') no-repeat top center;
         background-size: cover;
     }
-    .asset {
-        height: 70px;
+    .search {
+        height: 30px;
         display: grid;
-        grid-template-columns: 70px 2fr 1fr;
-        img {
-            margin: auto 0 auto 0;
-            grid-column: 1;
-        }
+        grid-template-columns: 10% 80% 10%;
         div {
-            font-size: 2rem;
-            margin: auto 0 auto 0;
             grid-column: 2;
-        }
-        button {
-            margin: auto 0 auto 0;
+            position: relative;
+            ion-icon {
+                z-index: 1;
+                position: absolute;
+                padding : 9px 0 0 10px;
+                color : $color-secondary;
+            }
+            .input {
+                border-radius: 10px;
+                padding: 0 0 0 30px;
+                display: block;
+                height: 100%;
+                color: black;
+                width: 100%
 
-            grid-column: 3;
+            }
+        }
+    }
+
+    .add-asset-list {
+        margin: 3% 0 0 0;
+        .asset {
+            height: 70px;
+            display: grid;
+            grid-template-columns: 70px 2fr 1fr;
+            img {
+                margin: auto 0 auto 0;
+                grid-column: 1;
+            }
+            div {
+                font-size: 2rem;
+                margin: auto 0 auto 0;
+                grid-column: 2;
+            }
+            button {
+                margin: auto 0 auto 0;
+
+                grid-column: 3;
+            }
         }
     }
 }
