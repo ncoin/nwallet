@@ -1,0 +1,17 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title>
+            {{'Language' | translate}}
+        </ion-title>
+    </ion-navbar>
+</ion-header>
+<ion-content padding>
+    <ion-list no-lines inset radio-group>
+        <ion-item ion-item detail-none class="btn default" *ngFor="let language of supportedLanguagesPair" >
+            <ion-label>
+                {{language.value}}
+            </ion-label>
+            <ion-radio [style.opacity]="language.key === currentLanguage.key ? '1' : '0'" [checked]="language.key === currentLanguage.key" (click)="onLanguageChanged(language)"></ion-radio>
+        </ion-item>
+    </ion-list>
+</ion-content>

@@ -1,7 +1,11 @@
 my-info {
 
-    .back-button {
-        // css fix on ion-header-background
-        z-index: 1;
+    // .back-button {
+    //     // css fix on ion-header-background
+    //     z-index: 1;
+    // }
+
+    .my-info-summary {
+        height: 30%;
     }
 }

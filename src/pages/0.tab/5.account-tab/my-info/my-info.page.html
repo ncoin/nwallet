@@ -2,9 +2,34 @@
     <ion-navbar>
         <ion-title>
             <!-- <img src="assets/img/title_account.png" /> -->
-            My Info
+            {{'MyInfo' | translate}}
         </ion-title>
     </ion-navbar>
 </ion-header>
 <ion-content padding>
+    <div class="my-info-summary">
+        <div>
+            PhoneNumber : {{phoneNumber}}
+        </div>
+        <div>
+            Email : {{email}}
+        </div>
+        <div>
+            Pin : {{pincodeEnabled}}
+        </div>
+    </div>
+    <button ion-item detail-none class="btn default">
+        <ion-label>
+            {{'PhoneNumberSetting' | translate}}
+        </ion-label>
+    </button><button ion-item detail-none class="btn default">
+        <ion-label>
+            {{'EmailSetting' | translate}}
+        </ion-label>
+    </button>
+    <button ion-item detail-none class="btn default">
+        <ion-label>
+            {{'PincodeSetting' | translate}}
+        </ion-label>
+    </button>
 </ion-content>

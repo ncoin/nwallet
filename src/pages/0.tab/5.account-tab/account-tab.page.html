@@ -12,14 +12,11 @@
             </ion-label>
         </button>
 
-        <button ion-item detail-none class="btn default">
+        <button ion-item detail-none class="btn default" (click)="onClick_Language()">
             <ion-label>
                 <fa-icon name="language"></fa-icon>
                 <span translate>Language</span>
             </ion-label>
-            <ion-select class="select-language" interface="popover" [(ngModel)]="currentLanguage">
-                <ion-option *ngFor="let language of supportedLanguagesPair" [value]="language" (ionSelect)="onLanguageChanged(language)">{{language.value}}</ion-option>
-            </ion-select>
         </button>
 
         <!-- <button ion-item detail-none class="btn default">

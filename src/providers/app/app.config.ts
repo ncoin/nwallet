@@ -61,6 +61,7 @@ export class AppConfigProvider {
 
     public async saveLanguage(languageKey: string) {
         this.translate.use(languageKey);
+
         this.preference.set(Preference.App.language, languageKey);
     }
 
