@@ -10,4 +10,8 @@ export class NsusChannelService {
         this.logger.debug('[nsus-channel] phone number : ', phoneNumber);
         return true;
     }
+
+    public async requestResetPincode(currentPin: string, newPin: string): Promise<boolean> {
+        return true;
+    }
 }

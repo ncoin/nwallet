@@ -5,21 +5,12 @@
 <ion-content padding>
     <div class="content">
         <div class="header">
-            {{ 'EnterYourCurrentPin'}}:
+            {{ pinCodeLanguageKey | translate}}
         </div>
         <div class="pincodes">
-            <div>{{pinCode[0]}}</div>
-            <div>{{pinCode[1]}}</div>
-            <div>{{pinCode[2]}}</div>
-            <div>{{pinCode[3]}}</div>
-            <div>{{pinCode[4]}}</div>
-            <div>{{pinCode[5]}}</div>
+            <pin-dots [pin]="pinCode" [PinCount]="6" animate></pin-dots>
         </div>
     </div>
-    <button class="button-next" ion-button block (click)="onClick_Next()">
-        Next
-    </button>
-
 </ion-content>
 <ion-footer>
     <nw-key-pad (keystroke)=onInput($event)></nw-key-pad>

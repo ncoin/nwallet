@@ -7,13 +7,13 @@ import { Observable } from 'rxjs';
 
 @IonicPage()
 @Component({
-    selector: 'page-verify-pincode',
-    templateUrl: 'verify-pincode.page.html'
+    selector: 'page-verify-security-code',
+    templateUrl: 'verify-security-code.page.html'
 })
-export class VerifyPincodePage {
+export class VerifySecuritycodePage {
     private previousView: ViewController;
     private isCountBegin: boolean;
-    public pinCode = [];
+    public securityCodes = [];
     public phoneNumber: string;
     public expiredTimeSpan: number;
 
@@ -51,14 +51,14 @@ export class VerifyPincodePage {
 
     public onInput(input: any): void {
         if (input === 'delete') {
-            this.pinCode.pop();
+            this.securityCodes.pop();
             return;
         }
 
-        if (this.pinCode.length > 6) {
+        if (this.securityCodes.length > 6) {
             return;
         }
 
-        this.pinCode.push(input);
+        this.securityCodes.push(input);
     }
 }

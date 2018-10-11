@@ -7,7 +7,7 @@ import { ModalNavPage } from '../0.base/modal-nav.page';
 import { LocaleService, CountryService } from 'ng4-intl-phone';
 import { InternationalPhoneComponent } from '../../components/popovers/international-phone/international-phone';
 import { VerifySuccessPage } from './verify-success/verify-success.page';
-import { VerifyPincodePage } from './verify-pincode/verify-pincode.page';
+import { VerifySecuritycodePage } from './verify-security-code/verify-security-code.page';
 
 // todo [important] Guard impl!!
 @IonicPage()
@@ -67,4 +67,4 @@ export class VerifyPhonePage extends ModalBasePage {
     private init(): void {}
 }
 
-export const VERIFY_PHONE_PAGES = [VerifyPhonePage, VerifySuccessPage, VerifyPincodePage];
+export const VERIFY_PHONE_PAGES = [VerifyPhonePage, VerifySuccessPage, VerifySecuritycodePage];

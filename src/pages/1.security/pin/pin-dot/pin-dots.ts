@@ -3,13 +3,19 @@ import { Component, Input, QueryList, SimpleChanges, ViewChildren, OnChanges } f
 
 @Component({
     selector: 'pin-dots',
-    templateUrl: 'pin-dots.html',
+    templateUrl: 'pin-dots.html'
 })
 export class PinDotsComponent implements OnChanges {
     public dotArray = new Array(4);
 
-    @Input() pin: string;
-    @ViewChildren(AnimateDirective) dots: QueryList<AnimateDirective>;
+    @Input('PinCount')
+    set count(value: number) {
+        this.dotArray = new Array(value);
+    }
+    @Input()
+    pin: string;
+    @ViewChildren(AnimateDirective)
+    dots: QueryList<AnimateDirective>;
 
     ngOnChanges(changes: SimpleChanges) {
         const pinChanges = changes.pin;

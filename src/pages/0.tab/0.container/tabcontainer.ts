@@ -15,6 +15,7 @@ import { ReceivePage } from '../1.transfer-tab/receive/receive.page';
 import { SendPage } from '../1.transfer-tab/send/send.page';
 import { LanguagePage } from '../5.account-tab/language/language.page';
 import { ResetPincodePage } from '../5.account-tab/my-info/reset-pincode/reset-pincode.page';
+import { ResetPincodeSuccessPage } from '../5.account-tab/my-info/reset-pincode-success/reset-pincode-success.page';
 export interface TabItemContext {
     // title: "Schedule",
     // name: "TabsPage",
@@ -81,5 +82,5 @@ export const NWalletTabPages = [
     LoanNcashTabPage,
     AccountTabPage,
     ...WalletTabPages,
-    ...[MyInfoPage, LanguagePage, ResetPincodePage]
+    ...[MyInfoPage, LanguagePage, ResetPincodePage, ResetPincodeSuccessPage]
 ];

@@ -1,20 +1,20 @@
-page-verify-pincode {
+page-verify-security-code {
     $size-offset: 13vw;
 
     .content {
         text-align: center;
-        .header {            
+        .header {
             font-size: 2.5rem;
         }
         .phone-number {
             font-size: 3.5rem;
             margin: 5% 0;
         }
-        .input-pincode-desc {
+        .input-seurity-desc {
             font-size: 2rem;
         }
-        .pincodes {
-            
+        .security-codes {
+
             margin-top: 6%;
             div {
                 display: inline-block;
@@ -33,5 +33,5 @@ page-verify-pincode {
             width: 90%
         }
     }
-    
+
 }

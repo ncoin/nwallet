@@ -8,7 +8,7 @@ import { LocaleService, CountryService } from 'ng4-intl-phone';
 import { InternationalPhoneComponent } from '../../../components/popovers/international-phone/international-phone';
 import { NWalletAppService } from '../../../providers/app/app.service';
 import { NsusChannelService } from '../../../providers/nsus/nsus-channel.service';
-import { VerifyPincodePage } from '../verify-pincode/verify-pincode.page';
+import { VerifySecuritycodePage } from '../verify-security-code/verify-security-code.page';
 
 // todo [important] Guard impl!!
 @IonicPage()
@@ -39,7 +39,7 @@ export class VerifySuccessPage {
         setTimeout(() => {
         this.logger.debug('[verify-success-page] ionViewDidLoad - phoneNumber : ', this.phoneNumber);
 
-            this.navCtrl.push(VerifyPincodePage, { viewCtrl: this.viewCtrl, phoneNumber: this.phoneNumber });
+            this.navCtrl.push(VerifySecuritycodePage, { viewCtrl: this.viewCtrl, phoneNumber: this.phoneNumber });
         }, 1000);
     }
 }

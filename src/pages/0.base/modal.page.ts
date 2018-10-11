@@ -13,7 +13,7 @@ export abstract class ModalBasePage {
     public navBar: Navbar;
     public params: ModalParameter;
 
-    protected constructor(protected navCtrl: NavController, params: NavParams, private parent: ModalNavPage) {
+    protected constructor(protected navCtrl: NavController, params: NavParams, protected parent: ModalNavPage) {
         this.params = params.data;
     }
 
