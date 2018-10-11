@@ -14,6 +14,7 @@ import { AccountTabPage } from '../5.account-tab/account-tab.page';
 import { ReceivePage } from '../1.transfer-tab/receive/receive.page';
 import { SendPage } from '../1.transfer-tab/send/send.page';
 import { LanguagePage } from '../5.account-tab/language/language.page';
+import { ResetPincodePage } from '../5.account-tab/my-info/reset-pincode/reset-pincode.page';
 export interface TabItemContext {
     // title: "Schedule",
     // name: "TabsPage",
@@ -28,7 +29,7 @@ export interface TabItemContext {
 @IonicPage()
 @Component({
     selector: 'page-tabcontainer',
-    templateUrl: 'tabcontainer.html',
+    templateUrl: 'tabcontainer.html'
 })
 export class TabcontainerPage {
     selectedIndex: number;
@@ -36,37 +37,31 @@ export class TabcontainerPage {
         {
             component: TransferHistoryTabPage,
             icon: 'nwallet-transfer',
-            isEnable: true,
+            isEnable: true
         },
         {
             component: ReceivePage,
             icon: 'nwallet-buy',
-            isEnable: true,
+            isEnable: true
         },
         {
             component: WalletMainTabPage,
             icon: 'nwallet-home',
-            isEnable: true,
+            isEnable: true
         },
         {
             component: SendPage,
             icon: 'nwallet-loan',
-            isEnable: true,
+            isEnable: true
         },
         {
             component: AccountTabPage,
             icon: 'nwallet-account',
-            isEnable: true,
-        },
+            isEnable: true
+        }
     ];
 
-    constructor(
-        public navCtrl: NavController,
-        public navParams: NavParams,
-        private appService: NWalletAppService,
-        private account: AccountService,
-        private logger: LoggerService
-    ) {
+    constructor(public navCtrl: NavController, public navParams: NavParams, private appService: NWalletAppService, private account: AccountService, private logger: LoggerService) {
         this.selectedIndex = 2;
     }
 
@@ -76,9 +71,15 @@ export class TabcontainerPage {
         // var index = event.index;
         // const direction = index < this.selectedIndex ? 'left' : 'right';
         // const e = event;
-
-
     }
 }
 
-export const NWalletTabPages = [TabcontainerPage, TransferHistoryTabPage, BuyNcashTabPage, LoanNcashTabPage, AccountTabPage, ...WalletTabPages, ...[MyInfoPage, LanguagePage]];
+export const NWalletTabPages = [
+    TabcontainerPage,
+    TransferHistoryTabPage,
+    BuyNcashTabPage,
+    LoanNcashTabPage,
+    AccountTabPage,
+    ...WalletTabPages,
+    ...[MyInfoPage, LanguagePage, ResetPincodePage]
+];

@@ -1,6 +1,8 @@
 import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController, Navbar } from 'ionic-angular';
+import { IonicPage, NavController, Navbar, ModalController } from 'ionic-angular';
 import { AccountService } from '../../../../providers/account/account.service';
+import { ResetPincodePage } from './reset-pincode/reset-pincode.page';
+import { ModalNavPage } from '../../../0.base/modal-nav.page';
 
 @IonicPage()
 @Component({
@@ -14,7 +16,7 @@ export class MyInfoPage {
     public email: string;
     public phoneNumber: string;
     public pincodeEnabled: boolean;
-    public constructor(private navCtrl: NavController, private account: AccountService) {
+    public constructor(private navCtrl: NavController, private account: AccountService, private modal: ModalController) {
         this.init();
     }
 
@@ -30,5 +32,17 @@ export class MyInfoPage {
                 animate: false
             });
         };
+    }
+
+    public onClick_Pincode(): void {
+        const modal = this.modal.create(
+            ModalNavPage,
+            ModalNavPage.resolveModal(ResetPincodePage, param => {
+                param.canBack = true;
+                param.headerType = 'none';
+            })
+        );
+
+        modal.present();
     }
 }

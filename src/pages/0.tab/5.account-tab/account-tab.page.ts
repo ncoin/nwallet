@@ -42,15 +42,14 @@ export class AccountTabPage {
         const alert = this.alert.create({
             cssClass: 'alert-logout button-center',
             title: langs['Logout'],
-            subTitle : '<div class="alert-title-line"></div>',
+            subTitle: '<div class="alert-title-line"></div>',
             message: `<div class="alert-message-header">${langs['LogoutAskHeader']}</div>` + `<div class="alert-message-content">${langs['LogoutAskContent']}</div>`,
             buttons: [
                 {
                     role: 'cancel',
                     text: langs['Cancel'],
                     handler: () => {},
-                    cssClass : 'button-cancel'
-
+                    cssClass: 'button-cancel'
                 },
                 {
                     text: langs['Logout'],
@@ -63,7 +62,7 @@ export class AccountTabPage {
                             animation: 'ios-transition'
                         });
                     },
-                    cssClass : 'button-ok',
+                    cssClass: 'button-ok'
                 }
             ]
         });

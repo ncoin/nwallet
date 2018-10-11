@@ -1,0 +1,37 @@
+page-reset-pincode {
+    $size-offset: 13vw;
+
+    .content {
+        text-align: center;
+        .header {
+            font-size: 2.5rem;
+        }
+        .phone-number {
+            font-size: 3.5rem;
+            margin: 5% 0;
+        }
+        .input-pincode-desc {
+            font-size: 2rem;
+        }
+        .pincodes {
+
+            margin-top: 6%;
+            div {
+                display: inline-block;
+                margin: 0 5px;
+                font-size: 3rem;
+                width: $size-offset;
+                line-height: $size-offset;
+                height: $size-offset;
+                border-radius: 10px;
+                background: red;
+                color: white;
+            }
+        }
+        .button-next {
+            margin: 3% auto 0 auto;
+            width: 90%
+        }
+    }
+
+}

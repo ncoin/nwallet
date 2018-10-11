@@ -9,13 +9,28 @@
 <ion-content padding>
     <div class="my-info-summary">
         <div>
-            PhoneNumber : {{phoneNumber}}
+            <div>
+                {{'MobileNumber' | translate}} :
+            </div>
+            <div>
+                {{ phoneNumber}}
+            </div>
         </div>
         <div>
-            Email : {{email}}
+            <div>
+                {{'EmailAddress' | translate}} :
+            </div>
+            <div>
+                {{email}}
+            </div>
         </div>
         <div>
-            Pin : {{pincodeEnabled}}
+            <div>
+                {{'Pin' | translate}} :
+            </div>
+            <div>
+                {{(pincodeEnabled ? 'Registered' : 'NotRegisterd') | translate}}
+            </div>
         </div>
     </div>
     <button ion-item detail-none class="btn default">
@@ -27,7 +42,7 @@
             {{'EmailSetting' | translate}}
         </ion-label>
     </button>
-    <button ion-item detail-none class="btn default">
+    <button ion-item detail-none class="btn default" (click)="onClick_Pincode()">
         <ion-label>
             {{'PincodeSetting' | translate}}
         </ion-label>
