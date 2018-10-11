@@ -30,5 +30,7 @@
   "Available": "Available",
   "ContinueWithMobileNumber": "Continue with Mobile Number",
   "MyInfo": "My Info",
-  "EnablePushNotification": "Enable push notification"
+  "EnablePushNotification": "Enable push notification",
+  "LogoutAskHeader": "Are you sure to logout?",
+  "LogoutAskContent": "Your registered mobile number will be required to login."
 }
