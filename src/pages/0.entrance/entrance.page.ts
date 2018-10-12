@@ -15,7 +15,7 @@ export class EntrancePage {
     constructor(private nav: NavController, private modalCtrl: ModalController) {}
     public async onContinue(): Promise<void> {
         const isLogin = true;
-        if (isLogin) {
+        if (!isLogin) {
             this.nav.push(CreateAccountPage, {}, NWTransition.Slide());
         } else {
             const modal = this.modalCtrl.create(

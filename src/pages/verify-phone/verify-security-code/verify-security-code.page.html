@@ -16,12 +16,7 @@
             and enter the code here:
         </div>
         <div class="security-codes">
-            <div>{{securityCodes[0]}}</div>
-            <div>{{securityCodes[1]}}</div>
-            <div>{{securityCodes[2]}}</div>
-            <div>{{securityCodes[3]}}</div>
-            <div>{{securityCodes[4]}}</div>
-            <div>{{securityCodes[5]}}</div>
+            <div class="digit" *ngFor="let item of [1,2,3,4,5,6]; index as i">{{securityCodes[i]}}</div>
         </div>
     </div>
     <button class="button-next" ion-button block (click)="onClick_Next()">
@@ -33,7 +28,5 @@
     <div>
         [ {{expiredTimeSpan | date : 'mm:ss'}} ]
     </div>
-</ion-content>
-<ion-footer>
     <nw-key-pad (keystroke)=onInput($event)></nw-key-pad>
-</ion-footer>
+</ion-content>

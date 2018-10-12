@@ -41,11 +41,12 @@ export class VerifyPhonePage extends ModalBasePage {
 
     public async onCountryChanged(event: any): Promise<void> {
         const popover = this.popover.create(InternationalPhoneComponent);
-        popover.onDidDismiss((data, role) => {
+        popover.onWillDismiss((data, role) => {
             if (data) {
                 this.selectedCountry = data;
             }
         });
+
         await popover.present({
             ev: event
         });
@@ -59,7 +60,7 @@ export class VerifyPhonePage extends ModalBasePage {
         this.logger.debug('[verify-phone-page] phoneNumber : ', this.phoneNumber);
 
         const result = await this.navCtrl.push(VerifySuccessPage, {
-            phoneNumber : this.selectedCountry.code + this.phoneNumber,
+            phoneNumber: this.selectedCountry.code + this.phoneNumber
         });
         // loading.dismiss();
         this.logger.debug('result', result);
