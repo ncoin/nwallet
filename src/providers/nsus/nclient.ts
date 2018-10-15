@@ -85,9 +85,9 @@ export class NClientProvider {
         };
 
         return this.http
-            .get(env.endpoint.api(`accounts/stellar/${accountId}`), {
+            .get(env.endpoint.api(`wallets`), {
                 headers: {
-                    Authorization: await this.getToken()
+                    authorization: await this.getToken()
                 }
             })
             .map(data => {
@@ -115,7 +115,7 @@ export class NClientProvider {
             .get<TResponse>(env.endpoint.api(`${address}${accountId}`), {
                 params: request,
                 headers: {
-                    Authorization: await this.getToken()
+                    authorization: await this.getToken()
                 }
             })
             .toPromise()
@@ -207,7 +207,7 @@ export class NClientProvider {
             .get(env.endpoint.api(`transactions/stellar/accounts/${accountId}`), {
                 params: params,
                 headers: {
-                    Authorization: await this.getToken()
+                    authorization: await this.getToken()
                 }
             })
             .map(response => {
