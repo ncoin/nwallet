@@ -2,12 +2,24 @@ import { Item } from '../../models/nwallet/asset';
 
 declare module '../../models/nwallet/asset' {
     interface Item {
-        /** asset detail */
-        detail: Detail;
-        /** asset amount */
-        amount: string;
-        /** asset option */
-        option: Option;
+
+    }
+
+    interface Data {
+        id: number;
+        bitgo_wallet_id: number;
+        currency_manage_id: number;
+        currency: string;
+        user_id: string;
+        address: string;
+        balance: number;
+        lock_balance: number;
+        loan_amt: number;
+        current_ltv: number;
+        align_number: number;
+        is_show: boolean | number;
+        created_date: Date;
+        last_modified_date: Date;
     }
 
     /** asset detail protocol */
@@ -15,7 +27,7 @@ declare module '../../models/nwallet/asset' {
         /** asset code : ex) BTC, ETH, XRP, BCH,, */
         symbol: string;
         /** internal asset code */
-        code: string;
+        code: number;
         /** amount per usd price */
         price: number;
     }
