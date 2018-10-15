@@ -77,7 +77,7 @@
         "@types/stellar-sdk": "^0.8.4",
         "codelyzer": "^4.4.2",
         "tslint": "^5.10.0",
-        "typescript": "^2.4.2"
+        "typescript": "^2.8.3"
     },
     "config": {
         "ionic_aot_write_to_disk": true,

@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
 import { NClientProvider } from './nclient';
 import { LoggerService } from '../common/logger/logger.service';
+import { AccountService } from '../account/account.service';
+import { NotificationService } from './notification';
 
 @Injectable()
 export class NsusChannelService {
-    constructor(private nClient: NClientProvider, private logger: LoggerService) {}
+    constructor(private nClient: NClientProvider, private logger: LoggerService, private account: AccountService, private notification: NotificationService) {}
 
     public async requestPhoneVerification(phoneNumber: string): Promise<boolean> {
         this.logger.debug('[nsus-channel] phone number : ', phoneNumber);
@@ -15,5 +17,10 @@ export class NsusChannelService {
         return true;
     }
 
+    public async fetchJobs(): Promise<void> {
+        const assets = await this.nClient.getAssets();
+        this.account.account_new.inventory.setItems(assets);
 
+        this.notification.startStream();
+    }
 }

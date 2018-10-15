@@ -7,7 +7,7 @@ export const env: Environments = {
     network: Schema.network,
     endpoint: {
         client: 'https://api.stage.ncoin.com/wallet/api/',
-        stream: 'http://wallet-api.stage.ncoin.com:3000/explorer/',
+        stream: (type: 'ticker' | 'wallet', token: string) => `http://api.stage.ncoin.com:4001/streams/${type}?token=${token}`,
         auth: 'https://api.stage.ncoin.com/',
         api: (path: string) => `${env.endpoint.client}${path}`,
         token: () => `${env.endpoint.auth}${Constants.tokenPath}`

@@ -64,23 +64,42 @@ export class TokenProvider {
     constructor(private http: HttpClient, private logger: LoggerService, private device: Device, private account: AccountService) {}
 
     public async getToken(): Promise<Token> {
-        if (!this.token || this.token.isExpired()) {
-            this.token = await this.issueToken();
+        if (!this.token) {
+            this.token = await this.issueToken(false);
+        }
+
+        if (this.token.isExpired()) {
+            this.token = await this.issueToken(true);
         }
 
         return this.token;
     }
-
-    private async issueToken(): Promise<Token> {
+    private async issueToken(isRefresh: boolean): Promise<Token> {
         const id = this.device.uuid ? this.device.uuid : getNonce();
-        const devParameter = {
-            username: '821088888888',
-            device_id: id,
-            grant_type: 'password'
-        };
-        this.logger.debug('[token] issue token ...');
+        let parameters;
+
+        this.logger.debug(`[token] issue token ... : ${isRefresh ? 'refresh' : 'new'}`);
+
+        if (isRefresh) {
+            parameters = {
+                refresh_token: this.token.refresh_token,
+                grant_type: 'refresh_token'
+            };
+        } else {
+            if (env.name === 'dev') {
+                /** todo api aggregate --sky */
+                parameters = {
+                    username: this.account.account_new.personal.getUserName(),
+                    device_id: id,
+                    grant_type: 'password'
+                };
+            } else {
+                throw new Error('stage / prod issue token not implemented yet.');
+            }
+        }
+
         const issuedToken = await this.http
-            .post<Token>(env.endpoint.token(), env.name === 'dev' ? devParameter : {}, {
+            .post<Token>(env.endpoint.token(), parameters, {
                 headers: {
                     Authorization: `Basic ${btoa(`app-n-wallet:app-n-wallet`)}`,
                     'Content-Type': 'application/json',

@@ -1,5 +1,5 @@
 <ion-header>
-    <ion-navbar>
+    <ion-navbar >
         <ion-title>
             <img src="assets/img/title_wallet.png" />
         </ion-title>
@@ -45,14 +45,14 @@
     </ion-grid>
 
     <ion-slides pager>
-        <ion-slide *ngFor="let walletPage of walletPages">
+        <ion-slide *ngFor="let assetSlide of assetSlides">
             <ion-list>
-                <nw-asset-item class="basic" *ngFor="let wallet of walletPage.wallets" [asset]="wallet"></nw-asset-item>
+                <nw-asset-item class="basic" *ngFor="let asset of assetSlide.assets" [asset]="asset" (click)=onSelectAsset(asset)></nw-asset-item>
             </ion-list>
         </ion-slide>
     </ion-slides>
 
-    <div *ngIf="nCash && nCash.item">
+    <!-- <div *ngIf="nCash && nCash.item">
         <nw-asset-item class="ncash" [asset]="nCash"></nw-asset-item>
-    </div>
+    </div> -->
 </ion-content>

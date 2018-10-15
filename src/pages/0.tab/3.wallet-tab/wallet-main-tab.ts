@@ -11,7 +11,7 @@ import { AccountService } from '../../../providers/account/account.service';
 import { NWModalTransition } from '../../../tools/extension/transition';
 import { ManageWalletPage } from './manage-wallet/manage-wallet.page';
 import { AddWalletPage } from './add-wallet/add-wallet.page';
-import { NWAsset } from '../../../models/nwallet';
+import { NWAsset, NWAccount } from '../../../models/nwallet';
 import { ModalNavPage } from '../../0.base/modal-nav.page';
 
 /**
@@ -21,8 +21,8 @@ import { ModalNavPage } from '../../0.base/modal-nav.page';
  * Ionic pages and navigation.
  */
 
-export interface WalletSlide {
-    wallets: NWallet.AssetContext[];
+export interface AssetSlide {
+    assets: NWAsset.Item[];
 }
 
 @Component({
@@ -30,8 +30,7 @@ export interface WalletSlide {
     templateUrl: 'wallet-main-tab.html'
 })
 export class WalletMainTabPage {
-    walletPages: WalletSlide[] = [];
-    nCash: NWallet.AssetContext;
+    assetSlides: AssetSlide[] = [];
     totalPrice: string;
     private subscription: any;
     private loading: Loading;
@@ -39,20 +38,15 @@ export class WalletMainTabPage {
         public navCtrl: NavController,
         private event: EventProvider,
         private logger: LoggerService,
-        private account: AccountService,
         private modalCtrl: ModalController,
         public loadingCtrl: LoadingController
     ) {
         this.init();
     }
 
-    ionViewDidLoad() {
-        this.navCtrl.getActive().showBackButton(false);
-    }
-
     ionViewDidEnter() {
         if (!this.subscription) {
-            this.subscription = this.event.subscribe(EventTypes.NWallet.account_refresh_wallet, this.refreshWallets);
+            this.subscription = this.event.subscribe(EventTypes.NWallet.account_refresh_wallet, this.refreshInventory);
         }
     }
 
@@ -66,41 +60,27 @@ export class WalletMainTabPage {
             spinner: 'hide',
             content: 'Loading Please Wait...'
         });
-        this.loading.present();
 
-        const account = await this.account.getAccount();
-        setTimeout(() => {
-            this.loading.dismiss();
-        }, 1000);
+        await .
+        this.loading.present();
     }
 
-    private refreshWallets = (assets: NWallet.AssetContext[]): void => {
+    private refreshInventory = (inventory: NWAccount.Inventory): void => {
         this.logger.debug('[wallet-tab] on refresh assets');
-        const nCash = assets.find(wallet => {
-            return wallet.item.isNative === true && wallet.item.asset.code === 'NCN';
-        });
 
-        let totalAmount = 0;
-        assets.forEach(wallet => {
-            totalAmount += Number.parseFloat(wallet.amount) * wallet.item.price;
-        });
-
+        const totalAmount = inventory.totalPrice();
         this.totalPrice = totalAmount.toFixed(2).toString();
 
-        assets.splice(assets.indexOf(nCash), 1);
-
-        this.walletPages.length = 0;
-        let sliceWallet = assets.splice(0, 3);
+        this.assetSlides.length = 0;
+        let sliceWallet = inventory.assetItems.splice(0, 3);
 
         while (sliceWallet.length > 0) {
-            this.walletPages.push({ wallets: sliceWallet });
-            sliceWallet = assets.splice(0, 3);
+            this.assetSlides.push({ assets: sliceWallet });
+            sliceWallet = inventory.assetItems.splice(0, 3);
         }
-
-        this.nCash = nCash;
     }
 
-    public onSelectWallet(wallet: NWallet.AssetContext) {
+    public onSelectAsset(wallet: NWAsset.Item) {
         const modal = this.modalCtrl.create(WalletDetailPage, { wallet: wallet }, NWModalTransition.Slide());
         modal.present();
     }
@@ -111,7 +91,7 @@ export class WalletMainTabPage {
             ModalNavPage.resolveModal(ManageWalletPage, param => {
                 param.headerType = 'bar';
                 param.canBack = true;
-            }),
+            })
         );
         await modal.present();
     }

@@ -1,12 +1,13 @@
 import { Item, Data } from '../../../models/nwallet/asset';
 
 function processData(item: Item, data: Data): void {
+
     item.data.is_show = data.is_show === 1;
     item.data.created_date = new Date(data.created_date);
-    item.data.last_modified_date = new Date(this.data.last_modified_date);
+    item.data.last_modified_date = new Date(item.data.last_modified_date);
 
     Object.keys(data).forEach(key => {
-        if (!data[key]) {
+        if (data[key] === undefined) {
             throw new Error(`invalid parameter, object : Data, property = ${key}`);
         }
     });

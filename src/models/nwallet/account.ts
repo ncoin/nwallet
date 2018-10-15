@@ -9,3 +9,5 @@ export class Account {
         this.personal = new Personal();
     }
 }
+
+export { Inventory, Personal };

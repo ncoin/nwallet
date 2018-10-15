@@ -1,6 +1,4 @@
-import { Item } from './../../models/nwallet/asset';
-import { EventTypes } from '../../interfaces/events';
-import { Observable, Subscription } from 'rxjs';
+import {  Subscription } from 'rxjs';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Asset } from 'stellar-sdk';
 import { Injectable } from '@angular/core';
@@ -26,7 +24,7 @@ export class NClientProvider {
     public async fetchJobs(account: NWallet.Account): Promise<void> {
         this.logger.debug('[nclient] fetch jobs start');
         await this.getToken();
-        await this.fetchStreams(account);
+        await this.fetchStreams();
         // const subscribe = this.subscribe(account);
         // const setAsset = this.refreshWallets(account);
         // await Promise.all([subscribe, setAsset]);
@@ -40,26 +38,8 @@ export class NClientProvider {
         }
     }
 
-    public fetchStreams = async (account: NWallet.Account): Promise<boolean> => {
-        return new Promise<boolean>(resolve => {
-            const timer = Observable.timer(0, 5000);
-            this.subscriptions.push(
-                timer.subscribe(async () => {
-                    const assets = await this.getAssets(account.signature.public);
-                    account.wallets = account.wallets || [];
-                    account.wallets.length = 0;
-                    account.wallets.push(...assets);
-                    this.event.publish(EventTypes.NWallet.account_refresh_wallet, assets);
-                })
-            );
-
-            const subscription = timer.subscribe(async () => {
-                resolve(true);
-                subscription.unsubscribe();
-            });
-
-            this.subscriptions.push(subscription);
-        });
+    public fetchStreams = async (): Promise<boolean> => {
+        return true;
     }
 
     public async unSubscribes(account: NWallet.Account): Promise<void> {
@@ -68,35 +48,15 @@ export class NClientProvider {
         });
     }
 
-    public async getAssets(accountId: string): Promise<NWallet.AssetContext[]> {
-        const convert = (datas: Object[]): NWallet.AssetContext[] => {
-            return datas.map(data => {
-                const asset = data['asset'];
-                const amount = data['amount'];
-                const item = getOrAddWalletItem(asset['code'], asset['issuer'], data['native']);
-                item.price = data['price'];
-                const wallet = <NWallet.AssetContext>{
-                    item: item,
-                    amount: amount
-                };
-
-                return wallet;
-            });
-        };
-
+    public async getAssets(): Promise<NWAsset.Item[]> {
         return this.http
-            .get(env.endpoint.api(`wallets`), {
+            .get<NWAsset.Data[]>(env.endpoint.api(`wallets`), {
                 headers: {
                     authorization: await this.getToken()
                 }
             })
-            .map(data => {
-                const item: NWAsset.Item = undefined;
-
-                const supportedCoins = convert(data['balances']['supportCoins']);
-                const unSupportCoins = convert(data['balances']['unSupportCoins']);
-                const returnCoins = supportedCoins.concat(unSupportCoins);
-                return returnCoins;
+            .map(datas => {
+                return datas.map(data => new NWAsset.Item().toProtocol(data));
             })
             .toPromise()
             .catch((error: HttpErrorResponse) => {

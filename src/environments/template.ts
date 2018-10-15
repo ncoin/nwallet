@@ -6,11 +6,11 @@ export interface Environments {
     /** test network */
     network: NetworkType;
     endpoint: {
-        client: string,
-        auth: string,
+        client: string;
+        auth: string;
         api: (path: string) => string;
-        token: () => string,
-        stream: string,
+        token: () => string;
+        stream: (type: 'ticker' | 'wallet', token: string) => string;
     };
 }
 
@@ -22,7 +22,6 @@ export interface Schema {
 }
 
 export const Constants = {
-    tokenPath : 'uaa/api/oauth/token',
-    supportedLanuages : ['en', 'es', 'fr', 'de', 'it', 'ja', 'ko', 'nl', 'pl', 'pt', 'ru', 'zh-cn', 'zh-tw'],
+    tokenPath: 'uaa/api/oauth/token',
+    supportedLanuages: ['en', 'es', 'fr', 'de', 'it', 'ja', 'ko', 'nl', 'pl', 'pt', 'ru', 'zh-cn', 'zh-tw']
 };
-

@@ -6,7 +6,7 @@ export class Item {
     /** asset option */
     public option: Option;
 
-    public get Amount(): number {
+    public get amount(): number {
         return this.data.balance;
     }
 }

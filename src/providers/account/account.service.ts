@@ -8,7 +8,7 @@ import { NWAccount } from '../../models/nwallet';
 
 @Injectable()
 export class AccountService {
-    public account_new: NWAccount;
+    public account_new: NWAccount.Account;
     // todo remove me--sky`
     public account: NWallet.Account;
 
@@ -17,7 +17,7 @@ export class AccountService {
     }
 
     private async init(): Promise<void> {
-        this.account_new = new NWAccount();
+        this.account_new = new NWAccount.Account();
         this.account = await this.preference.get(Preference.Nwallet.walletAccount);
     }
 
@@ -47,17 +47,6 @@ export class AccountService {
         }
     }
 
-    // public getAsset(): NWallet.AssetContext {
-    //     this.checkAccount();
-
-    //     return this.account.wallets.find(wallet => {
-    //         return wallet.item.asset.isNative() === true;
-    //     });
-    // }
-
-    /**
-     * deprecated
-     */
     public getNativeWallet(): NWallet.AssetContext {
         this.checkAccount();
 

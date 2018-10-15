@@ -1,4 +1,6 @@
 import { NWallet } from './nwallet';
+import { NWAsset } from '../models/nwallet';
+import { Inventory } from '../models/nwallet/inventory';
 
 export class Events<T> {
     lintVoid: T;
@@ -19,7 +21,7 @@ export const EventTypes = {
     NWallet: {
         account_create: new Events<string>('account_create'),
         account_import: set<string>('account_import'),
-        account_refresh_wallet: set<NWallet.AssetContext[]>('account_refresh_wallet'),
+        account_refresh_wallet: set<Inventory>('account_refresh_wallet'),
     },
 };
 

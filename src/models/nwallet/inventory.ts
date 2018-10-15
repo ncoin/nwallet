@@ -21,4 +21,14 @@ export class Inventory {
             return item.option.order;
         });
     }
+
+    public totalPrice(): number {
+        let totalAmount = 0;
+
+        this._assetItems.forEach(asset => {
+            totalAmount += asset.amount * asset.detail.price;
+        });
+
+        return totalAmount;
+    }
 }
