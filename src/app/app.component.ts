@@ -1,5 +1,5 @@
 import { Subscription } from 'rxjs/Subscription';
-import { EventTypes } from '../interfaces/events';
+import { NWEvent } from '../interfaces/events';
 import { EventProvider } from '../providers/common/event/event';
 import { NWalletAppService } from '../providers/app/app.service';
 import { TabcontainerPage } from '../pages/0.tab/0.container/tabcontainer';
@@ -70,10 +70,10 @@ export class NWalletApp implements OnDestroy {
     }
 
     private subscribeEvents(): void {
-        this.event.subscribe(EventTypes.App.user_login, () => {
+        this.event.subscribe(NWEvent.App.user_login, () => {
             this.rootPage = TabcontainerPage;
         });
-        this.event.subscribe(EventTypes.App.user_logout, () => {
+        this.event.subscribe(NWEvent.App.user_logout, () => {
             this.rootPage = EntrancePage;
         });
     }

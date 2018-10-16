@@ -1,30 +1,31 @@
-import { NWallet } from './nwallet';
-import { NWAsset } from '../models/nwallet';
-import { Inventory } from '../models/nwallet/inventory';
+import { TickerProtocol, WalletProtocol } from '../providers/nsus/notification';
 
-export class Events<T> {
-    lintVoid: T;
-    constructor(private name: string) {
-        this.lintVoid = undefined;
-    }
-    getKey(): string {
+export class EventType<T> {
+    constructor(private name: string) {}
+    public get key(): string {
         return this.name;
+    }
+
+    static create<T>(value: string): EventType<T> {
+        return new EventType<T>(value);
     }
 }
 
-export const EventTypes = {
+export const NWEvent = {
     App: {
-        user_login: set<string>('user_login'),
-        user_logout: set<string>('user_logout'),
+        user_login: EventType.create('app-user_login'),
+        user_logout: EventType.create('app-user_logout')
     },
 
     NWallet: {
-        account_create: new Events<string>('account_create'),
-        account_import: set<string>('account_import'),
-        account_refresh_wallet: set<Inventory>('account_refresh_wallet'),
+        account_create: EventType.create('wallet-account_create'),
+        account_import: EventType.create('wallet-account_import'),
+        account_refresh_wallet: EventType.create('wallet-account_refresh_wallet')
     },
+
+    Stream: {
+        ticker: EventType.create<TickerProtocol>('stream-ticker'),
+        wallet: EventType.create<WalletProtocol>('stream-wallet')
+    }
 };
 
-function set<T>(value: string): Events<T> {
-    return new Events<T>(value);
-}

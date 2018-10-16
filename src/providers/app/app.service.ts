@@ -6,18 +6,25 @@ import { PreferenceProvider, Preference } from '../common/preference/preference'
 import { App } from 'ionic-angular';
 import { LoggerService } from '../common/logger/logger.service';
 import { NWallet } from '../../interfaces/nwallet';
-import { EventTypes } from '../../interfaces/events';
+import { NWEvent } from '../../interfaces/events';
 import { NsusChannelService } from '../nsus/nsus-channel.service';
 
 /** todo change me --sky */
 import { PromiseWaiter } from 'forge/dist/helpers/Promise/PromiseWaiter';
+import { NWAccount } from '../../models/nwallet';
+import { BehaviorSubject } from 'rxjs';
 
 /**
  * common business logic provider
  */
+
+interface AccountCallback {
+    onInventory: BehaviorSubject<NWAccount.Inventory>;
+}
+
 @Injectable()
 export class NWalletAppService {
-    private fetchJobs: PromiseWaiter<boolean>;
+
     constructor(
         private preference: PreferenceProvider,
         private channel: NsusChannelService,
@@ -27,6 +34,23 @@ export class NWalletAppService {
         private event: EventProvider
     ) {
         this.fetchJobs = new PromiseWaiter<boolean>();
+
+        this.subjects = {
+            onInventory: new BehaviorSubject<NWAccount.Inventory>(this.account.account_new.inventory)// todo change me
+        };
+    }
+    private fetchJobs: PromiseWaiter<boolean>;
+    private subjects: AccountCallback;
+
+    // load or fetch
+    private async;
+
+    public onAccount = (onAccount: (account: AccountCallback) => void): void => {
+        onAccount(this.subjects);
+    }
+
+    public waitFetch(): Promise<boolean> {
+        return this.fetchJobs.result();
     }
 
     public async flushApplication(): Promise<void> {
@@ -41,12 +65,12 @@ export class NWalletAppService {
     public async login(account: NWallet.Account): Promise<void> {
         await this.account.setAccount(account);
 
+        const result = await Promise.all([this.channel.getAssets()]);
 
-        const result = await Promise.all([this.channel.fetchJobs()]);
         this.fetchJobs.set(true);
 
         this.logger.debug('[app-service] login done');
-        this.event.publish(EventTypes.App.user_login);
+        this.event.publish(NWEvent.App.user_login);
     }
 
     public async logout(): Promise<void> {
@@ -59,7 +83,7 @@ export class NWalletAppService {
 
         // todo unsubscribe
         this.account.flush();
-        this.event.publish(EventTypes.App.user_logout);
+        this.event.publish(NWEvent.App.user_logout);
     }
 
     public async getTransfer(skip: number = 0): Promise<NWallet.Protocol.Transaction[]> {
@@ -88,10 +112,4 @@ export class NWalletAppService {
     }
 
     public async getLoanHistories() {}
-
-    public async getTransactions(asset: Asset, pageToken?: string) {
-        return 0;
-
-        // return await this.connector.getTransactions(this.account.getId(), asset, pageToken);
-    }
 }

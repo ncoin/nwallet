@@ -1,4 +1,4 @@
-import { EventTypes } from '../../../interfaces/events';
+import { NWEvent } from '../../../interfaces/events';
 import { LoanNcashTabPage } from '../4.loan-ncash-tab/loan-ncash-tab';
 import { BuyNcashTabPage } from '../2.buy-ncash-tab/buy-ncash-tab';
 import { WalletDetailPage } from '../../1.detail/wallet-detail.page';
@@ -13,6 +13,8 @@ import { ManageWalletPage } from './manage-wallet/manage-wallet.page';
 import { AddWalletPage } from './add-wallet/add-wallet.page';
 import { NWAsset, NWAccount } from '../../../models/nwallet';
 import { ModalNavPage } from '../../0.base/modal-nav.page';
+import { NWalletAppService } from '../../../providers/app/app.service';
+import { Subscription } from 'rxjs';
 
 /**
  * Generated class for the WalletPage page.
@@ -32,27 +34,21 @@ export interface AssetSlide {
 export class WalletMainTabPage {
     assetSlides: AssetSlide[] = [];
     totalPrice: string;
-    private subscription: any;
+    private subscriptions: Subscription[] = [];
     private loading: Loading;
     constructor(
         public navCtrl: NavController,
         private event: EventProvider,
         private logger: LoggerService,
         private modalCtrl: ModalController,
-        public loadingCtrl: LoadingController
+        public loadingCtrl: LoadingController,
+        private app: NWalletAppService
     ) {
         this.init();
     }
 
-    ionViewDidEnter() {
-        if (!this.subscription) {
-            this.subscription = this.event.subscribe(EventTypes.NWallet.account_refresh_wallet, this.refreshInventory);
-        }
-    }
-
     ionViewDidLeave() {
-        this.event.unsubscribe(EventTypes.NWallet.account_refresh_wallet, this.subscription);
-        this.subscription = undefined;
+        this.subscriptions.forEach(s => s.unsubscribe());
     }
 
     async init(): Promise<void> {
@@ -60,9 +56,18 @@ export class WalletMainTabPage {
             spinner: 'hide',
             content: 'Loading Please Wait...'
         });
+        await this.loading.present();
+        await this.app.waitFetch();
+        await this.loading.dismiss();
+        this.app.onAccount(account => {
+            this.register(account.onInventory.subscribe(this.refreshInventory));
+        });
+        // await this.account.getInventory().
 
-        await .
-        this.loading.present();
+    }
+
+    private register(subscription: Subscription): void {
+        this.subscriptions.push(subscription);
     }
 
     private refreshInventory = (inventory: NWAccount.Inventory): void => {

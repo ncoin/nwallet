@@ -1,5 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { NWallet } from '../../interfaces/nwallet';
+import { NWAsset } from '../../models/nwallet';
 
 /**
  * Generated class for the CurrencyFormatPipe pipe.
@@ -14,8 +15,8 @@ export class AssetToUSDPipe implements PipeTransform {
     /**
      * Takes a value and makes it lowercase.
      */
-    transform(wallet: NWallet.AssetContext) {
-        const value = Number.parseFloat(wallet.amount) * wallet.item.price;
+    transform(assetItem: NWAsset.Item) {
+        const value = assetItem.amount * assetItem.detail.price;
         const floor = value.toFixed(2);
         return `$${floor} USD`;
     }

@@ -6,7 +6,9 @@ import { NotificationService } from './notification';
 
 @Injectable()
 export class NsusChannelService {
-    constructor(private nClient: NClientProvider, private logger: LoggerService, private account: AccountService, private notification: NotificationService) {}
+    constructor(private nClient: NClientProvider, private logger: LoggerService, private account: AccountService, private notification: NotificationService) {
+        this.notification.openStream();
+    }
 
     public async requestPhoneVerification(phoneNumber: string): Promise<boolean> {
         this.logger.debug('[nsus-channel] phone number : ', phoneNumber);
@@ -21,6 +23,16 @@ export class NsusChannelService {
         const assets = await this.nClient.getAssets();
         this.account.account_new.inventory.setItems(assets);
 
-        this.notification.startStream();
+        this.notification.openStream();
+    }
+
+    // todo refactoring --sky
+    public async getAssets(): Promise<void> {
+
+    }
+
+
+    public close(): void {
+        this.notification.flush();
     }
 }

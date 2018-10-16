@@ -4,22 +4,31 @@ import { NWallet } from '../../interfaces/nwallet';
 import { Injectable } from '@angular/core';
 import { PreferenceProvider, Preference } from '../common/preference/preference';
 import { Keypair } from 'stellar-sdk';
-import { NWAccount } from '../../models/nwallet';
+import { NWAccount, NWAsset } from '../../models/nwallet';
+import { Inventory } from '../../models/nwallet/account';
+import { BehaviorSubject } from 'rxjs';
+import { Disposable } from 'forge';
+
 
 @Injectable()
 export class AccountService {
     public account_new: NWAccount.Account;
+
     // todo remove me--sky`
     public account: NWallet.Account;
 
+
     constructor(private event: Events, private preference: PreferenceProvider, private logger: LoggerService) {
+        this.account_new = new NWAccount.Account();
+
         this.init();
     }
 
     private async init(): Promise<void> {
-        this.account_new = new NWAccount.Account();
         this.account = await this.preference.get(Preference.Nwallet.walletAccount);
     }
+
+
 
     // todo remove me --sky`
     public async setAccount(account: NWallet.Account): Promise<NWallet.Account> {

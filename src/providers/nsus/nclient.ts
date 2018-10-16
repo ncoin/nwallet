@@ -1,10 +1,10 @@
-import {  Subscription } from 'rxjs';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Subscription } from 'rxjs';
+import { HttpClient, HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Asset } from 'stellar-sdk';
 import { Injectable } from '@angular/core';
 import { LoggerService } from '../common/logger/logger.service';
 import { env } from '../../environments/environment';
-import { NWallet, getOrAddWalletItem } from '../../interfaces/nwallet';
+import { NWallet } from '../../interfaces/nwallet';
 import { EventProvider } from '../common/event/event';
 import { TokenProvider } from '../token/token';
 import { ParameterExpr, createExpr } from 'forge';
@@ -17,18 +17,15 @@ export class NClientProvider {
     private subscriptions: Subscription[] = [];
     constructor(private logger: LoggerService, private http: HttpClient, private event: EventProvider, private token: TokenProvider) {}
 
-    private getKeyFromValue(enums: {}, value: any): string {
-        return Object.keys(enums).filter(type => enums[type] === value)[0];
+    private onError<T>(log: string, result: T | undefined) {
+        return (error: HttpErrorResponse) => {
+            this.logger.error(`[nclient] ${log}`, error);
+            return result;
+        };
     }
 
-    public async fetchJobs(account: NWallet.Account): Promise<void> {
-        this.logger.debug('[nclient] fetch jobs start');
-        await this.getToken();
-        await this.fetchStreams();
-        // const subscribe = this.subscribe(account);
-        // const setAsset = this.refreshWallets(account);
-        // await Promise.all([subscribe, setAsset]);
-        this.logger.debug('[nclient] fetch jobs done');
+    private getKeyFromValue(enums: {}, value: any): string {
+        return Object.keys(enums).filter(type => enums[type] === value)[0];
     }
 
     private async getToken(): Promise<string> {
@@ -55,14 +52,9 @@ export class NClientProvider {
                     authorization: await this.getToken()
                 }
             })
-            .map(datas => {
-                return datas.map(data => new NWAsset.Item().toProtocol(data));
-            })
             .toPromise()
-            .catch((error: HttpErrorResponse) => {
-                this.logger.error('[nclient] get asset failed', error);
-                return [];
-            });
+            .then(datas => datas.map(data => new NWAsset.Item().toProtocol(data)))
+            .catch(this.onError('get asset failed', []));
     }
 
     // tslint:disable-next-line:max-line-length
