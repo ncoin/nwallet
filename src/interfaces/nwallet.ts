@@ -1,6 +1,9 @@
 import { Asset } from 'stellar-sdk';
 
 export namespace NWallet {
+    export interface Disposabe {
+        dipose: () => void;
+    }
     export interface Account {
         isActivate: boolean;
         signature: Signature;

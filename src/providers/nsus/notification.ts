@@ -7,12 +7,34 @@ import { TokenProvider } from '../token/token';
 export class NotificationService {
     constructor(private token: TokenProvider) {}
 
+    private stream: {
+        wallet: EventSource;
+        ticker: EventSource;
+    };
+    private push: any;
+
     public async startStream(): Promise<void> {
         const token = await this.token.getToken();
 
-        const streamUrl = env.endpoint.stream('ticker', token.getAuth());
-        const eventSource = new EventSource(streamUrl, { withCredentials: true });
+        const walletUrl = env.endpoint.stream('wallet', token.getValue());
+        const tickerUrl = env.endpoint.stream('ticker', token.getValue());
 
-        eventSource.addEventListener('wallet', function(e) {});
+        const walletEvent = new EventSource(walletUrl, { withCredentials: true });
+        const tickerEvent = new EventSource(tickerUrl, { withCredentials: true });
+
+        walletEvent.addEventListener('wallet', this.onWalletEvent);
+        tickerEvent.addEventListener('ticker', this.onTickerEvent);
+        this.stream = {
+            wallet: walletEvent,
+            ticker: tickerEvent
+        };
     }
+
+    private closeStream(): void {
+        this.stream.ticker.removeEventListener('ticker', this.onTickerEvent);
+        this.stream.wallet.removeEventListener('wallet', this.onWalletEvent);
+    }
+
+    public onWalletEvent = (data: any): void => {};
+    public onTickerEvent = (data: any): void => {};
 }

@@ -26,6 +26,10 @@ export class Token extends TokenProtocol {
         return value.charAt(0).toUpperCase() + value.slice(1);
     }
 
+    public getValue(): string {
+        return this.access_token;
+    }
+
     public getAuth(): string {
         return `${Token.capitalize(this.token_type)} ${this.access_token}`;
     }
