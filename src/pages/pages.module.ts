@@ -1,5 +1,3 @@
-import { AccountTabPage } from './0.tab/5.account-tab/account-tab.page';
-import { CreateAccountPage } from './1.account/createaccount';
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 import { TutorialPage } from './0.tutorial/tutorial';
@@ -23,7 +21,6 @@ import { VERIFY_PHONE_PAGES } from './verify-phone/verify-phone.page';
     declarations: [
         TutorialPage,
         EntrancePage,
-        CreateAccountPage,
         FingerprintModalPage,
         PinDotsComponent,
         PinPadComponent,
@@ -41,7 +38,6 @@ import { VERIFY_PHONE_PAGES } from './verify-phone/verify-phone.page';
         TranslateModule.forChild(),
         IonicPageModule.forChild(TutorialPage),
         IonicPageModule.forChild(EntrancePage),
-        IonicPageModule.forChild(CreateAccountPage),
         IonicPageModule.forChild(FingerprintModalPage),
         IonicPageModule.forChild(PinDotsComponent),
         IonicPageModule.forChild(PinPadComponent),

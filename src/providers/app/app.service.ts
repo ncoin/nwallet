@@ -54,7 +54,7 @@ export class NWalletAppService {
 
     public async beginFetch(): Promise<void> {
         // todo init token
-        this.event.publish(EventTypes.)
+        this.event.publish(NWEvent.App.initialize);
         const result = await Promise.all([this.channel.fetchJobs()]);
         this.fetchJobs.set(true);
     }
@@ -67,9 +67,13 @@ export class NWalletAppService {
         await this.preference.set(Preference.App.hasSeenTutorial, true);
     }
 
+    public isLogon(): boolean {
+
+        return true;
+    }
+
     // todo fixme
-    public async login(account: NWallet.Account): Promise<void> {
-        await this.account.setAccount(account);
+    public async onLogin(): Promise<void> {
         await this.beginFetch();
 
         this.logger.debug('[app-service] login done');

@@ -67,6 +67,10 @@ export class TokenService {
 
     constructor(private http: HttpClient, private logger: LoggerService, private device: Device, private account: AccountService) {}
 
+    public initialize(): void {
+
+    }
+
     public async getToken(): Promise<Token> {
         if (!this.token) {
             this.token = await this.issueToken(false);

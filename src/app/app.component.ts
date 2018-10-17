@@ -39,7 +39,7 @@ export class NWalletApp implements OnDestroy {
         private lock: LockProvider,
         private account: AccountService,
         private appConfig: AppConfigProvider,
-        private appService: NWalletAppService,
+        private app: NWalletAppService,
         private event: EventService
     ) {
         this.initialize();
@@ -79,10 +79,10 @@ export class NWalletApp implements OnDestroy {
     }
 
     private async preparePage(): Promise<void> {
-        const account = await this.account.getAccount();
-        if (account) {
+        const isLogon = this.app.isLogon();
+        if (isLogon) {
             this.logger.debug('[app-page] prepare wallet page (login)');
-            await this.appService.login(account);
+            this.rootPage = TabcontainerPage;
         } else {
             this.logger.debug('[app-page] prepare entrance page');
             this.rootPage = EntrancePage;

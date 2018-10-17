@@ -5,9 +5,6 @@ import { Injectable } from '@angular/core';
 import { PreferenceProvider, Preference } from '../common/preference/preference';
 import { Keypair } from 'stellar-sdk';
 import { NWAccount, NWAsset } from '../../models/nwallet';
-import { Inventory } from '../../models/nwallet/account';
-import { BehaviorSubject } from 'rxjs';
-import { Disposable } from 'forge';
 
 
 @Injectable()
@@ -24,13 +21,6 @@ export class AccountService {
 
     private async init(): Promise<void> {
         this.account = await this.preference.get(Preference.Nwallet.walletAccount);
-    }
-
-    // todo remove me --sky`
-    public async setAccount(account: NWallet.Account): Promise<NWallet.Account> {
-        await this.preference.set(Preference.Nwallet.walletAccount, account);
-        this.account = account;
-        return this.account;
     }
 
     // todo remove me --sky`
@@ -66,20 +56,6 @@ export class AccountService {
         return this.account.wallets.filter(wallet => {
             return wallet.item.isNative;
         });
-    }
-
-    public generateSignature(secretKey?: string): NWallet.Signature {
-        let keyPair: Keypair;
-        if (secretKey) {
-            keyPair = Keypair.fromSecret(secretKey);
-        } else {
-            keyPair = Keypair.random();
-        }
-
-        return <NWallet.Signature>{
-            public: keyPair.publicKey(),
-            secret: keyPair.secret()
-        };
     }
 
     public flush(): void {

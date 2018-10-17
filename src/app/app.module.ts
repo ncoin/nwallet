@@ -42,11 +42,6 @@ export class MissingHandler implements MissingTranslationHandler {
                     //     segment: 'entrance',
                     // },
                     // {
-                    //     component: CreateAccountPage,
-                    //     name: 'CreateAccountPage',
-                    //     segment: 'createaccount',
-                    // },
-                    // {
                     //     component: ImportAccountPage,
                     //     name: 'ImportAccountPage',
                     //     segment: 'importaccount',

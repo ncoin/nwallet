@@ -1,12 +1,9 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ViewController, ToastController, PopoverController } from 'ionic-angular';
-import { QRScanner, QRScannerStatus } from '@ionic-native/qr-scanner';
+import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
 import { LoggerService } from '../../../providers/common/logger/logger.service';
-import { NsusChannelService } from '../../../providers/nsus/nsus-channel.service';
-import { Observable } from 'rxjs';
-import { CreateAccountPage } from '../../1.account/createaccount';
-import { NWTransition } from '../../../tools/extension/transition';
 import { ModalNavPage } from '../../0.base/modal-nav.page';
+import { EventService } from '../../../providers/common/event/event';
+import { NWEvent } from '../../../interfaces/events';
 
 @IonicPage()
 @Component({
@@ -20,13 +17,7 @@ export class VerifySecuritycodePage {
     public phoneNumber: string;
     public expiredTimeSpan: number;
 
-    constructor(
-        private navCtrl: NavController,
-        private navParams: NavParams,
-        private logger: LoggerService,
-        private channel: NsusChannelService,
-        private parent: ModalNavPage
-    ) {
+    constructor(private navCtrl: NavController, private navParams: NavParams, private logger: LoggerService, private parent: ModalNavPage, private event: EventService) {
         this.previousView = this.navParams.get('viewCtrl');
         this.phoneNumber = this.navParams.get('phoneNumber');
         this.expiredTimeSpan = 60 * 3 * 1000;
@@ -56,9 +47,8 @@ export class VerifySecuritycodePage {
 
     public onClick_Next(): void {
         this.isCountBegin = false;
+        this.event.publish(NWEvent.App.user_login);
         this.parent.dismiss();
-
-        this.navCtrl.push(CreateAccountPage, {}, NWTransition.Slide());
     }
 
     public onInput(input: any): void {
