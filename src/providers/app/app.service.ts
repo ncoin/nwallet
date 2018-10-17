@@ -15,14 +15,11 @@ import { BehaviorSubject } from 'rxjs';
  * common business logic provider
  */
 
-interface AccountStream {
-    onInventory: BehaviorSubject<NWAccount.Inventory>;
-}
+
 
 @Injectable()
 export class NWalletAppService {
     private fetchJobs: PromiseWaiter<boolean>;
-    private streams: AccountStream;
 
     constructor(
         private preference: PreferenceProvider,
@@ -30,20 +27,15 @@ export class NWalletAppService {
         private logger: LoggerService,
         private account: AccountService,
         private event: EventService
-    ) {}
+    ) {
+        this.init();
+    }
 
     // load or fetch
     private async init(): Promise<void> {
         this.fetchJobs = new PromiseWaiter<boolean>();
-        const account = await this.account.detail();
-        this.streams = {
-            onInventory: new BehaviorSubject<NWAccount.Inventory>(account.inventory) // todo change me
-        };
     }
 
-    public registerAccountStream = (onAccount: (account: AccountStream) => void): void => {
-        onAccount(this.streams);
-    }
 
     public waitFetch(): Promise<boolean> {
         return this.fetchJobs.result();
@@ -52,7 +44,11 @@ export class NWalletAppService {
     public async beginFetch(): Promise<void> {
         // todo init token
         this.event.publish(NWEvent.App.initialize);
-        const result = await Promise.all([this.channel.fetchJobs()]);
+
+        this.logger.debug('[app] begin fetch start');
+        await Promise.all([this.channel.fetchJobs()]);
+        this.logger.debug('[app] begin fetch done');
+
         this.fetchJobs.set(true);
     }
 

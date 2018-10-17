@@ -16,9 +16,7 @@ export class TickerProtocol {
     last_updated_date: Date;
 }
 
-export class WalletProtocol {
-
-}
+export class WalletProtocol {}
 
 @Injectable()
 export class NotificationService {
@@ -33,21 +31,22 @@ export class NotificationService {
         this.stream = {};
     }
 
-
     public async openStream(): Promise<void> {
-        const token = await this.token.getToken();
+        setTimeout(async () => {
+            const token = await this.token.getToken();
 
-        const walletUrl = env.endpoint.stream('wallet', token.getValue());
-        const tickerUrl = env.endpoint.stream('ticker', token.getValue());
+            const walletUrl = env.endpoint.stream('wallet', token.getValue());
+            const tickerUrl = env.endpoint.stream('ticker', token.getValue());
 
-        const walletEvent = new EventSource(walletUrl, { withCredentials: true });
-        const tickerEvent = new EventSource(tickerUrl, { withCredentials: true });
+            const walletEvent = new EventSource(walletUrl, { withCredentials: true });
+            const tickerEvent = new EventSource(tickerUrl, { withCredentials: true });
 
-        walletEvent.addEventListener('wallet', this.onWalletEvent);
-        tickerEvent.addEventListener('ticker', this.onTickerEvent);
+            walletEvent.addEventListener('wallet', this.onWalletEvent);
+            tickerEvent.addEventListener('ticker', this.onTickerEvent);
 
-        this.stream.wallet = walletEvent;
-        this.stream.ticker = tickerEvent;
+            this.stream.wallet = walletEvent;
+            this.stream.ticker = tickerEvent;
+        }, 6000);
     }
 
     private closeStream(): void {

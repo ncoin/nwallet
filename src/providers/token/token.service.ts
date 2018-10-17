@@ -4,43 +4,9 @@ import { LoggerService } from '../common/logger/logger.service';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Device } from '@ionic-native/device';
-
-class TokenProtocol {
-    access_token: string;
-    token_type: string;
-    refresh_token: string;
-    scope: string;
-    user_id: number;
-    jti: string;
-}
-export class Token extends TokenProtocol {
-    static readonly Empty = <Token>undefined;
-
-    private expiredDate: number;
-    /** exprire seconds */
-    private expires_in: number;
-
-    // todo extract --sky`
-    static capitalize(value: string) {
-        return value.charAt(0).toUpperCase() + value.slice(1);
-    }
-
-    public getValue(): string {
-        return this.access_token;
-    }
-
-    public getAuth(): string {
-        return `${Token.capitalize(this.token_type)} ${this.access_token}`;
-    }
-
-    public setExpiration() {
-        this.expiredDate = Date.now() + this.expires_in * 1000;
-    }
-
-    public isExpired(): boolean {
-        return Date.now() > this.expiredDate;
-    }
-}
+import { PromiseWaiter } from 'forge/dist/helpers/Promise/PromiseWaiter';
+import { PreferenceProvider, Preference } from '../common/preference/preference';
+import { Token } from '../../models/nwallet/token';
 
 // for test (remove me) --sky`
 const nonceRange = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -55,7 +21,7 @@ export function getNonce(): string {
         }
 
         const current = new Date();
-        devNonce = `${env.name}_nonce_${current.getFullYear()}/${current.getMonth() + 1}/${current.getDate()}_${nonce}`;
+        devNonce = `${env.name}_${current.getFullYear()}/${current.getMonth() + 1}/${current.getDate()}_nonce_${nonce}`;
         return devNonce;
     }
 }
@@ -63,30 +29,51 @@ export function getNonce(): string {
 @Injectable()
 export class TokenService {
     private token: Token;
+    private tokenSource: PromiseWaiter<Token>;
 
-    constructor(private http: HttpClient, private logger: LoggerService, private device: Device, private account: AccountService) {}
+    constructor(private http: HttpClient, private logger: LoggerService, private device: Device, private account: AccountService, private preference: PreferenceProvider) {
+        this.tokenSource = new PromiseWaiter<Token>();
+        this.init();
+    }
 
-    public initialize(): void {
+    private async init(): Promise<void> {
+        const token = await this.preference.get(Preference.Nwallet.token);
+        if (token) {
+            this.logger.debug('[token] stored token exists', token);
+        } else {
+            this.logger.debug('[token] stored token not exists');
+        }
 
+        this.token = Object.assign(new Token(), token);
+        this.token.setExpiration();
+        this.tokenSource.set(this.token);
     }
 
     public async getToken(): Promise<Token> {
-        if (!this.token) {
-            this.token = await this.issueToken(false);
-        }
+        await this.tokenSource.result();
 
-        if (this.token.isExpired()) {
-            this.token = await this.issueToken(true);
+        if (this.token === undefined || this.token.isExpired()) {
+            this.logger.debug(`[token] token requested : use ${this.token === undefined ? 'new' : 'refresh'} token`);
+
+            this.tokenSource = new PromiseWaiter<Token>();
+            this.token = await this.issueToken(this.token === undefined ? false : this.token.isExpired());
+
+            await this.preference.set(Preference.Nwallet.token, this.token);
+            this.tokenSource.set(this.token);
+        } else {
+            this.logger.debug('[token] token requested : use stored token');
         }
 
         return this.token;
     }
+
     private async issueToken(isRefresh: boolean): Promise<Token> {
         const id = this.device.uuid ? this.device.uuid : getNonce();
         const detail = await this.account.detail();
         let parameters;
+        const tokenKind = isRefresh ? 'refresh' : 'new';
 
-        this.logger.debug(`[token] issue token ... : ${isRefresh ? 'refresh' : 'new'}`);
+        this.logger.debug(`[token] issuing token : ${tokenKind} ...`);
 
         if (isRefresh) {
             parameters = {
@@ -97,7 +84,7 @@ export class TokenService {
             if (env.name === 'dev') {
                 /** todo api aggregate --sky */
                 parameters = {
-                    username: detail.personal.getUserName(),
+                    username: detail.getUserName(),
                     device_id: id,
                     grant_type: 'password'
                 };
@@ -117,12 +104,12 @@ export class TokenService {
             .toPromise()
             .then(tokenData => {
                 const token = Object.assign(new Token(), tokenData);
-                this.logger.debug('[token] issue token done');
+                this.logger.debug(`[token] issue token done : ${tokenKind}`);
                 token.setExpiration();
                 return token;
             })
             .catch((response: HttpErrorResponse) => {
-                this.logger.error('[token] issue token failed', response);
+                this.logger.error(`[token] issue token failed : ${tokenKind}`, response);
                 return Token.Empty;
             });
 

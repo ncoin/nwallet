@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
 import { NWAccount } from '../../../models/nwallet';
+import { Token } from '../../../models/nwallet/token';
 
 export namespace Preference {
     export interface Item<T> {
@@ -20,6 +21,7 @@ export namespace Preference.App {
 
 export namespace Preference.Nwallet {
     export const account: Item<NWAccount.Account> = { name: 'nwallet-account' };
+    export const token: Item<Token> = { name: 'nwallet-account' };
 }
 
 @Injectable()

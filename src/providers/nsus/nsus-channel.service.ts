@@ -14,7 +14,6 @@ export class NsusChannelService {
         private notification: NotificationService,
         private event: EventService
     ) {
-        this.notification.openStream();
     }
 
     public async requestPhoneVerification(phoneNumber: string): Promise<boolean> {

@@ -15,10 +15,6 @@ export class Personal {
         }
     }
 
-    public getUserName(): string {
-        return this.phoneNumber.replace('+', '').replace('-', '');
-    }
-
     public clear(): void {
         Debug.Clear(this);
     }

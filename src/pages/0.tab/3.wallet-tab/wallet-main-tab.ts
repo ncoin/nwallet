@@ -34,11 +34,11 @@ export class WalletMainTabPage {
     private loading: Loading;
     constructor(
         public navCtrl: NavController,
-        private event: EventService,
         private logger: LoggerService,
         private modalCtrl: ModalController,
         public loadingCtrl: LoadingController,
-        private app: NWalletAppService
+        private app: NWalletAppService,
+        private account: AccountService
     ) {
         this.init();
     }
@@ -49,19 +49,16 @@ export class WalletMainTabPage {
 
     async init(): Promise<void> {
         this.loading = this.loadingCtrl.create({
-            spinner: 'hide',
-            content: 'Loading Please Wait...'
+            content: 'Loading Please Wait...',
         });
 
         await this.loading.present();
         await this.app.waitFetch();
         await this.loading.dismiss();
 
-        this.app.registerAccountStream(account => {
+        this.account.registerAccountStream(account => {
             this.register(account.onInventory.subscribe(this.refreshInventory));
         });
-        // await this.account.getInventory().
-
     }
 
     private register(subscription: Subscription): void {

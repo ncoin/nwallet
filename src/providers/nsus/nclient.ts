@@ -44,25 +44,19 @@ export class NClientProvider {
     }
 
     public async getAssets(): Promise<NWAsset.Item[]> {
-        return this.http
-            .get<NWAsset.Data[]>(env.endpoint.api(`wallets`), {
-                headers: {
-                    authorization: await this.getToken()
-                }
-            })
-            .toPromise()
+        return await this.get<NWAsset.Data[]>(NWProtocol.Types.Wallets)
             .then(datas => datas.map(data => new NWAsset.Item().toProtocol(data)))
-            .catch(this.onError('get asset failed', []));
+            .catch(this.onError('', []));
     }
 
     // tslint:disable-next-line:max-line-length
-    private get = async <TResponse>(address: NWProtocol.Types, accountId: string = '', expr: ParameterExpr<NWProtocol.RequestBase> = undefined): Promise<TResponse> => {
+    private get = async <TResponse>(address: NWProtocol.Types, expr: ParameterExpr<NWProtocol.RequestBase> = undefined): Promise<TResponse> => {
         const type = this.getKeyFromValue(NWProtocol.Types, address);
         const request = expr ? createExpr(expr) : undefined;
         this.logger.debug(`[nclient] get ${type} ...`);
 
         return await this.http
-            .get<TResponse>(env.endpoint.api(`${address}${accountId}`), {
+            .get<TResponse>(env.endpoint.api(`${address}`), {
                 params: request,
                 headers: {
                     authorization: await this.getToken()

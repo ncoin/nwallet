@@ -24,6 +24,10 @@ export class Account {
         this.inventory.clear();
         this.personal.clear();
     }
+
+    public getUserName(): string {
+        return this.personal.phoneNumber.replace('+', '').replace('-', '');
+    }
 }
 
 export { Inventory, Personal };

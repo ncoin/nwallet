@@ -4,19 +4,30 @@ import { PreferenceProvider, Preference } from '../common/preference/preference'
 import { NWAccount, NWAsset } from '../../models/nwallet';
 import { PromiseWaiter } from 'forge/dist/helpers/Promise/PromiseWaiter';
 import { Debug } from '../../utils/helper/debug';
+import { BehaviorSubject } from 'rxjs';
+
+interface AccountStream {
+    onInventory: BehaviorSubject<NWAccount.Inventory>;
+}
 
 @Injectable()
 export class AccountService {
     private task: PromiseWaiter<NWAccount.Account>;
     private account: NWAccount.Account;
+    private streams: AccountStream;
 
     constructor(private preference: PreferenceProvider, private logger: LoggerService) {
+        this.account = new NWAccount.Account();
+        this.task = new PromiseWaiter<NWAccount.Account>();
+
+        this.streams = {
+            onInventory: new BehaviorSubject<NWAccount.Inventory>(this.account.inventory) // todo change me
+        };
+
         this.init();
     }
 
     private async init(): Promise<void> {
-        this.task = new PromiseWaiter<NWAccount.Account>();
-        this.account = new NWAccount.Account();
         const accountData = await this.preference.get(Preference.Nwallet.account);
         if (accountData) {
             this.account.initialize(accountData);
@@ -34,6 +45,10 @@ export class AccountService {
         return account !== undefined;
     }
 
+    public registerAccountStream = (onAccount: (account: AccountStream) => void): void => {
+        onAccount(this.streams);
+    }
+
     public fillData(expr: (personal: NWAccount.Personal) => void): void {
         Debug.Assert(this.account);
         expr(this.account.personal);
@@ -42,6 +57,5 @@ export class AccountService {
     public async flush(): Promise<void> {
         await this.preference.remove(Preference.Nwallet.account);
         this.account.flush();
-        this.task = new PromiseWaiter<NWAccount.Account>();
     }
 }

@@ -3,6 +3,7 @@ export interface RequestBase {
 }
 
 export enum Types {
+    Wallets = 'users/wallets/',
     Transfer = 'transactions/stellar/accounts/',
     LoanStatus = 'loans/ncash/stellar/',
     LoanDetail = 'loans/ncash/stellar/',
