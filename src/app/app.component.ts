@@ -1,6 +1,6 @@
 import { Subscription } from 'rxjs/Subscription';
 import { NWEvent } from '../interfaces/events';
-import { EventProvider } from '../providers/common/event/event';
+import { EventService } from '../providers/common/event/event';
 import { NWalletAppService } from '../providers/app/app.service';
 import { TabcontainerPage } from '../pages/0.tab/0.container/tabcontainer';
 import { AccountService } from '../providers/account/account.service';
@@ -40,7 +40,7 @@ export class NWalletApp implements OnDestroy {
         private account: AccountService,
         private appConfig: AppConfigProvider,
         private appService: NWalletAppService,
-        private event: EventProvider
+        private event: EventService
     ) {
         this.initialize();
     }

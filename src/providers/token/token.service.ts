@@ -62,7 +62,7 @@ export function getNonce(): string {
 }
 
 @Injectable()
-export class TokenProvider {
+export class TokenService {
     private token: Token;
 
     constructor(private http: HttpClient, private logger: LoggerService, private device: Device, private account: AccountService) {}

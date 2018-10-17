@@ -4,7 +4,6 @@ import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 import { TutorialPage } from './0.tutorial/tutorial';
 import { EntrancePage } from './0.entrance/entrance.page';
-import { ImportAccountPage } from './1.account/importaccount';
 import { FingerprintModalPage } from './1.security/fingerprint/fingerprint';
 import { PinPadComponent } from './1.security/pin/pin-pad/pin-pad';
 import { PinDotsComponent } from './1.security/pin/pin-dot/pin-dots';
@@ -25,7 +24,6 @@ import { VERIFY_PHONE_PAGES } from './verify-phone/verify-phone.page';
         TutorialPage,
         EntrancePage,
         CreateAccountPage,
-        ImportAccountPage,
         FingerprintModalPage,
         PinDotsComponent,
         PinPadComponent,
@@ -44,7 +42,6 @@ import { VERIFY_PHONE_PAGES } from './verify-phone/verify-phone.page';
         IonicPageModule.forChild(TutorialPage),
         IonicPageModule.forChild(EntrancePage),
         IonicPageModule.forChild(CreateAccountPage),
-        IonicPageModule.forChild(ImportAccountPage),
         IonicPageModule.forChild(FingerprintModalPage),
         IonicPageModule.forChild(PinDotsComponent),
         IonicPageModule.forChild(PinPadComponent),

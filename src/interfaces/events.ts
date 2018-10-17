@@ -1,31 +1,29 @@
 import { TickerProtocol, WalletProtocol } from '../providers/nsus/notification';
 
-export class EventType<T> {
+export class EventParameter<T> {
     constructor(private name: string) {}
     public get key(): string {
         return this.name;
     }
 
-    static create<T>(value: string): EventType<T> {
-        return new EventType<T>(value);
+    static create<T>(value: string): EventParameter<T> {
+        return new EventParameter<T>(value);
     }
 }
 
 export const NWEvent = {
     App: {
-        user_login: EventType.create('app-user_login'),
-        user_logout: EventType.create('app-user_logout')
+        initialize: EventParameter.create('app-initialize'),
+        user_login: EventParameter.create('app-user_login'),
+        user_logout: EventParameter.create('app-user_logout')
     },
 
     NWallet: {
-        account_create: EventType.create('wallet-account_create'),
-        account_import: EventType.create('wallet-account_import'),
-        account_refresh_wallet: EventType.create('wallet-account_refresh_wallet')
     },
 
     Stream: {
-        ticker: EventType.create<TickerProtocol>('stream-ticker'),
-        wallet: EventType.create<WalletProtocol>('stream-wallet')
+        ticker: EventParameter.create<TickerProtocol>('stream-ticker'),
+        wallet: EventParameter.create<WalletProtocol>('stream-wallet')
     }
 };
 

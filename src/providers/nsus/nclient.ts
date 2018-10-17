@@ -5,8 +5,8 @@ import { Injectable } from '@angular/core';
 import { LoggerService } from '../common/logger/logger.service';
 import { env } from '../../environments/environment';
 import { NWallet } from '../../interfaces/nwallet';
-import { EventProvider } from '../common/event/event';
-import { TokenProvider } from '../token/token';
+import { EventService } from '../common/event/event';
+import { TokenService } from '../token/token.service';
 import { ParameterExpr, createExpr } from 'forge';
 
 import * as _ from 'lodash';
@@ -15,7 +15,7 @@ import { NWAsset } from '../../models/nwallet';
 @Injectable()
 export class NClientProvider {
     private subscriptions: Subscription[] = [];
-    constructor(private logger: LoggerService, private http: HttpClient, private event: EventProvider, private token: TokenProvider) {}
+    constructor(private logger: LoggerService, private http: HttpClient, private event: EventService, private token: TokenService) {}
 
     private onError<T>(log: string, result: T | undefined) {
         return (error: HttpErrorResponse) => {

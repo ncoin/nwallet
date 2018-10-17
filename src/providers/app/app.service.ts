@@ -1,4 +1,4 @@
-import { EventProvider } from '../common/event/event';
+import { EventService } from '../common/event/event';
 import { AccountService } from '../account/account.service';
 import { NClientProvider } from '../nsus/nclient';
 import { Injectable } from '@angular/core';
@@ -6,7 +6,7 @@ import { PreferenceProvider, Preference } from '../common/preference/preference'
 import { App } from 'ionic-angular';
 import { LoggerService } from '../common/logger/logger.service';
 import { NWallet } from '../../interfaces/nwallet';
-import { NWEvent } from '../../interfaces/events';
+import { NWEvent, EventParameter } from '../../interfaces/events';
 import { NsusChannelService } from '../nsus/nsus-channel.service';
 
 /** todo change me --sky */
@@ -18,39 +18,45 @@ import { BehaviorSubject } from 'rxjs';
  * common business logic provider
  */
 
-interface AccountCallback {
+interface AccountStream {
     onInventory: BehaviorSubject<NWAccount.Inventory>;
 }
 
 @Injectable()
 export class NWalletAppService {
-
     constructor(
         private preference: PreferenceProvider,
         private channel: NsusChannelService,
         private app: App,
         private logger: LoggerService,
         private account: AccountService,
-        private event: EventProvider
+        private event: EventService
     ) {
         this.fetchJobs = new PromiseWaiter<boolean>();
 
-        this.subjects = {
-            onInventory: new BehaviorSubject<NWAccount.Inventory>(this.account.account_new.inventory)// todo change me
+        this.streams = {
+            onInventory: new BehaviorSubject<NWAccount.Inventory>(this.account.account_new.inventory) // todo change me
         };
     }
     private fetchJobs: PromiseWaiter<boolean>;
-    private subjects: AccountCallback;
+    private streams: AccountStream;
 
     // load or fetch
     private async;
 
-    public onAccount = (onAccount: (account: AccountCallback) => void): void => {
-        onAccount(this.subjects);
+    public registerAccountStream = (onAccount: (account: AccountStream) => void): void => {
+        onAccount(this.streams);
     }
 
     public waitFetch(): Promise<boolean> {
         return this.fetchJobs.result();
+    }
+
+    public async beginFetch(): Promise<void> {
+        // todo init token
+        this.event.publish(EventTypes.)
+        const result = await Promise.all([this.channel.fetchJobs()]);
+        this.fetchJobs.set(true);
     }
 
     public async flushApplication(): Promise<void> {
@@ -64,10 +70,7 @@ export class NWalletAppService {
     // todo fixme
     public async login(account: NWallet.Account): Promise<void> {
         await this.account.setAccount(account);
-
-        const result = await Promise.all([this.channel.getAssets()]);
-
-        this.fetchJobs.set(true);
+        await this.beginFetch();
 
         this.logger.debug('[app-service] login done');
         this.event.publish(NWEvent.App.user_login);

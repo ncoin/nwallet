@@ -3,10 +3,17 @@ import { NClientProvider } from './nclient';
 import { LoggerService } from '../common/logger/logger.service';
 import { AccountService } from '../account/account.service';
 import { NotificationService } from './notification';
+import { EventService } from '../common/event/event';
 
 @Injectable()
 export class NsusChannelService {
-    constructor(private nClient: NClientProvider, private logger: LoggerService, private account: AccountService, private notification: NotificationService) {
+    constructor(
+        private nClient: NClientProvider,
+        private logger: LoggerService,
+        private account: AccountService,
+        private notification: NotificationService,
+        private event: EventService
+    ) {
         this.notification.openStream();
     }
 
@@ -27,10 +34,7 @@ export class NsusChannelService {
     }
 
     // todo refactoring --sky
-    public async getAssets(): Promise<void> {
-
-    }
-
+    public async getAssets(): Promise<void> {}
 
     public close(): void {
         this.notification.flush();

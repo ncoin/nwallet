@@ -17,18 +17,14 @@ export class AccountService {
     // todo remove me--sky`
     public account: NWallet.Account;
 
-
     constructor(private event: Events, private preference: PreferenceProvider, private logger: LoggerService) {
         this.account_new = new NWAccount.Account();
-
         this.init();
     }
 
     private async init(): Promise<void> {
         this.account = await this.preference.get(Preference.Nwallet.walletAccount);
     }
-
-
 
     // todo remove me --sky`
     public async setAccount(account: NWallet.Account): Promise<NWallet.Account> {

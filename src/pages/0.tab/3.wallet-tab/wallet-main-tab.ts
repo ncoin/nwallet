@@ -6,7 +6,7 @@ import { LoggerService } from '../../../providers/common/logger/logger.service';
 import { Component } from '@angular/core';
 import { NavController, ModalController, LoadingController, Loading } from 'ionic-angular';
 import { NWallet } from '../../../interfaces/nwallet';
-import { EventProvider } from '../../../providers/common/event/event';
+import { EventService } from '../../../providers/common/event/event';
 import { AccountService } from '../../../providers/account/account.service';
 import { NWModalTransition } from '../../../tools/extension/transition';
 import { ManageWalletPage } from './manage-wallet/manage-wallet.page';
@@ -38,7 +38,7 @@ export class WalletMainTabPage {
     private loading: Loading;
     constructor(
         public navCtrl: NavController,
-        private event: EventProvider,
+        private event: EventService,
         private logger: LoggerService,
         private modalCtrl: ModalController,
         public loadingCtrl: LoadingController,
@@ -59,7 +59,8 @@ export class WalletMainTabPage {
         await this.loading.present();
         await this.app.waitFetch();
         await this.loading.dismiss();
-        this.app.onAccount(account => {
+
+        this.app.registerAccountStream(account => {
             this.register(account.onInventory.subscribe(this.refreshInventory));
         });
         // await this.account.getInventory().

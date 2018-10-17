@@ -1,5 +1,5 @@
 import { Constants } from './../../environments/template';
-import { EventProvider } from '../common/event/event';
+import { EventService } from '../common/event/event';
 import { PreferenceProvider, Preference } from '../common/preference/preference';
 import { Injectable } from '@angular/core';
 import { LoggerService } from '../common/logger/logger.service';
@@ -7,7 +7,7 @@ import { TranslateService } from '@ngx-translate/core';
 
 @Injectable()
 export class AppConfigProvider {
-    constructor(private logger: LoggerService, private translate: TranslateService, private preference: PreferenceProvider, private event: EventProvider) {}
+    constructor(private logger: LoggerService, private translate: TranslateService, private preference: PreferenceProvider, private event: EventService) {}
 
     public async loadAll(): Promise<void> {
         this.logger.debug('[appconfig] load providers');

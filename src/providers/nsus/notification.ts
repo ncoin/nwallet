@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { env } from '../../environments/environment';
-import { TokenProvider } from '../token/token';
+import { TokenService } from '../token/token.service';
 import { Disposable } from 'forge';
 import { Debug } from '../../utils/helper/debug';
-import { EventProvider } from '../common/event/event';
-import { EventType, NWEvent } from '../../interfaces/events';
+import { EventService } from '../common/event/event';
+import { EventParameter, NWEvent } from '../../interfaces/events';
 import { runInThisContext } from 'vm';
 
 export class TickerProtocol {
@@ -31,7 +31,7 @@ export class NotificationService {
 
     private push: any;
 
-    constructor(private token: TokenProvider, private event: EventProvider) {
+    constructor(private token: TokenService, private event: EventService) {
         this.stream = {};
     }
 
