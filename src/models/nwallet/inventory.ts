@@ -31,4 +31,8 @@ export class Inventory {
 
         return totalAmount;
     }
+
+    public clear(): void {
+        this._assetItems.length = 0;
+    }
 }

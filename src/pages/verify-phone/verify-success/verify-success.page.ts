@@ -1,12 +1,6 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ViewController, ToastController, PopoverController } from 'ionic-angular';
-import { QRScanner, QRScannerStatus } from '@ionic-native/qr-scanner';
+import { IonicPage, NavController, NavParams, ViewController} from 'ionic-angular';
 import { LoggerService } from '../../../providers/common/logger/logger.service';
-import { ModalBasePage } from '../../0.base/modal.page';
-import { ModalNavPage } from '../../0.base/modal-nav.page';
-import { LocaleService, CountryService } from 'ng4-intl-phone';
-import { InternationalPhoneComponent } from '../../../components/popovers/international-phone/international-phone';
-import { NWalletAppService } from '../../../providers/app/app.service';
 import { NsusChannelService } from '../../../providers/nsus/nsus-channel.service';
 import { VerifySecuritycodePage } from '../verify-security-code/verify-security-code.page';
 

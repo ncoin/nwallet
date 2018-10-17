@@ -4,6 +4,7 @@ import { LoggerService } from '../../../providers/common/logger/logger.service';
 import { ModalNavPage } from '../../0.base/modal-nav.page';
 import { EventService } from '../../../providers/common/event/event';
 import { NWEvent } from '../../../interfaces/events';
+import { NWalletAppService } from '../../../providers/app/app.service';
 
 @IonicPage()
 @Component({
@@ -17,7 +18,7 @@ export class VerifySecuritycodePage {
     public phoneNumber: string;
     public expiredTimeSpan: number;
 
-    constructor(private navCtrl: NavController, private navParams: NavParams, private logger: LoggerService, private parent: ModalNavPage, private event: EventService) {
+    constructor(private navCtrl: NavController, private navParams: NavParams, private logger: LoggerService, private parent: ModalNavPage, private app: NWalletAppService) {
         this.previousView = this.navParams.get('viewCtrl');
         this.phoneNumber = this.navParams.get('phoneNumber');
         this.expiredTimeSpan = 60 * 3 * 1000;
@@ -47,7 +48,7 @@ export class VerifySecuritycodePage {
 
     public onClick_Next(): void {
         this.isCountBegin = false;
-        this.event.publish(NWEvent.App.user_login);
+        this.app.logIn();
         this.parent.dismiss();
     }
 

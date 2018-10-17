@@ -1,4 +1,3 @@
-import { NWallet } from './../../../../interfaces/nwallet';
 import { AccountService } from '../../../../providers/account/account.service';
 import { QRScanPage } from './../../../qrscan/qrscan.page';
 import { Component } from '@angular/core';
@@ -16,8 +15,6 @@ import { NWModalTransition } from '../../../../tools/extension/transition';
 export class SendPage {
     public recipientAddress = '';
     public sendAmount = '0';
-    public sendAsset: NWallet.AssetContext;
-    public availableAssets: NWallet.AssetContext[];
     public canBack: boolean;
 
     constructor(
@@ -28,14 +25,14 @@ export class SendPage {
         private account: AccountService,
         navParams: NavParams
     ) {
-        const asset = navParams.get('asset') as NWallet.AssetContext;
-        if (asset) {
-            this.availableAssets = [asset];
-            this.sendAsset = asset;
-        } else {
-            this.availableAssets = this.account.getNativeAssets();
-            this.sendAsset = this.availableAssets[0];
-        }
+        // const asset = navParams.get('asset') as NWallet.AssetContext;
+        // if (asset) {
+        //     this.availableAssets = [asset];
+        //     this.sendAsset = asset;
+        // } else {
+        //     this.availableAssets = this.account.getNativeAssets();
+        //     this.sendAsset = this.availableAssets[0];
+        // }
         // todo fixme --sky
         this.canBack = this.navCtrl['index'] ? false : true;
     }
@@ -57,7 +54,7 @@ export class SendPage {
     }
 
     public onMaxClick(): void {
-        this.sendAmount = this.sendAsset.amount;
+        // this.sendAmount = this.sendAsset.amount;
     }
 
     public onClose(): void {

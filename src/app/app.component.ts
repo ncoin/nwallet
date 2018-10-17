@@ -79,8 +79,8 @@ export class NWalletApp implements OnDestroy {
     }
 
     private async preparePage(): Promise<void> {
-        const isLogon = this.app.isLogon();
-        if (isLogon) {
+        const canLogin = this.app.canLogin();
+        if (canLogin) {
             this.logger.debug('[app-page] prepare wallet page (login)');
             this.rootPage = TabcontainerPage;
         } else {

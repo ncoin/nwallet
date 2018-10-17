@@ -14,6 +14,13 @@ export class Debug {
             }
         });
     }
+
+    static Clear(obj: any): void {
+        Object.keys(obj).forEach(key => {
+            obj[key] = undefined;
+        });
+    }
+
     static Assert(condition: any, ...params: any[]): void {
         if (!condition) {
             if (isDevMode()) {

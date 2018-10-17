@@ -1,5 +1,4 @@
 import { Clipboard } from '@ionic-native/clipboard';
-import Stellar from 'stellar-sdk';
 import { NWalletSharedModule } from '../shared/shared.module';
 import { env } from '../environments/environment';
 import { NWalletPageModule } from '../pages/pages.module';
@@ -87,14 +86,6 @@ export class AppModule {
 function BootStrap() {
     if (env.name === 'prod') {
         enableProdMode();
-    }
-
-    if (env.network === 'test') {
-        // todo move location
-        Stellar.Network.useTestNetwork();
-    } else {
-        // todo move location
-        Stellar.Network.usePublicNetwork();
     }
 }
 

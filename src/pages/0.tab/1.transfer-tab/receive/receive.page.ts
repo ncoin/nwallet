@@ -22,8 +22,8 @@ export class ReceivePage {
         private clipboard: Clipboard,
         private toast: ToastController
     ) {
-        this.qrData = account.getId();
-        this.createdCode = account.getId();
+        // this.qrData = account.getId();
+        // this.createdCode = account.getId();
         this.canGoBack = this.navCtrl['index'] ? false : true;
     }
 

@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
-import { NWallet } from '../../../interfaces/nwallet';
 import { NWAccount } from '../../../models/nwallet';
 
 export namespace Preference {
@@ -20,7 +19,6 @@ export namespace Preference.App {
 }
 
 export namespace Preference.Nwallet {
-    export const walletAccount: Item<NWallet.Account> = { name: 'walletAccount' };
     export const account: Item<NWAccount.Account> = { name: 'nwallet-account' };
 }
 
@@ -40,7 +38,7 @@ export class PreferenceProvider {
         return this.storage.set(item.name, value);
     }
 
-    public remove<T>(key: Preference.Item<T>): Promise<any> {
+    public remove<T>(key: Preference.Item<T>): Promise<T> {
         return this.storage.remove(key.name);
     }
 

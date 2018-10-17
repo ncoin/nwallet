@@ -7,9 +7,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { LoggerService } from '../../../providers/common/logger/logger.service';
 
 import { TransferHistoryTabPage } from '../1.transfer-tab/transfer-history-tab';
-import { BuyNcashTabPage } from '../2.buy-ncash-tab/buy-ncash-tab';
 import { WalletTabPages, WalletMainTabPage } from '../3.wallet-tab/wallet-main-tab';
-import { LoanNcashTabPage } from '../4.loan-ncash-tab/loan-ncash-tab';
 import { AccountTabPage } from '../5.account-tab/account-tab.page';
 import { ReceivePage } from '../1.transfer-tab/receive/receive.page';
 import { SendPage } from '../1.transfer-tab/send/send.page';
@@ -78,8 +76,6 @@ export class TabcontainerPage {
 export const NWalletTabPages = [
     TabcontainerPage,
     TransferHistoryTabPage,
-    BuyNcashTabPage,
-    LoanNcashTabPage,
     AccountTabPage,
     ...WalletTabPages,
     ...[MyInfoPage, LanguagePage, ResetPincodePage, ResetPincodeSuccessPage]

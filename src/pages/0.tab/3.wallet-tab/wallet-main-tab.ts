@@ -1,11 +1,6 @@
-import { NWEvent } from '../../../interfaces/events';
-import { LoanNcashTabPage } from '../4.loan-ncash-tab/loan-ncash-tab';
-import { BuyNcashTabPage } from '../2.buy-ncash-tab/buy-ncash-tab';
-import { WalletDetailPage } from '../../1.detail/wallet-detail.page';
 import { LoggerService } from '../../../providers/common/logger/logger.service';
 import { Component } from '@angular/core';
 import { NavController, ModalController, LoadingController, Loading } from 'ionic-angular';
-import { NWallet } from '../../../interfaces/nwallet';
 import { EventService } from '../../../providers/common/event/event';
 import { AccountService } from '../../../providers/account/account.service';
 import { NWModalTransition } from '../../../tools/extension/transition';
@@ -15,6 +10,7 @@ import { NWAsset, NWAccount } from '../../../models/nwallet';
 import { ModalNavPage } from '../../0.base/modal-nav.page';
 import { NWalletAppService } from '../../../providers/app/app.service';
 import { Subscription } from 'rxjs';
+import { WalletDetailPage } from './wallet-detail/wallet-detail.page';
 
 /**
  * Generated class for the WalletPage page.
@@ -56,6 +52,7 @@ export class WalletMainTabPage {
             spinner: 'hide',
             content: 'Loading Please Wait...'
         });
+
         await this.loading.present();
         await this.app.waitFetch();
         await this.loading.dismiss();
@@ -103,4 +100,4 @@ export class WalletMainTabPage {
     }
 }
 
-export const WalletTabPages = [WalletMainTabPage, WalletDetailPage, BuyNcashTabPage, LoanNcashTabPage, ManageWalletPage, AddWalletPage];
+export const WalletTabPages = [WalletMainTabPage, WalletDetailPage, ManageWalletPage, AddWalletPage];

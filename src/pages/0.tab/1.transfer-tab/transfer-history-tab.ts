@@ -2,12 +2,12 @@ import { LoggerService } from '../../../providers/common/logger/logger.service';
 import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, Navbar, InfiniteScroll, ModalController } from 'ionic-angular';
 import { NWalletAppService } from '../../../providers/app/app.service';
-import { NWallet } from '../../../interfaces/nwallet';
 import * as _ from 'lodash';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { ReceivePage } from './receive/receive.page';
 import { NWTransition, NWModalTransition } from '../../../tools/extension/transition';
 import { SendPage } from './send/send.page';
+import { NWTransaction } from '../../../models/nwallet';
 /**
  * Generated class for the WalletDetailPage page.
  *
@@ -21,7 +21,7 @@ import { SendPage } from './send/send.page';
     templateUrl: 'transfer-history-tab.html',
 })
 export class TransferHistoryTabPage {
-    public transactionMaps: Array<{ date: string; transactions: NWallet.Protocol.Transaction[] }> = new Array<{ date: string; transactions: NWallet.Protocol.Transaction[] }>();
+    public transactionMaps: Array<{ date: string; transactions: NWTransaction.Item[] }> = new Array<{ date: string; transactions: NWTransaction.Item[] }>();
     private skip = 0;
     @ViewChild(Navbar)
     navBar: Navbar;
@@ -41,8 +41,8 @@ export class TransferHistoryTabPage {
         this.arrange(transactions);
     }
 
-    private arrange(transactions: NWallet.Protocol.Transaction[]): void {
-        const transactionGroups = _.groupBy(transactions, (t: NWallet.Protocol.Transaction) => {
+    private arrange(transactions: NWTransaction.Item[]): void {
+        const transactionGroups = _.groupBy(transactions, (t: NWTransaction.Item) => {
             return new Date(t.created_date.getFullYear(), t.created_date.getMonth(), t.created_date.getDate());
         });
 
@@ -73,20 +73,20 @@ export class TransferHistoryTabPage {
         infinite.complete();
     }
 
-    public onExploreTransaction(transaction: NWallet.Protocol.Transaction): void {
-        const browser = this.browser.create(`https://stellar.expert/explorer/testnet/tx/${transaction.transaction_hash}`, '_blank', {
-            location: 'no',
-            clearcache: 'yes',
-            footer: 'yes',
-            toolbar: 'yes',
-            closebuttoncaption: 'done',
-        });
+    public onExploreTransaction(transaction: NWTransaction.Item): void {
+        // const browser = this.browser.create(`https://stellar.expert/explorer/testnet/tx/${transaction.transaction_hash}`, '_blank', {
+        //     location: 'no',
+        //     clearcache: 'yes',
+        //     footer: 'yes',
+        //     toolbar: 'yes',
+        //     closebuttoncaption: 'done',
+        // });
 
-        browser.insertCSS({
-            code: 'body { margin-top : 50px;}',
-        });
+        // browser.insertCSS({
+        //     code: 'body { margin-top : 50px;}',
+        // });
 
-        browser.show();
+        // browser.show();
     }
 
     public onReceiveClick(): void {

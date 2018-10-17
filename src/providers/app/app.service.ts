@@ -1,12 +1,9 @@
 import { EventService } from '../common/event/event';
 import { AccountService } from '../account/account.service';
-import { NClientProvider } from '../nsus/nclient';
 import { Injectable } from '@angular/core';
 import { PreferenceProvider, Preference } from '../common/preference/preference';
-import { App } from 'ionic-angular';
 import { LoggerService } from '../common/logger/logger.service';
-import { NWallet } from '../../interfaces/nwallet';
-import { NWEvent, EventParameter } from '../../interfaces/events';
+import { NWEvent } from '../../interfaces/events';
 import { NsusChannelService } from '../nsus/nsus-channel.service';
 
 /** todo change me --sky */
@@ -24,25 +21,25 @@ interface AccountStream {
 
 @Injectable()
 export class NWalletAppService {
-    constructor(
-        private preference: PreferenceProvider,
-        private channel: NsusChannelService,
-        private app: App,
-        private logger: LoggerService,
-        private account: AccountService,
-        private event: EventService
-    ) {
-        this.fetchJobs = new PromiseWaiter<boolean>();
-
-        this.streams = {
-            onInventory: new BehaviorSubject<NWAccount.Inventory>(this.account.account_new.inventory) // todo change me
-        };
-    }
     private fetchJobs: PromiseWaiter<boolean>;
     private streams: AccountStream;
 
+    constructor(
+        private preference: PreferenceProvider,
+        private channel: NsusChannelService,
+        private logger: LoggerService,
+        private account: AccountService,
+        private event: EventService
+    ) {}
+
     // load or fetch
-    private async;
+    private async init(): Promise<void> {
+        this.fetchJobs = new PromiseWaiter<boolean>();
+        const account = await this.account.detail();
+        this.streams = {
+            onInventory: new BehaviorSubject<NWAccount.Inventory>(account.inventory) // todo change me
+        };
+    }
 
     public registerAccountStream = (onAccount: (account: AccountStream) => void): void => {
         onAccount(this.streams);
@@ -67,34 +64,27 @@ export class NWalletAppService {
         await this.preference.set(Preference.App.hasSeenTutorial, true);
     }
 
-    public isLogon(): boolean {
-
-        return true;
-    }
-
     // todo fixme
-    public async onLogin(): Promise<void> {
-        await this.beginFetch();
-
-        this.logger.debug('[app-service] login done');
-        this.event.publish(NWEvent.App.user_login);
+    public async canLogin(): Promise<boolean> {
+        if (this.account.isSaved()) {
+            this.logger.debug('[app-service] try login success');
+            return true;
+        } else {
+            this.logger.debug('[app-service] try login failed');
+            return false;
+        }
     }
+
+    public async logIn(): Promise<void> {}
 
     public async logout(): Promise<void> {
-        if (!this.account.account) {
-            throw new Error('[app-service] invalid logout operation. account not exists');
-        }
-
-        this.logger.debug('logout', this.account.account.signature.public);
-        await this.preference.remove(Preference.Nwallet.walletAccount);
-
         // todo unsubscribe
         this.account.flush();
         this.event.publish(NWEvent.App.user_logout);
     }
 
-    public async getTransfer(skip: number = 0): Promise<NWallet.Protocol.Transaction[]> {
-        const account = await this.account.getAccount();
+    public async getTransfer(skip: number = 0): Promise<any> {
+        const account = await this.account.detail();
         return [];
         // const response = await this.connector.getTransfers(account.signature.public, expr => {
         //     expr.limit = '20';

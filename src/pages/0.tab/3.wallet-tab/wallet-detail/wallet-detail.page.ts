@@ -1,14 +1,13 @@
-import { SendPage } from './../0.tab/1.transfer-tab/send/send.page';
-import { ReceivePage } from './../0.tab/1.transfer-tab/receive/receive.page';
-import { LoggerService } from '../../providers/common/logger/logger.service';
+import { SendPage } from '../../1.transfer-tab/send/send.page';
+import { ReceivePage } from '../../1.transfer-tab/receive/receive.page';
+import { LoggerService } from '../../../../providers/common/logger/logger.service';
 import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController, Navbar, InfiniteScroll, NavParams, ViewController, ModalController } from 'ionic-angular';
-import { NWalletAppService } from '../../providers/app/app.service';
-import { NWallet } from '../../interfaces/nwallet';
+import { IonicPage,  Navbar, InfiniteScroll, NavParams, ViewController, ModalController } from 'ionic-angular';
+import { NWalletAppService } from '../../../../providers/app/app.service';
 import * as _ from 'lodash';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
-import { WalletMainTabPage } from '../0.tab/3.wallet-tab/wallet-main-tab';
-import { NWModalTransition } from '../../tools/extension/transition';
+import { NWModalTransition } from '../../../../tools/extension/transition';
+import { NWTransaction, NWAsset } from '../../../../models/nwallet';
 
 @IonicPage()
 @Component({
@@ -16,9 +15,9 @@ import { NWModalTransition } from '../../tools/extension/transition';
     templateUrl: 'wallet-detail.page.html',
 })
 export class WalletDetailPage {
-    public transactionMaps: Array<{ date: string; transactions: NWallet.Protocol.Transaction[] }> = new Array<{ date: string; transactions: NWallet.Protocol.Transaction[] }>();
+    public transactionMaps: Array<{ date: string; transactions: NWTransaction.Item[] }> = new Array<{ date: string; transactions: NWTransaction.Item[] }>();
     private skip = 0;
-    public asset: NWallet.AssetContext;
+    public asset: NWAsset.Item;
     @ViewChild(Navbar)
     navBar: Navbar;
 
@@ -42,8 +41,8 @@ export class WalletDetailPage {
         this.arrange(transactions);
     }
 
-    private arrange(transactions: NWallet.Protocol.Transaction[]): void {
-        const transactionGroups = _.groupBy(transactions, (t: NWallet.Protocol.Transaction) => {
+    private arrange(transactions: NWTransaction.Item[]): void {
+        const transactionGroups = _.groupBy(transactions, (t: NWTransaction.Item) => {
             return new Date(t.created_date.getFullYear(), t.created_date.getMonth(), t.created_date.getDate());
         });
 
@@ -74,20 +73,20 @@ export class WalletDetailPage {
         infinite.complete();
     }
 
-    public onExploreTransaction(transaction: NWallet.Protocol.Transaction): void {
-        const browser = this.browser.create(`https://stellar.expert/explorer/testnet/tx/${transaction.transaction_hash}`, '_blank', {
-            location: 'no',
-            clearcache: 'yes',
-            footer: 'yes',
-            toolbar: 'no',
-            closebuttoncaption: 'done',
-        });
+    public onExploreTransaction(transaction: NWTransaction.Item): void {
+        // const browser = this.browser.create(`https://stellar.expert/explorer/testnet/tx/${transaction.transaction_hash}`, '_blank', {
+        //     location: 'no',
+        //     clearcache: 'yes',
+        //     footer: 'yes',
+        //     toolbar: 'no',
+        //     closebuttoncaption: 'done',
+        // });
 
-        browser.insertCSS({
-            code: 'body { margin-top : 50px;}',
-        });
+        // browser.insertCSS({
+        //     code: 'body { margin-top : 50px;}',
+        // });
 
-        browser.show();
+        // browser.show();
     }
 
     public onReceiveClick(): void {

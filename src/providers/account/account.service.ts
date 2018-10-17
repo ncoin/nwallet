@@ -1,64 +1,47 @@
 import { LoggerService } from '../common/logger/logger.service';
-import { Events } from 'ionic-angular';
-import { NWallet } from '../../interfaces/nwallet';
 import { Injectable } from '@angular/core';
 import { PreferenceProvider, Preference } from '../common/preference/preference';
-import { Keypair } from 'stellar-sdk';
 import { NWAccount, NWAsset } from '../../models/nwallet';
-
+import { PromiseWaiter } from 'forge/dist/helpers/Promise/PromiseWaiter';
+import { Debug } from '../../utils/helper/debug';
 
 @Injectable()
 export class AccountService {
-    public account_new: NWAccount.Account;
+    private task: PromiseWaiter<NWAccount.Account>;
+    private account: NWAccount.Account;
 
-    // todo remove me--sky`
-    public account: NWallet.Account;
-
-    constructor(private event: Events, private preference: PreferenceProvider, private logger: LoggerService) {
-        this.account_new = new NWAccount.Account();
+    constructor(private preference: PreferenceProvider, private logger: LoggerService) {
         this.init();
     }
 
     private async init(): Promise<void> {
-        this.account = await this.preference.get(Preference.Nwallet.walletAccount);
-    }
-
-    // todo remove me --sky`
-    public async getAccount(): Promise<NWallet.Account> {
-        if (!this.account) {
-            this.account = await this.preference.get(Preference.Nwallet.walletAccount);
+        this.task = new PromiseWaiter<NWAccount.Account>();
+        this.account = new NWAccount.Account();
+        const accountData = await this.preference.get(Preference.Nwallet.account);
+        if (accountData) {
+            this.account.initialize(accountData);
         }
-        return this.account;
+
+        this.task.trySet(this.account);
     }
 
-    public getId(): string {
-        return this.account.signature.public;
+    public async detail(): Promise<NWAccount.Account> {
+        return await this.task.result();
     }
 
-    // todo decoration --sky`
-    private checkAccount(): void {
-        if (!this.account) {
-            throw new Error('[account] account not exist!');
-        }
+    public async isSaved(): Promise<boolean> {
+        const account = await this.preference.get(Preference.Nwallet.account);
+        return account !== undefined;
     }
 
-    public getNativeWallet(): NWallet.AssetContext {
-        this.checkAccount();
-
-        return this.account.wallets.find(wallet => {
-            return wallet.item.asset.isNative() === true;
-        });
+    public fillData(expr: (personal: NWAccount.Personal) => void): void {
+        Debug.Assert(this.account);
+        expr(this.account.personal);
     }
 
-    public getNativeAssets(): NWallet.AssetContext[] {
-        this.checkAccount();
-
-        return this.account.wallets.filter(wallet => {
-            return wallet.item.isNative;
-        });
-    }
-
-    public flush(): void {
-        this.account = undefined;
+    public async flush(): Promise<void> {
+        await this.preference.remove(Preference.Nwallet.account);
+        this.account.flush();
+        this.task = new PromiseWaiter<NWAccount.Account>();
     }
 }

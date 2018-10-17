@@ -23,7 +23,8 @@ export class ManageWalletPage extends ModalBasePage {
     }
 
     async init(): Promise<void> {
-        const inven = this.account.account_new.inventory;
+        const detail = await this.account.detail();
+        const inven = detail.inventory;
         this.assets.push(...inven.assetItems);
     }
 

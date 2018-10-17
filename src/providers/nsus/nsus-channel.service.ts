@@ -28,7 +28,8 @@ export class NsusChannelService {
 
     public async fetchJobs(): Promise<void> {
         const assets = await this.nClient.getAssets();
-        this.account.account_new.inventory.setItems(assets);
+        const detail = await this.account.detail();
+        detail.inventory.setItems(assets);
 
         this.notification.openStream();
     }

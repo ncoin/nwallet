@@ -1,5 +1,4 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { NWallet } from '../../interfaces/nwallet';
 import { NWAsset } from '../../models/nwallet';
 
 @Pipe({

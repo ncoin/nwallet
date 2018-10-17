@@ -1,4 +1,5 @@
 import { env } from '../../environments/environment';
+import { Debug } from '../../utils/helper/debug';
 
 export class Personal {
     public email: string;
@@ -16,5 +17,9 @@ export class Personal {
 
     public getUserName(): string {
         return this.phoneNumber.replace('+', '').replace('-', '');
+    }
+
+    public clear(): void {
+        Debug.Clear(this);
     }
 }

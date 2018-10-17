@@ -26,9 +26,10 @@ export class AddWalletPage {
         this.onFilterAsset(value);
     }
 
-    private init(): void {
+    private async init(): Promise<void> {
         this.assets = [];
-        const inventory = this.accont.account_new.inventory;
+        const account = await this.accont.detail();
+        const inventory = account.inventory;
         this.assets.push(...inventory.assetItems);
     }
 

@@ -1,11 +1,9 @@
 import { Injectable } from '@angular/core';
 import { env } from '../../environments/environment';
 import { TokenService } from '../token/token.service';
-import { Disposable } from 'forge';
 import { Debug } from '../../utils/helper/debug';
 import { EventService } from '../common/event/event';
-import { EventParameter, NWEvent } from '../../interfaces/events';
-import { runInThisContext } from 'vm';
+import { NWEvent } from '../../interfaces/events';
 
 export class TickerProtocol {
     site: string;

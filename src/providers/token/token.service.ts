@@ -4,7 +4,6 @@ import { LoggerService } from '../common/logger/logger.service';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Device } from '@ionic-native/device';
-import { Keypair } from 'stellar-sdk';
 
 class TokenProtocol {
     access_token: string;
@@ -84,6 +83,7 @@ export class TokenService {
     }
     private async issueToken(isRefresh: boolean): Promise<Token> {
         const id = this.device.uuid ? this.device.uuid : getNonce();
+        const detail = await this.account.detail();
         let parameters;
 
         this.logger.debug(`[token] issue token ... : ${isRefresh ? 'refresh' : 'new'}`);
@@ -97,7 +97,7 @@ export class TokenService {
             if (env.name === 'dev') {
                 /** todo api aggregate --sky */
                 parameters = {
-                    username: this.account.account_new.personal.getUserName(),
+                    username: detail.personal.getUserName(),
                     device_id: id,
                     grant_type: 'password'
                 };

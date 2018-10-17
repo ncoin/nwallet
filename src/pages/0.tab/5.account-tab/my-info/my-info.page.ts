@@ -3,6 +3,7 @@ import { IonicPage, NavController, Navbar, ModalController } from 'ionic-angular
 import { AccountService } from '../../../../providers/account/account.service';
 import { ResetPincodePage } from './reset-pincode/reset-pincode.page';
 import { ModalNavPage } from '../../../0.base/modal-nav.page';
+import { AccountTabPage } from '../account-tab.page';
 
 @IonicPage()
 @Component({
@@ -20,10 +21,11 @@ export class MyInfoPage {
         this.init();
     }
 
-    private init(): void {
-        this.email = this.account.account_new.personal.email;
-        this.phoneNumber = this.account.account_new.personal.phoneNumber;
-        this.pincodeEnabled = this.account.account_new.personal.pincodeEnabled;
+    private async init(): Promise<void> {
+        const account = await this.account.detail();
+        this.email = account.personal.email;
+        this.phoneNumber = account.personal.phoneNumber;
+        this.pincodeEnabled = account.personal.pincodeEnabled;
     }
 
     ionViewDidLoad() {
