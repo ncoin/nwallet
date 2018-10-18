@@ -50,7 +50,7 @@ export class AccountService {
     }
 
     public fillData(expr: (personal: NWAccount.Personal) => void): void {
-        Debug.Assert(this.account);
+        Debug.assert(this.account);
         expr(this.account.personal);
     }
 

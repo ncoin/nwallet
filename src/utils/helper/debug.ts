@@ -21,7 +21,7 @@ export class Debug {
         });
     }
 
-    static Assert(condition: any, ...params: any[]): void {
+    static assert(condition: any, ...params: any[]): void {
         if (!condition) {
             if (isDevMode()) {
                 console.log('[debug-assert]', ...params);

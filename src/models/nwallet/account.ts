@@ -13,8 +13,8 @@ export class Account {
     public initialize(data: Account): Account {
         Object.assign(this.inventory, data.inventory);
         Object.assign(this.personal, data.personal);
-        Debug.Assert(this.inventory);
-        Debug.Assert(this.personal);
+        Debug.assert(this.inventory);
+        Debug.assert(this.personal);
         Debug.Validate(this.inventory);
         Debug.Validate(this.personal);
         return this;

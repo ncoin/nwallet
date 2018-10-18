@@ -9,18 +9,14 @@ import { ParameterExpr, createExpr } from 'forge';
 
 import * as _ from 'lodash';
 import { NWAsset, NWProtocol } from '../../models/nwallet';
+import { GetWalletRequest } from '../../models/nwallet/http-protocol';
+import { GetRequestBase } from '../../models/nwallet/http-protocol-base';
 
 @Injectable()
 export class NClientProvider {
     private subscriptions: Subscription[] = [];
     constructor(private logger: LoggerService, private http: HttpClient, private event: EventService, private token: TokenService) {}
 
-    private onError<T>(log: string, result: T | undefined) {
-        return (error: HttpErrorResponse) => {
-            this.logger.error(`[nclient] ${log}`, error);
-            return result;
-        };
-    }
 
     private getKeyFromValue(enums: {}, value: any): string {
         return Object.keys(enums).filter(type => enums[type] === value)[0];
@@ -43,35 +39,41 @@ export class NClientProvider {
         });
     }
 
-    public async getAssets(): Promise<NWAsset.Item[]> {
-        return await this.get<NWAsset.Data[]>(NWProtocol.Types.Wallets)
-            .then(datas => datas.map(data => new NWAsset.Item().toProtocol(data)))
-            .catch(this.onError('', []));
-    }
 
-    // tslint:disable-next-line:max-line-length
-    private get = async <TResponse>(address: NWProtocol.Types, expr: ParameterExpr<NWProtocol.RequestBase> = undefined): Promise<TResponse> => {
-        const type = this.getKeyFromValue(NWProtocol.Types, address);
-        const request = expr ? createExpr(expr) : undefined;
-        this.logger.debug(`[nclient] get ${type} ...`);
-
-        return await this.http
-            .get<TResponse>(env.endpoint.api(`${address}`), {
-                params: request,
+    public async get<TRequest, TResponse>(request: GetRequestBase<TRequest, TResponse>): Promise<TResponse> {
+        this.logger.debug(`[nclient] execute protocol : ${request.name}`);
+        return this.http
+            .get<TResponse>(env.endpoint.api(request.getPath()), {
                 headers: {
                     authorization: await this.getToken()
                 }
             })
-            .toPromise()
-            .then(response => {
-                this.logger.debug(`[nclient] get ${type} done`);
-                return response;
-            })
-            .catch((response: HttpErrorResponse) => {
-                this.logger.debug(`[nclient] get ${type} failed`, response);
-                return undefined;
-            });
+            .toPromise();
     }
+
+    // tslint:disable-next-line:max-line-length
+    // private get = async <TResponse>(address: NWProtocol.Types, expr: ParameterExpr<NWProtocol.RequestBase> = undefined): Promise<TResponse> => {
+    //     const type = this.getKeyFromValue(NWProtocol.Types, address);
+    //     const request = expr ? createExpr(expr) : undefined;
+    //     this.logger.debug(`[nclient] get ${type} ...`);
+
+    //     return await this.http
+    //         .get<TResponse>(env.endpoint.api(`${address}`), {
+    //             params: request,
+    //             headers: {
+    //                 authorization: await this.getToken()
+    //             }
+    //         })
+    //         .toPromise()
+    //         .then(response => {
+    //             this.logger.debug(`[nclient] get ${type} done`);
+    //             return response;
+    //         })
+    //         .catch((response: HttpErrorResponse) => {
+    //             this.logger.debug(`[nclient] get ${type} failed`, response);
+    //             throw new NWHttpError(response);
+    //         });
+    // }
 
     // public getTransfers = async (accountId: string, request: ParameterExpr<NWallet.Protocol.TransactionRequest>): Promise<NWallet.Protocol.TransactionResponse> => {
     //     return await this.get<NWallet.Protocol.TransactionResponse>(NWallet.Protocol.Types.Transfer, accountId, request).then(response => {
@@ -103,7 +105,6 @@ export class NClientProvider {
     //         return collaterals;
     //     });
     // }
-
 
     // public getLoanDetail = async (accountId: string, id: string): Promise<NWallet.Protocol.LoanStatusResponse> => {
     //     return await this.get<NWallet.Protocol.LoanStatusResponse>(NWProtocol.Types.LoanStatus, `${accountId}/${id}`).then(response => {

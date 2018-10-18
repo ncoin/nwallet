@@ -4,6 +4,7 @@ import { TokenService } from '../token/token.service';
 import { Debug } from '../../utils/helper/debug';
 import { EventService } from '../common/event/event';
 import { NWEvent } from '../../interfaces/events';
+import { LoggerService } from '../common/logger/logger.service';
 
 export class TickerProtocol {
     site: string;
@@ -27,26 +28,24 @@ export class NotificationService {
 
     private push: any;
 
-    constructor(private token: TokenService, private event: EventService) {
+    constructor(private token: TokenService, private event: EventService, private logger: LoggerService) {
         this.stream = {};
     }
 
     public async openStream(): Promise<void> {
-        setTimeout(async () => {
-            const token = await this.token.getToken();
+        const token = await this.token.getToken();
 
-            const walletUrl = env.endpoint.stream('wallet', token.getValue());
-            const tickerUrl = env.endpoint.stream('ticker', token.getValue());
+        const walletUrl = env.endpoint.stream('wallet', token.getValue());
+        const tickerUrl = env.endpoint.stream('ticker', token.getValue());
 
-            const walletEvent = new EventSource(walletUrl, { withCredentials: true });
-            const tickerEvent = new EventSource(tickerUrl, { withCredentials: true });
+        const walletEvent = new EventSource(walletUrl, { withCredentials: true });
+        const tickerEvent = new EventSource(tickerUrl, { withCredentials: true });
 
-            walletEvent.addEventListener('wallet', this.onWalletEvent);
-            tickerEvent.addEventListener('ticker', this.onTickerEvent);
+        walletEvent.addEventListener('wallet', this.onWalletEvent);
+        tickerEvent.addEventListener('ticker', this.onTickerEvent);
 
-            this.stream.wallet = walletEvent;
-            this.stream.ticker = tickerEvent;
-        }, 6000);
+        this.stream.wallet = walletEvent;
+        this.stream.ticker = tickerEvent;
     }
 
     private closeStream(): void {
@@ -71,7 +70,7 @@ export class NotificationService {
 
         tickerData.last_updated_date = new Date(Number.parseInt(tickerData.last_updated_date.toString(), 10));
         Debug.Validate(tickerData);
-        Debug.Assert(tickerData);
+        Debug.assert(tickerData);
 
         this.event.publish(NWEvent.Stream.ticker, tickerData);
     }

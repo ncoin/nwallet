@@ -14,7 +14,7 @@ export class Token {
         return value.charAt(0).toUpperCase() + value.slice(1);
     }
 
-    /** for sse */
+    /** for SSE */
     public getValue(): string {
         return this.access_token;
     }
@@ -32,7 +32,7 @@ export class Token {
     }
 
     public isExpired(): boolean {
-        Debug.Assert(this.expiredDate);
+        Debug.assert(this.expiredDate);
         return Date.now() > this.expiredDate;
     }
 }

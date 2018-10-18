@@ -30,13 +30,14 @@ export function getNonce(): string {
 export class TokenService {
     private token: Token;
     private tokenSource: PromiseWaiter<Token>;
+    private init: PromiseWaiter<boolean>;
 
     constructor(private http: HttpClient, private logger: LoggerService, private device: Device, private account: AccountService, private preference: PreferenceProvider) {
-        this.tokenSource = new PromiseWaiter<Token>();
-        this.init();
+        this.initialize();
     }
 
-    private async init(): Promise<void> {
+    private async initialize(): Promise<void> {
+        this.init = new PromiseWaiter<boolean>();
         const token = await this.preference.get(Preference.Nwallet.token);
         if (token) {
             this.logger.debug('[token] stored token exists', token);
@@ -46,24 +47,27 @@ export class TokenService {
 
         this.token = Object.assign(new Token(), token);
         this.token.setExpiration();
-        this.tokenSource.set(this.token);
+        this.init.set(true);
     }
 
     public async getToken(): Promise<Token> {
-        await this.tokenSource.result();
+        await this.init.result();
+        if (this.tokenSource) {
+            return await this.tokenSource.result();
+        }
+
+        this.tokenSource = new PromiseWaiter<Token>();
 
         if (this.token === undefined || this.token.isExpired()) {
             this.logger.debug(`[token] token requested : use ${this.token === undefined ? 'new' : 'refresh'} token`);
-
-            this.tokenSource = new PromiseWaiter<Token>();
             this.token = await this.issueToken(this.token === undefined ? false : this.token.isExpired());
-
             await this.preference.set(Preference.Nwallet.token, this.token);
-            this.tokenSource.set(this.token);
         } else {
             this.logger.debug('[token] token requested : use stored token');
         }
 
+        this.tokenSource.set(this.token);
+        this.tokenSource = undefined;
         return this.token;
     }
 
