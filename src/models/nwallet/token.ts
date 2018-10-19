@@ -27,8 +27,10 @@ export class Token {
         return `${Token.capitalize(this.token_type)} ${this.access_token}`;
     }
 
-    public setExpiration() {
+    public setExpiration(): this {
+        Debug.assert(!this.expiredDate);
         this.expiredDate = Date.now() + this.expires_in * 1000;
+        return this;
     }
 
     public isExpired(): boolean {

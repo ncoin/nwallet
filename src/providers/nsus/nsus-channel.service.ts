@@ -27,9 +27,8 @@ export class NsusChannelService {
         };
     }
 
-
     private onError<T>(log: string, result: T | undefined) {
-        return (error: HttpErrorResponse) => {
+        return (error: HttpErrorResponse | Error) => {
             this.logger.error(`[nsus-channel] ${log}`, error);
             return result;
         };
@@ -45,6 +44,7 @@ export class NsusChannelService {
     }
 
     public async fetchJobs(): Promise<void> {
+        this.logger.debug('[channel] request token');
         const token = await this.token.getToken();
         const detail = await this.account.detail();
         const assets = await this.getAssets(token.getUserId());
@@ -55,13 +55,13 @@ export class NsusChannelService {
 
     public async getAssets(userId: string): Promise<NWAsset.Item[]> {
         this.logger.debug('[channel] get asset request');
-        const response = await this.nClient
+        return await this.nClient
             .get(new GetWalletRequest(userId))
-            .then(this.onSuccess('[channel] get asset success'))
-            .then(NWAsset.Item.toProtocol())
-            .catch(this.onError('[channel] get asset failed', []));
-
-        return response;
+            .then(datas => {
+                this.logger.debug('[channel] get asset request success');
+                return datas.map(data => new NWAsset.Item().initData(data));
+            })
+            .catch(this.onError('[channel] get asset request failed', []));
     }
 
     public close(): void {

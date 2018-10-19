@@ -25,7 +25,7 @@ export class LoggerService {
             { level: 'error', weight: 1, label: 'Error' },
             { level: 'warn', weight: 2, label: 'Warning' },
             { level: 'info', weight: 3, label: 'Info', default: true },
-            { level: 'debug', weight: 4, label: 'Debug' },
+            { level: 'debug', weight: 4, label: 'Debug' }
         ];
 
         // Create an array of level weights for performant filtering.
@@ -69,29 +69,41 @@ export class LoggerService {
         });
     }
 
+    private timeStamp(log: string): string {
+        const date = new Date();
+
+        return (
+            `[${date.getFullYear()}.${date.getMonth() + 1}.${date.getDate()}|` +
+            `${date.getHours() < 10 ? `0${date.getHours()}` : date.getHours()}:` +
+            `${date.getMinutes() < 10 ? `0${date.getMinutes()}` : date.getMinutes()}:` +
+            `${date.getSeconds() < 10 ? `0${date.getSeconds()}` : date.getSeconds()}:` +
+            `${date.getMilliseconds() < 100 ? `0${date.getMilliseconds()}` : date.getMilliseconds()}] ${log}`
+        );
+    }
+
     public error(message?: any, ...optionalParams: any[]): void {
-        let msg = '[error] ' + (_.isString(message) ? message : JSON.stringify(message));
+        let msg = this.timeStamp(`[error] ${_.isString(message) ? message : JSON.stringify(message)}`);
         if (isDevMode() && !this.isFilteredLevel('error') && !this.isFilteredText(message)) console.log(msg, ...optionalParams);
         let args = this.processingArgs(arguments);
         this.add('error', args);
     }
 
     public debug(message?: any, ...optionalParams: any[]): void {
-        let msg = '[debug] ' + (_.isString(message) ? message : JSON.stringify(message));
+        let msg = this.timeStamp(`[debug] ${_.isString(message) ? message : JSON.stringify(message)}`);
         if (isDevMode() && !this.isFilteredLevel('debug') && !this.isFilteredText(message)) console.log(msg, ...optionalParams);
         let args = this.processingArgs(arguments);
         this.add('debug', args);
     }
 
     public info(message?: any, ...optionalParams: any[]): void {
-        let msg = '[info] ' + (_.isString(message) ? message : JSON.stringify(message));
+        let msg = this.timeStamp(`[info] ${_.isString(message) ? message : JSON.stringify(message)}`);
         if (isDevMode() && !this.isFilteredLevel('info') && !this.isFilteredText(message)) console.log(msg, ...optionalParams);
         let args = this.processingArgs(arguments);
         this.add('info', args);
     }
 
     public warn(message?: any, ...optionalParams: any[]): void {
-        let msg = '[warn] ' + (_.isString(message) ? message : JSON.stringify(message));
+        let msg = this.timeStamp(`[warn] ${_.isString(message) ? message : JSON.stringify(message)}`);
         if (isDevMode() && !this.isFilteredLevel('warn') && !this.isFilteredText(message)) console.log(msg, ...optionalParams);
         let args = this.processingArgs(arguments);
         this.add('warn', args);
@@ -119,7 +131,7 @@ export class LoggerService {
         this.logs.push({
             timestamp: new Date().toISOString(),
             level,
-            msg,
+            msg
         });
     }
 

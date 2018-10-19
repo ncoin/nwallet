@@ -17,12 +17,8 @@ export class NClientProvider {
     private subscriptions: Subscription[] = [];
     constructor(private logger: LoggerService, private http: HttpClient, private event: EventService, private token: TokenService) {}
 
-
-    private getKeyFromValue(enums: {}, value: any): string {
-        return Object.keys(enums).filter(type => enums[type] === value)[0];
-    }
-
     private async getToken(): Promise<string> {
+        this.logger.debug('[nclient] request token');
         const token = await this.token.getToken();
         if (token) {
             return token.getAuth();

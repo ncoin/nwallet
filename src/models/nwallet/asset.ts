@@ -6,16 +6,8 @@ export class Item {
     /** asset option */
     public option: Option;
 
-    public sss: number;
-
     public get amount(): number {
         return this.data.balance;
-    }
-
-    static toProtocol(): (datas: Data[]) => Item[] {
-        return (datas: Data[]): Item[] => {
-            return datas.map(new Item().toProtocol());
-        };
     }
 }
 /** wallet protocol interface */

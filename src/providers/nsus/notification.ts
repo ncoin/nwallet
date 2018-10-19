@@ -5,6 +5,7 @@ import { Debug } from '../../utils/helper/debug';
 import { EventService } from '../common/event/event';
 import { NWEvent } from '../../interfaces/events';
 import { LoggerService } from '../common/logger/logger.service';
+import { Data } from '../../models/nwallet/asset';
 
 export class TickerProtocol {
     site: string;
@@ -14,7 +15,9 @@ export class TickerProtocol {
     asset_code: string;
     name: string;
     price: number;
-    last_updated_date: Date;
+
+    last_updated_date: string;
+    last_updated_date_raw: Date;
 }
 
 export class WalletProtocol {}
@@ -33,6 +36,7 @@ export class NotificationService {
     }
 
     public async openStream(): Promise<void> {
+        this.logger.debug('[notification][openstream] request token');
         const token = await this.token.getToken();
 
         const walletUrl = env.endpoint.stream('wallet', token.getValue());
@@ -65,12 +69,14 @@ export class NotificationService {
         const walletData = JSON.parse(event.data) as WalletProtocol;
         this.event.publish(NWEvent.Stream.wallet, walletData);
     }
+
     public onTickerEvent = (event: MessageEvent): void => {
         const tickerData = JSON.parse(event.data) as TickerProtocol;
 
-        tickerData.last_updated_date = new Date(Number.parseInt(tickerData.last_updated_date.toString(), 10));
+        tickerData.last_updated_date_raw = new Date(Number.parseInt(tickerData.last_updated_date, 10));
         Debug.Validate(tickerData);
         Debug.assert(tickerData);
+        this.logger.debug('[notification] ticker : ', tickerData);
 
         this.event.publish(NWEvent.Stream.ticker, tickerData);
     }

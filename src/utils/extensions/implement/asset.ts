@@ -12,29 +12,27 @@ function processData(item: Item, data: Data): void {
     });
 }
 
-export function toProtocolStatic(this: Item): (data: Data) => Item {
-    return (data: Data) => {
-        if (this.data) {
-            throw new Error('Asset already initialized');
-        }
+export function initProtocolStatic(this: Item, data: Data): Item {
+    if (this.data) {
+        throw new Error('Asset already initialized');
+    }
 
-        this.data = data;
-        processData(this, data);
+    this.data = data;
+    processData(this, data);
 
-        this.detail = {
-            code: this.data.currency_manage_id,
-            symbol: this.data.currency,
-            price: 1
-        };
-
-        this.option = {
-            isActive: true,
-            isShow: <boolean>this.data.is_show,
-            order: this.data.align_number
-        };
-
-        return this;
+    this.detail = {
+        code: this.data.currency_manage_id,
+        symbol: this.data.currency,
+        price: 1
     };
+
+    this.option = {
+        isActive: true,
+        isShow: <boolean>this.data.is_show,
+        order: this.data.align_number
+    };
+
+    return this;
 }
 
 let price = 0;
@@ -55,5 +53,5 @@ export function updateProtocolStatic(this: Item, data: Data): Item {
     return this;
 }
 
-Item.prototype.toProtocol = toProtocolStatic;
-Item.prototype.updateProtocol = updateProtocolStatic;
+Item.prototype.initData = initProtocolStatic;
+Item.prototype.updateData = updateProtocolStatic;

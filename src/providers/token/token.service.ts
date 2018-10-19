@@ -40,14 +40,14 @@ export class TokenService {
         this.init = new PromiseWaiter<boolean>();
         const token = await this.preference.get(Preference.Nwallet.token);
         if (token) {
-            this.logger.debug('[token] stored token exists', token);
+            this.logger.debug('[token][initialize] stored token exist', token);
         } else {
-            this.logger.debug('[token] stored token not exists');
+            this.logger.debug('[token][initialize] stored token not exists');
         }
 
         this.token = Object.assign(new Token(), token);
-        this.token.setExpiration();
         this.init.set(true);
+        this.logger.debug('[token][initialize] done');
     }
 
     public async getToken(): Promise<Token> {
@@ -77,7 +77,7 @@ export class TokenService {
         let parameters;
         const tokenKind = isRefresh ? 'refresh' : 'new';
 
-        this.logger.debug(`[token] issuing token : ${tokenKind} ...`);
+        this.logger.debug(`[token] issue token begin : ${tokenKind} ...`);
 
         if (isRefresh) {
             parameters = {
@@ -107,9 +107,8 @@ export class TokenService {
             })
             .toPromise()
             .then(tokenData => {
-                const token = Object.assign(new Token(), tokenData);
+                const token = Object.assign(new Token(), tokenData).setExpiration();
                 this.logger.debug(`[token] issue token done : ${tokenKind}`);
-                token.setExpiration();
                 return token;
             })
             .catch((response: HttpErrorResponse) => {

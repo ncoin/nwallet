@@ -27,7 +27,7 @@
                     <ion-col class="price-asset" no-padding col-12 text-right>{{asset | assetFormat}}</ion-col>
                 </ion-row>
                 <ion-row>
-                    <ion-col class="price-usd" no-padding col-12 text-right>{{asset | assetToUSD}}</ion-col>
+                    <ion-col class="price-usd" no-padding col-12 text-right>{{asset | assetToUSD |async }}</ion-col>
                 </ion-row>
             </ion-col>
         </ion-row>
