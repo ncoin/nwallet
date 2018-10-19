@@ -79,19 +79,6 @@ export class NWalletAppService {
         this.event.publish(NWEvent.App.user_logout);
     }
 
-    public async getTransfer(skip: number = 0): Promise<any> {
-        const account = await this.account.detail();
-        return [];
-        // const response = await this.connector.getTransfers(account.signature.public, expr => {
-        //     expr.limit = '20';
-        //     // expr.order = 'desc';
-        //     // e.asset_code = asset.getCode();
-        //     expr.skip = skip.toString();
-        // });
-
-        // return response ? response.transactions : [];
-    }
-
     public async getCollaterals() {
         return [];
         // const response = await this.connector.getCollaterals();

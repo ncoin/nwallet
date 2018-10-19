@@ -2,43 +2,48 @@ import { SendPage } from '../../1.transfer-tab/send/send.page';
 import { ReceivePage } from '../../1.transfer-tab/receive/receive.page';
 import { LoggerService } from '../../../../providers/common/logger/logger.service';
 import { Component, ViewChild } from '@angular/core';
-import { IonicPage,  Navbar, InfiniteScroll, NavParams, ViewController, ModalController } from 'ionic-angular';
+import { IonicPage, Navbar, InfiniteScroll, NavParams, ViewController, ModalController, NavController } from 'ionic-angular';
 import { NWalletAppService } from '../../../../providers/app/app.service';
 import * as _ from 'lodash';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { NWModalTransition } from '../../../../tools/extension/transition';
 import { NWTransaction, NWAsset } from '../../../../models/nwallet';
+import { ModalBasePage } from '../../../0.base/modal.page';
+import { ModalNavPage } from '../../../0.base/modal-nav.page';
+import { AccountService } from '../../../../providers/account/account.service';
+import { Subscription } from 'rxjs';
 
 @IonicPage()
 @Component({
     selector: 'wallet-detail',
-    templateUrl: 'wallet-detail.page.html',
+    templateUrl: 'wallet-detail.page.html'
 })
-export class WalletDetailPage {
+export class WalletDetailPage extends ModalBasePage {
     public transactionMaps: Array<{ date: string; transactions: NWTransaction.Item[] }> = new Array<{ date: string; transactions: NWTransaction.Item[] }>();
     private skip = 0;
-    public asset: NWAsset.Item;
-    @ViewChild(Navbar)
-    navBar: Navbar;
-
+    public wallet: NWAsset.Item;
+    private subscriptions: Subscription[] = [];
     constructor(
-        public viewCtrl: ViewController,
+        navCtrl: NavController,
+        params: NavParams,
+        parent: ModalNavPage,
         private logger: LoggerService,
+        private account: AccountService,
         private appService: NWalletAppService,
-        private browser: InAppBrowser,
-        navParams: NavParams,
-        private modal: ModalController
+        private browser: InAppBrowser
     ) {
-        const wallet = navParams.get('wallet');
-        if (wallet.item.asset.code === 'XLM' || wallet.item.asset.code === 'NCN') {
-            this.init();
-        }
-        this.asset = wallet;
+        super(navCtrl, params, parent);
+        this.init();
     }
 
     private async init(): Promise<void> {
+        this.account.registerAccountStream(account => {});
         const transactions = await this.appService.getTransfer();
         this.arrange(transactions);
+    }
+
+    ionViewDidLeave() {
+        this.subscriptions.forEach(s => s.unsubscribe());
     }
 
     private arrange(transactions: NWTransaction.Item[]): void {
@@ -81,21 +86,19 @@ export class WalletDetailPage {
         //     toolbar: 'no',
         //     closebuttoncaption: 'done',
         // });
-
         // browser.insertCSS({
         //     code: 'body { margin-top : 50px;}',
         // });
-
         // browser.show();
     }
 
     public onReceiveClick(): void {
-        const modal = this.modal.create(ReceivePage, { asset: this.asset }, NWModalTransition.Slide());
+        const modal = this.modal.create(ReceivePage, { asset: this.wallet }, NWModalTransition.Slide());
         modal.present();
     }
 
     public onSendClick(): void {
-        const modal = this.modal.create(SendPage, { asset: this.asset }, NWModalTransition.Slide());
+        const modal = this.modal.create(SendPage, { asset: this.wallet }, NWModalTransition.Slide());
         modal.present();
     }
 

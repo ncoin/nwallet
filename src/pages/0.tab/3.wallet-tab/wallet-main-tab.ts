@@ -80,9 +80,16 @@ export class WalletMainTabPage {
         }
     }
 
-    public onSelectAsset(wallet: NWAsset.Item) {
-        const modal = this.modalCtrl.create(WalletDetailPage, { wallet: wallet }, NWModalTransition.Slide());
-        modal.present();
+    public async onSelectAsset(wallet: NWAsset.Item) {
+        const modal = this.modalCtrl.create(
+            ModalNavPage,
+            ModalNavPage.resolveModal(WalletDetailPage, param => {
+                param.headerType = 'bar';
+                param.canBack = true;
+                param.wallet = wallet;
+            })
+        );
+        await modal.present();
     }
 
     public async onClick_ManageWallet(): Promise<void> {

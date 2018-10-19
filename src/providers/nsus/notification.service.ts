@@ -67,16 +67,17 @@ export class NotificationService {
 
     public onWalletEvent = (event: MessageEvent): void => {
         const walletData = JSON.parse(event.data) as WalletProtocol;
+        this.logger.debug('[notification] on wallet :', walletData);
+
         this.event.publish(NWEvent.Stream.wallet, walletData);
     }
 
     public onTickerEvent = (event: MessageEvent): void => {
         const tickerData = JSON.parse(event.data) as TickerProtocol;
-
         tickerData.last_updated_date_raw = new Date(Number.parseInt(tickerData.last_updated_date, 10));
         Debug.Validate(tickerData);
         Debug.assert(tickerData);
-        this.logger.debug('[notification] ticker :', tickerData);
+        this.logger.debug('[notification] on ticker :', tickerData);
 
         this.event.publish(NWEvent.Stream.ticker, tickerData);
     }

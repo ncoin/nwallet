@@ -7,7 +7,7 @@ import { EventService } from '../common/event/event';
 import { TokenService } from '../token/token.service';
 import { NWAsset } from '../../models/nwallet';
 import { HttpErrorResponse } from '@angular/common/http';
-import { GetWalletRequest, SetConfigurationRequest } from '../../models/nwallet/http-protocol';
+import { GetWalletRequest, SetConfigurationRequest, GetWalletDetailRequest } from '../../models/nwallet/http-protocol';
 
 @Injectable()
 export class NsusChannelService {
@@ -20,14 +20,17 @@ export class NsusChannelService {
         private logger: LoggerService
     ) {}
 
-    private onSuccess<TResponse>(log: string) {
+    private onSuccess<TResponse>(log: string, func?: (data: TResponse) => any) {
         return (response: TResponse) => {
             this.logger.debug(`[channel] ${log}`, response);
+            if (func) {
+                return func(response);
+            }
             return response;
         };
     }
 
-    private onError<T>(log: string, result: T | undefined) {
+    private onError<T>(log: string, result?: T | undefined) {
         return (error: HttpErrorResponse | Error) => {
             this.logger.error(`[nsus-channel] ${log}`, error);
             return result;
@@ -58,13 +61,20 @@ export class NsusChannelService {
         this.logger.debug('[channel] get asset request');
         return await this.nClient
             .get(new GetWalletRequest(token.getUserId()))
-            .then(datas => {
-                this.logger.debug('[channel] get asset request success');
-                return datas.map(data => new NWAsset.Item().initData(data));
-            })
+            .then(this.onSuccess('[channel] get asset request success', datas => datas.map(data => new NWAsset.Item().initData(data))))
             .catch(this.onError('[channel] get asset request failed', []));
     }
 
+    public async getAssetDetail(walletId: string): Promise<number> {
+        this.logger.debug('[channel][get-asset-detail] request token');
+        const token = await this.token.getToken();
+
+        this.logger.debug('[channel] get-asset-detail request');
+        return await this.nClient
+            .get(new GetWalletDetailRequest(token.getUserId(), walletId))
+            .then(this.onSuccess('[channel] get-asset-request success'))
+            .catch(this.onError('[channel] get-asset-request failed', 0));
+    }
 
     /**
      *

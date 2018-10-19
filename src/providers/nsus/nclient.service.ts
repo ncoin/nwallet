@@ -5,7 +5,6 @@ import { LoggerService } from '../common/logger/logger.service';
 import { env } from '../../environments/environment';
 import { EventService } from '../common/event/event';
 import { TokenService } from '../token/token.service';
-import { ParameterExpr, createExpr } from 'forge';
 
 import * as _ from 'lodash';
 import { GetRequestBase, PutRequestBase } from '../../models/nwallet/http-protocol-base';
@@ -25,7 +24,7 @@ export class NClientService {
 
     public fetchStreams = async (): Promise<boolean> => {
         return true;
-    };
+    }
 
     public async unSubscribes(): Promise<void> {
         this.subscriptions.forEach(subscription => {
