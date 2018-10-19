@@ -2,7 +2,7 @@ import { TokenService } from './token/token.service';
 import { NgModule } from '@angular/core';
 import { LoggerService } from './common/logger/logger.service';
 import { NWalletAppService } from './app/app.service';
-import { AppConfigProvider } from './app/app.config';
+import { AppConfigService } from './app/app.config.service';
 import { AccountService } from './account/account.service';
 import { PreferenceProvider } from './common/preference/preference';
 import { NClientService } from './nsus/nclient.service';
@@ -20,7 +20,7 @@ import { NotificationService } from './nsus/notification.service';
         PreferenceProvider,
         AccountService,
         NWalletAppService,
-        AppConfigProvider,
+        AppConfigService,
         PlatformProvider,
         LockProvider,
         TokenService,

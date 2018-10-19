@@ -26,7 +26,7 @@ export class AssetToUSDPipe implements PipeTransform {
 
             const value = assetItem.amount * currency.price;
             const floor = value.toFixed(2);
-            return `$${floor} USD`;
+            return `$${floor}`;
         });
     }
 }

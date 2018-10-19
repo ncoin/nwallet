@@ -7,7 +7,7 @@ import { EventService } from '../common/event/event';
 import { TokenService } from '../token/token.service';
 import { NWAsset } from '../../models/nwallet';
 import { HttpErrorResponse } from '@angular/common/http';
-import { GetWalletRequest } from '../../models/nwallet/http-protocol';
+import { GetWalletRequest, SetConfigurationRequest } from '../../models/nwallet/http-protocol';
 
 @Injectable()
 export class NsusChannelService {
@@ -44,24 +44,50 @@ export class NsusChannelService {
     }
 
     public async fetchJobs(): Promise<void> {
-        this.logger.debug('[channel] request token');
-        const token = await this.token.getToken();
         const detail = await this.account.detail();
-        const assets = await this.getAssets(token.getUserId());
+        const assets = await this.getAssets();
         detail.inventory.setItems(assets);
 
         this.notification.openStream();
     }
 
-    public async getAssets(userId: string): Promise<NWAsset.Item[]> {
+    public async getAssets(): Promise<NWAsset.Item[]> {
+        this.logger.debug('[channel][get-asset] request token');
+        const token = await this.token.getToken();
+
         this.logger.debug('[channel] get asset request');
         return await this.nClient
-            .get(new GetWalletRequest(userId))
+            .get(new GetWalletRequest(token.getUserId()))
             .then(datas => {
                 this.logger.debug('[channel] get asset request success');
                 return datas.map(data => new NWAsset.Item().initData(data));
             })
             .catch(this.onError('[channel] get asset request failed', []));
+    }
+
+
+    /**
+     *
+     *
+     * @param {boolean} isOn - notification on/off
+     * @returns {Promise<boolean>} request success
+     * @memberof NsusChannelService
+     */
+    public async setNotification(isOn: boolean): Promise<boolean> {
+        this.logger.debug('[channel][set-notification] request token');
+        const token = await this.token.getToken();
+
+        this.logger.debug('[channel] get asset request');
+        return await this.nClient
+            .put(
+                new SetConfigurationRequest(token.getUserId()).setPayload(payload => {
+                    payload.device_id = this.token.id;
+                    payload.is_push_notification = isOn;
+                })
+            )
+            .then(this.onSuccess('[channel] set notification success'))
+            .then(() => true)
+            .catch(this.onError('[channel] get asset request failed', false));
     }
 
     public close(): void {

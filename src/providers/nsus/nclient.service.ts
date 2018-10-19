@@ -8,7 +8,7 @@ import { TokenService } from '../token/token.service';
 import { ParameterExpr, createExpr } from 'forge';
 
 import * as _ from 'lodash';
-import { GetRequestBase } from '../../models/nwallet/http-protocol-base';
+import { GetRequestBase, PutRequestBase } from '../../models/nwallet/http-protocol-base';
 
 @Injectable()
 export class NClientService {
@@ -25,7 +25,7 @@ export class NClientService {
 
     public fetchStreams = async (): Promise<boolean> => {
         return true;
-    }
+    };
 
     public async unSubscribes(): Promise<void> {
         this.subscriptions.forEach(subscription => {
@@ -33,11 +33,21 @@ export class NClientService {
         });
     }
 
-
     public async get<TRequest, TResponse>(request: GetRequestBase<TRequest, TResponse>): Promise<TResponse> {
         this.logger.debug(`[nclient] execute protocol : ${request.name}`);
         return this.http
-            .get<TResponse>(env.endpoint.api(request.getPath()), {
+            .get<TResponse>(env.endpoint.api(request.url()), {
+                headers: {
+                    authorization: await this.getToken()
+                }
+            })
+            .toPromise();
+    }
+
+    public async put<TRequest>(request: PutRequestBase<TRequest>): Promise<Object> {
+        this.logger.debug(`[nclient] execute protocol : ${request.name}`);
+        return this.http
+            .put(env.endpoint.api(request.url()), request.payload, {
                 headers: {
                     authorization: await this.getToken()
                 }

@@ -9,13 +9,12 @@ import { LockProvider } from '../providers/common/lock/lock';
 import { LoggerService } from '../providers/common/logger/logger.service';
 import { Component, ViewChild, OnDestroy } from '@angular/core';
 
-import { Nav, Platform, LoadingController, Loading } from 'ionic-angular';
+import { Nav, Platform } from 'ionic-angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 
 import { EntrancePage } from '../pages/0.entrance/entrance.page';
-import { TutorialPage } from '../pages/0.tutorial/tutorial';
-import { AppConfigProvider } from '../providers/app/app.config';
+import { AppConfigService } from '../providers/app/app.config.service';
 
 @Component({
     templateUrl: 'app.template.html'
@@ -38,7 +37,7 @@ export class NWalletApp implements OnDestroy {
         private logger: LoggerService,
         private lock: LockProvider,
         private account: AccountService,
-        private appConfig: AppConfigProvider,
+        private appConfig: AppConfigService,
         private app: NWalletAppService,
         private event: EventService
     ) {

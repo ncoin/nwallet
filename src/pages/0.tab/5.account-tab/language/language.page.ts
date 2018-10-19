@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, ToastController } from 'ionic-angular';
-import { AppConfigProvider } from '../../../../providers/app/app.config';
+import { AppConfigService } from '../../../../providers/app/app.config.service';
 
 @IonicPage()
 @Component({
@@ -11,7 +11,7 @@ export class LanguagePage {
     supportedLanguagesPair: { key: string; value: string }[];
     currentLanguage: { key: string; value: string } = { key: '', value: '' };
 
-    constructor(private navCtrl: NavController, private appConfig: AppConfigProvider) {
+    constructor(private navCtrl: NavController, private appConfig: AppConfigService) {
         this.init();
     }
 

@@ -1,8 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { ParameterExpr, createExpr } from 'forge';
 import { Debug } from '../../utils/helper/debug';
-
-
+import { HttpProtocolDecorator } from './http-protocol';
 
 export class NWHttpError extends Error {
     constructor(public response: HttpErrorResponse) {
@@ -10,11 +9,11 @@ export class NWHttpError extends Error {
     }
 }
 
-export interface NoParameter {
-
-}
+export interface NoParameter {}
 
 export abstract class HttpRequestBase {
+    public abstract url(): string;
+
     constructor(protected userId: string, protected userWalletId = '') {}
 
     public get name(): string {
@@ -31,8 +30,6 @@ export abstract class GetRequestBase<TParameter, TResponse> extends HttpRequestB
         this.parameters = createExpr(expr);
         return this;
     }
-
-    public abstract getPath(): string;
 }
 
 export abstract class PostRequestBase<TPayload> extends HttpRequestBase {

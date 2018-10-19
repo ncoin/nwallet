@@ -32,7 +32,11 @@ export class TokenService {
     private tokenSource: PromiseWaiter<Token>;
     private init: PromiseWaiter<boolean>;
 
+    public id: string;
+
     constructor(private http: HttpClient, private logger: LoggerService, private device: Device, private account: AccountService, private preference: PreferenceProvider) {
+        this.id = this.device.uuid ? this.device.uuid : getNonce();
+
         this.initialize();
     }
 
@@ -72,7 +76,6 @@ export class TokenService {
     }
 
     private async issueToken(isRefresh: boolean): Promise<Token> {
-        const id = this.device.uuid ? this.device.uuid : getNonce();
         const detail = await this.account.detail();
         let parameters;
         const tokenKind = isRefresh ? 'refresh' : 'new';

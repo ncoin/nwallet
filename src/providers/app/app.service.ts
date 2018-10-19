@@ -8,8 +8,7 @@ import { NsusChannelService } from '../nsus/nsus-channel.service';
 
 /** todo change me --sky */
 import { PromiseWaiter } from 'forge/dist/helpers/Promise/PromiseWaiter';
-import { NWAccount } from '../../models/nwallet';
-import { BehaviorSubject } from 'rxjs';
+import { AppConfigService } from './app.config.service';
 
 /**
  * common business logic provider
@@ -26,7 +25,8 @@ export class NWalletAppService {
         private channel: NsusChannelService,
         private logger: LoggerService,
         private account: AccountService,
-        private event: EventService
+        private event: EventService,
+        private appConfig: AppConfigService
     ) {
         this.init();
     }

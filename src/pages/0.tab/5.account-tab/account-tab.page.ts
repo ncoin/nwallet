@@ -1,4 +1,4 @@
-import { AppConfigProvider } from '../../../providers/app/app.config';
+import { AppConfigService } from '../../../providers/app/app.config.service';
 import { LoggerService } from '../../../providers/common/logger/logger.service';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, ToastController, AlertController } from 'ionic-angular';
@@ -29,7 +29,7 @@ export class AccountTabPage {
     constructor(
         public navCtrl: NavController,
         private appService: NWalletAppService,
-        private appConfig: AppConfigProvider,
+        private appConfig: AppConfigService,
         private logger: LoggerService,
         private toast: ToastController,
         private alert: AlertController,
@@ -79,14 +79,17 @@ export class AccountTabPage {
     }
 
     public async onClick_Notification(isEnable: boolean): Promise<void> {
+        this._enablePushNotification = isEnable;
+
         const result = await this.appConfig.setPushNotification(isEnable);
+        if (!result) {
+            this._enablePushNotification = !isEnable;
+        }
         // wait result;
         const toast = this.toast.create({
             message: `request \`${isEnable}\` => result \`${result}\``,
             duration: 1000
         });
-
-        this._enablePushNotification = result;
 
         toast.present();
     }
