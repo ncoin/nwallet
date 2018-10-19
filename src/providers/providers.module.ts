@@ -5,18 +5,18 @@ import { NWalletAppService } from './app/app.service';
 import { AppConfigProvider } from './app/app.config';
 import { AccountService } from './account/account.service';
 import { PreferenceProvider } from './common/preference/preference';
-import { NClientProvider } from './nsus/nclient';
+import { NClientService } from './nsus/nclient.service';
 import { LockProvider } from './common/lock/lock';
 import { PlatformProvider } from './common/platform/platform';
 import { EventService } from './common/event/event';
 import { NsusChannelService } from './nsus/nsus-channel.service';
 import { CurrencyService } from './nsus/currency.service';
-import { NotificationService } from './nsus/notification';
+import { NotificationService } from './nsus/notification.service';
 
 @NgModule({
     providers: [
         LoggerService,
-        NClientProvider,
+        NClientService,
         PreferenceProvider,
         AccountService,
         NWalletAppService,

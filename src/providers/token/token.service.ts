@@ -41,11 +41,11 @@ export class TokenService {
         const token = await this.preference.get(Preference.Nwallet.token);
         if (token) {
             this.logger.debug('[token][initialize] stored token exist', token);
+            this.token = Object.assign(new Token(), token);
         } else {
             this.logger.debug('[token][initialize] stored token not exists');
         }
 
-        this.token = Object.assign(new Token(), token);
         this.init.set(true);
         this.logger.debug('[token][initialize] done');
     }

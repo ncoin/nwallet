@@ -1,4 +1,4 @@
-import { TickerProtocol, WalletProtocol } from '../providers/nsus/notification';
+import { TickerProtocol, WalletProtocol } from '../providers/nsus/notification.service';
 
 export class EventParameter<T> {
     constructor(private name: string) {}

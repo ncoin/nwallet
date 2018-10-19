@@ -76,7 +76,7 @@ export class NotificationService {
         tickerData.last_updated_date_raw = new Date(Number.parseInt(tickerData.last_updated_date, 10));
         Debug.Validate(tickerData);
         Debug.assert(tickerData);
-        this.logger.debug('[notification] ticker : ', tickerData);
+        this.logger.debug('[notification] ticker :', tickerData);
 
         this.event.publish(NWEvent.Stream.ticker, tickerData);
     }

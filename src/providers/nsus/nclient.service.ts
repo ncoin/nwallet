@@ -8,12 +8,10 @@ import { TokenService } from '../token/token.service';
 import { ParameterExpr, createExpr } from 'forge';
 
 import * as _ from 'lodash';
-import { NWAsset, NWProtocol } from '../../models/nwallet';
-import { GetWalletRequest } from '../../models/nwallet/http-protocol';
 import { GetRequestBase } from '../../models/nwallet/http-protocol-base';
 
 @Injectable()
-export class NClientProvider {
+export class NClientService {
     private subscriptions: Subscription[] = [];
     constructor(private logger: LoggerService, private http: HttpClient, private event: EventService, private token: TokenService) {}
 

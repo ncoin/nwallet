@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { NClientProvider } from './nclient';
+import { NClientService } from './nclient.service';
 import { LoggerService } from '../common/logger/logger.service';
 import { AccountService } from '../account/account.service';
-import { NotificationService } from './notification';
+import { NotificationService } from './notification.service';
 import { EventService } from '../common/event/event';
 import { TokenService } from '../token/token.service';
 import { NWAsset } from '../../models/nwallet';
@@ -14,7 +14,7 @@ export class NsusChannelService {
     constructor(
         private event: EventService,
         private notification: NotificationService,
-        private nClient: NClientProvider,
+        private nClient: NClientService,
         private account: AccountService,
         private token: TokenService,
         private logger: LoggerService
