@@ -15,15 +15,14 @@ export const NWEvent = {
     App: {
         initialize: EventParameter.create('app-initialize'),
         user_login: EventParameter.create('app-user_login'),
-        user_logout: EventParameter.create('app-user_logout')
+        user_logout: EventParameter.create('app-user_logout'),
+        change_tab: EventParameter.create<{ index: number; data: any }>('app-change_tab')
     },
 
-    NWallet: {
-    },
+    NWallet: {},
 
     Stream: {
         ticker: EventParameter.create<TickerProtocol>('stream-ticker'),
         wallet: EventParameter.create<WalletProtocol>('stream-wallet')
     }
 };
-

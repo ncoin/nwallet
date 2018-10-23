@@ -12,14 +12,18 @@ declare module '../../models/nwallet/transaction' {
         to_address: '0xd079c11abd7c0b93e67bb9e75215a716a5c6000c';
         amount: 0.07;
         balance: 0;
-        occur_date: Date;
+        occur_date: string;
         occur_yyyy: '2018';
         occur_eng_mm: 'OCTOBER';
         occur_dd: '12';
         status_type: 'CONFIRMED';
         response_detail: Detail;
         created_by: 'admin';
-        created_date: Date;
+        created_date: string;
+    }
+
+    interface AA extends String {
+
     }
 
     interface Detail {

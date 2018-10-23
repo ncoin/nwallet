@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Subject, BehaviorSubject } from 'rxjs';
 import { EventService } from '../common/event/event';
 import { NWEvent } from '../../interfaces/events';
 
@@ -27,6 +27,9 @@ export class CurrencyService {
     }
 
     public getOrAdd(currencyId: number): Subject<CurrencyInfo> {
-        return this.currencies.has(currencyId) ? this.currencies.get(currencyId) : this.currencies.set(currencyId, new Subject<CurrencyInfo>()).get(currencyId);
+        return this.currencies.has(currencyId) ? this.currencies.get(currencyId) : this.currencies.set(currencyId, new BehaviorSubject<CurrencyInfo>({
+            currency_manage_id : currencyId,
+            price : 1,
+        })).get(currencyId);
     }
 }

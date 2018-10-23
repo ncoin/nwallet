@@ -22,7 +22,7 @@ export class ResetPincodeSuccessPage {
 
     public ionViewDidLoad() {
         setTimeout(() => {
-            this.parent.dismiss();
+            this.parent.close();
         }, 1000);
     }
 }

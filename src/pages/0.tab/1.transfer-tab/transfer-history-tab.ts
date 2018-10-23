@@ -37,8 +37,8 @@ export class TransferHistoryTabPage {
     }
 
     private async init(): Promise<void> {
-        const transactions = await this.appService.getTransfer();
-        this.arrange(transactions);
+        // const transactions = await this.appService.getTransfer();
+        // this.arrange(transactions);
     }
 
     private arrange(transactions: NWTransaction.Item[]): void {
@@ -62,14 +62,14 @@ export class TransferHistoryTabPage {
 
     public async doInfinite(infinite: InfiniteScroll): Promise<void> {
         this.logger.debug('[transfer-tab-page] request transfers skip =', this.skip);
-        const transactions = await this.appService.getTransfer(this.skip);
-        if (transactions.length < 1) {
-            this.logger.debug('[transfer-tab-page] response transfers length =', transactions.length);
-            infinite.enable(false);
-            return;
-        }
+        // const transactions = await this.appService.getTransfer(this.skip);
+        // if (transactions.length < 1) {
+        //     this.logger.debug('[transfer-tab-page] response transfers length =', transactions.length);
+        //     infinite.enable(false);
+        //     return;
+        // }
 
-        this.arrange(transactions);
+        // this.arrange(transactions);
         infinite.complete();
     }
 

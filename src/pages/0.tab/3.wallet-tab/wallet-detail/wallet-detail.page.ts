@@ -12,6 +12,7 @@ import { ModalBasePage } from '../../../0.base/modal.page';
 import { ModalNavPage } from '../../../0.base/modal-nav.page';
 import { AccountService } from '../../../../providers/account/account.service';
 import { Subscription } from 'rxjs';
+import { EventService } from '../../../../providers/common/event/event';
 
 @IonicPage()
 @Component({
@@ -21,18 +22,20 @@ import { Subscription } from 'rxjs';
 export class WalletDetailPage extends ModalBasePage {
     public transactionMaps: Array<{ date: string; transactions: NWTransaction.Item[] }> = new Array<{ date: string; transactions: NWTransaction.Item[] }>();
     private skip = 0;
-    public wallet: NWAsset.Item;
+    public asset: NWAsset.Item;
     private subscriptions: Subscription[] = [];
     constructor(
         navCtrl: NavController,
         params: NavParams,
         parent: ModalNavPage,
         private logger: LoggerService,
+        private event: EventService,
         private account: AccountService,
         private appService: NWalletAppService,
         private browser: InAppBrowser
     ) {
         super(navCtrl, params, parent);
+        this.asset = params.get('asset');
         this.init();
     }
 
@@ -67,14 +70,14 @@ export class WalletDetailPage extends ModalBasePage {
 
     public async doInfinite(infinite: InfiniteScroll): Promise<void> {
         this.logger.debug('[transfer-tab-page] request transfers skip =', this.skip);
-        const transactions = await this.appService.getTransfer(this.skip);
-        if (transactions.length < 1) {
-            this.logger.debug('[transfer-tab-page] response transfers length =', transactions.length);
-            infinite.enable(false);
-            return;
-        }
+        // const transactions = await this.appService.getTransfer(this.skip);
+        // if (transactions.length < 1) {
+        //     this.logger.debug('[transfer-tab-page] response transfers length =', transactions.length);
+        //     infinite.enable(false);
+        //     return;
+        // }
 
-        this.arrange(transactions);
+        // this.arrange(transactions);
         infinite.complete();
     }
 
@@ -92,17 +95,7 @@ export class WalletDetailPage extends ModalBasePage {
         // browser.show();
     }
 
-    public onReceiveClick(): void {
-        const modal = this.modal.create(ReceivePage, { asset: this.wallet }, NWModalTransition.Slide());
-        modal.present();
-    }
+    public onReceiveClick(): void {}
 
-    public onSendClick(): void {
-        const modal = this.modal.create(SendPage, { asset: this.wallet }, NWModalTransition.Slide());
-        modal.present();
-    }
-
-    public onClose() {
-        this.viewCtrl.dismiss();
-    }
+    public onSendClick(): void {}
 }

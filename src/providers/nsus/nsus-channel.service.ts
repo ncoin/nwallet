@@ -60,7 +60,7 @@ export class NsusChannelService {
 
         this.logger.debug('[channel] get asset request');
         return await this.nClient
-            .get(new GetWalletRequest(token.getUserId()))
+            .get(new GetWalletRequest({ userId: token.getUserId() }))
             .then(this.onSuccess('[channel] get asset request success', datas => datas.map(data => new NWAsset.Item().initData(data))))
             .catch(this.onError('[channel] get asset request failed', []));
     }
@@ -71,10 +71,25 @@ export class NsusChannelService {
 
         this.logger.debug('[channel] get-asset-detail request');
         return await this.nClient
-            .get(new GetWalletDetailRequest(token.getUserId(), walletId))
+            .get(
+                new GetWalletDetailRequest({
+                    userId: token.getUserId(),
+                    userWalletId: walletId
+                })
+            )
             .then(this.onSuccess('[channel] get-asset-request success'))
-            .catch(this.onError('[channel] get-asset-request failed', 0));
+            .catch(this.onError('[channel] get-asset-request failed'));
     }
+
+    public async changeWalletOrder(){
+
+    }
+
+    public async getUserManageWallets(): Promise<NWAsset.Item[]> {
+        return [];
+    }
+
+    public async getSupportedWallets(): Promise<void> {}
 
     /**
      *
@@ -83,18 +98,13 @@ export class NsusChannelService {
      * @returns {Promise<boolean>} request success
      * @memberof NsusChannelService
      */
-    public async setNotification(isOn: boolean): Promise<boolean> {
+    public async setUserPush(isOn: boolean): Promise<boolean> {
         this.logger.debug('[channel][set-notification] request token');
         const token = await this.token.getToken();
 
         this.logger.debug('[channel] get asset request');
         return await this.nClient
-            .put(
-                new SetConfigurationRequest(token.getUserId()).setPayload(payload => {
-                    payload.device_id = this.token.id;
-                    payload.is_push_notification = isOn;
-                })
-            )
+            .put(new SetConfigurationRequest({ userId: token.getUserId() }))
             .then(this.onSuccess('[channel] set notification success'))
             .then(() => true)
             .catch(this.onError('[channel] get asset request failed', false));

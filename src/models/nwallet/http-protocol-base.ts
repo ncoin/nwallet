@@ -12,32 +12,38 @@ export class NWHttpError extends Error {
 export interface NoParameter {}
 
 export abstract class HttpRequestBase {
-    public abstract url(): string;
+    public abstract url: () => string;
 
-    constructor(protected userId: string, protected userWalletId = '') {}
+    constructor(protected credential: { userId: string }) {}
 
     public get name(): string {
         return this.constructor.name;
     }
 }
 export abstract class GetRequestBase<TParameter, TResponse> extends HttpRequestBase {
-    /** url parameters */
-
-    public parameters: TParameter;
     public response: TResponse;
+    /** url parameters */
+    constructor(credential: { userId: string }, public urlParameter?: ParameterExpr<TParameter>) {
+        super(credential);
+        if (this.urlParameter) {
+            this.setParams(this.urlParameter);
+        }
+    }
 
     public setParams(expr: ParameterExpr<TParameter>): this {
-        this.parameters = createExpr(expr);
+        this.urlParameter = createExpr(expr);
         return this;
     }
 }
 
 export abstract class PostRequestBase<TPayload> extends HttpRequestBase {
-    constructor(protected userId: string, protected userWalletId = '') {
-        super(userId, userWalletId);
+    /** url parameters */
+    constructor(credential: { userId: string }, public payload?: ParameterExpr<TPayload>) {
+        super(credential);
+        if (this.payload) {
+            this.setPayload(this.payload);
+        }
     }
-    /** body */
-    public payload: TPayload;
 
     public setPayload(expr: ParameterExpr<TPayload>): this {
         this.payload = createExpr(expr);
@@ -46,12 +52,14 @@ export abstract class PostRequestBase<TPayload> extends HttpRequestBase {
 }
 
 export abstract class PutRequestBase<TPayload> extends HttpRequestBase {
-    constructor(protected userId: string, protected userWalletId = '') {
-        super(userId, userWalletId);
+    constructor(credential: { userId: string }, public payload?: ParameterExpr<TPayload>) {
+        super(credential);
+        if (this.payload) {
+            this.setPayload(this.payload);
+        }
     }
-    /** body */
-    public payload: TPayload;
 
+    /** body */
     public setPayload(expr: ParameterExpr<TPayload>): this {
         this.payload = createExpr(expr);
         return this;

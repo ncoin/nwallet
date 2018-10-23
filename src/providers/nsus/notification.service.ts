@@ -44,7 +44,6 @@ export class NotificationService {
 
         const walletEvent = new EventSource(walletUrl, { withCredentials: true });
         const tickerEvent = new EventSource(tickerUrl, { withCredentials: true });
-
         walletEvent.addEventListener('wallet', this.onWalletEvent);
         tickerEvent.addEventListener('ticker', this.onTickerEvent);
 

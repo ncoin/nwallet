@@ -9,6 +9,7 @@ import { NWAsset } from '../../models/nwallet';
 export class AssetNamePipe implements PipeTransform {
     constructor(private translate: TranslateService) {}
     transform(item: NWAsset.Item) {
-        return this.translate.instant(item.detail.symbol);
+        return this.translate.get(item.detail.symbol);
+        // return this.translate.instant(item.detail.symbol);
     }
 }

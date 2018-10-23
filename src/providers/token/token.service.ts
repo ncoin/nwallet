@@ -36,7 +36,6 @@ export class TokenService {
 
     constructor(private http: HttpClient, private logger: LoggerService, private device: Device, private account: AccountService, private preference: PreferenceProvider) {
         this.id = this.device.uuid ? this.device.uuid : getNonce();
-
         this.initialize();
     }
 
@@ -92,7 +91,7 @@ export class TokenService {
                 /** todo api aggregate --sky */
                 parameters = {
                     username: detail.getUserName(),
-                    device_id: id,
+                    device_id: this.id,
                     grant_type: 'password'
                 };
             } else {

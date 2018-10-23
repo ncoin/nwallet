@@ -49,7 +49,7 @@ export class VerifySecuritycodePage {
     public onClick_Next(): void {
         this.isCountBegin = false;
         this.app.logIn();
-        this.parent.dismiss();
+        this.parent.close();
     }
 
     public onInput(input: any): void {

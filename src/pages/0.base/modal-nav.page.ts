@@ -53,4 +53,12 @@ export class ModalNavPage {
     public back(nav?: NavOptions, done?: TransitionDoneFn): void {
         this.navCtrl.pop(nav, done);
     }
+
+    public close(): void {
+        if (this.params.navType === 'modal') {
+            this.viewCtrl.dismiss();
+        } else {
+            this.navCtrl.pop();
+        }
+    }
 }

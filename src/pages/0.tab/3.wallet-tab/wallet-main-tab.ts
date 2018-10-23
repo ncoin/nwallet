@@ -32,6 +32,7 @@ export class WalletMainTabPage {
     totalPrice: string;
     private subscriptions: Subscription[] = [];
     private loading: Loading;
+
     constructor(
         public navCtrl: NavController,
         private logger: LoggerService,
@@ -47,9 +48,10 @@ export class WalletMainTabPage {
         this.subscriptions.forEach(s => s.unsubscribe());
     }
 
+
     async init(): Promise<void> {
         this.loading = this.loadingCtrl.create({
-            content: 'Loading Please Wait...',
+            content: 'Loading Please Wait...'
         });
 
         await this.loading.present();
@@ -66,17 +68,20 @@ export class WalletMainTabPage {
     }
 
     private refreshInventory = (inventory: NWAccount.Inventory): void => {
+        const items = inventory.assetItems.slice();
         this.logger.debug('[wallet-tab] on refresh assets');
 
-        const totalAmount = inventory.totalPrice();
-        this.totalPrice = totalAmount.toFixed(2).toString();
+        this.totalPrice = inventory
+            .totalPrice()
+            .toFixed(2)
+            .toString();
 
         this.assetSlides.length = 0;
-        let sliceWallet = inventory.assetItems.splice(0, 3);
+        let sliceWallet = items.splice(0, 3);
 
         while (sliceWallet.length > 0) {
             this.assetSlides.push({ assets: sliceWallet });
-            sliceWallet = inventory.assetItems.splice(0, 3);
+            sliceWallet = items.splice(0, 3);
         }
     }
 
@@ -84,9 +89,9 @@ export class WalletMainTabPage {
         const modal = this.modalCtrl.create(
             ModalNavPage,
             ModalNavPage.resolveModal(WalletDetailPage, param => {
-                param.headerType = 'bar';
+                param.headerType = 'none';
                 param.canBack = true;
-                param.wallet = wallet;
+                param.asset = wallet;
             })
         );
         await modal.present();

@@ -19,15 +19,7 @@ export abstract class ModalBasePage {
 
     ionViewDidLoad() {
         if (this.params.canBack) {
-            if (this.params.navType === 'modal') {
-                this.navBar.backButtonClick = () => {
-                    this.parent.dismiss();
-                };
-            } else {
-                this.navBar.backButtonClick = () => {
-                    this.parent.back();
-                };
-            }
+            this.navBar.backButtonClick = () => this.parent.close();
         }
     }
 }

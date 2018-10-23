@@ -6,13 +6,11 @@
         <button class="refresh-button"><ion-icon name="md-refresh"></ion-icon></button>
     </ion-navbar>
 </ion-header>
-
-
 <ion-content padding>
     <div *ngIf="assets && assets.length > 0">
         <ion-list reorder="true" (ionItemReorder)="reorderItems($event)">
             <!-- inactive item preload -->
-            <ion-item class="asset-ion-item" *ngFor="let asset of assets" [style.display]="asset.option.isActive ? 'block' : 'none'">
+            <ion-item class="asset-ion-item" *ngFor="let asset of assets" >
                 <div class="asset-container">
                     <img class="asset-item img" src="assets/img/symbol_BTC.png" />
                     <div class="asset-item symbol">

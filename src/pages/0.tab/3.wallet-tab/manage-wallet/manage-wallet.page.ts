@@ -2,11 +2,12 @@ import { Component } from '@angular/core';
 import { NavController, ModalController, LoadingController, Loading, IonicPage, Navbar, NavParams } from 'ionic-angular';
 import { LoggerService } from '../../../../providers/common/logger/logger.service';
 import { AccountService } from '../../../../providers/account/account.service';
-import { NWAsset } from '../../../../models/nwallet';
+import { NWAsset, NWAccount } from '../../../../models/nwallet';
 import { AddWalletPage } from '../add-wallet/add-wallet.page';
 import { NWTransition } from '../../../../tools/extension/transition';
 import { ModalNavPage } from '../../../0.base/modal-nav.page';
 import { ModalBasePage } from '../../../0.base/modal.page';
+import { Subscription } from 'rxjs';
 
 @IonicPage()
 @Component({
@@ -15,6 +16,9 @@ import { ModalBasePage } from '../../../0.base/modal.page';
 })
 export class ManageWalletPage extends ModalBasePage {
     public assets: Array<NWAsset.Item>;
+    public inventory: NWAccount.Inventory;
+    private isReorderd: boolean;
+    private subscriptions: Subscription[] = [];
 
     constructor(public navCtrl: NavController, protected navParam: NavParams, public logger: LoggerService, private account: AccountService, parent: ModalNavPage) {
         super(navCtrl, navParam, parent);
@@ -22,10 +26,26 @@ export class ManageWalletPage extends ModalBasePage {
         this.init();
     }
 
+    ionViewWillLeave() {
+        if (this.isReorderd) {
+            this.account.registerAccountStream(account => {});
+        }
+    }
+
+    ionViewDidLeave() {
+        this.subscriptions.forEach(s => s.unsubscribe());
+    }
+
     async init(): Promise<void> {
         const detail = await this.account.detail();
-        const inven = detail.inventory;
-        this.assets.push(...inven.assetItems);
+        this.account.registerAccountStream(stream => {
+            this.subscriptions.push(stream.onInventory.subscribe(this.onRefreshInventory));
+        });
+    }
+
+    private onRefreshInventory = (inventory: NWAccount.Inventory): void => {
+        this.inventory = inventory;
+        this.assets = inventory.assetItems;
     }
 
     public onChangeVisibility(asset: NWAsset.Item): void {
@@ -48,6 +68,8 @@ export class ManageWalletPage extends ModalBasePage {
                 item.option.order = idx++;
             }
         });
+
+        this.isReorderd = true;
     }
 
     public onClick_addWallets(): void {
