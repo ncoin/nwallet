@@ -1,49 +1,37 @@
-<ng-template #native>{{asset.detail.symbol | translate}}</ng-template>
-<!--<ion-card>-->
-<!--<ion-card-content>-->
-<!--<button ion-item detail-none text-right>-->
-<!--<ion-label text-left *ngIf="asset.isNative;then native; else notnative"></ion-label>-->
-<!--<div item-end>-->
-<!--<ion-label>{{asset | assetFormat}}</ion-label>-->
-<!--<ion-label>{{asset | assetToUSD}}</ion-label>-->
-<!--</div>-->
-<!--</button>-->
-<!--<ng-content></ng-content>-->
-<!--</ion-card-content>-->
-<!--</ion-card>-->
-
-<div class="card">
-    <ion-grid no-padding class="inner-line">
-        <ion-row class="inner-line-content">
-            <ion-col col-auto class="asset-info">
-                <span class="asset-symbol">
-                    <img src="assets/img/symbol_{{asset.detail.symbol}}.png" height="28" *ngIf="(asset.detail.symbol=='NCH' || asset.detail.symbol=='XLM' || asset.detail.symbol=='BTC' || asset.detail.symbol=='ETH' || asset.detail.symbol=='NCN')" />
-                    <img src="assets/img/symbol_NCH.png" height="28" *ngIf="(asset.detail.symbol!='NCH' && asset.detail.symbol!='BTC' && asset.detail.symbol!='XLM' && asset.detail.symbol!='ETH' && asset.detail.symbol!='NCN')" />
-                </span>
-                <span class="asset-name">{{asset.detail.symbol | translate}}</span>
-            </ion-col>
-            <ion-col class="price-info">
-                <ion-row>
-                    <ion-col class="price-asset" no-padding col-12 text-right>{{asset | assetFormat}}</ion-col>
-                </ion-row>
-                <ion-row>
-                    <ion-col class="price-usd" no-padding col-12 text-right>{{asset | assetToUSD |async }}</ion-col>
-                </ion-row>
-            </ion-col>
-        </ion-row>
-    </ion-grid>
-</div>
-<div>
-    <ion-grid no-padding>
-        <ion-row class="holder" *ngIf="asset.detail.symbol!='NCH'">
-            <ion-col col-12>
-                <img src="assets/img/wallet_card_holder.png" />
-            </ion-col>
-        </ion-row>
-        <ion-row class="holder" *ngIf="asset.detail.symbol=='NCH'">
-            <ion-col col-12>
-                <img src="assets/img/wallet_ncash_holder.png" />
-            </ion-col>
-        </ion-row>
-    </ion-grid>
+<div *ngVar="asset.getSymbol() as symbol">
+    <div class="card">
+        <ion-grid no-padding class="inner-line">
+            <ion-row class="inner-line-content">
+                <ion-col col-auto class="asset-info">
+                    <span class="asset-symbol">
+                        <img src="assets/img/symbol_{{symbol}}.png" height="28" *ngIf="(symbol=='NCH' || symbol=='XLM' || symbol=='BTC' || symbol=='ETH' || symbol=='NCN')" />
+                        <img src="assets/img/symbol_NCH.png" height="28" *ngIf="(symbol!='NCH' && symbol!='BTC' && symbol!='XLM' && symbol!='ETH' && symbol!='NCN')" />
+                    </span>
+                    <span class="asset-name">{{symbol | translate}}</span>
+                </ion-col>
+                <ion-col class="price-info">
+                    <ion-row>
+                        <ion-col class="price-asset" no-padding col-12 text-right>{{asset | assetFormat}}</ion-col>
+                    </ion-row>
+                    <ion-row>
+                        <ion-col class="price-usd" no-padding col-12 text-right>{{asset | assetToUSD |async }}</ion-col>
+                    </ion-row>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+    </div>
+    <div>
+        <ion-grid no-padding>
+            <ion-row class="holder" *ngIf="symbol !='NCH'">
+                <ion-col col-12>
+                    <img src="assets/img/wallet_card_holder.png" />
+                </ion-col>
+            </ion-row>
+            <ion-row class="holder" *ngIf="symbol =='NCH'">
+                <ion-col col-12>
+                    <img src="assets/img/wallet_ncash_holder.png" />
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+    </div>
 </div>

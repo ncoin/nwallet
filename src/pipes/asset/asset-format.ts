@@ -6,8 +6,8 @@ import { NWAsset } from '../../models/nwallet';
 })
 export class AssetFormatPipe implements PipeTransform {
     transform(assetItem: NWAsset.Item) {
-        const value = assetItem.amount;
+        const value = assetItem.getAmount();
         const floor = Math.floor(value * 100) / 100;
-        return `${floor} ${assetItem.detail.symbol}`;
+        return `${floor} ${assetItem.getSymbol()}`;
     }
 }

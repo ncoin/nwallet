@@ -9,8 +9,10 @@ import { AddWalletPage } from './add-wallet/add-wallet.page';
 import { NWAsset, NWAccount } from '../../../models/nwallet';
 import { ModalNavPage } from '../../0.base/modal-nav.page';
 import { NWalletAppService } from '../../../providers/app/app.service';
-import { Subscription } from 'rxjs';
+import { Subscription, Observable } from 'rxjs';
 import { WalletDetailPage } from './wallet-detail/wallet-detail.page';
+import { CurrencyService } from '../../../providers/nsus/currency.service';
+import _ from 'lodash';
 
 /**
  * Generated class for the WalletPage page.
@@ -28,8 +30,8 @@ export interface AssetSlide {
     templateUrl: 'wallet-main-tab.html'
 })
 export class WalletMainTabPage {
-    assetSlides: AssetSlide[] = [];
-    totalPrice: string;
+    public assetSlides: AssetSlide[] = [];
+    public totalPrice: string;
     private subscriptions: Subscription[] = [];
     private loading: Loading;
 
@@ -39,15 +41,18 @@ export class WalletMainTabPage {
         private modalCtrl: ModalController,
         public loadingCtrl: LoadingController,
         private app: NWalletAppService,
-        private account: AccountService
+        private account: AccountService,
+        private currency: CurrencyService
     ) {
         this.init();
     }
 
     ionViewDidLeave() {
-        this.subscriptions.forEach(s => s.unsubscribe());
-    }
 
+        // todo hmm.. logout? --sky
+        // this.logger.debug('[wallet-main-tab] unsubscribe');
+        // this.subscriptions.forEach(s => s.unsubscribe());
+    }
 
     async init(): Promise<void> {
         this.loading = this.loadingCtrl.create({
@@ -56,25 +61,23 @@ export class WalletMainTabPage {
 
         await this.loading.present();
         await this.app.waitFetch();
+
+        this.account.registerSubjects(account => {
+            this.register(account.assetChanged(this.onAssetChanged));
+            this.register(this.currency.currencyChanged.subscribe(this.calculateTotalPrice));
+        });
+
         await this.loading.dismiss();
 
-        this.account.registerAccountStream(account => {
-            this.register(account.onInventory.subscribe(this.refreshInventory));
-        });
     }
 
-    private register(subscription: Subscription): void {
-        this.subscriptions.push(subscription);
+    private register(...subscription: Subscription[]): void {
+        this.subscriptions.push(...subscription);
     }
 
-    private refreshInventory = (inventory: NWAccount.Inventory): void => {
-        const items = inventory.assetItems.slice();
-        this.logger.debug('[wallet-tab] on refresh assets');
-
-        this.totalPrice = inventory
-            .totalPrice()
-            .toFixed(2)
-            .toString();
+    private onAssetChanged = async (assets: NWAsset.Item[]): Promise<void> => {
+        const items = assets.slice();
+        this.logger.debug('[wallet-main-tab] on refresh assets');
 
         this.assetSlides.length = 0;
         let sliceWallet = items.splice(0, 3);
@@ -83,6 +86,15 @@ export class WalletMainTabPage {
             this.assetSlides.push({ assets: sliceWallet });
             sliceWallet = items.splice(0, 3);
         }
+
+        this.calculateTotalPrice();
+    }
+
+    private calculateTotalPrice = () => {
+        this.totalPrice = _.sumBy(this.assetSlides, slide => _.sumBy(slide.assets, asset => asset.getAmount() * this.currency.getPrice(asset.getCurerncyId())))
+            .toFixed(2)
+            .toString();
+        this.logger.debug('[wallet-main-tab] total price update', this.totalPrice);
     }
 
     public async onSelectAsset(wallet: NWAsset.Item) {

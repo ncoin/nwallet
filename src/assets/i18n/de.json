@@ -21,7 +21,7 @@
   "CurrentLanguage": "Deutsch",
   "Language": "Language",
   "BuyWith": "Buy with",
-  "BTC": "Bitcoin",
+  "BTC": "Bitcoin D",
   "ETH": "Ethereum",
   "Total": "Total",
   "RecipientAddress": "RECIPIENT'S ADDRESS",
@@ -32,5 +32,6 @@
   "MyInfo": "My Info",
   "EnablePushNotification": "Enable push notification",
   "LogoutAskHeader": "Are you sure to logout?",
-  "LogoutAskContent": "Your registered mobile number will be required to login."
+  "LogoutAskContent": "Your registered mobile number will be required to login.",
+  "Cancel": "Cancel"
 }

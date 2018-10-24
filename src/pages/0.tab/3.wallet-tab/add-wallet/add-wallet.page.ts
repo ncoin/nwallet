@@ -30,13 +30,13 @@ export class AddWalletPage {
         this.assets = [];
         const account = await this.accont.detail();
         const inventory = account.inventory;
-        this.assets.push(...inventory.assetItems);
+        this.assets.push(...inventory.getAssetItems().getValue());
     }
 
     private onFilterAsset(value: string): void {
         if (value && value.trim() !== '') {
             this.assets = this.assets.filter(item => {
-                return item.detail.symbol.trim().toLowerCase().indexOf(value.trim().toLowerCase()) > -1;
+                return item.getSymbol().trim().toLowerCase().indexOf(value.trim().toLowerCase()) > -1;
             });
         }
     }

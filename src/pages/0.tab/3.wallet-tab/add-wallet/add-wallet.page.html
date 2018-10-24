@@ -20,7 +20,7 @@
             <div *ngFor="let asset of assets" [style.display]="asset.option.isActive ? 'none' : 'block'">
                 <div class="asset">
                     <img src="assets/img/symbol_BTC.png" />
-                    <div>{{asset.detail.symbol}}</div>
+                    <div>{{asset.getSymbol()}}</div>
                     <button (click)="onClick_AddAsset(asset)">Add</button>
                 </div>
 

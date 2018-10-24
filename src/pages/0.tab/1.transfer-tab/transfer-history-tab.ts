@@ -42,22 +42,22 @@ export class TransferHistoryTabPage {
     }
 
     private arrange(transactions: NWTransaction.Item[]): void {
-        const transactionGroups = _.groupBy(transactions, (t: NWTransaction.Item) => {
-            return new Date(t.created_date.getFullYear(), t.created_date.getMonth(), t.created_date.getDate());
-        });
+        // const transactionGroups = _.groupBy(transactions, (t: NWTransaction.Item) => {
+        //     return new Date(t.created_date.getFullYear(), t.created_date.getMonth(), t.created_date.getDate());
+        // });
 
-        Object.keys(transactionGroups).forEach(date => {
-            const transfers = transactionGroups[date];
-            const transactionMap = this.transactionMaps.find(map => map.date === date);
+        // Object.keys(transactionGroups).forEach(date => {
+        //     const transfers = transactionGroups[date];
+        //     const transactionMap = this.transactionMaps.find(map => map.date === date);
 
-            if (transactionMap) {
-                transactionMap.transactions.push(...transfers);
-            } else {
-                this.transactionMaps.push({ date: date, transactions: transfers });
-            }
-        });
+        //     if (transactionMap) {
+        //         transactionMap.transactions.push(...transfers);
+        //     } else {
+        //         this.transactionMaps.push({ date: date, transactions: transfers });
+        //     }
+        // });
 
-        this.skip += transactions.length;
+        // this.skip += transactions.length;
     }
 
     public async doInfinite(infinite: InfiniteScroll): Promise<void> {

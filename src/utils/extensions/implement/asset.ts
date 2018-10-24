@@ -20,12 +20,6 @@ export function initProtocolStatic(this: Item, data: Data): Item {
     this.data = data;
     processData(this, data);
 
-    this.detail = {
-        code: this.data.currency_manage_id,
-        symbol: this.data.currency,
-        price: 1
-    };
-
     this.option = {
         isActive: true,
         isShow: <boolean>this.data.is_show,
@@ -35,7 +29,6 @@ export function initProtocolStatic(this: Item, data: Data): Item {
     return this;
 }
 
-let price = 0;
 export function updateProtocolStatic(this: Item, data: Data): Item {
     if (!this.data) {
         throw new Error('Asset not initialize yet');
@@ -43,8 +36,6 @@ export function updateProtocolStatic(this: Item, data: Data): Item {
 
     Object.assign(this.data, data);
     processData(this, data);
-
-    this.detail.price = price++;
 
     this.option.isActive = true;
     this.option.isShow = <boolean>this.data.is_show;

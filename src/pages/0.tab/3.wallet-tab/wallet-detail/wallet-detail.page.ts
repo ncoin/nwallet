@@ -1,7 +1,7 @@
 import { SendPage } from '../../1.transfer-tab/send/send.page';
 import { ReceivePage } from '../../1.transfer-tab/receive/receive.page';
 import { LoggerService } from '../../../../providers/common/logger/logger.service';
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, OnDestroy } from '@angular/core';
 import { IonicPage, Navbar, InfiniteScroll, NavParams, ViewController, ModalController, NavController } from 'ionic-angular';
 import { NWalletAppService } from '../../../../providers/app/app.service';
 import * as _ from 'lodash';
@@ -19,7 +19,7 @@ import { EventService } from '../../../../providers/common/event/event';
     selector: 'wallet-detail',
     templateUrl: 'wallet-detail.page.html'
 })
-export class WalletDetailPage extends ModalBasePage {
+export class WalletDetailPage extends ModalBasePage implements OnDestroy {
     public transactionMaps: Array<{ date: string; transactions: NWTransaction.Item[] }> = new Array<{ date: string; transactions: NWTransaction.Item[] }>();
     private skip = 0;
     public asset: NWAsset.Item;
@@ -39,33 +39,26 @@ export class WalletDetailPage extends ModalBasePage {
         this.init();
     }
 
-    private async init(): Promise<void> {
-        this.account.registerAccountStream(account => {});
-        const transactions = await this.appService.getTransfer();
-        this.arrange(transactions);
-    }
+    private async init(): Promise<void> {}
 
-    ionViewDidLeave() {
+    ngOnDestroy() {
         this.subscriptions.forEach(s => s.unsubscribe());
     }
 
-    private arrange(transactions: NWTransaction.Item[]): void {
-        const transactionGroups = _.groupBy(transactions, (t: NWTransaction.Item) => {
-            return new Date(t.created_date.getFullYear(), t.created_date.getMonth(), t.created_date.getDate());
-        });
-
-        Object.keys(transactionGroups).forEach(date => {
-            const transfers = transactionGroups[date];
-            const transactionMap = this.transactionMaps.find(map => map.date === date);
-
-            if (transactionMap) {
-                transactionMap.transactions.push(...transfers);
-            } else {
-                this.transactionMaps.push({ date: date, transactions: transfers });
-            }
-        });
-
-        this.skip += transactions.length;
+    private arrange = (transactions: NWTransaction.Item[]): void => {
+        // const transactionGroups = _.groupBy(transactions, (t: NWTransaction.Item) => {
+        //     return new Date(t.created_date.getFullYear(), t.created_date.getMonth(), t.created_date.getDate());
+        // });
+        // Object.keys(transactionGroups).forEach(date => {
+        //     const transfers = transactionGroups[date];
+        //     const transactionMap = this.transactionMaps.find(map => map.date === date);
+        //     if (transactionMap) {
+        //         transactionMap.transactions.push(...transfers);
+        //     } else {
+        //         this.transactionMaps.push({ date: date, transactions: transfers });
+        //     }
+        // });
+        // this.skip += transactions.length;
     }
 
     public async doInfinite(infinite: InfiniteScroll): Promise<void> {
@@ -97,5 +90,7 @@ export class WalletDetailPage extends ModalBasePage {
 
     public onReceiveClick(): void {}
 
-    public onSendClick(): void {}
+    public onClick_Loan(): void {
+        this.navCtrl.push(Ma);
+    }
 }

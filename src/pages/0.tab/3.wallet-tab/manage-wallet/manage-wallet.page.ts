@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { NavController, ModalController, LoadingController, Loading, IonicPage, Navbar, NavParams } from 'ionic-angular';
 import { LoggerService } from '../../../../providers/common/logger/logger.service';
 import { AccountService } from '../../../../providers/account/account.service';
@@ -14,9 +14,8 @@ import { Subscription } from 'rxjs';
     selector: 'manage-wallet',
     templateUrl: 'manage-wallet.page.html'
 })
-export class ManageWalletPage extends ModalBasePage {
+export class ManageWalletPage extends ModalBasePage implements OnDestroy {
     public assets: Array<NWAsset.Item>;
-    public inventory: NWAccount.Inventory;
     private isReorderd: boolean;
     private subscriptions: Subscription[] = [];
 
@@ -28,24 +27,18 @@ export class ManageWalletPage extends ModalBasePage {
 
     ionViewWillLeave() {
         if (this.isReorderd) {
-            this.account.registerAccountStream(account => {});
+            this.account.registerSubjects(account => {});
         }
     }
 
-    ionViewDidLeave() {
+    ngOnDestroy() {
         this.subscriptions.forEach(s => s.unsubscribe());
     }
 
     async init(): Promise<void> {
-        const detail = await this.account.detail();
-        this.account.registerAccountStream(stream => {
-            this.subscriptions.push(stream.onInventory.subscribe(this.onRefreshInventory));
+        this.account.registerSubjects(subjects => {
+            this.subscriptions.push(subjects.assetChanged(assets => (this.assets = assets)));
         });
-    }
-
-    private onRefreshInventory = (inventory: NWAccount.Inventory): void => {
-        this.inventory = inventory;
-        this.assets = inventory.assetItems;
     }
 
     public onChangeVisibility(asset: NWAsset.Item): void {
@@ -75,6 +68,7 @@ export class ManageWalletPage extends ModalBasePage {
     public onClick_addWallets(): void {
         this.navCtrl.push(AddWalletPage, {}, NWTransition.Slide());
     }
+
 
     public onClickHideOrShowAsset(asset: any): void {}
 }

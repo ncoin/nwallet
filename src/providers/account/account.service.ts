@@ -1,13 +1,17 @@
 import { LoggerService } from '../common/logger/logger.service';
 import { Injectable } from '@angular/core';
 import { PreferenceProvider, Preference } from '../common/preference/preference';
-import { NWAccount, NWAsset } from '../../models/nwallet';
+import { NWAccount, NWAsset, NWTransaction } from '../../models/nwallet';
 import { PromiseWaiter } from 'forge/dist/helpers/Promise/PromiseWaiter';
 import { Debug } from '../../utils/helper/debug';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subscription } from 'rxjs';
+import { ParameterExpr } from 'forge';
+import { EventService } from '../common/event/event';
+import { NWEvent } from '../../interfaces/events';
 
 interface AccountStream {
-    onInventory: BehaviorSubject<NWAccount.Inventory>;
+    assetChanged: (func: (asset: NWAsset.Item[]) => void) => Subscription;
+    assetTransactionsChanged: (walletId: number, func: (asset: NWTransaction.Item[]) => void) => Subscription;
 }
 
 @Injectable()
@@ -16,13 +20,16 @@ export class AccountService {
     private account: NWAccount.Account;
     private streams: AccountStream;
 
-    constructor(private preference: PreferenceProvider, private logger: LoggerService) {
+    constructor(private preference: PreferenceProvider, private logger: LoggerService, private event: EventService) {
         this.account = new NWAccount.Account();
         this.task = new PromiseWaiter<NWAccount.Account>();
 
         this.streams = {
-            onInventory: new BehaviorSubject<NWAccount.Inventory>(this.account.inventory) // todo change me
+            assetChanged: assets => this.account.inventory.getAssetItems().subscribe(assets), // todo change me
+            assetTransactionsChanged: (walletId, walletFunc) => this.account.inventory.getTransaction(walletId).subscribe(walletFunc)
         };
+
+        // todo get wallet strategy
 
         this.init();
     }
@@ -45,7 +52,13 @@ export class AccountService {
         return account !== undefined;
     }
 
-    public registerAccountStream = (onAccount: (account: AccountStream) => void): void => {
+    public text() {
+        this.logger.debug('[account] on refresh');
+        this.account.inventory.refresh();
+    }
+
+
+    public registerSubjects = (onAccount: (account: AccountStream) => void): void => {
         onAccount(this.streams);
     }
 

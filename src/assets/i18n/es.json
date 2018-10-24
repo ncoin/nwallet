@@ -32,5 +32,6 @@
   "MyInfo": "My Info",
   "EnablePushNotification": "Enable push notification es",
   "LogoutAskHeader": "Are you sure to logout?",
-  "LogoutAskContent": "Your registered mobile number will be required to login."
+  "LogoutAskContent": "Your registered mobile number will be required to login.",
+  "Cancel": "Cancel"
 }

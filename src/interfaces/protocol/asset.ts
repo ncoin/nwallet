@@ -1,10 +1,6 @@
 import { Item } from '../../models/nwallet/asset';
 
 declare module '../../models/nwallet/asset' {
-    interface Item {
-
-    }
-
     interface Data {
         id: number;
         bitgo_wallet_id: number;
@@ -20,16 +16,6 @@ declare module '../../models/nwallet/asset' {
         is_show: boolean | number;
         created_date: Date;
         last_modified_date: Date;
-    }
-
-    /** asset detail protocol */
-    interface Detail {
-        /** asset code : ex) BTC, ETH, XRP, BCH,, */
-        symbol: string;
-        /** internal asset code */
-        code: number;
-        /** amount per usd price */
-        price: number;
     }
 
     /** asset option protocol */
