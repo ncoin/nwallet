@@ -1,4 +1,4 @@
-import { HttpErrorResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { ParameterExpr, createExpr } from 'forge';
 import { Debug } from '../../utils/helper/debug';
 import { HttpProtocolDecorator } from './http-protocol';
@@ -9,7 +9,7 @@ export class NWHttpError extends Error {
     }
 }
 
-export interface NoParameter {}
+export interface NoQuery {}
 
 export abstract class HttpRequestBase {
     public abstract url: () => string;
@@ -20,18 +20,17 @@ export abstract class HttpRequestBase {
         return this.constructor.name;
     }
 }
-export abstract class GetRequestBase<TParameter, TResponse> extends HttpRequestBase {
+
+export abstract class GetRequestBase<TQuery, TResponse> extends HttpRequestBase {
     public response: TResponse;
+    public query: { [param: string]: string | string[] };
     /** url parameters */
-    constructor(credential: { userId: string }, public urlParameter?: ParameterExpr<TParameter>) {
+    constructor(credential: { userId: string }) {
         super(credential);
-        if (this.urlParameter) {
-            this.setParams(this.urlParameter);
-        }
     }
 
-    public setParams(expr: ParameterExpr<TParameter>): this {
-        this.urlParameter = createExpr(expr);
+    public setQuery(expr: ParameterExpr<TQuery>): this {
+        this.query = <any>createExpr(expr);
         return this;
     }
 }

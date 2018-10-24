@@ -5,9 +5,9 @@ import { AccountService } from '../account/account.service';
 import { NotificationService } from './notification.service';
 import { EventService } from '../common/event/event';
 import { TokenService } from '../token/token.service';
-import { NWAsset } from '../../models/nwallet';
+import { NWAsset, NWTransaction } from '../../models/nwallet';
 import { HttpErrorResponse } from '@angular/common/http';
-import { GetWalletRequest, SetConfigurationRequest, GetWalletDetailRequest } from '../../models/nwallet/http-protocol';
+import { GetWalletRequest, SetConfigurationRequest, GetWalletTransactionRequest } from '../../models/nwallet/http-protocol';
 
 @Injectable()
 export class NsusChannelService {
@@ -65,25 +65,26 @@ export class NsusChannelService {
             .catch(this.onError('[channel] get asset request failed', []));
     }
 
-    public async getAssetDetail(walletId: string): Promise<number> {
+    public async getAssetTransactions(walletId: number, offset: number, limit: number): Promise<NWTransaction.Item[]> {
         this.logger.debug('[channel][get-asset-detail] request token');
         const token = await this.token.getToken();
 
         this.logger.debug('[channel] get-asset-detail request');
         return await this.nClient
             .get(
-                new GetWalletDetailRequest({
+                new GetWalletTransactionRequest({
                     userId: token.getUserId(),
                     userWalletId: walletId
+                }).setQuery(param => {
+                    param.offset = offset;
+                    param.limit = limit;
                 })
             )
             .then(this.onSuccess('[channel] get-asset-request success'))
             .catch(this.onError('[channel] get-asset-request failed'));
     }
 
-    public async changeWalletOrder(){
-
-    }
+    public async changeWalletOrder() {}
 
     public async getUserManageWallets(): Promise<NWAsset.Item[]> {
         return [];

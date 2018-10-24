@@ -1,4 +1,4 @@
-import { GetRequestBase, PutRequestBase, NoParameter, HttpRequestBase } from './http-protocol-base';
+import { GetRequestBase, PutRequestBase, NoQuery, HttpRequestBase } from './http-protocol-base';
 import { NWAsset } from '../nwallet';
 import { Debug } from '../../utils/helper/debug';
 import { TypeDecorator, Type, Component } from '@angular/core';
@@ -16,7 +16,7 @@ function HttpProtocol<T extends { new (...args: any[]): HttpRequestBase }>(proto
 const Paths = {
     get: {
         wallets: (user_id: string) => `users/${user_id}/wallets`,
-        walletDetail: (user_id: string, user_wallet_id: string) => `users/${user_id}/wallets/${user_wallet_id}`,
+        walletDetail: (user_id: string, user_wallet_id: number) => `users/${user_id}/wallets/${user_wallet_id}`,
         creationAvailableWallets: (user_id: string) => `users/${user_id}/wallets/available`
     },
 
@@ -29,12 +29,12 @@ const Paths = {
     }
 };
 
-export class GetWalletRequest extends GetRequestBase<NoParameter, NWAsset.Data[]> {
+export class GetWalletRequest extends GetRequestBase<NoQuery, NWAsset.Data[]> {
     public url = () => Paths.get.wallets(this.credential.userId);
 }
 
-export class GetWalletDetailRequest extends GetRequestBase<NoParameter, number> {
-    constructor(protected credential: { userId: string; userWalletId: string }) {
+export class GetWalletTransactionRequest extends GetRequestBase<{ offset: number; limit: number }, number> {
+    constructor(protected credential: { userId: string; userWalletId: number }) {
         super(credential);
     }
     // todo decorator
@@ -54,6 +54,6 @@ export class SetConfigurationRequest extends PutRequestBase<{
     public url = () => Paths.put.configuraton(this.credential.userId);
 }
 
-export class GetCreationAvailableWallets extends GetRequestBase<NoParameter, {}> {
+export class GetCreationAvailableWallets extends GetRequestBase<NoQuery, {}> {
     public url: () => string;
 }

@@ -37,8 +37,9 @@ export class NClientService {
         return this.http
             .get<TResponse>(env.endpoint.api(request.url()), {
                 headers: {
-                    authorization: await this.getToken()
-                }
+                    authorization: await this.getToken(),
+                },
+                params: request.query
             })
             .toPromise();
     }

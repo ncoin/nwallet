@@ -3,16 +3,15 @@ import { ReceivePage } from '../../1.transfer-tab/receive/receive.page';
 import { LoggerService } from '../../../../providers/common/logger/logger.service';
 import { Component, ViewChild, OnDestroy } from '@angular/core';
 import { IonicPage, Navbar, InfiniteScroll, NavParams, ViewController, ModalController, NavController } from 'ionic-angular';
-import { NWalletAppService } from '../../../../providers/app/app.service';
 import * as _ from 'lodash';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
-import { NWModalTransition } from '../../../../tools/extension/transition';
 import { NWTransaction, NWAsset } from '../../../../models/nwallet';
 import { ModalBasePage } from '../../../0.base/modal.page';
 import { ModalNavPage } from '../../../0.base/modal-nav.page';
 import { AccountService } from '../../../../providers/account/account.service';
 import { Subscription } from 'rxjs';
 import { EventService } from '../../../../providers/common/event/event';
+import { NsusChannelService } from '../../../../providers/nsus/nsus-channel.service';
 
 @IonicPage()
 @Component({
@@ -30,8 +29,7 @@ export class WalletDetailPage extends ModalBasePage implements OnDestroy {
         parent: ModalNavPage,
         private logger: LoggerService,
         private event: EventService,
-        private account: AccountService,
-        private appService: NWalletAppService,
+        private channel: NsusChannelService,
         private browser: InAppBrowser
     ) {
         super(navCtrl, params, parent);
@@ -39,7 +37,9 @@ export class WalletDetailPage extends ModalBasePage implements OnDestroy {
         this.init();
     }
 
-    private async init(): Promise<void> {}
+    private async init(): Promise<void> {
+        const transactions = await this.channel.getAssetTransactions(this.asset.getWalletId());
+    }
 
     ngOnDestroy() {
         this.subscriptions.forEach(s => s.unsubscribe());
