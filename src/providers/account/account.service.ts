@@ -82,7 +82,7 @@ export class AccountService {
 
     public registerSubjects = (onAccount: (account: AccountStream) => void): void => {
         onAccount(this.streams);
-    };
+    }
 
     public fillData(expr: (personal: NWAccount.Personal) => void): void {
         Debug.assert(this.account);

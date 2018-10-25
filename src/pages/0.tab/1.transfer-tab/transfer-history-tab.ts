@@ -4,7 +4,6 @@ import { IonicPage, NavController, Navbar, InfiniteScroll, ModalController } fro
 import { NWalletAppService } from '../../../providers/app/app.service';
 import * as _ from 'lodash';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
-import { ReceivePage } from './receive/receive.page';
 import { NWTransition, NWModalTransition } from '../../../tools/extension/transition';
 import { SendPage } from './send/send.page';
 import { NWTransaction } from '../../../models/nwallet';
@@ -90,8 +89,6 @@ export class TransferHistoryTabPage {
     }
 
     public onReceiveClick(): void {
-        const modal = this.modal.create(ReceivePage, {}, NWModalTransition.Slide());
-        modal.present();
     }
 
     public onSendClick(): void {

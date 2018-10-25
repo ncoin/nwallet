@@ -10,7 +10,6 @@ import { NWalletSharedModule } from '../shared/shared.module';
 import { NWalletTabPages } from './0.tab/0.container/tabcontainer';
 import { NWalletComponentsModule } from '../components/components.module';
 import { TranslateModule } from '@ngx-translate/core';
-import { ReceivePage } from './0.tab/1.transfer-tab/receive/receive.page';
 import { SendPage } from './0.tab/1.transfer-tab/send/send.page';
 import { QRScanPage } from './qrscan/qrscan.page';
 import { ModalNavPage } from './0.base/modal-nav.page';
@@ -26,7 +25,6 @@ import { VERIFY_PHONE_PAGES } from './verify-phone/verify-phone.page';
         PinPadComponent,
         PinModalPage,
         ...NWalletTabPages,
-        ReceivePage,
         SendPage,
         QRScanPage,
         ...VERIFY_PHONE_PAGES,
@@ -43,7 +41,6 @@ import { VERIFY_PHONE_PAGES } from './verify-phone/verify-phone.page';
         IonicPageModule.forChild(PinPadComponent),
         IonicPageModule.forChild(PinModalPage),
         IonicPageModule.forChild(NWalletTabPages),
-        IonicPageModule.forChild(ReceivePage),
         IonicPageModule.forChild(SendPage),
         IonicPageModule.forChild(QRScanPage),
         IonicPageModule.forChild(VERIFY_PHONE_PAGES),

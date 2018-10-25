@@ -91,7 +91,7 @@ export class WalletMainTabPage {
     }
 
     private calculateTotalPrice = () => {
-        this.totalPrice = _.sumBy(this.assetSlides, slide => _.sumBy(slide.assets, asset => asset.getAmount() * this.currency.getPrice(asset.getCurerncyId())))
+        this.totalPrice = _.sumBy(this.assetSlides, slide => _.sumBy(slide.assets, asset => asset.getAmount() * this.currency.getPrice(asset.getCurrencyId())))
             .toFixed(2)
             .toString();
         this.logger.debug('[wallet-main-tab] total price update', this.totalPrice);

@@ -1,0 +1,88 @@
+page-receive {
+    .content {
+        background-color: gray;
+    }
+
+    .test {}
+
+    ngx-qrcode .qrcode {
+        width: 100%;
+        height: 100%;
+    }
+
+    ngx-qrcode .img {}
+
+    .container {
+        overflow-y: hidden;
+
+    }
+
+    .slide {
+        display: flex;
+        justify-content: center;
+
+        >button {
+            width: 20%;
+            height: 50px;
+            border: 1px solid red;
+        }
+
+        .button-left {
+            border-right: 0px;
+            border-radius: 5px 0px 0px 5px;
+        }
+
+        .button-right {
+            border-left: 0px;
+            border-radius: 0px 5px 5px 0px;
+        }
+
+        .selected-button {
+            background: brown;
+        }
+    }
+
+    .qrContainer {
+        border: 1px solid red;
+        border-radius: 5px;
+        margin: 5% 0 0 0;
+        padding: 20px 0px 20px 0;
+    }
+
+    .qrCard {
+        width: 50vmin;
+        margin: auto;
+    }
+
+    .tab-copy-text {
+        text-align: center;
+        font-style: italic;
+        margin: 10px 0 0 0;
+
+        button {
+            color: #7e7e7e;
+        }
+    }
+
+    .code-text {
+        text-align: center;
+        color: black;
+        font-size: 1.1em;
+    }
+
+    //orientation landscape
+    @media screen and (max-height: 400px) {
+        .slide {
+            >button {
+                height: 30px;
+            }
+        }
+
+
+        .qrContainer {
+            margin: 1% 0 0 0;
+            padding: 5px 0px 5px 0;
+        }
+
+    }
+}

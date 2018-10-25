@@ -1,0 +1,33 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title>
+            <div class="content-center">
+                <img src="assets/img/title_receive.png">
+            </div>
+        </ion-title>
+    </ion-navbar>
+</ion-header>
+<ion-content padding class="test">
+
+    <div class="container">
+        <div>
+            <ion-slides>
+                <ion-slide *ngFor="let slide of slides">
+                    <div class="slide">
+                        <button *ngFor="let asset of slide.assets; index as i" (click)=onClick_Asset(asset) [ngClass]="{'button-left' : i === 0, 'button-right' : i===2, 'selected-button' : asset.getCurrencyId() === selectedAsset.getCurrencyId()}">{{asset.getSymbol()}}</button>
+                    </div>
+                </ion-slide>
+            </ion-slides>
+        </div>
+        <div class="qrContainer">
+            <ion-card class="qrCard" *ngIf="qrData">
+                <ngx-qrcode [(qrc-value)]="qrData"></ngx-qrcode>
+            </ion-card>
+            <div class="tab-copy-text"><button (click)="onTabToCopyClicked()">Tab to Copy:</button></div>
+            <div class="code-text" (click)="onTabToCopyClicked()">{{ qrData }}</div>
+        </div>
+
+
+    </div>
+
+</ion-content>

@@ -17,7 +17,7 @@ export class Item {
     }
 
     /** symbol id */
-    public getCurerncyId(): number {
+    public getCurrencyId(): number {
         Debug.assert(this.data);
         return this.data.currency_manage_id;
     }
@@ -25,6 +25,11 @@ export class Item {
     public getWalletId(): number {
         Debug.assert(this.data);
         return this.data.id;
+    }
+
+    public getAddress(): string {
+        Debug.assert(this.data);
+        return this.data.address;
     }
 }
 /** wallet protocol interface */

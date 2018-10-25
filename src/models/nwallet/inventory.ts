@@ -50,7 +50,7 @@ export class Inventory {
         copy = _.remove(copy, target => {
             return (
                 items.findIndex(item => {
-                    return target.getCurerncyId() === item.getCurerncyId();
+                    return target.getCurrencyId() === item.getCurrencyId();
                 }) > -1
             );
         });

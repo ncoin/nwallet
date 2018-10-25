@@ -1,5 +1,4 @@
 import { SendPage } from '../../1.transfer-tab/send/send.page';
-import { ReceivePage } from '../../1.transfer-tab/receive/receive.page';
 import { LoggerService } from '../../../../providers/common/logger/logger.service';
 import { Component, ViewChild, OnDestroy } from '@angular/core';
 import { IonicPage, Navbar, InfiniteScroll, NavParams, ViewController, ModalController, NavController } from 'ionic-angular';
@@ -12,6 +11,7 @@ import { AccountService } from '../../../../providers/account/account.service';
 import { Subscription } from 'rxjs';
 import { EventService } from '../../../../providers/common/event/event';
 import { NsusChannelService } from '../../../../providers/nsus/nsus-channel.service';
+import { NWEvent } from '../../../../interfaces/events';
 
 @IonicPage()
 @Component({
@@ -24,7 +24,15 @@ export class WalletDetailPage extends ModalBasePage implements OnDestroy {
     private limit = 10;
     public asset: NWAsset.Item;
     private subscriptions: Subscription[] = [];
-    constructor(navCtrl: NavController, params: NavParams, parent: ModalNavPage, private logger: LoggerService, private browser: InAppBrowser, private account: AccountService) {
+    constructor(
+        navCtrl: NavController,
+        params: NavParams,
+        parent: ModalNavPage,
+        private logger: LoggerService,
+        private browser: InAppBrowser,
+        private account: AccountService,
+        private event: EventService
+    ) {
         super(navCtrl, params, parent);
         this.asset = params.get('asset');
         this.init();
@@ -89,7 +97,10 @@ export class WalletDetailPage extends ModalBasePage implements OnDestroy {
         // browser.show();
     }
 
-    public onReceiveClick(): void {}
+    public onClick_Receive(): void {
+        this.event.publish(NWEvent.App.change_tab, { index: 1, currencyId: this.asset.getCurrencyId() });
+        this.parent.close();
+    }
 
     public onClick_Loan(): void {}
 }
