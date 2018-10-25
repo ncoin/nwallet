@@ -48,7 +48,8 @@ export class VerifySecuritycodePage {
 
     public onClick_Next(): void {
         this.isCountBegin = false;
-        this.app.logIn();
+        // todo auth success --sky
+        this.app.enter(this.phoneNumber);
         this.parent.close();
     }
 

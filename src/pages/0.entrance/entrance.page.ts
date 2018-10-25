@@ -15,19 +15,14 @@ import { NWEvent } from '../../interfaces/events';
 export class EntrancePage {
     constructor(private nav: NavController, private modalCtrl: ModalController, private event: EventService) {}
     public async onContinue(): Promise<void> {
-        const isLogin = true;
-        if (!isLogin) {
-            this.event.publish(NWEvent.App.user_login);
-        } else {
-            const modal = this.modalCtrl.create(
-                ModalNavPage,
-                ModalNavPage.resolveModal(VerifyPhonePage, param => {
-                    param.canBack = true;
-                    param.headerType = 'none';
-                    param.phoneNumber = '1234';
-                })
-            );
-            await modal.present();
-        }
+        const modal = this.modalCtrl.create(
+            ModalNavPage,
+            ModalNavPage.resolveModal(VerifyPhonePage, param => {
+                param.canBack = true;
+                param.headerType = 'none';
+                param.phoneNumber = '1234';
+            })
+        );
+        await modal.present();
     }
 }

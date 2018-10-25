@@ -1,8 +1,5 @@
 import { GetRequestBase, PutRequestBase, NoQuery, HttpRequestBase } from './http-protocol-base';
 import { NWAsset } from '../nwallet';
-import { Debug } from '../../utils/helper/debug';
-import { TypeDecorator, Type, Component } from '@angular/core';
-import { analyzeAndValidateNgModules } from '@angular/compiler';
 
 export interface HttpProtocolDecorator {
     url: () => string;
@@ -13,23 +10,25 @@ function HttpProtocol<T extends { new (...args: any[]): HttpRequestBase }>(proto
 }
 
 // todo rework --sky
-const Paths = {
+export const Paths = {
     get: {
-        wallets: (user_id: string) => `users/${user_id}/wallets`,
-        walletDetail: (user_id: string, user_wallet_id: number) => `users/${user_id}/wallets/${user_wallet_id}`,
-        creationAvailableWallets: (user_id: string) => `users/${user_id}/wallets/available`
+        wallets: (userId: string) => `users/${userId}/wallets`,
+        walletDetail: (userId: string, userWalletId: number) => `users/${userId}/wallets/${userWalletId}`,
+        creationAvailableWallets: (userId: string) => `users/${userId}/wallets/available`,
+        ticker: (userId: string) => `users/${userId}/tickers`
     },
 
     post: {
-        createWallet: (user_id: string) => `/users/${user_id}/wallets`
+        createWallet: (userId: string) => `/users/${userId}/wallets`
     },
 
     put: {
-        configuraton: (user_id: string) => `users/${user_id}/cofiguration/push`
+        configuraton: (userId: string) => `users/${userId}/cofiguration/push`
     }
 };
 
 export class GetWalletRequest extends GetRequestBase<NoQuery, NWAsset.Data[]> {
+    // todo decorator
     public url = () => Paths.get.wallets(this.credential.userId);
 }
 
@@ -37,7 +36,6 @@ export class GetWalletTransactionRequest extends GetRequestBase<{ offset: number
     constructor(protected credential: { userId: string; userWalletId: number }) {
         super(credential);
     }
-    // todo decorator
     public url = () => Paths.get.walletDetail(this.credential.userId, this.credential.userWalletId);
 }
 
@@ -57,3 +55,4 @@ export class SetConfigurationRequest extends PutRequestBase<{
 export class GetCreationAvailableWallets extends GetRequestBase<NoQuery, {}> {
     public url: () => string;
 }
+

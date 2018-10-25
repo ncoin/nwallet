@@ -12,8 +12,9 @@ export class NWHttpError extends Error {
 export interface NoQuery {}
 
 export abstract class HttpRequestBase {
-    public abstract url: () => string;
 
+    public abstract url: () => string;
+    public header: { [param: string]: string | string[] };
     constructor(protected credential: { userId: string }) {}
 
     public get name(): string {
@@ -35,8 +36,10 @@ export abstract class GetRequestBase<TQuery, TResponse> extends HttpRequestBase 
     }
 }
 
-export abstract class PostRequestBase<TPayload> extends HttpRequestBase {
+export abstract class PostRequestBase<TPayload, TResponse> extends HttpRequestBase {
+
     /** url parameters */
+    public response: TResponse;
     constructor(credential: { userId: string }, public payload?: ParameterExpr<TPayload>) {
         super(credential);
         if (this.payload) {
@@ -51,6 +54,7 @@ export abstract class PostRequestBase<TPayload> extends HttpRequestBase {
 }
 
 export abstract class PutRequestBase<TPayload> extends HttpRequestBase {
+
     constructor(credential: { userId: string }, public payload?: ParameterExpr<TPayload>) {
         super(credential);
         if (this.payload) {

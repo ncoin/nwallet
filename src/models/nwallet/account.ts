@@ -25,8 +25,13 @@ export class Account {
         this.personal.clear();
     }
 
+    /** user name : phone number */
     public getUserName(): string {
         return this.personal.phoneNumber.replace('+', '').replace('-', '');
+    }
+
+    public setUserName(userName: string): void {
+        this.personal.phoneNumber = userName;
     }
 }
 

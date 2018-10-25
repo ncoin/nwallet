@@ -19,10 +19,12 @@ export class Token {
         return this.access_token;
     }
 
+    /** user Id */
     public getUserId(): string {
         return this.user_id.toString();
     }
 
+    /** user credential */
     public getAuth(): string {
         return `${Token.capitalize(this.token_type)} ${this.access_token}`;
     }

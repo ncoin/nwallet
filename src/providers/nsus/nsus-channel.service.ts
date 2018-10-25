@@ -1,25 +1,33 @@
 import { Injectable } from '@angular/core';
 import { NClientService } from './nclient.service';
 import { LoggerService } from '../common/logger/logger.service';
-import { AccountService } from '../account/account.service';
 import { NotificationService } from './notification.service';
-import { EventService } from '../common/event/event';
-import { TokenService } from '../token/token.service';
 import { NWAsset, NWTransaction } from '../../models/nwallet';
 import { HttpErrorResponse } from '@angular/common/http';
 import { GetWalletRequest, SetConfigurationRequest, GetWalletTransactionRequest } from '../../models/nwallet/http-protocol';
+import { Ticker, GetTickerRequest } from '../../models/nwallet/protocol/ticker';
+import { AuthorizationService } from '../auth/authorization.service';
+import { HttpRequestBase, GetRequestBase } from '../../models/nwallet/http-protocol-base';
 
 @Injectable()
 export class NsusChannelService {
-    constructor(
-        private event: EventService,
-        private notification: NotificationService,
-        private nClient: NClientService,
-        private account: AccountService,
-        private token: TokenService,
-        private logger: LoggerService
-    ) {}
+    constructor(private logger: LoggerService, private nClient: NClientService, private auth: AuthorizationService, private notification: NotificationService) {}
 
+    private async onRequest<T extends HttpRequestBase>(msg: string, func: (userId: string) => T): Promise<T> {
+        const token = await this.auth.getToken();
+        const userId = token.getUserId();
+        const auth = token.getAuth();
+        const request = func(userId);
+        request.header = {
+            authorization: auth
+        };
+
+
+        this.logger.debug(`[channel] ${msg}`);
+        return request;
+    }
+
+    // todo change 'any' response type --sky
     private onSuccess<TResponse>(log: string, func?: (data: TResponse) => any) {
         return (response: TResponse) => {
             this.logger.debug(`[channel] ${log}`, response);
@@ -32,13 +40,12 @@ export class NsusChannelService {
 
     private onError<T>(log: string, result?: T | undefined) {
         return (error: HttpErrorResponse | Error) => {
-            this.logger.error(`[nsus-channel] ${log}`, error);
+            this.logger.error(`[channel] ${log}`, error);
             return result;
         };
     }
 
     public async requestPhoneVerification(phoneNumber: string): Promise<boolean> {
-        this.logger.debug('[nsus-channel] phone number : ', phoneNumber);
         return true;
     }
 
@@ -46,42 +53,35 @@ export class NsusChannelService {
         return true;
     }
 
-    public async fetchJobs(): Promise<void> {
-        const detail = await this.account.detail();
-        const assets = await this.getAssets();
-        detail.inventory.setItems(assets);
-
-        this.notification.openStream();
+    public async fetchTicker(): Promise<Ticker[]> {
+        return await this.nClient
+            .get(await this.onRequest('ticker : request', userId => new GetTickerRequest({ userId: userId })))
+            .then(this.onSuccess('ticker : success'))
+            .catch(this.onError('ticker : failed'));
     }
 
     public async getAssets(): Promise<NWAsset.Item[]> {
-        this.logger.debug('[channel][get-asset] request token');
-        const token = await this.token.getToken();
-
-        this.logger.debug('[channel] get asset request');
         return await this.nClient
-            .get(new GetWalletRequest({ userId: token.getUserId() }))
-            .then(this.onSuccess('[channel] get asset request success', datas => datas.map(data => new NWAsset.Item().initData(data))))
-            .catch(this.onError('[channel] get asset request failed', []));
+            .get(await this.onRequest('asset : request', userId => new GetWalletRequest({ userId: userId })))
+            .then(this.onSuccess('asset : success', datas => datas.map(data => new NWAsset.Item().initData(data))))
+            .catch(this.onError('asset : failed', []));
     }
 
     public async getAssetTransactions(walletId: number, offset: number, limit: number): Promise<NWTransaction.Item[]> {
-        this.logger.debug('[channel][get-asset-detail] request token');
-        const token = await this.token.getToken();
-
-        this.logger.debug('[channel] get-asset-detail request');
         return await this.nClient
             .get(
-                new GetWalletTransactionRequest({
-                    userId: token.getUserId(),
-                    userWalletId: walletId
-                }).setQuery(param => {
-                    param.offset = offset;
-                    param.limit = limit;
-                })
+                await this.onRequest('asset-transactions : request', userId =>
+                    new GetWalletTransactionRequest({
+                        userId: userId,
+                        userWalletId: walletId
+                    }).setQuery(param => {
+                        param.offset = offset;
+                        param.limit = limit;
+                    })
+                )
             )
-            .then(this.onSuccess('[channel] get-asset-request success'))
-            .catch(this.onError('[channel] get-asset-request failed'));
+            .then(this.onSuccess('asset-transactions : success'))
+            .catch(this.onError('asset-transactions : failed'));
     }
 
     public async changeWalletOrder() {}
@@ -100,15 +100,11 @@ export class NsusChannelService {
      * @memberof NsusChannelService
      */
     public async setUserPush(isOn: boolean): Promise<boolean> {
-        this.logger.debug('[channel][set-notification] request token');
-        const token = await this.token.getToken();
-
-        this.logger.debug('[channel] get asset request');
         return await this.nClient
-            .put(new SetConfigurationRequest({ userId: token.getUserId() }))
-            .then(this.onSuccess('[channel] set notification success'))
+            .put(await this.onRequest('notification : request', userId => new SetConfigurationRequest({ userId: userId })))
+            .then(this.onSuccess('notification : success'))
             .then(() => true)
-            .catch(this.onError('[channel] get asset request failed', false));
+            .catch(this.onError('notification :  failed', false));
     }
 
     public close(): void {

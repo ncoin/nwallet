@@ -1,4 +1,4 @@
-import { TokenService } from './token/token.service';
+import { AuthorizationService } from './auth/authorization.service';
 import { NgModule } from '@angular/core';
 import { LoggerService } from './common/logger/logger.service';
 import { NWalletAppService } from './app/app.service';
@@ -23,7 +23,7 @@ import { NotificationService } from './nsus/notification.service';
         AppConfigService,
         PlatformProvider,
         LockProvider,
-        TokenService,
+        AuthorizationService,
         EventService,
         NsusChannelService,
         CurrencyService,

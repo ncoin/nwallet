@@ -69,7 +69,7 @@ export class NWalletApp implements OnDestroy {
     }
 
     private subscribeEvents(): void {
-        this.event.subscribe(NWEvent.App.user_login, () => {
+        this.event.subscribe(NWEvent.App.user_login, context => {
             this.rootPage = TabcontainerPage;
         });
         this.event.subscribe(NWEvent.App.user_logout, () => {
@@ -78,11 +78,10 @@ export class NWalletApp implements OnDestroy {
     }
 
     private async preparePage(): Promise<void> {
-        const canLogin = this.app.canLogin();
-        if (canLogin) {
+        const userName = await this.app.canLogin();
+        if (userName) {
             this.logger.debug('[app-page] prepare wallet page (login)');
-            this.app.beginFetch();
-            this.rootPage = TabcontainerPage;
+            this.app.enter(userName);
         } else {
             this.logger.debug('[app-page] prepare entrance page');
             this.rootPage = EntrancePage;

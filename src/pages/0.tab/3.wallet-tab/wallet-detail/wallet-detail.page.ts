@@ -38,7 +38,7 @@ export class WalletDetailPage extends ModalBasePage implements OnDestroy {
     }
 
     private async init(): Promise<void> {
-        const transactions = await this.channel.getAssetTransactions(this.asset.getWalletId());
+        const transactions = await this.channel.getAssetTransactions(this.asset.getWalletId(), 0, 1);
     }
 
     ngOnDestroy() {
@@ -91,6 +91,5 @@ export class WalletDetailPage extends ModalBasePage implements OnDestroy {
     public onReceiveClick(): void {}
 
     public onClick_Loan(): void {
-        this.navCtrl.push(Ma);
     }
 }

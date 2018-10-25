@@ -14,8 +14,6 @@ import { AppConfigService } from './app.config.service';
  * common business logic provider
  */
 
-
-
 @Injectable()
 export class NWalletAppService {
     private fetchJobs: PromiseWaiter<boolean>;
@@ -25,8 +23,7 @@ export class NWalletAppService {
         private channel: NsusChannelService,
         private logger: LoggerService,
         private account: AccountService,
-        private event: EventService,
-        private appConfig: AppConfigService
+        private event: EventService
     ) {
         this.init();
     }
@@ -36,6 +33,27 @@ export class NWalletAppService {
         this.fetchJobs = new PromiseWaiter<boolean>();
     }
 
+    /**
+     *
+     *
+     * @returns {Promise<string>} userName
+     * @memberof NWalletAppService
+     */
+    public async canLogin(): Promise<string> {
+        if (this.account.isSaved()) {
+            this.logger.debug('[app] account already exist.');
+            const account = await this.account.detail();
+            return account.getUserName();
+        } else {
+            this.logger.debug('[app] account not exist.');
+            return undefined;
+        }
+    }
+
+    public async enter(userName: string): Promise<void> {
+        this.event.publish(NWEvent.App.user_login, { userName: userName });
+        await this.beginFetch();
+    }
 
     public waitFetch(): Promise<boolean> {
         return this.fetchJobs.result();
@@ -43,13 +61,21 @@ export class NWalletAppService {
 
     public async beginFetch(): Promise<void> {
         // todo init token
-        this.event.publish(NWEvent.App.initialize);
 
         this.logger.debug('[app] begin fetch start');
-        await Promise.all([this.channel.fetchJobs()]);
+        await Promise.all([this.account.fetchJobs()]);
         this.logger.debug('[app] begin fetch done');
 
         this.fetchJobs.set(true);
+    }
+
+    // todo fixme
+
+    public async logout(): Promise<void> {
+        // todo unsubscribe
+        this.init();
+        this.account.flush();
+        this.event.publish(NWEvent.App.user_logout);
     }
 
     public async flushApplication(): Promise<void> {
@@ -59,37 +85,4 @@ export class NWalletAppService {
     public async tutorialRead(): Promise<void> {
         await this.preference.set(Preference.App.hasSeenTutorial, true);
     }
-
-    // todo fixme
-    public async canLogin(): Promise<boolean> {
-        if (this.account.isSaved()) {
-            this.logger.debug('[app-service] try login success');
-            return true;
-        } else {
-            this.logger.debug('[app-service] try login failed');
-            return false;
-        }
-    }
-
-    public async logIn(): Promise<void> {}
-
-    public async logout(): Promise<void> {
-        // todo unsubscribe
-        this.account.flush();
-        this.event.publish(NWEvent.App.user_logout);
-    }
-
-    public async getCollaterals() {
-        return [];
-        // const response = await this.connector.getCollaterals();
-        // return response ? response : [];
-    }
-    public async getCurrentLoanStatus() {
-        return [];
-
-        // const response = await this.connector.getCurrentLoanStatus(this.account.getId());
-        // return response ? response.loans : [];
-    }
-
-    public async getLoanHistories() {}
 }

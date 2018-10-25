@@ -41,7 +41,7 @@ export class CurrencyService {
                     currencyId,
                     new BehaviorSubject<CurrencyInfo>({
                         currencyId: currencyId,
-                        price: 1
+                        price: 0
                     })
                 )
                 .get(currencyId);
