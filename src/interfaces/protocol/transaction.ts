@@ -1,29 +1,25 @@
-import { Item } from '../../models/nwallet/transaction';
+import { Data } from '../../models/nwallet/transaction';
 
 declare module '../../models/nwallet/transaction' {
-    interface Item {
-        id: 39;
-        user_wallet_id: 15;
-        main_transaction_type: 'CRYPTO';
-        transaction_type: 'RECEIVE';
-        transaction_type_value: 'Received';
-        transaction_id: '0x47be910e536346456464f94df38a40f2bfaa259cf1a5de0cc853498cd9673723';
-        from_address: '0x30934c5be5a29f5e6d01c8e913ed58d7c4c69ff7';
-        to_address: '0xd079c11abd7c0b93e67bb9e75215a716a5c6000c';
-        amount: 0.07;
-        balance: 0;
+    interface Data {
+        id: number;
+        user_wallet_id: number;
+        main_transaction_type: string;
+        transaction_type: string;
+        transaction_type_value: string;
+        transaction_id: string;
+        from_address: string;
+        to_address: string;
+        amount: number;
+        balance: number;
         occur_date: string;
-        occur_yyyy: '2018';
-        occur_eng_mm: 'OCTOBER';
-        occur_dd: '12';
-        status_type: 'CONFIRMED';
+        occur_yyyy: string;
+        occur_eng_mm: string;
+        occur_dd: string;
+        status_type: string;
         response_detail: Detail;
-        created_by: 'admin';
+        created_by: string;
         created_date: string;
-    }
-
-    interface AA extends String {
-
     }
 
     interface Detail {

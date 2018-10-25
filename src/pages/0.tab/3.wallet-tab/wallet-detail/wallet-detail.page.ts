@@ -21,24 +21,21 @@ import { NsusChannelService } from '../../../../providers/nsus/nsus-channel.serv
 export class WalletDetailPage extends ModalBasePage implements OnDestroy {
     public transactionMaps: Array<{ date: string; transactions: NWTransaction.Item[] }> = new Array<{ date: string; transactions: NWTransaction.Item[] }>();
     private skip = 0;
+    private limit = 10;
     public asset: NWAsset.Item;
     private subscriptions: Subscription[] = [];
-    constructor(
-        navCtrl: NavController,
-        params: NavParams,
-        parent: ModalNavPage,
-        private logger: LoggerService,
-        private event: EventService,
-        private channel: NsusChannelService,
-        private browser: InAppBrowser
-    ) {
+    constructor(navCtrl: NavController, params: NavParams, parent: ModalNavPage, private logger: LoggerService, private browser: InAppBrowser, private account: AccountService) {
         super(navCtrl, params, parent);
         this.asset = params.get('asset');
         this.init();
     }
 
     private async init(): Promise<void> {
-        const transactions = await this.channel.getAssetTransactions(this.asset.getWalletId(), 0, 1);
+        this.account.registerSubjects(account => {
+            this.subscriptions.push(account.assetTransaction(this.asset.getWalletId(), this.arrange));
+        });
+
+        this.account.getTransactions(this.asset.getWalletId(), this.skip, this.limit);
     }
 
     ngOnDestroy() {
@@ -46,31 +43,35 @@ export class WalletDetailPage extends ModalBasePage implements OnDestroy {
     }
 
     private arrange = (transactions: NWTransaction.Item[]): void => {
-        // const transactionGroups = _.groupBy(transactions, (t: NWTransaction.Item) => {
-        //     return new Date(t.created_date.getFullYear(), t.created_date.getMonth(), t.created_date.getDate());
-        // });
-        // Object.keys(transactionGroups).forEach(date => {
-        //     const transfers = transactionGroups[date];
-        //     const transactionMap = this.transactionMaps.find(map => map.date === date);
-        //     if (transactionMap) {
-        //         transactionMap.transactions.push(...transfers);
-        //     } else {
-        //         this.transactionMaps.push({ date: date, transactions: transfers });
-        //     }
-        // });
-        // this.skip += transactions.length;
+        if (transactions.length < 1) {
+            return;
+        }
+
+        const transactionGroups = _.groupBy(transactions, (t: NWTransaction.Item) => {
+            return t.groupDate;
+        });
+
+        Object.keys(transactionGroups).forEach(date => {
+            const transfers = transactionGroups[date];
+            const transactionMap = this.transactionMaps.find(map => map.date === date);
+            if (transactionMap) {
+                const filtered = transfers.filter(t => !transactionMap.transactions.find(tt => tt.getId() === t.getId()));
+                transactionMap.transactions.push(...filtered);
+            } else {
+                this.transactionMaps.push({ date: date, transactions: transfers });
+            }
+        });
+        this.skip = transactions.length;
     }
 
     public async doInfinite(infinite: InfiniteScroll): Promise<void> {
-        this.logger.debug('[transfer-tab-page] request transfers skip =', this.skip);
-        // const transactions = await this.appService.getTransfer(this.skip);
-        // if (transactions.length < 1) {
-        //     this.logger.debug('[transfer-tab-page] response transfers length =', transactions.length);
-        //     infinite.enable(false);
-        //     return;
-        // }
+        const transactions = await this.account.getTransactions(this.asset.getWalletId(), this.skip, this.limit);
+        if (transactions.length < 1) {
+            this.logger.debug('[transfer-tab-page] response transfers length =', transactions.length);
+            infinite.enable(false);
+            return;
+        }
 
-        // this.arrange(transactions);
         infinite.complete();
     }
 
@@ -90,6 +91,5 @@ export class WalletDetailPage extends ModalBasePage implements OnDestroy {
 
     public onReceiveClick(): void {}
 
-    public onClick_Loan(): void {
-    }
+    public onClick_Loan(): void {}
 }

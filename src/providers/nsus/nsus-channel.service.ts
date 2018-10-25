@@ -4,10 +4,10 @@ import { LoggerService } from '../common/logger/logger.service';
 import { NotificationService } from './notification.service';
 import { NWAsset, NWTransaction } from '../../models/nwallet';
 import { HttpErrorResponse } from '@angular/common/http';
-import { GetWalletRequest, SetConfigurationRequest, GetWalletTransactionRequest } from '../../models/nwallet/http-protocol';
+import { GetWalletRequest, SetConfigurationRequest, GetWalletDetailRequest, GetWalletTransactionsRequest } from '../../models/nwallet/http-protocol';
 import { Ticker, GetTickerRequest } from '../../models/nwallet/protocol/ticker';
 import { AuthorizationService } from '../auth/authorization.service';
-import { HttpRequestBase, GetRequestBase } from '../../models/nwallet/http-protocol-base';
+import { HttpRequestBase } from '../../models/nwallet/http-protocol-base';
 
 @Injectable()
 export class NsusChannelService {
@@ -21,7 +21,6 @@ export class NsusChannelService {
         request.header = {
             authorization: auth
         };
-
 
         this.logger.debug(`[channel] ${msg}`);
         return request;
@@ -67,21 +66,25 @@ export class NsusChannelService {
             .catch(this.onError('asset : failed', []));
     }
 
-    public async getAssetTransactions(walletId: number, offset: number, limit: number): Promise<NWTransaction.Item[]> {
+    public async getWalletDetails(walletId: number): Promise<NWTransaction.Item[]> {
+        return await this.nClient
+            .get(await this.onRequest('asset-detail : request', userId => new GetWalletDetailRequest({ userId: userId, userWalletId: walletId })))
+            .then(this.onSuccess('asset-detail : success'))
+            .catch(this.onError('asset-detail : failed'));
+    }
+
+    public async getWalletTransactions(walletId: number, offset: number, limit: number): Promise<NWTransaction.Item[]> {
         return await this.nClient
             .get(
                 await this.onRequest('asset-transactions : request', userId =>
-                    new GetWalletTransactionRequest({
-                        userId: userId,
-                        userWalletId: walletId
-                    }).setQuery(param => {
-                        param.offset = offset;
-                        param.limit = limit;
+                    new GetWalletTransactionsRequest({ userId: userId, userWalletId: walletId }).setQuery(query => {
+                        query.offset = offset;
+                        query.limit = limit;
                     })
                 )
             )
-            .then(this.onSuccess('asset-transactions : success'))
-            .catch(this.onError('asset-transactions : failed'));
+            .then(this.onSuccess('asset-transactions : success', transactions => transactions.map(transaction => new NWTransaction.Item(transaction))))
+            .catch(this.onError('asset-transactions : failed', []));
     }
 
     public async changeWalletOrder() {}
@@ -104,7 +107,7 @@ export class NsusChannelService {
             .put(await this.onRequest('notification : request', userId => new SetConfigurationRequest({ userId: userId })))
             .then(this.onSuccess('notification : success'))
             .then(() => true)
-            .catch(this.onError('notification :  failed', false));
+            .catch(this.onError('notification : failed', false));
     }
 
     public close(): void {

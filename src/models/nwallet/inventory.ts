@@ -24,6 +24,17 @@ export class Inventory {
         return this._transactions.get(walletId);
     }
 
+    public insertTransactions(walletId: number, items: NWTransaction.Item[]) {
+        const transactions = this.getTransaction(walletId).getValue();
+        items.forEach(item => {
+            if (!_.find(transactions, t => t.getId() === item.getId())) {
+                transactions.push(item);
+            }
+        });
+
+        this.getTransaction(walletId).next(transactions);
+    }
+
     public setItems(items: Asset.Item[]): void {
         const asset = this._assets.getValue();
         asset.length = 0;

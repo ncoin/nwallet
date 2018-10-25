@@ -1,5 +1,5 @@
 import { GetRequestBase, PutRequestBase, NoQuery, HttpRequestBase } from './http-protocol-base';
-import { NWAsset } from '../nwallet';
+import { NWAsset, NWTransaction } from '../nwallet';
 
 export interface HttpProtocolDecorator {
     url: () => string;
@@ -14,6 +14,7 @@ export const Paths = {
     get: {
         wallets: (userId: string) => `users/${userId}/wallets`,
         walletDetail: (userId: string, userWalletId: number) => `users/${userId}/wallets/${userWalletId}`,
+        walletTransactions: (userId: string, userWalletId: number) => `users/${userId}/wallets/${userWalletId}/transactions`,
         creationAvailableWallets: (userId: string) => `users/${userId}/wallets/available`,
         ticker: (userId: string) => `users/${userId}/tickers`
     },
@@ -32,11 +33,18 @@ export class GetWalletRequest extends GetRequestBase<NoQuery, NWAsset.Data[]> {
     public url = () => Paths.get.wallets(this.credential.userId);
 }
 
-export class GetWalletTransactionRequest extends GetRequestBase<{ offset: number; limit: number }, number> {
+export class GetWalletDetailRequest extends GetRequestBase<NoQuery, number> {
     constructor(protected credential: { userId: string; userWalletId: number }) {
         super(credential);
     }
     public url = () => Paths.get.walletDetail(this.credential.userId, this.credential.userWalletId);
+}
+
+export class GetWalletTransactionsRequest extends GetRequestBase<{ offset: number; limit: number }, NWTransaction.Data[]> {
+    constructor(protected credential: { userId: string; userWalletId: number }) {
+        super(credential);
+    }
+    public url = () => Paths.get.walletTransactions(this.credential.userId, this.credential.userWalletId);
 }
 
 export class CreateWallet extends PutRequestBase<{
