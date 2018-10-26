@@ -1,4 +1,4 @@
-import { SendPage } from '../../1.transfer-tab/send/send.page';
+import { SendPage } from '../../send/send.page';
 import { LoggerService } from '../../../../providers/common/logger/logger.service';
 import { Component, ViewChild, OnDestroy } from '@angular/core';
 import { IonicPage, Navbar, InfiniteScroll, NavParams, ViewController, ModalController, NavController } from 'ionic-angular';

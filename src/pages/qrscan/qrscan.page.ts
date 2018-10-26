@@ -2,23 +2,34 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ViewController, ToastController } from 'ionic-angular';
 import { QRScanner, QRScannerStatus } from '@ionic-native/qr-scanner';
 import { LoggerService } from '../../providers/common/logger/logger.service';
+import { ModalBasePage } from '../0.base/modal.page';
+import { ModalNavPage } from '../0.base/modal-nav.page';
+import { PlatformService } from '../../providers/common/platform/platform.service';
 
 // todo [important] Guard impl!!
 @IonicPage()
 @Component({
     selector: 'page-qrscan',
-    templateUrl: 'qrscan.page.html',
+    templateUrl: 'qrscan.page.html'
 })
-export class QRScanPage {
+export class QRScanPage extends ModalBasePage {
     constructor(
         public navCtrl: NavController,
         public navParams: NavParams,
-        private viewCtrl: ViewController,
+        protected parent: ModalNavPage,
         private toast: ToastController,
         private qrScanner: QRScanner,
-        private logger: LoggerService
+        private logger: LoggerService,
+        private platform: PlatformService
     ) {
+        super(navCtrl, navParams, parent);
         this.init();
+    }
+
+    ionViewDidLoad() {
+        if (this.params.canBack) {
+            this.navBar.backButtonClick = () => this.onClose(undefined);
+        }
     }
 
     private init(): void {
@@ -68,9 +79,11 @@ export class QRScanPage {
     }
 
     public onClose(data: any): void {
-        this.viewCtrl.dismiss({
-            qrCode: data,
-        });
+        this.hideCamera();
+        this.qrScanner.hide();
+        this.qrScanner.destroy();
+
+        this.parent.dismiss(data);
     }
 
     private showCamera(): void {

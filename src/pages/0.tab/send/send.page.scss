@@ -1,0 +1,106 @@
+page-send {
+
+    .scroll-content {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .container {
+        flex-grow: 1;
+
+        .slide {
+            display: flex;
+            justify-content: center;
+
+            >button {
+                width: 25%;
+                height: 50px;
+                border: 1px solid $border-color;
+                background: transparent;
+                color: $foreground-header-gold;
+                display: flex;
+                justify-content: space-evenly;
+                align-items: center;
+
+                img {
+                    height: 25px;
+                }
+            }
+
+            .button-left {
+                border-right: 0px;
+                border-radius: 5px 0px 0px 5px;
+            }
+
+            .button-right {
+                border-left: 0px;
+                border-radius: 0px 5px 5px 0px;
+            }
+
+            .selected-button {
+                color: $foreground-header-white;
+                background: $background-button-ok-bright;
+            }
+        }
+
+        .recipient-address {
+            margin: 5% 0 5% 0;
+            padding: 5%;
+            border: 1px solid $border-color;
+            border-radius: 5px;
+
+            >.label {
+                margin: 0 0 5% 0;
+                border-width: 0 0 1px 5px;
+                border-style: solid;
+                border-color: $border-color;
+                color: $foreground-header;
+                font-size: 2rem;
+                letter-spacing: -1px;
+                padding: 0 0 0 10px;
+            }
+
+            >.qr-code {
+                padding: 1%;
+                border-radius: 5px;
+                border: 1px soild $input-border-color;
+                background: $input-background;
+                display: flex;
+                justify-content: space-around;
+
+                >input {
+                    background: transparent;
+                    margin: 0 10px 0 0;
+                    border: 0px;
+                    padding: 0 0 0 10px;
+                    font-size: 3.4vw;
+                    width: 100%
+                }
+
+                >div {
+                    margin: auto 2% auto 0;
+                    font-size: 3.5rem;
+                }
+            }
+        }
+    }
+
+    .caution {
+        font-size: 2rem;
+        margin: 0 0 3% 0;
+    }
+
+    .next {
+        text-align : center;
+        font-size: 4vmin;
+    }
+
+
+    @media screen and (max-height: 400px) {
+        .slide {
+            >button {
+                height: 30px;
+            }
+        }
+    }
+}

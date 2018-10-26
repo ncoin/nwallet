@@ -5,7 +5,7 @@ import { NWalletAppService } from '../../../providers/app/app.service';
 import * as _ from 'lodash';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { NWTransition, NWModalTransition } from '../../../tools/extension/transition';
-import { SendPage } from './send/send.page';
+import { SendPage } from '../send/send.page';
 import { NWTransaction } from '../../../models/nwallet';
 /**
  * Generated class for the WalletDetailPage page.

@@ -7,7 +7,7 @@ import { AccountService } from './account/account.service';
 import { PreferenceProvider } from './common/preference/preference';
 import { NClientService } from './nsus/nclient.service';
 import { LockProvider } from './common/lock/lock';
-import { PlatformProvider } from './common/platform/platform';
+import { PlatformService } from './common/platform/platform.service';
 import { EventService } from './common/event/event';
 import { NsusChannelService } from './nsus/nsus-channel.service';
 import { CurrencyService } from './nsus/currency.service';
@@ -21,7 +21,7 @@ import { NotificationService } from './nsus/notification.service';
         AccountService,
         NWalletAppService,
         AppConfigService,
-        PlatformProvider,
+        PlatformService,
         LockProvider,
         AuthorizationService,
         EventService,

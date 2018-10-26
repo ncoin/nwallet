@@ -3,12 +3,12 @@ import { PinModalPage } from '../../../pages/1.security/pin/pin';
 import { Injectable } from '@angular/core';
 import { ModalController, ModalOptions } from 'ionic-angular';
 import { LoggerService } from '../logger/logger.service';
-import { PlatformProvider } from '../platform/platform';
+import { PlatformService } from '../platform/platform.service';
 
 @Injectable()
 export class LockProvider {
     public isModalProcessing: Boolean;
-    constructor(private logger: LoggerService, private modalController: ModalController, private platform: PlatformProvider) {}
+    constructor(private logger: LoggerService, private modalController: ModalController, private platform: PlatformService) {}
 
     public tryLockModalOpen(): void {
         if (this.isModalProcessing) {

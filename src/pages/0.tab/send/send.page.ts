@@ -1,36 +1,44 @@
-import { Component } from '@angular/core';
-import { IonicPage, ToastController } from 'ionic-angular';
-import { Clipboard } from '@ionic-native/clipboard';
 import { AccountService } from '../../../providers/account/account.service';
+import { QRScanPage } from '../../qrscan/qrscan.page';
+import { Component } from '@angular/core';
+import { IonicPage, ViewController, ModalController, NavParams, NavController } from 'ionic-angular';
+
+import { QRScanner } from '@ionic-native/qr-scanner';
 import { LoggerService } from '../../../providers/common/logger/logger.service';
+import { NWModalTransition } from '../../../tools/extension/transition';
+import { NWAsset } from '../../../models/nwallet';
 import { EventService } from '../../../providers/common/event/event';
 import { NWEvent } from '../../../interfaces/events';
-
 import { Debug } from '../../../utils/helper/debug';
-import { NWAsset } from '../../../models/nwallet';
+import { ModalNavPage } from '../../0.base/modal-nav.page';
 
 @IonicPage()
 @Component({
-    selector: 'page-receive',
-    templateUrl: 'receive.page.html'
+    selector: 'page-send',
+    templateUrl: 'send.page.html'
 })
-export class ReceivePage {
-    qrData = null;
-    scannedCode = null;
+export class SendPage {
+    public recipientAddress = '';
+    public sendAmount = '0';
     public selectedAsset: NWAsset.Item;
     public slides: { assets: NWAsset.Item[] }[] = [];
-    constructor(private account: AccountService, private clipboard: Clipboard, private toast: ToastController, private logger: LoggerService, private event: EventService) {
+    constructor(
+        private navCtrl: NavController,
+        private viewCtrl: ViewController,
+        private modal: ModalController,
+        private logger: LoggerService,
+        private account: AccountService,
+        private event: EventService
+    ) {
         this.account.registerSubjects(stream => {
             stream.assetChanged(this.onAssetChanged);
         });
 
         this.event.RxSubscribe(NWEvent.App.change_tab, context => {
-            if (context && context.index === 1) {
+            if (context && context.index === 3) {
                 this.onSelectAsset(context.currencyId);
             } else {
-                // reset;
                 this.selectedAsset = this.slides[0].assets[0];
-                this.qrData = this.selectedAsset.getAddress();
             }
         });
     }
@@ -58,41 +66,34 @@ export class ReceivePage {
             .find(asset => asset.getCurrencyId() === currencyId);
         Debug.assert(targetAsset);
         this.logger.debug('[receive-page] currency', targetAsset);
-        this.qrData = targetAsset.getAddress();
         this.selectedAsset = targetAsset;
     }
 
-
     public onClick_Asset(asset: NWAsset.Item): void {
-        this.qrData = asset.getAddress();
         this.selectedAsset = asset;
     }
 
-    ionViewWillLeave(): void {
-        this.event.publish(NWEvent.App.change_tab);
-    }
+    public onScanClick(): void {
+        // todo [important] Guard impl!!
 
-    public onTabToCopyClicked(): void {
-        this.clipboard
-            .copy(this.qrData)
-            .then(() => {
-                this.toast
-                    .create({
-                        message: 'copied!',
-                        duration: 3000,
-                        position: 'middle'
-                    })
-                    .present();
-            })
-            .catch(err => {
-                this.toast
-                    .create({
-                        message: 'failed to copy!',
-                        duration: 3000,
-                        position: 'middle'
-                    })
-                    .present();
-            });
-    }
+        const qrCodeModal = this.modal.create(
+            ModalNavPage,
+            ModalNavPage.resolveModal(QRScanPage, param => {
+                param.canBack = true;
+                param.headerType = 'bar';
+            }),
+            NWModalTransition.Slide()
+        );
 
+        qrCodeModal.onDidDismiss((dismissParam, role) => {
+            this.logger.debug('[send-page] qrscan result', dismissParam, role);
+            if (dismissParam) {
+                this.recipientAddress = dismissParam.qrCode;
+            } else {
+                this.recipientAddress = undefined;
+            }
+        });
+
+        qrCodeModal.present();
+    }
 }

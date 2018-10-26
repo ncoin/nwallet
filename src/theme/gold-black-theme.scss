@@ -1,0 +1,38 @@
+$border-color: rgb(79, 66, 44);
+$background-button-ok: rgb(124, 95, 56);
+$background-button-ok-bright: rgb(114, 95, 56);
+
+$foreground-header: rgb(149, 124, 79);
+$foreground-header-white: rgb(220, 220, 220);
+$foreground-header-gold: rgb(149, 124, 79);
+
+$input-background: rgb(69, 65, 59);
+$input-border-color: rgba(255, 255, 255, 0.2);
+$input-foreground-placeholder : rgba(170, 170, 170, 1);
+
+.nw-button {
+    background: rgb(69, 65, 59) !important;
+    border-width: 1px 0.4px 1px 0.4px !important;
+    border-color: rgba(255, 255, 255, 0.2) !important;
+    border-style: outset !important;
+    border-radius: 5px;
+}
+
+
+
+
+.nw-button-cancel {
+    background: rgb(69, 65, 59) !important;
+    border-width: 1px 0.4px 1px 0.4px;
+    border-color: rgba(255, 255, 255, 0.2);
+    border-style: outset;
+    border-radius: 5px !important;
+}
+
+.nw-button-ok {
+    background: rgb(124, 95, 56) !important;
+    border-width: 1px 0.4px 1px 0.4px;
+    border-color: rgba(255, 255, 255, 0.2);
+    border-style: outset;
+    border-radius: 5px !important;
+}

@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Platform } from 'ionic-angular';
 
 @Injectable()
-export class PlatformProvider {
+export class PlatformService {
     public isAndroid: boolean;
     public isIOS: boolean;
     public isSafari: boolean;

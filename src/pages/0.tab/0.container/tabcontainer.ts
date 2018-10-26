@@ -10,7 +10,7 @@ import { TransferHistoryTabPage } from '../1.transfer-tab/transfer-history-tab';
 import { WalletTabPages, WalletMainTabPage } from '../3.wallet-tab/wallet-main-tab';
 import { AccountTabPage } from '../5.account-tab/account-tab.page';
 import { ReceivePage } from '../receive/receive.page';
-import { SendPage } from '../1.transfer-tab/send/send.page';
+import { SendPage } from '../send/send.page';
 import { LanguagePage } from '../5.account-tab/language/language.page';
 import { ResetPincodePage } from '../5.account-tab/my-info/reset-pincode/reset-pincode.page';
 import { ResetPincodeSuccessPage } from '../5.account-tab/my-info/reset-pincode-success/reset-pincode-success.page';
@@ -92,6 +92,7 @@ export const NWalletTabPages = [
     TabcontainerPage,
     TransferHistoryTabPage,
     ReceivePage,
+    SendPage,
     AccountTabPage,
     ...WalletTabPages,
     ...[MyInfoPage, LanguagePage, ResetPincodePage, ResetPincodeSuccessPage]
