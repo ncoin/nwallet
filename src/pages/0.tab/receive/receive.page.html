@@ -14,7 +14,9 @@
             <ion-slides>
                 <ion-slide *ngFor="let slide of slides">
                     <div class="slide">
-                        <button *ngFor="let asset of slide.assets; index as i" (click)=onClick_Asset(asset) [ngClass]="{'button-left' : i === 0, 'button-right' : i===2, 'selected-button' : asset.getCurrencyId() === selectedAsset.getCurrencyId()}">{{asset.getSymbol()}}</button>
+                        <button *ngFor="let asset of slide.assets; index as i" (click)=onClick_Asset(asset) [ngClass]="{'button-left' : i === 0, 'button-right' : i===2, 'selected-button' : asset.getCurrencyId() === selectedAsset.getCurrencyId()}">
+                            <img src="assets/img/symbol_{{asset.getSymbol()}}.png" />
+                            {{asset.getSymbol()}}</button>
                     </div>
                 </ion-slide>
             </ion-slides>

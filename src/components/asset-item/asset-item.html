@@ -4,8 +4,7 @@
             <ion-row class="inner-line-content">
                 <ion-col col-auto class="asset-info">
                     <span class="asset-symbol">
-                        <img src="assets/img/symbol_{{symbol}}.png" height="28" *ngIf="(symbol=='NCH' || symbol=='XLM' || symbol=='BTC' || symbol=='ETH' || symbol=='NCN')" />
-                        <img src="assets/img/symbol_NCH.png" height="28" *ngIf="(symbol!='NCH' && symbol!='BTC' && symbol!='XLM' && symbol!='ETH' && symbol!='NCN')" />
+                        <img src="assets/img/symbol_{{symbol}}.png" height="28" />
                     </span>
                     <span class="asset-name">{{symbol | translate}}</span>
                 </ion-col>
