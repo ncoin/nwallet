@@ -1,5 +1,11 @@
 import { Debug } from '../../utils/helper/debug';
 
+/** wallet protocol interface */
+export class Data {}
+
+/** asset option information */
+export class Option {}
+
 /** asset information */
 export class Item {
     public data: Data;
@@ -32,8 +38,4 @@ export class Item {
         return this.data.address;
     }
 }
-/** wallet protocol interface */
-export class Data {}
 
-/** asset option information */
-export class Option {}

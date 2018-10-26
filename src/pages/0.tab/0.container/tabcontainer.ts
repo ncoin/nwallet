@@ -16,6 +16,7 @@ import { ResetPincodePage } from '../5.account-tab/my-info/reset-pincode/reset-p
 import { ResetPincodeSuccessPage } from '../5.account-tab/my-info/reset-pincode-success/reset-pincode-success.page';
 import { EventService } from '../../../providers/common/event/event';
 import { NWEvent } from '../../../interfaces/events';
+import { SendConfirmPage } from '../send/send.confirm.page';
 export interface TabItemContext {
     // title: "Schedule",
     // name: "TabsPage",
@@ -93,6 +94,7 @@ export const NWalletTabPages = [
     TransferHistoryTabPage,
     ReceivePage,
     SendPage,
+    SendConfirmPage,
     AccountTabPage,
     ...WalletTabPages,
     ...[MyInfoPage, LanguagePage, ResetPincodePage, ResetPincodeSuccessPage]

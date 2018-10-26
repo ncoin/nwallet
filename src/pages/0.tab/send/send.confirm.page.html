@@ -1,0 +1,44 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title>
+            <img src="assets/img/title_send.png">
+        </ion-title>
+    </ion-navbar>
+</ion-header>
+<ion-content padding>
+    <div class="container">
+        <div class="asset">
+            <!-- <img src="assets/img/symbol_{{asset.getSymbol()}}.png" /> -->
+            <img src="assets/img/symbol_BTC.png" />
+            <!-- {{asset | assetName | async}} -->
+            <div>BTC</div>
+        </div>
+        <div>
+            <div class="input-wrap">
+                <input [(ngModel)]="sendAssetAmount" type="text">
+                <div>
+                    <!-- {{asset.getSymbol()}} -->
+                    BTC
+                </div>
+            </div>
+            <div class="input-foot">
+                {{'Available | translate'}}
+            </div>
+            <button>{{'Max' | translate}}</button>
+        </div>
+        <div>
+            <div class="input-wrap">
+                <input [(ngModel)]="sendUSDAmount" type="text" [placeholder]="'enter or scan the qr code' | translate">
+                <div>
+                    USD
+                </div>
+            </div>
+            <div class="input-foot">
+                Fee : 1111 /
+            </div>
+        </div>
+    </div>
+    <div>
+        <button ion-item class="nw-button">{{'Next' | translate }}</button>
+    </div>
+</ion-content>

@@ -11,6 +11,7 @@ import { EventService } from '../../../providers/common/event/event';
 import { NWEvent } from '../../../interfaces/events';
 import { Debug } from '../../../utils/helper/debug';
 import { ModalNavPage } from '../../0.base/modal-nav.page';
+import { SendConfirmPage } from './send.confirm.page';
 
 @IonicPage()
 @Component({
@@ -25,7 +26,7 @@ export class SendPage {
     constructor(
         private navCtrl: NavController,
         private viewCtrl: ViewController,
-        private modal: ModalController,
+        private modalCtrl: ModalController,
         private logger: LoggerService,
         private account: AccountService,
         private event: EventService
@@ -38,7 +39,9 @@ export class SendPage {
             if (context && context.index === 3) {
                 this.onSelectAsset(context.currencyId);
             } else {
-                this.selectedAsset = this.slides[0].assets[0];
+                if (this.slides.length > 0) {
+                    this.selectedAsset = this.slides[0].assets[0];
+                }
             }
         });
     }
@@ -73,10 +76,23 @@ export class SendPage {
         this.selectedAsset = asset;
     }
 
+    public async onClick_Next(): Promise<void> {
+        const modal = this.modalCtrl.create(
+            ModalNavPage,
+            ModalNavPage.resolveModal(SendConfirmPage, param => {
+                param.asset = this.selectedAsset;
+                param.canBack = true;
+                param.headerType = 'bar';
+            })
+        );
+
+        modal.present();
+    }
+
     public onScanClick(): void {
         // todo [important] Guard impl!!
 
-        const qrCodeModal = this.modal.create(
+        const qrCodeModal = this.modalCtrl.create(
             ModalNavPage,
             ModalNavPage.resolveModal(QRScanPage, param => {
                 param.canBack = true;
