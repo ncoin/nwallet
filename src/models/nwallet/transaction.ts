@@ -35,7 +35,7 @@ export class Item {
     }
 
     public get fee() {
-        return this.detail.feeString + ' / ' + this.detail.payGoFeeString;
+        return this.detail.feeString;
     }
 
     public get transactionId(): string {

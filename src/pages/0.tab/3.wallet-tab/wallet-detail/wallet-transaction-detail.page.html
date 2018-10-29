@@ -12,7 +12,7 @@
 </ion-header>
 <ion-content padding>
     <ng-container [ngSwitch]="transaction.transactionType">
-        <div class="container" *ngSwitchCase="'RECEIVE'">
+        <div class="container receive" *ngSwitchCase="'RECEIVE'">
             <div>
                 {{'Date' | translate}} >
                 <div>{{transaction.date}}</div>
@@ -36,7 +36,7 @@
                 </div>
             </div>
         </div>
-        <div class="container" *ngSwitchCase="'SEND'">
+        <div class="container send" *ngSwitchCase="'SEND'">
             <div>
                 {{'Date' | translate}} >
                 <div>{{transaction.date}}</div>
@@ -68,6 +68,6 @@
         </div>
         <div *ngSwitchDefault></div>
     </ng-container>
-    <button ion-item class="nw-button">{{'ViewOnBlockChain' |translate }}</button>
+    <button ion-item class="nw-button" (click)="onExploreTransaction()">{{'ViewOnBlockChain' |translate }}</button>
 
 </ion-content>

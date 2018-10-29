@@ -12,6 +12,7 @@ import { EventService } from '../../../../providers/common/event/event';
 import { NsusChannelService } from '../../../../providers/nsus/nsus-channel.service';
 import { NWEvent } from '../../../../interfaces/events';
 import { WalletTransactionDetailPage } from './wallet-transaction-detail.page';
+import { NWTransition } from '../../../../tools/extension/transition';
 
 @IonicPage()
 @Component({
@@ -92,7 +93,7 @@ export class WalletDetailPage extends ModalBasePage implements OnDestroy {
         //     code: 'body { margin-top : 50px;}',
         // });
         // browser.show();
-        this.navCtrl.push(WalletTransactionDetailPage, { transaction: transaction });
+        this.navCtrl.push(WalletTransactionDetailPage, { transaction: transaction }, NWTransition.Slide('left'));
     }
 
     public onClick_Receive(): void {
