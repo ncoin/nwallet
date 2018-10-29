@@ -33,5 +33,12 @@
   "EnablePushNotification": "Enable push notification",
   "LogoutAskHeader": "Are you sure to logout?",
   "LogoutAskContent": "Your registered mobile number will be required to login.",
-  "Cancel": "Cancel"
+  "Cancel": "Cancel",
+  "TransactionDate": "Date",
+  "TransactionTo": "Destination",
+  "TransactionFrom": "From",
+  "TransactionFee": "Fee",
+  "TransactionId": "Transaction ID",
+  "TransactionConfirm": "Confirmation",
+  "ViewOnBlockChain": "View on Blockchain"
 }

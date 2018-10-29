@@ -14,23 +14,23 @@
     <ng-container [ngSwitch]="transaction.transactionType">
         <div class="container receive" *ngSwitchCase="'RECEIVE'">
             <div>
-                {{'Date' | translate}} >
-                <div>{{transaction.date}}</div>
+                {{'TransactionDate' | translate }} >
+                <div>{{transaction.date | date: 'yyyy/mm/dd HH:mm:ss'}}</div>
             </div>
             <div>
-                {{'From' | translate}} >
+                {{'TransactionFrom' | translate}} >
                 <div>
                     {{transaction.addressFrom}}
                 </div>
             </div>
             <div>
-                {{'TransactionID' | translate}} >
+                {{'TransactionId' | translate}} >
                 <div>
                     {{transaction.transactionId}}
                 </div>
             </div>
             <div>
-                {{'Confirmation' | translate}} >
+                {{'TransactionConfirm' | translate}} >
                 <div>
                     {{transaction.detail.confirmation}}
                 </div>
@@ -38,29 +38,29 @@
         </div>
         <div class="container send" *ngSwitchCase="'SEND'">
             <div>
-                {{'Date' | translate}} >
-                <div>{{transaction.date}}</div>
+                {{'TransactionDate' | translate}} >
+                <div>{{transaction.date  | date: 'yyyy/mm/dd HH:mm:ss'}}</div>
             </div>
             <div>
-                {{'Destination' | translate}} >
+                {{'TransactionTo' | translate}} >
                 <div>
                     {{transaction.addressTo}}
                 </div>
             </div>
             <div>
-                {{'Fee' | translate}} >
+                {{'TransactionFee' | translate}} >
                 <div>
                     {{transaction.fee }}
                 </div>
             </div>
             <div>
-                {{'TransactionID' | translate}} >
+                {{'TransactionId' | translate}} >
                 <div>
                     {{transaction.transactionId}}
                 </div>
             </div>
             <div>
-                {{'Confirmation' | translate}} >
+                {{'TransactionConfirm' | translate}} >
                 <div>
                     {{transaction.detail.confirmation}}
                 </div>
