@@ -40,5 +40,6 @@
   "TransactionFee": "Fee",
   "TransactionId": "Transaction ID",
   "TransactionConfirm": "Confirmation",
-  "ViewOnBlockChain": "View on Blockchain"
+  "ViewOnBlockChain": "View on Blockchain",
+  "Button_Max": "Max"
 }

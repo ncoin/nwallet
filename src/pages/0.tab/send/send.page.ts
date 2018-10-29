@@ -101,10 +101,10 @@ export class SendPage {
             NWModalTransition.Slide()
         );
 
-        qrCodeModal.onDidDismiss((dismissParam, role) => {
-            this.logger.debug('[send-page] qrscan result', dismissParam, role);
-            if (dismissParam) {
-                this.recipientAddress = dismissParam.qrCode;
+        qrCodeModal.onDidDismiss((qrCode, role) => {
+            this.logger.debug('[send-page] qrscan result', qrCode, role);
+            if (qrCode) {
+                this.recipientAddress = qrCode;
             } else {
                 this.recipientAddress = undefined;
             }

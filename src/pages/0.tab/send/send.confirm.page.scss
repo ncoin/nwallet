@@ -19,10 +19,10 @@ page-send-confirm {
         display: flex;
         height: 80px;
         min-height: 30px;
-        border: 1px solid red;
+        border: 1px solid rgb(122,87,38);
         margin: 0 auto;
         padding: 0 30px;
-        background: orange;
+        background: rgb(142,107,58);
         border-radius: 10px;
         align-items: center;
 
@@ -58,9 +58,22 @@ page-send-confirm {
         }
     }
 
+    .button-max {
+        background: transparent;
+
+        .label {
+            background: linear-gradient(rgb(110, 92, 77), rgb(96, 70, 50), rgb(107, 75, 50), rgb(139, 117, 98), rgb(163, 139, 116));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 3vmax;
+            font-weight: bolder
+        }
+    }
+
+
     .input-foot {
         margin: 3% 0 1% 0;
-        color : $foreground-content-dark;
+        color: $foreground-content-dark;
     }
 
 

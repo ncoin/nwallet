@@ -5,6 +5,8 @@ import { LoggerService } from '../../../providers/common/logger/logger.service';
 import { ModalNavPage } from '../../0.base/modal-nav.page';
 import { ModalBasePage } from '../../0.base/modal.page';
 import { NWAsset } from '../../../models/nwallet';
+import { CurrencyService } from '../../../providers/nsus/currency.service';
+import { Debug } from '../../../utils/helper/debug';
 
 @IonicPage()
 @Component({
@@ -12,20 +14,36 @@ import { NWAsset } from '../../../models/nwallet';
     templateUrl: 'send.confirm.page.html'
 })
 export class SendConfirmPage extends ModalBasePage {
-
     public canBack: boolean;
     public asset: NWAsset.Item;
 
-    public sendAssetAmount = 0.0;
+    private _sendAssetAmount = 0.0;
     public sendUSDAmount = 0.0;
 
+    public set sendAssetAmount(input: number) {
+        this._sendAssetAmount = input;
+        this.sendUSDAmount = input * this.currency.getPrice(this.asset.getCurrencyId());
+    }
 
-    constructor(navCtrl: NavController, navParam: NavParams, parent: ModalNavPage, private alert: AlertController, private logger: LoggerService) {
+    public get sendAssetAmount(): number {
+        return this._sendAssetAmount;
+    }
+
+    constructor(
+        navCtrl: NavController,
+        navParam: NavParams,
+        parent: ModalNavPage,
+        private alert: AlertController,
+        private logger: LoggerService,
+        private currency: CurrencyService
+    ) {
         super(navCtrl, navParam, parent);
         this.asset = navParam.get('asset');
+        Debug.assert(this.asset);
+        this.logger.debug('[send-confirm-page] send asset: ', this.asset);
     }
 
     public onMaxClick(): void {
-        // this.sendAmount = this.sendAsset.amount;
+        this.sendAssetAmount = this.asset.getAmount();
     }
 }

@@ -8,27 +8,24 @@
 <ion-content padding>
     <div class="container">
         <div class="asset">
-            <!-- <img src="assets/img/symbol_{{asset.getSymbol()}}.png" /> -->
-            <img src="assets/img/symbol_BTC.png" />
-            <!-- {{asset | assetName | async}} -->
-            <div>BTC</div>
+            <img src="assets/img/symbol_{{asset.getSymbol()}}.png" />
+            <div>{{asset | assetName | async}}</div>
         </div>
         <div>
             <div class="input-wrap">
-                <input [(ngModel)]="sendAssetAmount" type="text">
+                <input [(ngModel)]="sendAssetAmount" type="number">
                 <div>
-                    <!-- {{-asset.getSymbol()}} -->
-                    BTC
+                    {{asset.getSymbol()}}
                 </div>
             </div>
             <div class="input-foot">
                 {{'Available' | translate}} :
             </div>
-            <button>{{'Max' | translate}}</button>
+            <button class="button-max" (click)="onMaxClick()"><div class="label">{{'Button_Max' | translate | uppercase}}</div></button>
         </div>
         <div>
             <div class="input-wrap">
-                <input [(ngModel)]="sendUSDAmount" type="text" [placeholder]="'enter or scan the qr code' | translate">
+                <input [(ngModel)]="sendUSDAmount" type="number" readonly="true" [placeholder]="0.0">
                 <div>
                     USD
                 </div>
