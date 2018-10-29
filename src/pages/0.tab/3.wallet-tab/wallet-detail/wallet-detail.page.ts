@@ -11,6 +11,7 @@ import { Subscription } from 'rxjs';
 import { EventService } from '../../../../providers/common/event/event';
 import { NsusChannelService } from '../../../../providers/nsus/nsus-channel.service';
 import { NWEvent } from '../../../../interfaces/events';
+import { WalletTransactionDetailPage } from './wallet-transaction-detail.page';
 
 @IonicPage()
 @Component({
@@ -28,7 +29,6 @@ export class WalletDetailPage extends ModalBasePage implements OnDestroy {
         params: NavParams,
         parent: ModalNavPage,
         private logger: LoggerService,
-        private browser: InAppBrowser,
         private account: AccountService,
         private event: EventService
     ) {
@@ -54,15 +54,13 @@ export class WalletDetailPage extends ModalBasePage implements OnDestroy {
             return;
         }
 
-        const transactionGroups = _.groupBy(transactions, (t: NWTransaction.Item) => {
-            return t.groupDate;
-        });
+        const transactionGroups = _.groupBy(transactions, (t: NWTransaction.Item) => t.groupDate);
 
         Object.keys(transactionGroups).forEach(date => {
             const transfers = transactionGroups[date];
             const transactionMap = this.transactionMaps.find(map => map.date === date);
             if (transactionMap) {
-                const filtered = transfers.filter(t => !transactionMap.transactions.find(tt => tt.getId() === t.getId()));
+                const filtered = transfers.filter(t => !transactionMap.transactions.find(tt => tt.id === t.id));
                 transactionMap.transactions.push(...filtered);
             } else {
                 this.transactionMaps.push({ date: date, transactions: transfers });
@@ -94,6 +92,7 @@ export class WalletDetailPage extends ModalBasePage implements OnDestroy {
         //     code: 'body { margin-top : 50px;}',
         // });
         // browser.show();
+        this.navCtrl.push(WalletTransactionDetailPage, { transaction: transaction });
     }
 
     public onClick_Receive(): void {

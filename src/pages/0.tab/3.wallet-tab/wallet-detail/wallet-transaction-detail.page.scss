@@ -1,0 +1,56 @@
+wallet-transaction-detail {
+
+    .container {
+        >div {
+            font-size: 2.5rem;
+            color: $foreground-header;
+            >div {
+                font-size: 2rem;
+                color: $foreground-content;
+                margin: 10px 0 20px 20px;
+
+            }
+        }
+    }
+
+    .nw-button {
+        margin: 10px auto;
+        text-align: center;
+        color : $foreground-button-ok-header;
+    }
+
+    //dynamic state
+    @media screen and (max-width: 768px),
+    screen and (max-height:600px) {
+        .navBar-container>div {
+            background: orange;
+        }
+    }
+
+    //orientation landscape
+    @media screen and (max-height: 400px) {
+
+        .toolbar-content {
+            display: flex;
+            justify-content: center;
+            .title-header-container {
+                flex: 1
+            }
+            .title-content-container {
+                flex: 1
+            }
+        }
+        .navBar-container>div {
+            background: green;
+        }
+
+        .header {
+            max-height: 135px;
+            height: 135px;
+        }
+
+        .scroll-content {
+            margin-top: 120px !important;
+        }
+    }
+}

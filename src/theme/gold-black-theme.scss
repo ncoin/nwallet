@@ -3,14 +3,20 @@ $background-button-ok: rgb(124, 95, 56);
 $background-button-ok-bright: rgb(114, 95, 56);
 
 $foreground-header: rgb(149, 124, 79);
-$foreground-header-white: rgb(220, 220, 220);
+$foreground-header-white: white;
 $foreground-header-gold: rgb(149, 124, 79);
-$foreground-content-dark: rgb(150, 150, 150);
+
+
+$foreground-content: rgb(116, 116, 76);
+$foreground-content-white: white;
+$foreground-content-dark: rgb(110, 110, 110);
 
 $input-background: rgb(69, 65, 59);
 $input-border-color: rgba(255, 255, 255, 0.2);
 $input-foreground-placeholder : rgba(170, 170, 170, 1);
 
+
+$foreground-button-ok-header: rgb(197, 176, 99);
 .nw-button {
     background: rgb(69, 65, 59) !important;
     border-width: 1px 0.4px 1px 0.4px !important;

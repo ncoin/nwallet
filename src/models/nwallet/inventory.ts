@@ -27,7 +27,7 @@ export class Inventory {
     public insertTransactions(walletId: number, items: NWTransaction.Item[]) {
         const transactions = this.getTransaction(walletId).getValue();
         items.forEach(item => {
-            if (!_.find(transactions, t => t.getId() === item.getId())) {
+            if (!_.find(transactions, t => t.id === item.id)) {
                 transactions.push(item);
             }
         });

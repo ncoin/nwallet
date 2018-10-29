@@ -13,6 +13,7 @@ import { Subscription, Observable } from 'rxjs';
 import { WalletDetailPage } from './wallet-detail/wallet-detail.page';
 import { CurrencyService } from '../../../providers/nsus/currency.service';
 import _ from 'lodash';
+import { WalletTransactionDetailPage } from './wallet-detail/wallet-transaction-detail.page';
 
 /**
  * Generated class for the WalletPage page.
@@ -121,4 +122,4 @@ export class WalletMainTabPage {
     }
 }
 
-export const WalletTabPages = [WalletMainTabPage, WalletDetailPage, ManageWalletPage, AddWalletPage];
+export const WalletTabPages = [WalletMainTabPage, WalletDetailPage, ManageWalletPage, AddWalletPage, WalletTransactionDetailPage];

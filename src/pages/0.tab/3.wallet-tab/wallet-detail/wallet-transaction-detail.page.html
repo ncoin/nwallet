@@ -1,0 +1,73 @@
+<ion-header class="header">
+    <ion-navbar>
+        <ng-container [ngSwitch]="transaction.transactionType">
+            <ion-title *ngSwitchCase="'SEND'">
+                <img src="assets/img/title_send.png" />
+            </ion-title>
+            <ion-title *ngSwitchCase="'RECEIVE'">
+                <img src="assets/img/title_receive.png" />
+            </ion-title>
+        </ng-container>
+    </ion-navbar>
+</ion-header>
+<ion-content padding>
+    <ng-container [ngSwitch]="transaction.transactionType">
+        <div class="container" *ngSwitchCase="'RECEIVE'">
+            <div>
+                {{'Date' | translate}} >
+                <div>{{transaction.date}}</div>
+            </div>
+            <div>
+                {{'From' | translate}} >
+                <div>
+                    {{transaction.addressFrom}}
+                </div>
+            </div>
+            <div>
+                {{'TransactionID' | translate}} >
+                <div>
+                    {{transaction.transactionId}}
+                </div>
+            </div>
+            <div>
+                {{'Confirmation' | translate}} >
+                <div>
+                    {{transaction.detail.confirmation}}
+                </div>
+            </div>
+        </div>
+        <div class="container" *ngSwitchCase="'SEND'">
+            <div>
+                {{'Date' | translate}} >
+                <div>{{transaction.date}}</div>
+            </div>
+            <div>
+                {{'Destination' | translate}} >
+                <div>
+                    {{transaction.addressTo}}
+                </div>
+            </div>
+            <div>
+                {{'Fee' | translate}} >
+                <div>
+                    {{transaction.fee }}
+                </div>
+            </div>
+            <div>
+                {{'TransactionID' | translate}} >
+                <div>
+                    {{transaction.transactionId}}
+                </div>
+            </div>
+            <div>
+                {{'Confirmation' | translate}} >
+                <div>
+                    {{transaction.detail.confirmation}}
+                </div>
+            </div>
+        </div>
+        <div *ngSwitchDefault></div>
+    </ng-container>
+    <button ion-item class="nw-button">{{'ViewOnBlockChain' |translate }}</button>
+
+</ion-content>
