@@ -19,10 +19,10 @@ page-send-confirm {
         display: flex;
         height: 80px;
         min-height: 30px;
-        border: 1px solid rgb(122,87,38);
+        border: 1px solid rgb(122, 87, 38);
         margin: 0 auto;
         padding: 0 30px;
-        background: rgb(142,107,58);
+        background: rgb(142, 107, 58);
         border-radius: 10px;
         align-items: center;
 
@@ -74,6 +74,12 @@ page-send-confirm {
     .input-foot {
         margin: 3% 0 1% 0;
         color: $foreground-content-dark;
+    }
+
+
+    .next {
+        text-align: center;
+        font-size: 4vmin;
     }
 
 

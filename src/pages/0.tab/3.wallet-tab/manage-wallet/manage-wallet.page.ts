@@ -8,6 +8,7 @@ import { NWTransition } from '../../../../tools/extension/transition';
 import { ModalNavPage } from '../../../0.base/modal-nav.page';
 import { ModalBasePage } from '../../../0.base/modal.page';
 import { Subscription } from 'rxjs';
+import { NsusChannelService } from '../../../../providers/nsus/nsus-channel.service';
 
 @IonicPage()
 @Component({
@@ -18,8 +19,16 @@ export class ManageWalletPage extends ModalBasePage implements OnDestroy {
     public assets: Array<NWAsset.Item>;
     private isReorderd: boolean;
     private subscriptions: Subscription[] = [];
+    private previous: number[] = [];
 
-    constructor(public navCtrl: NavController, protected navParam: NavParams, public logger: LoggerService, private account: AccountService, parent: ModalNavPage) {
+    constructor(
+        public navCtrl: NavController,
+        protected navParam: NavParams,
+        public logger: LoggerService,
+        private account: AccountService,
+        parent: ModalNavPage,
+        private channel: NsusChannelService
+    ) {
         super(navCtrl, navParam, parent);
         this.assets = new Array<NWAsset.Item>();
         this.init();
@@ -37,7 +46,12 @@ export class ManageWalletPage extends ModalBasePage implements OnDestroy {
 
     async init(): Promise<void> {
         this.account.registerSubjects(subjects => {
-            this.subscriptions.push(subjects.assetChanged(assets => (this.assets = assets)));
+            this.subscriptions.push(
+                subjects.assetChanged(assets => {
+                    this.assets = assets;
+
+                })
+            );
         });
     }
 
@@ -63,12 +77,14 @@ export class ManageWalletPage extends ModalBasePage implements OnDestroy {
         });
 
         this.isReorderd = true;
+
+
+        this.channel.changeWalletOrder(this.assets.map(asset => asset.getWalletId()));
     }
 
     public onClick_addWallets(): void {
         this.navCtrl.push(AddWalletPage, {}, NWTransition.Slide());
     }
-
 
     public onClickHideOrShowAsset(asset: any): void {}
 }

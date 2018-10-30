@@ -19,7 +19,7 @@
                 </div>
             </div>
             <div class="input-foot">
-                {{'Available' | translate}} :
+                {{'Available' | translate}} : {{asset | assetFormat}} / {{asset | assetToUSD | async }}
             </div>
             <button class="button-max" (click)="onClick_Max()"><div class="label">{{'Button_Max' | translate | uppercase}}</div></button>
         </div>
@@ -31,11 +31,11 @@
                 </div>
             </div>
             <div class="input-foot">
-                Fee : 1111 /
+                <!-- Fee : 1111 / -->
             </div>
         </div>
     </div>
     <div>
-        <button ion-item class="nw-button" (click)="onClick_Next()">{{'Next' | translate }}</button>
+        <button ion-item class="nw-button next" (click)="onClick_Next()">{{'Next' | translate }}</button>
     </div>
 </ion-content>

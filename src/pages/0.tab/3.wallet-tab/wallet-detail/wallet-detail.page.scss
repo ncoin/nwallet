@@ -127,7 +127,7 @@ wallet-detail {
 
 
 
-    //dynamic state
+    // dynamic state
     @media screen and (max-width: 768px),
     screen and (max-height:600px) {
         .navBar-container>div {
@@ -135,7 +135,7 @@ wallet-detail {
         }
     }
 
-    //orientation landscape
+    // orientation landscape
     @media screen and (max-height: 400px) {
 
         .toolbar-content {

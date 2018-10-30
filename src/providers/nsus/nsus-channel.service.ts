@@ -9,11 +9,13 @@ import { Ticker, GetTickerRequest } from '../../models/nwallet/protocol/ticker';
 import { AuthorizationService } from '../auth/authorization.service';
 import { HttpRequestBase } from '../../models/nwallet/http-protocol-base';
 import { GetSendAssetFeeRequest, SendAssetRequest } from '../../models/nwallet/protocol/send';
+import { PutWalletAlignRequest } from '../../models/nwallet/protocol/wallet-align';
 
 @Injectable()
 export class NsusChannelService {
     constructor(private logger: LoggerService, private nClient: NClientService, private auth: AuthorizationService, private notification: NotificationService) {}
 
+    // todo merge request process --sky
     private async onRequest<T extends HttpRequestBase>(msg: string, func: (userId: string) => T): Promise<T> {
         const token = await this.auth.getToken();
         const userId = token.getUserId();
@@ -109,7 +111,18 @@ export class NsusChannelService {
             .catch(this.onError('send-asset : failed', false));
     }
 
-    public async changeWalletOrder() {}
+    public async changeWalletOrder(align: number[]): Promise<boolean> {
+        return await this.nClient
+            .put(
+                await this.onRequest('change-wallet-order : request', userId =>
+                    new PutWalletAlignRequest({ userId: userId }).setPayload(payload => {
+                        payload.user_wallet_ids = align;
+                    })
+                )
+            )
+            .then(this.onSuccess('change-wallet-order : success', () => true))
+            .catch(this.onError('change-wallet-order : failed', false));
+    }
 
     public async getUserManageWallets(): Promise<NWAsset.Item[]> {
         return [];

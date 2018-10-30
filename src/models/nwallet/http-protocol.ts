@@ -26,7 +26,8 @@ export const Paths = {
     },
 
     put: {
-        configuraton: (userId: string) => `users/${userId}/cofiguration/push`
+        configuraton: (userId: string) => `users/${userId}/cofiguration/push`,
+        walletAlign: (userId: string) => `users/${userId}/wallets/align`
     }
 };
 
