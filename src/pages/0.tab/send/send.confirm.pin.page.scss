@@ -4,77 +4,36 @@ page-send-confirm-pin {
         flex-direction: column;
     }
 
-    .container>div {
-        margin: 5% 0 0 0;
-        text-align: right;
-    }
-
-    .container {
+    .content {
         flex-grow: 1;
-        display: flex;
-        flex-direction: column;
-    }
+        text-align: center;
 
-    .container .asset {
-        display: flex;
-        height: 80px;
-        min-height: 30px;
-        border: 1px solid rgb(122,87,38);
-        margin: 0 auto;
-        padding: 0 30px;
-        background: rgb(142,107,58);
-        border-radius: 10px;
-        align-items: center;
-
-        >img {
-            height: 28px;
-            margin: 0 25px 0 0;
-        }
-    }
-
-    .input-wrap {
-        border-width: 0 0 1px 5px;
-        border-style: solid;
-        border-color: $border-color;
-        font-size: 2rem;
-        letter-spacing: -1px;
-        padding: 0 0 0 10px;
-        display: flex;
-        justify-content: space-around;
-
-        >input {
-            background: transparent;
-            border: 0px;
-            padding: 0 0 0 7px;
-            font-size: 3.4vw;
-            width: 100%;
-            color: $foreground-header-white;
-        }
-
-        >div {
-            color: $foreground-header;
-            margin: auto 2% auto 0;
+        .header {
             font-size: 2.5rem;
         }
-    }
 
-    .button-max {
-        background: transparent;
-
-        .label {
-            background: linear-gradient(rgb(110, 92, 77), rgb(96, 70, 50), rgb(107, 75, 50), rgb(139, 117, 98), rgb(163, 139, 116));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            font-size: 3vmax;
-            font-weight: bolder
+        .pincodes {
+            display: flex;
+            flex-direction: column;
         }
     }
 
-
-    .input-foot {
-        margin: 3% 0 1% 0;
-        color: $foreground-content-dark;
+    // static small
+    @media screen and (min-width:768px) and (min-height:600px) and (max-height:768px) {
+        .content {
+            .header {
+                font-size: 2.5rem;
+            }
+        }
     }
 
-
+    // dynamic state
+    @media screen and (max-width: 768px),
+    screen and (max-height:600px) {
+        .content {
+            .header {
+                font-size: 4vh;
+            }
+        }
+    }
 }

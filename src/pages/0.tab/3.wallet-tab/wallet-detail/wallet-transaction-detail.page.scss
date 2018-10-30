@@ -22,7 +22,7 @@ wallet-transaction-detail {
         color: $foreground-button-ok-header;
     }
 
-    //static small
+    // static small
     @media screen and (min-width:768px) and (min-height:600px) and (max-height:768px) {
         .container {
             >div {
@@ -43,7 +43,7 @@ wallet-transaction-detail {
         }
     }
 
-    //dynamic state
+    // dynamic state
     @media screen and (max-width: 768px),
     screen and (max-height:600px) {
         .container {

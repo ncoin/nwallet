@@ -7,6 +7,8 @@ import { ModalBasePage } from '../../0.base/modal.page';
 import { NWAsset } from '../../../models/nwallet';
 import { CurrencyService } from '../../../providers/nsus/currency.service';
 import { Debug } from '../../../utils/helper/debug';
+import { NsusChannelService } from '../../../providers/nsus/nsus-channel.service';
+import { SendPage } from './send.page';
 
 @IonicPage()
 @Component({
@@ -14,35 +16,22 @@ import { Debug } from '../../../utils/helper/debug';
     templateUrl: 'send.confirm.success.page.html'
 })
 export class SendConfirmSuccessPage {
-    public canBack: boolean;
+    public amount: number;
     public asset: NWAsset.Item;
-
-    private _sendAssetAmount = 0.0;
-    public sendUSDAmount = 0.0;
-
-    public set sendAssetAmount(input: number) {
-        this._sendAssetAmount = input;
-        this.sendUSDAmount = input * this.currency.getPrice(this.asset.getCurrencyId());
+    public recipientAddress: string;
+    constructor(private navCtrl: NavController, private navParams: NavParams, private logger: LoggerService,  private channel: NsusChannelService, private parent: ModalNavPage) {
+        this.amount = navParams.get('amount');
+        this.asset = navParams.get('asset');
+        this.recipientAddress = navParams.get('recipientAddress');
     }
 
-    public get sendAssetAmount(): number {
-        return this._sendAssetAmount;
+    public ionViewCanEnter(): Promise<boolean> {
+        return this.channel.sendAsset(this.asset.getWalletId(), this.recipientAddress, this.amount);
     }
 
-    constructor(
-        navCtrl: NavController,
-        navParam: NavParams,
-        parent: ModalNavPage,
-        private alert: AlertController,
-        private logger: LoggerService,
-        private currency: CurrencyService
-    ) {
-        this.asset = navParam.get('asset');
-        Debug.assert(this.asset);
-        this.logger.debug('[send-confirm-page] send asset: ', this.asset);
-    }
-
-    public onMaxClick(): void {
-        this.sendAssetAmount = this.asset.getAmount();
+    public ionViewDidLoad() {
+        setTimeout(() => {
+            this.parent.close();
+        }, 3000);
     }
 }

@@ -6,36 +6,13 @@
     </ion-navbar>
 </ion-header>
 <ion-content padding>
-    <div class="container">
-        <div class="asset">
-            <img src="assets/img/symbol_{{asset.getSymbol()}}.png" />
-            <div>{{asset | assetName | async}}</div>
+    <div class="content">
+        <div class="header">
+            {{ 'EnterYourPinToProceed' | translate}}
         </div>
-        <div>
-            <div class="input-wrap">
-                <input [(ngModel)]="sendAssetAmount" type="number">
-                <div>
-                    {{asset.getSymbol()}}
-                </div>
-            </div>
-            <div class="input-foot">
-                {{'Available' | translate}} :
-            </div>
-            <button class="button-max" (click)="onClick_Max()"><div class="label">{{'Button_Max' | translate | uppercase}}</div></button>
-        </div>
-        <div>
-            <div class="input-wrap">
-                <input [(ngModel)]="sendUSDAmount" type="number" readonly="true" [placeholder]="0.0">
-                <div>
-                    USD
-                </div>
-            </div>
-            <div class="input-foot">
-                Fee : 1111 /
-            </div>
+        <div class="pincodes">
+            <pin-dots [pin]="pinCode" [PinCount]="6" animate></pin-dots>
         </div>
     </div>
-    <div>
-        <button ion-item class="nw-button">{{'Next' | translate }}</button>
-    </div>
+    <nw-key-pad (keystroke)=onInput($event)></nw-key-pad>
 </ion-content>

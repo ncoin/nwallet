@@ -8,6 +8,7 @@ import { ModalParameter } from './modal.parameter';
 @Component({
     styleUrls: ['modal.page.scss']
 })
+// rename
 export abstract class ModalBasePage {
     @ViewChild(Navbar)
     public navBar: Navbar;

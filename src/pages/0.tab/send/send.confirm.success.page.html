@@ -1,41 +1,14 @@
 <ion-header>
-    <ion-navbar>
-        <ion-title>
-            <img src="assets/img/title_send.png">
-        </ion-title>
+    <ion-navbar hideBackButton="true">
     </ion-navbar>
 </ion-header>
 <ion-content padding>
-    <div class="container">
-        <div class="asset">
-            <img src="assets/img/symbol_{{asset.getSymbol()}}.png" />
-            <div>{{asset | assetName | async}}</div>
+    <div class="send-asset-success">
+        <div class="logo">
+            V
         </div>
-        <div>
-            <div class="input-wrap">
-                <input [(ngModel)]="sendAssetAmount" type="number">
-                <div>
-                    {{asset.getSymbol()}}
-                </div>
-            </div>
-            <div class="input-foot">
-                {{'Available' | translate}} :
-            </div>
-            <button class="button-max" (click)="onClick_Max()"><div class="label">{{'Button_Max' | translate | uppercase}}</div></button>
+        <div class="title">
+            {{'SendAssetSuccess' | translate }}
         </div>
-        <div>
-            <div class="input-wrap">
-                <input [(ngModel)]="sendUSDAmount" type="number" readonly="true" [placeholder]="0.0">
-                <div>
-                    USD
-                </div>
-            </div>
-            <div class="input-foot">
-                Fee : 1111 /
-            </div>
-        </div>
-    </div>
-    <div>
-        <button ion-item class="nw-button">{{'Next' | translate }}</button>
     </div>
 </ion-content>

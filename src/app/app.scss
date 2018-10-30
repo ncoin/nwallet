@@ -752,3 +752,11 @@ $toggle-icon-background-on: #364231;
     border-style: outset;
     border-radius: 5px !important;
 }
+
+.loading-base {
+    .loading-wrapper {
+        background: transparent;
+        transform: scale(3);
+        box-shadow: unset;
+    }
+}

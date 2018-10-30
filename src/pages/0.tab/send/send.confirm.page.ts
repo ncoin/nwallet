@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavParams, NavController, AlertController } from 'ionic-angular';
+import { IonicPage, NavParams, NavController, AlertController, LoadingController } from 'ionic-angular';
 
 import { LoggerService } from '../../../providers/common/logger/logger.service';
 import { ModalNavPage } from '../../0.base/modal-nav.page';
@@ -9,6 +9,7 @@ import { CurrencyService } from '../../../providers/nsus/currency.service';
 import { Debug } from '../../../utils/helper/debug';
 import { TranslateService } from '@ngx-translate/core';
 import { NsusChannelService } from '../../../providers/nsus/nsus-channel.service';
+import { SendConfirmPinPage } from './send.confirm.pin.page';
 
 const messageTemplate = (symbol: string, amount: number, fee: number, address: string, lang: any): string => {
     return `
@@ -73,7 +74,7 @@ export class SendConfirmPage extends ModalBasePage {
         private logger: LoggerService,
         private currency: CurrencyService,
         private translate: TranslateService,
-        private channel: NsusChannelService
+        private channel: NsusChannelService,
     ) {
         super(navCtrl, navParam, parent);
         this.asset = navParam.get('asset');
@@ -106,7 +107,17 @@ export class SendConfirmPage extends ModalBasePage {
                     role: null,
                     text: langs['Confirm'],
                     handler: async () => {
-                        await this.channel.sendAsset(this.asset.getWalletId(), this.recipientAddress, this.sendAssetAmount);
+                        this.navCtrl.push(
+                            SendConfirmPinPage,
+                            {
+                                asset: this.asset,
+                                amount: this.sendAssetAmount,
+                                recipientAddress: this.recipientAddress
+                            },
+                            {
+                                animate: false
+                            }
+                        );
                         // this.navCtrl.push()
                     },
                     cssClass: 'button-ok'

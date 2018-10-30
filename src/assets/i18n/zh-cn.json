@@ -43,5 +43,7 @@
   "ViewOnBlockChain": "View on Blockchain",
   "Button_Max": "Max",
   "SendConfirmation": "Send Confirmation",
-  "Confirm": "Confirm"
+  "Confirm": "Confirm",
+  "EnterYourPinToProceed": "Enter your PIN to proceed",
+  "SendAssetSuccess": "Successfully Sent!"
 }
