@@ -32,6 +32,8 @@ export class Inventory {
             }
         });
 
+        transactions.sort((t1, t2) => t2.id - t1.id);
+
         this.getTransaction(walletId).next(transactions);
     }
 

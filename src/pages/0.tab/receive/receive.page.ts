@@ -73,6 +73,7 @@ export class ReceivePage {
     }
 
     public onTabToCopyClicked(): void {
+        this.logger.debug('[receive-page] trying copy address : ', this.qrData);
         this.clipboard
             .copy(this.qrData)
             .then(() => {

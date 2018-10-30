@@ -24,6 +24,6 @@ export const NWEvent = {
 
     Stream: {
         ticker: EventParameter.create<Ticker>('stream-ticker'),
-        wallet: EventParameter.create<WalletProtocol>('stream-wallet')
+        wallet: EventParameter.create<WalletProtocol[]>('stream-wallet')
     }
 };

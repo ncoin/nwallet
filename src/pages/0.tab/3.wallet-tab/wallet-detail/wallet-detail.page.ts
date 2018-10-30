@@ -20,19 +20,16 @@ import { NWTransition } from '../../../../tools/extension/transition';
     templateUrl: 'wallet-detail.page.html'
 })
 export class WalletDetailPage extends ModalBasePage implements OnDestroy {
-    public transactionMaps: Array<{ date: string; transactions: NWTransaction.Item[] }> = new Array<{ date: string; transactions: NWTransaction.Item[] }>();
+    public transactionMaps: Array<{ date: string; transactions: NWTransaction.Item[]; time: number }> = new Array<{
+        date: string;
+        transactions: NWTransaction.Item[];
+        time: number;
+    }>();
     private skip = 0;
     private limit = 10;
     public asset: NWAsset.Item;
     private subscriptions: Subscription[] = [];
-    constructor(
-        navCtrl: NavController,
-        params: NavParams,
-        parent: ModalNavPage,
-        private logger: LoggerService,
-        private account: AccountService,
-        private event: EventService
-    ) {
+    constructor(navCtrl: NavController, params: NavParams, parent: ModalNavPage, private logger: LoggerService, private account: AccountService, private event: EventService) {
         super(navCtrl, params, parent);
         this.asset = params.get('asset');
         this.init();
@@ -43,7 +40,7 @@ export class WalletDetailPage extends ModalBasePage implements OnDestroy {
             this.subscriptions.push(account.assetTransaction(this.asset.getWalletId(), this.arrange));
         });
 
-        this.account.getTransactions(this.asset.getWalletId(), this.skip, this.limit);
+        this.account.getTransactions(this.asset.getWalletId(), 0, this.limit);
     }
 
     ngOnDestroy() {
@@ -57,14 +54,17 @@ export class WalletDetailPage extends ModalBasePage implements OnDestroy {
 
         const transactionGroups = _.groupBy(transactions, (t: NWTransaction.Item) => t.groupDate);
 
+        // fixme --sky`
         Object.keys(transactionGroups).forEach(date => {
             const transfers = transactionGroups[date];
             const transactionMap = this.transactionMaps.find(map => map.date === date);
             if (transactionMap) {
                 const filtered = transfers.filter(t => !transactionMap.transactions.find(tt => tt.id === t.id));
                 transactionMap.transactions.push(...filtered);
+                transactionMap.transactions.sort((t1, t2) => t2.id - t1.id);
             } else {
-                this.transactionMaps.push({ date: date, transactions: transfers });
+                this.transactionMaps.push({ date: date, transactions: transfers, time: new Date(date).getTime() });
+                this.transactionMaps.sort((map1, map2) => map2.time - map1.time);
             }
         });
         this.skip = transactions.length;

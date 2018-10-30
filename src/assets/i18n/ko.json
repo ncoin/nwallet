@@ -24,7 +24,7 @@
   "BTC": "Bitcoin",
   "ETH": "Ethereum",
   "Total": "합계",
-  "RecipientAddress": "RECIPIENT'S ADDRESS",
+  "RecipientAddress": "Recipient's Address",
   "RecipientAddressPlaceHolder": "주소를 입력 또는 선택해주세요.",
   "Amount": "수량",
   "Available": "Available",
@@ -41,5 +41,7 @@
   "TransactionId": "Transaction ID",
   "TransactionConfirm": "Confirmation",
   "ViewOnBlockChain": "View on Blockchain",
-  "Button_Max": "Max"
+  "Button_Max": "Max",
+  "SendConfirmation": "Send Confirmation",
+  "Confirm": "Confirm"
 }

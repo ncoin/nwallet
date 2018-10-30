@@ -7,7 +7,20 @@ import { NWEvent } from '../../interfaces/events';
 import { LoggerService } from '../common/logger/logger.service';
 import { Ticker } from '../../models/nwallet/protocol/ticker';
 
-export class WalletProtocol {}
+export class WalletProtocol {
+    address: string;
+    align_number: number;
+    balance: number;
+    bitgo_wallet_id: number;
+    created_date: string;
+    currency: string;
+    currency_manage_id: number;
+    id: number;
+    is_loaned: number;
+    is_show: number;
+    last_modified_date: string;
+    user_id: number;
+}
 
 @Injectable()
 export class NotificationService {
@@ -57,11 +70,11 @@ export class NotificationService {
     }
 
     private onWalletEvent = (event: MessageEvent): void => {
-        const walletData = JSON.parse(event.data) as WalletProtocol;
+        const walletData = JSON.parse(event.data) as WalletProtocol[];
         this.logger.debug('[notification] on wallet :', walletData);
 
         this.event.publish(NWEvent.Stream.wallet, walletData);
-    }
+    };
 
     private onTickerEvent = (event: MessageEvent): void => {
         const tickerData = JSON.parse(event.data) as Ticker;
@@ -71,5 +84,5 @@ export class NotificationService {
         this.logger.debug('[notification] on ticker :', tickerData);
 
         this.event.publish(NWEvent.Stream.ticker, tickerData);
-    }
+    };
 }

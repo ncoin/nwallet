@@ -40,9 +40,8 @@ export class AccountTabPage {
         const langs = this.translate.instant(['Logout', 'Cancel', 'LogoutAskHeader', 'LogoutAskContent']);
 
         const alert = this.alert.create({
-            cssClass: 'alert-logout button-center',
+            cssClass: 'alert-base alert-logout title-underline button-center',
             title: langs['Logout'],
-            subTitle: '<div class="alert-title-line"></div>',
             message: `<div class="alert-message-header">${langs['LogoutAskHeader']}</div>` + `<div class="alert-message-content">${langs['LogoutAskContent']}</div>`,
             buttons: [
                 {

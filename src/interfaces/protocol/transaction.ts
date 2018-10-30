@@ -29,7 +29,7 @@ declare module '../../models/nwallet/transaction' {
         enterprise: string;
         txid: string;
         height: number;
-        date: Date;
+        date: string;
         confirmations: number;
         type: string;
         value: number;
@@ -43,9 +43,13 @@ declare module '../../models/nwallet/transaction' {
         instant: boolean;
         tags: string[];
         history: History[];
+        vSize?: number;
+        nSegwitInputs?: number;
         entries: Entry[];
-        confirmedTime: Date;
-        createdTime: Date;
+        signedTime?: string;
+        confirmedTime?: string;
+        createdTime: string;
+        tx?: string;
     }
 
     interface History {
@@ -58,6 +62,7 @@ declare module '../../models/nwallet/transaction' {
         wallet: string;
         value: number;
         valueString: string;
+        isChange?: boolean;
         isPayGo: boolean;
     }
 }

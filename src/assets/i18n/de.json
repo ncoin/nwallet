@@ -24,7 +24,7 @@
   "BTC": "Bitcoin D",
   "ETH": "Ethereum",
   "Total": "Total",
-  "RecipientAddress": "RECIPIENT'S ADDRESS",
+  "RecipientAddress": "Recipient's Address",
   "RecipientAddressPlaceHolder": "Enter or select the address",
   "Amount": "Amount",
   "Available": "Available",
@@ -41,5 +41,7 @@
   "TransactionId": "Transaction ID",
   "TransactionConfirm": "Confirmation",
   "ViewOnBlockChain": "View on Blockchain",
-  "Button_Max": "Max"
+  "Button_Max": "Max",
+  "SendConfirmation": "Send Confirmation",
+  "Confirm": "Confirm"
 }

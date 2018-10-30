@@ -8,6 +8,7 @@ import { GetWalletRequest, SetConfigurationRequest, GetWalletDetailRequest, GetW
 import { Ticker, GetTickerRequest } from '../../models/nwallet/protocol/ticker';
 import { AuthorizationService } from '../auth/authorization.service';
 import { HttpRequestBase } from '../../models/nwallet/http-protocol-base';
+import { GetSendAssetFeeRequest, SendAssetRequest } from '../../models/nwallet/protocol/send';
 
 @Injectable()
 export class NsusChannelService {
@@ -85,6 +86,27 @@ export class NsusChannelService {
             )
             .then(this.onSuccess('asset-transactions : success', transactions => transactions.map(transaction => new NWTransaction.Item(transaction))))
             .catch(this.onError('asset-transactions : failed', []));
+    }
+
+    public async getSendAssetFee(walletId: number): Promise<number> {
+        return await this.nClient
+            .get(await this.onRequest('asset-fee : request', userId => new GetSendAssetFeeRequest({ userId: userId, userWalletId: walletId })))
+            .then(this.onSuccess('asset-fee : success'))
+            .catch(this.onError('asset-transaction : failed', -1));
+    }
+
+    public async sendAsset(walletId: number, address: string, amount: number): Promise<boolean> {
+        return await this.nClient
+            .post(
+                await this.onRequest('send-asset : request', userId =>
+                    new SendAssetRequest({ userId: userId, userWalletId: walletId }).setPayload(payload => {
+                        payload.amount = amount;
+                        payload.recipient_address = address;
+                    })
+                )
+            )
+            .then(this.onSuccess('send-asset : success'))
+            .catch(this.onError('send-asset : failed', false));
     }
 
     public async changeWalletOrder() {}

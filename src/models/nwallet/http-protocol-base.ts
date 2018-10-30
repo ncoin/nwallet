@@ -10,6 +10,9 @@ export class NWHttpError extends Error {
 }
 
 export interface NoQuery {}
+export interface NoResponse {
+
+}
 
 export abstract class HttpRequestBase {
 

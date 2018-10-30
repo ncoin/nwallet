@@ -16,11 +16,13 @@ export const Paths = {
         walletDetail: (userId: string, userWalletId: number) => `users/${userId}/wallets/${userWalletId}`,
         walletTransactions: (userId: string, userWalletId: number) => `users/${userId}/wallets/${userWalletId}/transactions`,
         creationAvailableWallets: (userId: string) => `users/${userId}/wallets/available`,
-        ticker: (userId: string) => `users/${userId}/tickers`
+        ticker: (userId: string) => `users/${userId}/tickers`,
+        sendAssetFee: (userId: string, userWalletId: number) => `users/${userId}/wallets/${userWalletId}/send/fee`
     },
 
     post: {
-        createWallet: (userId: string) => `/users/${userId}/wallets`
+        createWallet: (userId: string) => `/users/${userId}/wallets`,
+        sendAsset: (userId: string, userWalletId: number) => `users/${userId}/wallets/${userWalletId}/send`
     },
 
     put: {
@@ -63,4 +65,3 @@ export class SetConfigurationRequest extends PutRequestBase<{
 export class GetCreationAvailableWallets extends GetRequestBase<NoQuery, {}> {
     public url: () => string;
 }
-

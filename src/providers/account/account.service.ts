@@ -35,6 +35,15 @@ export class AccountService {
         this.event.subscribe(NWEvent.App.user_login, context => {
             this.account.setUserName(context.userName);
         });
+
+        // todo
+        this.event.subscribe(NWEvent.Stream.wallet, context => {
+            context.forEach(wallet => {
+                this.getTransactions(wallet.id, 0, 10);
+
+                // todo
+            });
+        });
     }
 
     public setAccount(userName: string) {

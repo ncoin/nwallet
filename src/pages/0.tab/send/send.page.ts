@@ -12,6 +12,8 @@ import { NWEvent } from '../../../interfaces/events';
 import { Debug } from '../../../utils/helper/debug';
 import { ModalNavPage } from '../../0.base/modal-nav.page';
 import { SendConfirmPage } from './send.confirm.page';
+import { SendConfirmPinPage } from './send.confirm.pin.page';
+import { SendConfirmSuccessPage } from './send.confirm.success.page';
 
 @IonicPage()
 @Component({
@@ -81,6 +83,7 @@ export class SendPage {
             ModalNavPage,
             ModalNavPage.resolveModal(SendConfirmPage, param => {
                 param.asset = this.selectedAsset;
+                param.recipientAddress = this.recipientAddress;
                 param.canBack = true;
                 param.headerType = 'bar';
             })
@@ -113,3 +116,5 @@ export class SendPage {
         qrCodeModal.present();
     }
 }
+
+export const SEND_PAGES = [SendPage, SendConfirmPage, SendConfirmPinPage, SendConfirmSuccessPage];
