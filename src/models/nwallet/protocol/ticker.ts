@@ -1,4 +1,4 @@
-import { GetRequestBase, NoQuery } from '../http-protocol-base';
+import { GetProtocolBase, NoQuery } from '../http-protocol-base';
 import { Paths } from '../http-protocol';
 
 export class Ticker {
@@ -14,6 +14,6 @@ export class Ticker {
     last_updated_date_raw: Date;
 }
 
-export class GetTickerRequest extends GetRequestBase<NoQuery, Ticker[]> {
+export class GetTickerProtocol extends GetProtocolBase<NoQuery, Ticker[]> {
     public url = () => Paths.get.ticker(this.credential.userId);
 }

@@ -9,6 +9,8 @@ import { ParameterExpr } from 'forge';
 import { EventService } from '../common/event/event';
 import { NWEvent } from '../../interfaces/events';
 import { NsusChannelService } from '../nsus/nsus-channel.service';
+import { NClientService } from '../nsus/nclient.service';
+import { GetWalletTransactionsProtocol } from '../../models/nwallet/http-protocol';
 
 interface AccountStream {
     assetChanged: (func: (asset: NWAsset.Item[]) => void) => Subscription;
@@ -21,7 +23,13 @@ export class AccountService {
     private account: NWAccount.Account;
     private streams: AccountStream;
 
-    constructor(private preference: PreferenceProvider, private logger: LoggerService, private event: EventService, private channel: NsusChannelService) {
+    constructor(
+        private preference: PreferenceProvider,
+        private logger: LoggerService,
+        private event: EventService,
+        private channel: NsusChannelService,
+        private nClient: NClientService
+    ) {
         this.account = new NWAccount.Account();
         this.task = new PromiseWaiter<NWAccount.Account>();
 
@@ -44,7 +52,10 @@ export class AccountService {
                 // todo
             });
         });
+
     }
+
+
 
     public setAccount(userName: string) {
         this.account.setUserName(userName);

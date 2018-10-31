@@ -1,13 +1,13 @@
-import { GetRequestBase, PutRequestBase, NoQuery, HttpRequestBase } from './http-protocol-base';
+import { GetProtocolBase, PutProtocolBase, NoQuery, HttpProtocolBase, NoResponse } from './http-protocol-base';
 import { NWAsset, NWTransaction } from '../nwallet';
 
 export interface HttpProtocolDecorator {
     url: () => string;
 }
 
-function HttpProtocol<T extends { new (...args: any[]): HttpRequestBase }>(prototype: T) {
-    return prototype;
-}
+// function HttpProtocol<T extends { new (...args: any[]): HttpRequestBase }>(prototype: T) {
+//     return prototype;
+// }
 
 // todo rework --sky
 export const Paths = {
@@ -31,38 +31,44 @@ export const Paths = {
     }
 };
 
-export class GetWalletRequest extends GetRequestBase<NoQuery, NWAsset.Data[]> {
+export class GetWalletProtocol extends GetProtocolBase<NoQuery, NWAsset.Data[]> {
     // todo decorator
     public url = () => Paths.get.wallets(this.credential.userId);
 }
 
-export class GetWalletDetailRequest extends GetRequestBase<NoQuery, number> {
+export class GetWalletDetailProtocol extends GetProtocolBase<NoQuery, number> {
     constructor(protected credential: { userId: string; userWalletId: number }) {
         super(credential);
     }
     public url = () => Paths.get.walletDetail(this.credential.userId, this.credential.userWalletId);
 }
 
-export class GetWalletTransactionsRequest extends GetRequestBase<{ offset: number; limit: number }, NWTransaction.Data[]> {
+export class GetWalletTransactionsProtocol extends GetProtocolBase<{ offset: number; limit: number }, NWTransaction.Data[]> {
     constructor(protected credential: { userId: string; userWalletId: number }) {
         super(credential);
     }
     public url = () => Paths.get.walletTransactions(this.credential.userId, this.credential.userWalletId);
 }
 
-export class CreateWallet extends PutRequestBase<{
-    currency_manage_id: string;
-}> {
+export class CreateWalletProtocol extends PutProtocolBase<
+    {
+        currency_manage_id: string;
+    },
+    NoResponse
+> {
     public url = () => Paths.post.createWallet(this.credential.userId);
 }
 
-export class SetConfigurationRequest extends PutRequestBase<{
-    device_id: string;
-    is_push_notification: boolean;
-}> {
+export class SetConfigurationProtocol extends PutProtocolBase<
+    {
+        device_id: string;
+        is_push_notification: boolean;
+    },
+    NoResponse
+> {
     public url = () => Paths.put.configuraton(this.credential.userId);
 }
 
-export class GetCreationAvailableWallets extends GetRequestBase<NoQuery, {}> {
+export class GetCreationAvailableWalletsProtocol extends GetProtocolBase<NoQuery, {}> {
     public url: () => string;
 }

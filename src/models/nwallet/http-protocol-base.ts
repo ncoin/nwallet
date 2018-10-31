@@ -10,13 +10,13 @@ export class NWHttpError extends Error {
 }
 
 export interface NoQuery {}
-export interface NoResponse {
+export type NoResponse = () => void;
 
-}
-
-export abstract class HttpRequestBase {
-
+export abstract class HttpProtocolBase<TResponse> {
+    public response: TResponse;
     public abstract url: () => string;
+    public abstract method: string;
+
     public header: { [param: string]: string | string[] };
     constructor(protected credential: { userId: string }) {}
 
@@ -25,8 +25,8 @@ export abstract class HttpRequestBase {
     }
 }
 
-export abstract class GetRequestBase<TQuery, TResponse> extends HttpRequestBase {
-    public response: TResponse;
+export abstract class GetProtocolBase<TQuery, TResponse> extends HttpProtocolBase<TResponse> {
+    public method = 'get';
     public query: { [param: string]: string | string[] };
     /** url parameters */
     constructor(credential: { userId: string }) {
@@ -39,10 +39,10 @@ export abstract class GetRequestBase<TQuery, TResponse> extends HttpRequestBase 
     }
 }
 
-export abstract class PostRequestBase<TPayload, TResponse> extends HttpRequestBase {
+export abstract class PostProtocolBase<TPayload, TResponse> extends HttpProtocolBase<TResponse> {
+    public method = 'post';
 
     /** url parameters */
-    public response: TResponse;
     constructor(credential: { userId: string }, public payload?: ParameterExpr<TPayload>) {
         super(credential);
         if (this.payload) {
@@ -56,7 +56,8 @@ export abstract class PostRequestBase<TPayload, TResponse> extends HttpRequestBa
     }
 }
 
-export abstract class PutRequestBase<TPayload> extends HttpRequestBase {
+export abstract class PutProtocolBase<TPayload, TResponse> extends HttpProtocolBase<TResponse> {
+    public method = 'put';
 
     constructor(credential: { userId: string }, public payload?: ParameterExpr<TPayload>) {
         super(credential);
