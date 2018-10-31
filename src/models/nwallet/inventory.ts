@@ -39,11 +39,9 @@ export class Inventory {
 
     public setItems(items: Asset.Item[]): void {
         const asset = this._assets.getValue();
+        items.sort((item, item2) => item.option.order - item2.option.order);
         asset.length = 0;
-        const sort = items.sort((item, item2) => {
-            return item.option.order - item2.option.order;
-        });
-        asset.push(...sort);
+        asset.push(...items);
     }
 
     public addOrUpdateItems(items: Asset.Item[]): void {

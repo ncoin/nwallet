@@ -1,7 +1,7 @@
 import { LoggerService } from '../common/logger/logger.service';
 import { Injectable } from '@angular/core';
 import { PreferenceProvider, Preference } from '../common/preference/preference';
-import { NWAccount, NWAsset, NWTransaction } from '../../models/nwallet';
+import { NWAccount, NWAsset, NWTransaction, NWProtocol } from '../../models/nwallet';
 import { PromiseWaiter } from 'forge/dist/helpers/Promise/PromiseWaiter';
 import { Debug } from '../../utils/helper/debug';
 import { BehaviorSubject, Subscription, Subject, AsyncSubject, Observable, ReplaySubject } from 'rxjs';
@@ -9,8 +9,6 @@ import { ParameterExpr } from 'forge';
 import { EventService } from '../common/event/event';
 import { NWEvent } from '../../interfaces/events';
 import { NsusChannelService } from '../nsus/nsus-channel.service';
-import { NClientService } from '../nsus/nclient.service';
-import { GetWalletTransactionsProtocol } from '../../models/nwallet/http-protocol';
 
 interface AccountStream {
     assetChanged: (func: (asset: NWAsset.Item[]) => void) => Subscription;
@@ -23,13 +21,7 @@ export class AccountService {
     private account: NWAccount.Account;
     private streams: AccountStream;
 
-    constructor(
-        private preference: PreferenceProvider,
-        private logger: LoggerService,
-        private event: EventService,
-        private channel: NsusChannelService,
-        private nClient: NClientService
-    ) {
+    constructor(private preference: PreferenceProvider, private logger: LoggerService, private event: EventService, private channel: NsusChannelService) {
         this.account = new NWAccount.Account();
         this.task = new PromiseWaiter<NWAccount.Account>();
 
@@ -53,9 +45,20 @@ export class AccountService {
             });
         });
 
+        this.channel.register(NWProtocol.PutWalletAlignProtocol, order => {
+            if (order.length < 1) {
+                return;
+            }
+            const assets = this.account.inventory.getAssetItems().getValue();
+            order.forEach((walletId, index) => {
+                const targetAsset = assets.find(asset => asset.getWalletId() === walletId);
+                Debug.assert(targetAsset);
+                targetAsset.option.order = index;
+            });
+
+            this.account.inventory.refresh();
+        });
     }
-
-
 
     public setAccount(userName: string) {
         this.account.setUserName(userName);
