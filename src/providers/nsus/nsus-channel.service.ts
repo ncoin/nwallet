@@ -4,8 +4,14 @@ import { LoggerService } from '../common/logger/logger.service';
 import { NotificationService } from './notification.service';
 import { NWAsset, NWTransaction, NWProtocol } from '../../models/nwallet';
 import { AuthorizationService } from '../auth/authorization.service';
-import { HttpProtocolBase } from '../../models/nwallet/protocol/http/http-protocol';
+import { HttpProtocolBase, HttpProtocol } from '../../models/nwallet/protocol/http/http-protocol';
 import { Subject, Subscription } from 'rxjs';
+interface ProtocolResolver<T, TResponse, TConvert> {
+    convert: (response: TResponse) => TConvert;
+    broadCast: () => this;
+    response: () => TResponse;
+    value: () => TResponse | TConvert;
+}
 
 @Injectable()
 export class NsusChannelService {
@@ -27,7 +33,7 @@ export class NsusChannelService {
     }
 
     //#region Protocol methods
-    private async onRequestProtocol<T extends HttpProtocolBase<TResponse, TConvert>, TResponse, TConvert>(func: (userId: string) => T): Promise<T> {
+    private async onRequestProtocol<T extends HttpProtocol>(func: (userId: string) => T): Promise<T> {
         const token = await this.auth.getToken();
         const userId = token.getUserId();
         const auth = token.getAuth();
@@ -36,45 +42,56 @@ export class NsusChannelService {
             authorization: auth
         };
 
-        this.logger.debug(`[channel] request protcol : ${request.name}`);
+        this.logger.debug(`[channel] protcol requested : ${request.name}`);
         return request;
     }
 
-    private onResolveProtocol<T1, TConvert>(): (value: HttpProtocolBase<T1, TConvert>) => HttpProtocolBase<T1, TConvert> | PromiseLike<HttpProtocolBase<T1, TConvert>> {
+    private onSuccess<T extends HttpProtocol>(): (value: T) => T | PromiseLike<T> {
         return protocol => {
-            this.logger.debug(`[channel] resolve protocol : ${protocol.name}`, protocol.response);
+            this.logger.debug(`[channel] protocol succeed : ${protocol.name}`);
+            if (protocol.response) {
+                this.logger.debug(`[channel] protocol response : ${protocol.name}`, protocol.response);
+            }
             return protocol;
         };
     }
 
-    private onResolveResponse<T1, TConvert>(): (value: HttpProtocolBase<T1, TConvert>) => T1 | PromiseLike<T1> {
+    // hmm.... 1
+    private onBroadcastProtocol<TResponse = object, TConvert = object>(
+        func: (value: HttpProtocolBase<TResponse, TConvert>) => TConvert
+    ): (value: HttpProtocolBase<TResponse, TConvert>) => TConvert {
         return protocol => {
-            this.logger.debug(`[channel] resolve protocol response : ${protocol.name}`, protocol.response);
-            const ret = protocol.response;
-            protocol.response = undefined;
-            return ret;
+            const convert = func(protocol);
+            this.logger.debug(`[channel] protocol broadcast : ${protocol.name}`, convert);
+            this.getOrAdd(protocol.name).next(convert);
+            return convert;
         };
     }
 
-    private onBroadcast<TData, TConvert>(func: (data: TData) => TConvert): (protocol: HttpProtocolBase<TData, TConvert>) => TConvert | PromiseLike<TConvert> {
+    private onRetrieveResponse<T1, TConvert>(): (value: HttpProtocolBase<T1, TConvert>) => T1 | PromiseLike<T1> {
         return protocol => {
-            const convertData = func(protocol.response);
-            this.logger.debug(`[channel] broadcast protocol : ${protocol.name}`, convertData);
+            return protocol.response;
+        };
+    }
 
-            this.getOrAdd(protocol.name).next(convertData);
-            return convertData;
+    // hmm.... 2
+    private onBroadcastResponse<TResponse, TConvert>(func: (value: TResponse) => TConvert): (proto: HttpProtocolBase<TResponse, TConvert>) => TConvert {
+        return protocol => {
+            const convert = func(protocol.response);
+            this.logger.debug(`[channel] protocol broadcast : ${protocol.name}`, convert);
+            this.getOrAdd(protocol.name).next(convert);
+            return convert;
         };
     }
 
     private onError<T>(failover: T): (protocol: any) => T | PromiseLike<T> {
         return protocol => {
-            this.logger.error(`[channel] error occured : ${protocol.name}`, protocol);
+            this.logger.error(`[channel] protocol error : ${protocol.name}`, protocol);
             return failover;
         };
     }
 
     //#endregion
-
     // todo merge request process --sky
     public async requestPhoneVerification(phoneNumber: string): Promise<boolean> {
         return true;
@@ -87,15 +104,16 @@ export class NsusChannelService {
     public async fetchTicker(): Promise<NWProtocol.Ticker[]> {
         return await this.nClient
             .get(await this.onRequestProtocol(userId => new NWProtocol.GetTickerProtocol({ userId: userId })))
-            .then(this.onResolveResponse())
+            .then(this.onSuccess())
+            .then(this.onRetrieveResponse())
             .catch(this.onError([]));
     }
 
     public async getAssets(): Promise<NWAsset.Item[]> {
         return await this.nClient
             .get(await this.onRequestProtocol(userId => new NWProtocol.GetWalletProtocol({ userId: userId })))
-            .then(this.onResolveProtocol())
-            .then(this.onBroadcast(protocol => protocol.map(p => new NWAsset.Item().initData(p))))
+            .then(this.onSuccess())
+            .then(this.onBroadcastResponse(response => response.map(data => new NWAsset.Item().initData(data))))
             .catch(this.onError([]));
     }
 
@@ -106,7 +124,7 @@ export class NsusChannelService {
     //         .catch(this.onError('asset-detail : failed'));
     // };
 
-    public async getWalletTransactions(walletId: number, offset: number, limit: number): Promise<NWTransaction.Item[]> {
+    public async getWalletTransactions(walletId: number, offset: number, limit: number) {
         return await this.nClient
             .get(
                 await this.onRequestProtocol(userId =>
@@ -116,15 +134,15 @@ export class NsusChannelService {
                     })
                 )
             )
-            .then(this.onResolveProtocol())
-            .then(this.onBroadcast(datas => datas.map(data => new NWTransaction.Item(data))))
+            .then(this.onSuccess())
+            .then(this.onBroadcastResponse(r => r.map(data => new NWTransaction.Item(data))))
             .catch(this.onError([]));
     }
 
     public async getSendAssetFee(walletId: number): Promise<number> {
         return await this.nClient
             .get(await this.onRequestProtocol(userId => new NWProtocol.GetSendAssetFeeProtocol({ userId: userId, userWalletId: walletId })))
-            .then(this.onResolveResponse())
+            .then(this.onRetrieveResponse())
             .catch(this.onError(-1));
     }
 
@@ -138,12 +156,12 @@ export class NsusChannelService {
                     })
                 )
             )
-            .then(this.onResolveResponse())
+            .then(this.onSuccess())
             .then(() => true)
             .catch(this.onError(false));
     }
 
-    public async changeWalletOrder(align: number[]): Promise<number[]> {
+    public async changeWalletOrder(align: number[]) {
         return await this.nClient
             .put(
                 await this.onRequestProtocol(userId =>
@@ -152,9 +170,24 @@ export class NsusChannelService {
                     })
                 )
             )
-            .then(this.onResolveProtocol())
-            .then(this.onBroadcast(() => align))
+            .then(this.onSuccess())
+            .then(this.onBroadcastResponse(r => align))
             .catch(this.onError([]));
+    }
+
+    public async changeWalletVisibility(walletId: number, isVisible: boolean): Promise<boolean> {
+        return await this.nClient
+            .put(
+                await this.onRequestProtocol(userId =>
+                    new NWProtocol.PutWalletVisibilityProtocol({ userId: userId, userWalletId: walletId }).setPayload(payload => {
+                        payload.is_show = isVisible;
+                    })
+                )
+            )
+            .then(this.onSuccess())
+            .then(this.onBroadcastResponse(() => ({ walletId: walletId, isVisible: isVisible })))
+            .then(() => true)
+            .catch(this.onError(false));
     }
 
     public async getUserManageWallets(): Promise<NWAsset.Item[]> {
@@ -173,7 +206,7 @@ export class NsusChannelService {
     public async setUserPush(isOn: boolean): Promise<boolean> {
         return await this.nClient
             .put(await this.onRequestProtocol(userId => new NWProtocol.SetConfigurationProtocol({ userId: userId })))
-            .then(this.onResolveProtocol())
+            .then(this.onSuccess())
             .then(() => true)
             .catch(this.onError(false));
     }

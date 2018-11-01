@@ -12,17 +12,24 @@ export type NoResponse = () => void;
 export type NoConvert = () => void;
 export type methodType = 'get' | 'post' | 'put';
 
-export abstract class HttpProtocolBase<TResponse, TConvert> {
-    public response: TResponse;
-    public error: any;
+export abstract class HttpProtocol {
+    public response: any;
+
     public abstract url: () => string;
     public abstract method: methodType;
-
     public header: { [param: string]: string | string[] };
-    constructor(protected credential: { userId: string }) {}
-
     public get name(): string {
         return this.constructor.name;
+    }
+}
+
+export abstract class HttpProtocolBase<TResponse, TConvert> extends HttpProtocol {
+    public response: TResponse;
+
+    public error: any;
+
+    constructor(protected credential: { userId: string }) {
+        super();
     }
 
     public convert(data: TResponse): TConvert {

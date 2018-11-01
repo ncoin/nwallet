@@ -49,14 +49,14 @@ export class ManageWalletPage extends ModalBasePage implements OnDestroy {
             this.subscriptions.push(
                 subjects.assetChanged(assets => {
                     this.assets = assets;
-
                 })
             );
         });
     }
 
-    public onChangeVisibility(asset: NWAsset.Item): void {
-        asset.option.isShow = !asset.option.isShow;
+    public async onChangeVisibility(asset: NWAsset.Item): Promise<void> {
+        const value = !asset.option.isShow;
+        await this.channel.changeWalletVisibility(asset.getWalletId(), value);
     }
 
     public reorderItems(indexes: any): void {
@@ -77,7 +77,6 @@ export class ManageWalletPage extends ModalBasePage implements OnDestroy {
         });
 
         this.isReorderd = true;
-
 
         this.channel.changeWalletOrder(this.assets.map(asset => asset.getWalletId()));
     }

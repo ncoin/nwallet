@@ -16,6 +16,6 @@ export const Paths = {
     put: {
         configuraton: (userId: string) => `users/${userId}/cofiguration/push`,
         walletAlign: (userId: string) => `users/${userId}/wallets/align`,
-        walletVisibility: (userId: string, userWalletId: number) => `users/${userId}/wallets/${userWalletId}/visbility`
+        walletVisibility: (userId: string, userWalletId: number) => `users/${userId}/wallets/${userWalletId}/visibility`
     }
 };

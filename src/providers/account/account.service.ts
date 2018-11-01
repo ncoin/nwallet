@@ -58,6 +58,14 @@ export class AccountService {
 
             this.account.inventory.refresh();
         });
+
+        this.channel.register(NWProtocol.PutWalletVisibilityProtocol, context => {
+            const item = this.account.inventory.getAssetItems().getValue().find(e => e.getWalletId() === context.walletId);
+            if (item) {
+                item.option.isShow = context.isVisible;
+                this.account.inventory.refresh();
+            }
+        });
     }
 
     public setAccount(userName: string) {

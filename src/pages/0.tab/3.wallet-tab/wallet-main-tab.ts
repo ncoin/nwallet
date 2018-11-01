@@ -77,7 +77,8 @@ export class WalletMainTabPage {
     }
 
     private onAssetChanged = async (assets: NWAsset.Item[]): Promise<void> => {
-        const items = assets.slice();
+        let items = assets.slice();
+        items = items.filter(item => item.option.isShow);
         this.logger.debug('[wallet-main-tab] on refresh assets');
 
         this.assetSlides.length = 0;

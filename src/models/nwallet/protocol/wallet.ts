@@ -26,7 +26,7 @@ export class PutWalletAlignProtocol extends PutProtocolBase<{ user_wallet_ids: n
     public url = () => Paths.put.walletAlign(this.credential.userId);
 }
 
-export class PutWalletVisibilityProtocol extends PutProtocolBase<{ user_wallet_id: number; is_show: number }, NoResponse, boolean> {
+export class PutWalletVisibilityProtocol extends PutProtocolBase<{ is_show: boolean }, NoResponse, { walletId: number; isVisible: boolean }> {
     constructor(protected credential: { userId: string; userWalletId: number }) {
         super(credential);
     }
