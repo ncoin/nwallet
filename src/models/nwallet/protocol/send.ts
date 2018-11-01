@@ -1,5 +1,6 @@
-import { PostProtocolBase, GetProtocolBase, NoQuery, NoConvert, Paths } from './http/http-protocol';
+import { PostProtocolBase, GetProtocolBase, NoQuery, NoConvert } from './http/http-protocol';
 import { NWTransaction } from '../../nwallet';
+import { Paths } from './http/paths';
 
 export class GetSendAssetFeeProtocol extends GetProtocolBase<NoQuery, number, NoConvert> {
     /**

@@ -2,14 +2,9 @@ import { Injectable } from '@angular/core';
 import { NClientService } from './nclient.service';
 import { LoggerService } from '../common/logger/logger.service';
 import { NotificationService } from './notification.service';
-import { NWAsset, NWTransaction } from '../../models/nwallet';
-import { HttpErrorResponse } from '@angular/common/http';
-import { GetWalletProtocol, SetConfigurationProtocol, GetWalletDetailProtocol, GetWalletTransactionsProtocol } from '../../models/nwallet/protocol';
-import { Ticker, GetTickerProtocol } from '../../models/nwallet/protocol/ticker';
+import { NWAsset, NWTransaction, NWProtocol } from '../../models/nwallet';
 import { AuthorizationService } from '../auth/authorization.service';
 import { HttpProtocolBase } from '../../models/nwallet/protocol/http/http-protocol';
-import { GetSendAssetFeeProtocol, SendAssetProtocol } from '../../models/nwallet/protocol/send';
-import { PutWalletAlignProtocol } from '../../models/nwallet/protocol/wallet-align';
 import { Subject, Subscription } from 'rxjs';
 
 @Injectable()
@@ -72,8 +67,8 @@ export class NsusChannelService {
     }
 
     private onError<T>(failover: T): (protocol: any) => T | PromiseLike<T> {
-        return error => {
-            this.logger.debug(`[channel] error occured : ${error}`, error);
+        return protocol => {
+            this.logger.error(`[channel] error occured : ${protocol.name}`, protocol);
             return failover;
         };
     }
@@ -89,16 +84,16 @@ export class NsusChannelService {
         return true;
     }
 
-    public async fetchTicker(): Promise<Ticker[]> {
+    public async fetchTicker(): Promise<NWProtocol.Ticker[]> {
         return await this.nClient
-            .get(await this.onRequestProtocol(userId => new GetTickerProtocol({ userId: userId })))
+            .get(await this.onRequestProtocol(userId => new NWProtocol.GetTickerProtocol({ userId: userId })))
             .then(this.onResolveResponse())
             .catch(this.onError([]));
     }
 
     public async getAssets(): Promise<NWAsset.Item[]> {
         return await this.nClient
-            .get(await this.onRequestProtocol(userId => new GetWalletProtocol({ userId: userId })))
+            .get(await this.onRequestProtocol(userId => new NWProtocol.GetWalletProtocol({ userId: userId })))
             .then(this.onResolveProtocol())
             .then(this.onBroadcast(protocol => protocol.map(p => new NWAsset.Item().initData(p))))
             .catch(this.onError([]));
@@ -115,7 +110,7 @@ export class NsusChannelService {
         return await this.nClient
             .get(
                 await this.onRequestProtocol(userId =>
-                    new GetWalletTransactionsProtocol({ userId: userId, userWalletId: walletId }).setQuery(query => {
+                    new NWProtocol.GetWalletTransactionsProtocol({ userId: userId, userWalletId: walletId }).setQuery(query => {
                         query.offset = offset;
                         query.limit = limit;
                     })
@@ -128,7 +123,7 @@ export class NsusChannelService {
 
     public async getSendAssetFee(walletId: number): Promise<number> {
         return await this.nClient
-            .get(await this.onRequestProtocol(userId => new GetSendAssetFeeProtocol({ userId: userId, userWalletId: walletId })))
+            .get(await this.onRequestProtocol(userId => new NWProtocol.GetSendAssetFeeProtocol({ userId: userId, userWalletId: walletId })))
             .then(this.onResolveResponse())
             .catch(this.onError(-1));
     }
@@ -137,7 +132,7 @@ export class NsusChannelService {
         return await this.nClient
             .post(
                 await this.onRequestProtocol(userId =>
-                    new SendAssetProtocol({ userId: userId, userWalletId: walletId }).setPayload(payload => {
+                    new NWProtocol.SendAssetProtocol({ userId: userId, userWalletId: walletId }).setPayload(payload => {
                         payload.amount = amount;
                         payload.recipient_address = address;
                     })
@@ -152,7 +147,7 @@ export class NsusChannelService {
         return await this.nClient
             .put(
                 await this.onRequestProtocol(userId =>
-                    new PutWalletAlignProtocol({ userId: userId }).setPayload(payload => {
+                    new NWProtocol.PutWalletAlignProtocol({ userId: userId }).setPayload(payload => {
                         payload.user_wallet_ids = align;
                     })
                 )
@@ -177,7 +172,7 @@ export class NsusChannelService {
      */
     public async setUserPush(isOn: boolean): Promise<boolean> {
         return await this.nClient
-            .put(await this.onRequestProtocol(userId => new SetConfigurationProtocol({ userId: userId })))
+            .put(await this.onRequestProtocol(userId => new NWProtocol.SetConfigurationProtocol({ userId: userId })))
             .then(this.onResolveProtocol())
             .then(() => true)
             .catch(this.onError(false));

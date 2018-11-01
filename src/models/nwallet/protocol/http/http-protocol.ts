@@ -1,26 +1,5 @@
-import { HttpErrorResponse, HttpParams } from '@angular/common/http';
+import { HttpErrorResponse } from '@angular/common/http';
 import { ParameterExpr, createExpr } from 'forge';
-
-export const Paths = {
-    get: {
-        wallets: (userId: string) => `users/${userId}/wallets`,
-        walletDetail: (userId: string, userWalletId: number) => `users/${userId}/wallets/${userWalletId}`,
-        walletTransactions: (userId: string, userWalletId: number) => `users/${userId}/wallets/${userWalletId}/transactions`,
-        creationAvailableWallets: (userId: string) => `users/${userId}/wallets/available`,
-        ticker: (userId: string) => `users/${userId}/tickers`,
-        sendAssetFee: (userId: string, userWalletId: number) => `users/${userId}/wallets/${userWalletId}/send/fee`
-    },
-
-    post: {
-        createWallet: (userId: string) => `/users/${userId}/wallets`,
-        sendAsset: (userId: string, userWalletId: number) => `users/${userId}/wallets/${userWalletId}/send`
-    },
-
-    put: {
-        configuraton: (userId: string) => `users/${userId}/cofiguration/push`,
-        walletAlign: (userId: string) => `users/${userId}/wallets/align`
-    }
-};
 
 export class NWHttpError extends Error {
     constructor(public response: HttpErrorResponse) {
@@ -31,12 +10,13 @@ export class NWHttpError extends Error {
 export interface NoQuery {}
 export type NoResponse = () => void;
 export type NoConvert = () => void;
+export type methodType = 'get' | 'post' | 'put';
 
 export abstract class HttpProtocolBase<TResponse, TConvert> {
     public response: TResponse;
     public error: any;
     public abstract url: () => string;
-    public abstract method: string;
+    public abstract method: methodType;
 
     public header: { [param: string]: string | string[] };
     constructor(protected credential: { userId: string }) {}
@@ -51,7 +31,8 @@ export abstract class HttpProtocolBase<TResponse, TConvert> {
 }
 
 export abstract class GetProtocolBase<TQuery, TResponse, TConvert> extends HttpProtocolBase<TResponse, TConvert> {
-    public method = 'get';
+    public method: methodType = 'get';
+
     public query: { [param: string]: string | string[] };
     /** url parameters */
     constructor(credential: { userId: string }) {
@@ -65,7 +46,7 @@ export abstract class GetProtocolBase<TQuery, TResponse, TConvert> extends HttpP
 }
 
 export abstract class PostProtocolBase<TPayload, TResponse, TConvert> extends HttpProtocolBase<TResponse, TConvert> {
-    public method = 'post';
+    public method: methodType = 'post';
 
     /** url parameters */
     constructor(credential: { userId: string }, public payload?: ParameterExpr<TPayload>) {
@@ -82,8 +63,7 @@ export abstract class PostProtocolBase<TPayload, TResponse, TConvert> extends Ht
 }
 
 export abstract class PutProtocolBase<TPayload, TResponse, TConvert> extends HttpProtocolBase<TResponse, TConvert> {
-    public method = 'put';
-
+    public method: methodType = 'put';
     constructor(credential: { userId: string }, public payload?: ParameterExpr<TPayload>) {
         super(credential);
         if (this.payload) {

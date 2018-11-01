@@ -1,5 +1,6 @@
-import { GetProtocolBase, NoQuery, NoConvert, Paths } from './http/http-protocol';
+import { GetProtocolBase, NoQuery, NoConvert } from './http/http-protocol';
 
+import { Paths } from './http/paths';
 
 export class Ticker {
     site: string;
