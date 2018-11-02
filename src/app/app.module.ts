@@ -9,6 +9,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { IonicStorageModule } from '@ionic/storage';
 import { NWalletApp } from './app.component';
 import { NWalletProvidersModule } from '../providers/providers.module';
+import { ScreenOrientation } from '@ionic-native/screen-orientation';
 import { FingerprintAIO } from '@ionic-native/fingerprint-aio';
 import { StatusBar } from '@ionic-native/status-bar';
 import { Vibration } from '@ionic-native/vibration';
@@ -71,7 +72,11 @@ export class MissingHandler implements MissingTranslationHandler {
     ],
     bootstrap: [IonicApp],
     entryComponents: [NWalletApp],
-    providers: [{ provide: ErrorHandler, useClass: IonicErrorHandler }, InAppBrowser, SplashScreen, FingerprintAIO, StatusBar, Vibration, Device, Clipboard, QRScanner]
+    providers: [
+        { provide: ErrorHandler, useClass: IonicErrorHandler },
+        // native plugins
+        ...[InAppBrowser, SplashScreen, FingerprintAIO, StatusBar, Vibration, Device, Clipboard, QRScanner, ScreenOrientation]
+    ]
 })
 export class AppModule {
     constructor(config: Config) {

@@ -1,26 +1,23 @@
 page-entrance {
-    ion-content {
-
+    .container {
         text-align: center;
-    
+
         .logo {
             margin: 80px 0 0 0;
             max-width: 150px;
             max-height: 150px;
         }
-    
+
         .title {
             font-size: calc(16px + 4vw);
         }
     }
-    
-    
-    ion-footer {
-        button.btn.default {
-            width: 90%;
-            margin: auto auto 5% auto;
-            text-align: center;
-        }
+
+    .btn.default {
+        width: 90%;
+        margin: auto auto 5% auto;
+        text-align: center;
     }
-    
+
+
 }

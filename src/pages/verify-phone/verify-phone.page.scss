@@ -1,15 +1,29 @@
 page-verify-phone {
-    .logo {
-        padding: 0 35% 0 35%;
+    .scroll-content {
+        display: flex;
+        flex-direction: column;
+        overflow: unset;
     }
+    .container {
+        flex-grow: 1;
+        margin-top: -50px;
+    }
+    .logo {
+        width: 15vw;;
+        display: block;
+        margin: 0 auto;
+    }
+
     .enter-mobile-number {
         text-align: center;
         font-size: 2rem;
         margin: 6% 0 0 0;
     }
+
     .country {
         width: 100%;
         padding: 4% 3% 0% 3%;
+
         .country-code-button {
             display: inline-block;
             font-size: 2.2rem;
@@ -28,15 +42,34 @@ page-verify-phone {
         .phone-number {
             width: 65%;
             font-size: 2.3rem;
-
             float: right;
             color: $color-secondary;
             background: white;
         }
     }
+
     .next-button {
         font-size: 2.5rem;
         width: 95%;
         margin: 5% 2.5% 0 2.5%;
+    }
+
+    .keypad {
+        min-height: 200px
+    }
+
+    // dynamic state
+    @media screen and (max-width: 768px),
+    screen and (max-height:600px) {
+        .logo {
+            //max-height: 200px;
+        }
+    }
+
+    // static small
+    @media screen and (min-width:768px) and (min-height:600px) and (max-height:768px) {
+        .logo {
+            width: 100px;
+        }
     }
 }

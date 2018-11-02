@@ -3,15 +3,15 @@ import { Debug } from '../../utils/helper/debug';
 
 export class Personal {
     public email: string;
-    public phoneNumber: string;
+    public phoneNumber = '';
     private pincode: string;
     public pincodeEnabled: boolean;
 
     constructor() {
         if (env.name === 'dev') {
-            this.email = 'sample@email.com';
-            this.phoneNumber = '+82-1088888888';
-            this.pincodeEnabled = true;
+            // this.email = 'sample@email.com';
+            // this.phoneNumber = '+82-1088888888';
+            // this.pincodeEnabled = true;
         }
     }
 

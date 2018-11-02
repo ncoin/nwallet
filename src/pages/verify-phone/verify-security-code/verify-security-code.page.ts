@@ -18,7 +18,14 @@ export class VerifySecuritycodePage {
     public phoneNumber: string;
     public expiredTimeSpan: number;
 
-    constructor(private navCtrl: NavController, private navParams: NavParams, private logger: LoggerService, private parent: ModalNavPage, private app: NWalletAppService) {
+    constructor(
+        private navCtrl: NavController,
+        private navParams: NavParams,
+        private orientation: ScreenOrientation,
+        private logger: LoggerService,
+        private parent: ModalNavPage,
+        private app: NWalletAppService
+    ) {
         this.previousView = this.navParams.get('viewCtrl');
         this.phoneNumber = this.navParams.get('phoneNumber');
         this.expiredTimeSpan = 60 * 3 * 1000;
@@ -51,6 +58,7 @@ export class VerifySecuritycodePage {
         // todo auth success --sky
         this.app.enter(this.phoneNumber);
         this.parent.close();
+        this.orientation.unlock();
     }
 
     public onInput(input: any): void {

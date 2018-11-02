@@ -1,28 +1,30 @@
 <ion-header>
     <ion-navbar>
+        <ion-title>
+        </ion-title>
     </ion-navbar>
 </ion-header>
 <ion-content padding>
-    <img class="logo" src="assets/img/appicon.png">
-    <div class="enter-mobile-number">
-        {{'EnterYourMobileNumber' | translate}}
+    <div class="container">
+        <img class="logo" src="assets/img/appicon.png">
+        <div class="enter-mobile-number">
+            {{'EnterYourMobileNumber' | translate}}
+        </div>
+        <div class="country">
+            <button class="country-code-button" (click)="onCountryChanged($event)">
+                <span class="country-code-logo">ㅇ</span>
+                <div class="country-code-dial">
+                    <span *ngIf="selectedCountry">+{{selectedCountry.code}}</span>
+                    <ion-icon name="arrow-dropdown"></ion-icon>
+                </div>
+            </button>
+            <input class="phone-number" [readonly]="true" [value]="phoneNumber" placeholder="{{'MobileNumber' | translate}}" />
+        </div>
+        <div>
+            <button class="next-button" (click)="onClick_Next()">
+                Next
+            </button>
+        </div>
     </div>
-    <div class="country">
-        <button class="country-code-button" (click)="onCountryChanged($event)">
-            <span class="country-code-logo" >ㅇ</span>
-            <div class="country-code-dial">
-                <span *ngIf="selectedCountry">+{{selectedCountry.code}}</span>
-                <ion-icon name="arrow-dropdown"></ion-icon>
-            </div>
-        </button>
-        <input class="phone-number" [readonly]="true" [value]="phoneNumber" placeholder="{{'MobileNumber' | translate}}" />
-    </div>
-    <div>
-        <button class="next-button" (click)="onClick_Next()">
-            Next
-        </button>
-    </div>
+    <nw-key-pad class="keypad" (keystroke)=onInput($event)></nw-key-pad>
 </ion-content>
-<ion-footer>
-    <nw-key-pad (keystroke)=onInput($event)></nw-key-pad>
-</ion-footer>

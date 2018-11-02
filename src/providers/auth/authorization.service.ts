@@ -97,7 +97,6 @@ export class AuthorizationService {
     private async issueToken(isRefresh: boolean): Promise<Token> {
         let payload: NWAuthProtocol.TokenPayload;
         const tokenKind = isRefresh ? 'refresh' : 'new';
-
         this.logger.debug(`[auth] issue token begin : ${tokenKind} ...`);
 
         if (isRefresh) {
@@ -131,4 +130,8 @@ export class AuthorizationService {
 
         return issuedToken;
     }
+
+    public async verifyMobileNumber(countryCode: string, number: number, deviceId: string) {}
+
+    public async verifySecurityCode() {}
 }

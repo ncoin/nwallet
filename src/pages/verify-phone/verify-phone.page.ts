@@ -8,6 +8,7 @@ import { LocaleService, CountryService } from 'ng4-intl-phone';
 import { InternationalPhoneComponent } from '../../components/popovers/international-phone/international-phone';
 import { VerifySuccessPage } from './verify-success/verify-success.page';
 import { VerifySecuritycodePage } from './verify-security-code/verify-security-code.page';
+import { ScreenOrientation, ORien } from '@ionic-native/screen-orientation';
 
 // todo [important] Guard impl!!
 @IonicPage()
@@ -24,11 +25,13 @@ export class VerifyPhonePage extends ModalBasePage {
         navCtrl: NavController,
         navParams: NavParams,
         parent: ModalNavPage,
+        private orientation: ScreenOrientation,
         private popover: PopoverController,
         protected logger: LoggerService,
         private loading: LoadingController
     ) {
         super(navCtrl, navParams, parent);
+        this.orientation.lock(this.orientation.ORIENTATIONS.PORTRAIT);
     }
 
     public onInput(input: any): void {
