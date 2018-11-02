@@ -10,6 +10,8 @@ import { Token } from '../../models/nwallet/token';
 import { EventService } from '../common/event/event';
 import { NWEvent } from '../../interfaces/events';
 import { Debug } from '../../utils/helper/debug';
+import { NClientService } from '../nsus/nclient.service';
+import { NWAuthProtocol } from '../../models/nwallet';
 
 // for test (remove me) --sky`
 const nonceRange = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -36,7 +38,7 @@ export class AuthorizationService {
     private init: PromiseWaiter<boolean>;
     private deviceId: string;
     private userName: string;
-    constructor(private http: HttpClient, private logger: LoggerService, private device: Device, private preference: PreferenceProvider, private event: EventService) {
+    constructor(private logger: LoggerService, private device: Device, private preference: PreferenceProvider, private event: EventService, private nClient: NClientService) {
         this.deviceId = this.device.uuid ? this.device.uuid : getNonce();
         this.initialize();
     }
@@ -93,7 +95,7 @@ export class AuthorizationService {
     }
 
     private async issueToken(isRefresh: boolean): Promise<Token> {
-        let payload;
+        let payload: NWAuthProtocol.TokenPayload;
         const tokenKind = isRefresh ? 'refresh' : 'new';
 
         this.logger.debug(`[auth] issue token begin : ${tokenKind} ...`);
@@ -116,19 +118,11 @@ export class AuthorizationService {
             }
         }
 
-        const issuedToken = await this.http
-            .post<Token>(env.endpoint.token(), payload, {
-                headers: {
-                    Authorization: `Basic ${btoa(`app-n-wallet:app-n-wallet`)}`,
-                    'Content-Type': 'application/json',
-                    Accept: 'application/json'
-                }
-            })
-            .toPromise()
-            .then(tokenData => {
-                const token = Object.assign(new Token(), tokenData).setExpiration();
+        const issuedToken = await this.nClient
+            .post(new NWAuthProtocol.Token().setPayload(payload))
+            .then(protocol => {
                 this.logger.debug(`[auth] issue token done : ${tokenKind}`);
-                return token;
+                return protocol.convert();
             })
             .catch((response: HttpErrorResponse) => {
                 this.logger.error(`[auth] issue token failed : ${tokenKind}`, response);

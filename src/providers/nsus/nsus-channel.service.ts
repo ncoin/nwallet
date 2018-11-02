@@ -57,7 +57,7 @@ export class NsusChannelService {
     }
 
     // hmm.... 1
-    private onBroadcastProtocol<TResponse = object, TConvert = object>(
+    private onBroadcast<TResponse = object, TConvert = object>(
         func: (value: HttpProtocolBase<TResponse, TConvert>) => TConvert
     ): (value: HttpProtocolBase<TResponse, TConvert>) => TConvert {
         return protocol => {
@@ -103,7 +103,7 @@ export class NsusChannelService {
 
     public async fetchTicker(): Promise<NWProtocol.Ticker[]> {
         return await this.nClient
-            .get(await this.onRequestProtocol(userId => new NWProtocol.GetTickerProtocol({ userId: userId })))
+            .get(await this.onRequestProtocol(userId => new NWProtocol.GetTickers({ userId: userId })))
             .then(this.onSuccess())
             .then(this.onRetrieveResponse())
             .catch(this.onError([]));
@@ -111,7 +111,7 @@ export class NsusChannelService {
 
     public async getAssets(): Promise<NWAsset.Item[]> {
         return await this.nClient
-            .get(await this.onRequestProtocol(userId => new NWProtocol.GetWalletProtocol({ userId: userId })))
+            .get(await this.onRequestProtocol(userId => new NWProtocol.GetWallets({ userId: userId })))
             .then(this.onSuccess())
             .then(this.onBroadcastResponse(response => response.map(data => new NWAsset.Item().initData(data))))
             .catch(this.onError([]));
@@ -128,7 +128,7 @@ export class NsusChannelService {
         return await this.nClient
             .get(
                 await this.onRequestProtocol(userId =>
-                    new NWProtocol.GetWalletTransactionsProtocol({ userId: userId, userWalletId: walletId }).setQuery(query => {
+                    new NWProtocol.GetWalletTransactions({ userId: userId, userWalletId: walletId }).setQuery(query => {
                         query.offset = offset;
                         query.limit = limit;
                     })
@@ -141,7 +141,7 @@ export class NsusChannelService {
 
     public async getSendAssetFee(walletId: number): Promise<number> {
         return await this.nClient
-            .get(await this.onRequestProtocol(userId => new NWProtocol.GetSendAssetFeeProtocol({ userId: userId, userWalletId: walletId })))
+            .get(await this.onRequestProtocol(userId => new NWProtocol.GetSendAssetFee({ userId: userId, userWalletId: walletId })))
             .then(this.onRetrieveResponse())
             .catch(this.onError(-1));
     }
@@ -150,7 +150,7 @@ export class NsusChannelService {
         return await this.nClient
             .post(
                 await this.onRequestProtocol(userId =>
-                    new NWProtocol.SendAssetProtocol({ userId: userId, userWalletId: walletId }).setPayload(payload => {
+                    new NWProtocol.PostSendAsset({ userId: userId, userWalletId: walletId }).setPayload(payload => {
                         payload.amount = amount;
                         payload.recipient_address = address;
                     })
@@ -165,7 +165,7 @@ export class NsusChannelService {
         return await this.nClient
             .put(
                 await this.onRequestProtocol(userId =>
-                    new NWProtocol.PutWalletAlignProtocol({ userId: userId }).setPayload(payload => {
+                    new NWProtocol.PutWalletAlign({ userId: userId }).setPayload(payload => {
                         payload.user_wallet_ids = align;
                     })
                 )
@@ -179,22 +179,28 @@ export class NsusChannelService {
         return await this.nClient
             .put(
                 await this.onRequestProtocol(userId =>
-                    new NWProtocol.PutWalletVisibilityProtocol({ userId: userId, userWalletId: walletId }).setPayload(payload => {
+                    new NWProtocol.PutWalletVisibility({ userId: userId, userWalletId: walletId }).setPayload(payload => {
                         payload.is_show = isVisible;
                     })
                 )
             )
             .then(this.onSuccess())
-            .then(this.onBroadcastResponse(() => ({ walletId: walletId, isVisible: isVisible })))
+            .then(this.onBroadcast(protocol => protocol.convert()))
             .then(() => true)
             .catch(this.onError(false));
     }
 
-    public async getUserManageWallets(): Promise<NWAsset.Item[]> {
-        return [];
+    public async getAvailableWallets(): Promise<NWAsset.Available[]> {
+        return await this.nClient
+            .get(await this.onRequestProtocol(userId => new NWProtocol.AvailableWallet({ userId: userId })))
+            .then(this.onSuccess())
+            .then(this.onBroadcast(protocol => protocol.convert()))
+            .catch(this.onError([]));
     }
 
-    public async getSupportedWallets(): Promise<void> {}
+    public async createWallet() {
+        return await this.nClient.post(await this.onRequestProtocol(userId => new NWProtocol.CreateWallet({ userId: userId }, payload => {})));
+    }
 
     /**
      *
@@ -205,7 +211,7 @@ export class NsusChannelService {
      */
     public async setUserPush(isOn: boolean): Promise<boolean> {
         return await this.nClient
-            .put(await this.onRequestProtocol(userId => new NWProtocol.SetConfigurationProtocol({ userId: userId })))
+            .put(await this.onRequestProtocol(userId => new NWProtocol.PutConfiguration({ userId: userId })))
             .then(this.onSuccess())
             .then(() => true)
             .catch(this.onError(false));

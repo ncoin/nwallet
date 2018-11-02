@@ -7,10 +7,8 @@ export const env: Environments = {
     name: 'dev',
     network: Schema.network,
     endpoint: {
-        client: 'http://api.dev.ncoin.com:8080/api/v2/',
         stream: (type: 'ticker' | 'wallet', token: string) => `http://api.dev.ncoin.com:4001/streams/${type}?token=${token}`,
-        auth: 'http://api.dev.ncoin.com:8080/',
-        api: (path: string) => `${env.endpoint.client}${path}`,
-        token: () => `${env.endpoint.auth}${Constants.tokenPath}`
+        uaa: (path: string) => `http://api.dev.ncoin.com:8080/uaa/api/${path}`,
+        api: (path: string) => `http://api.dev.ncoin.com:8080/api/v2/${path}`,
     }
 };

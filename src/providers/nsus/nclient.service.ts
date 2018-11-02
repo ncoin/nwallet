@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { LoggerService } from '../common/logger/logger.service';
-import { env } from '../../environments/environment';
 import { GetProtocolBase, PutProtocolBase, PostProtocolBase } from '../../models/nwallet/protocol/http/http-protocol';
 import { Debug } from '../../utils/helper/debug';
 
@@ -14,7 +13,7 @@ export class NClientService {
         Debug.assert(protocol.method === 'get');
 
         return this.http
-            .get<TResponse>(env.endpoint.api(protocol.url()), {
+            .get<TResponse>(protocol.url(), {
                 headers: protocol.header,
                 params: protocol.query
             })
@@ -34,7 +33,7 @@ export class NClientService {
         Debug.assert(protocol.method === 'put');
 
         return this.http
-            .put<TResponse>(env.endpoint.api(protocol.url()), protocol.payload, {
+            .put<TResponse>(protocol.url(), protocol.payload, {
                 headers: protocol.header
             })
             .toPromise()
@@ -53,7 +52,7 @@ export class NClientService {
         Debug.assert(protocol.method === 'post');
 
         return this.http
-            .post<TResponse>(env.endpoint.api(protocol.url()), protocol.payload, {
+            .post<TResponse>(protocol.url(), protocol.payload, {
                 headers: protocol.header
             })
             .toPromise()

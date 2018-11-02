@@ -17,7 +17,7 @@
     <div class="add-asset-list" *ngIf="assets && assets.length > 0">
         <ion-list>
             <!-- inactive item preload -->
-            <div *ngFor="let asset of assets" [style.display]="asset.option.isActive ? 'none' : 'block'">
+            <div *ngFor="let asset of assets">
                 <div class="asset">
                     <img src="assets/img/symbol_BTC.png" />
                     <div>{{asset.getSymbol()}}</div>

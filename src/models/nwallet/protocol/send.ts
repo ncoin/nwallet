@@ -2,7 +2,7 @@ import { PostProtocolBase, GetProtocolBase, NoQuery, NoConvert } from './http/ht
 import { NWTransaction } from '../../nwallet';
 import { Paths } from './http/paths';
 
-export class GetSendAssetFeeProtocol extends GetProtocolBase<NoQuery, number, NoConvert> {
+export class GetSendAssetFee extends GetProtocolBase<NoQuery, number, NoConvert> {
     /**
      *Creates an instance of GetSendAssetFeeRequest.
      * @param {{ userId: string; userWalletId: number }} credential
@@ -14,7 +14,7 @@ export class GetSendAssetFeeProtocol extends GetProtocolBase<NoQuery, number, No
     }
     public url = () => Paths.get.sendAssetFee(this.credential.userId, this.credential.userWalletId);
 }
-export class SendAssetProtocol extends PostProtocolBase<{ recipient_address: string; amount: number }, NWTransaction.Detail, NoConvert> {
+export class PostSendAsset extends PostProtocolBase<{ recipient_address: string; amount: number }, NWTransaction.Detail, NoConvert> {
     /**
      *Creates an instance of SendAssetRequest.
      * @param {{ userId: string; userWalletId: number }} credential

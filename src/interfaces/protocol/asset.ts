@@ -1,5 +1,5 @@
 import { Item } from '../../models/nwallet/asset';
-
+// todo move location
 declare module '../../models/nwallet/asset' {
     interface Data {
         id: number;

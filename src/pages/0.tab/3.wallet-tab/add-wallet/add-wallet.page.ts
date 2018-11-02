@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, ModalController, IonicPage } from 'ionic-angular';
 import { AccountService } from '../../../../providers/account/account.service';
 import { NWAsset } from '../../../../models/nwallet';
+import { NsusChannelService } from '../../../../providers/nsus/nsus-channel.service';
 
 @IonicPage()
 @Component({
@@ -11,8 +12,8 @@ import { NWAsset } from '../../../../models/nwallet';
 export class AddWalletPage {
     totalPrice: string;
     public _searchText = '';
-    public assets: NWAsset.Item[] = [];
-    constructor(public navCtrl: NavController, private accont: AccountService) {
+    public assets: NWAsset.Available[] = [];
+    constructor(public navCtrl: NavController, private accont: AccountService, private channel: NsusChannelService) {
         this.init();
     }
 
@@ -28,9 +29,8 @@ export class AddWalletPage {
 
     private async init(): Promise<void> {
         this.assets = [];
-        const account = await this.accont.detail();
-        const inventory = account.inventory;
-        this.assets.push(...inventory.getAssetItems().getValue());
+        const wallets = await this.channel.getAvailableWallets();
+        this.assets.push(...wallets);
     }
 
     private onFilterAsset(value: string): void {
@@ -41,8 +41,7 @@ export class AddWalletPage {
         }
     }
 
-    public onClick_AddAsset(asset: NWAsset.Item): void {
-        asset.option.isActive = true;
-        asset.option.isShow = true;
+    public onClick_AddAsset(asset: NWAsset.Available): void {
+        this.channel.createWallet
     }
 }

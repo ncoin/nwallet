@@ -9,6 +9,7 @@ export class NWHttpError extends Error {
 
 export interface NoQuery {}
 export type NoResponse = () => void;
+export type NoPayload = () => void;
 export type NoConvert = () => void;
 export type methodType = 'get' | 'post' | 'put';
 
@@ -32,7 +33,7 @@ export abstract class HttpProtocolBase<TResponse, TConvert> extends HttpProtocol
         super();
     }
 
-    public convert(data: TResponse): TConvert {
+    public convert(): TConvert {
         throw new Error(`[${this.name}] convert method not impled.`);
     }
 }
@@ -54,12 +55,12 @@ export abstract class GetProtocolBase<TQuery, TResponse, TConvert> extends HttpP
 
 export abstract class PostProtocolBase<TPayload, TResponse, TConvert> extends HttpProtocolBase<TResponse, TConvert> {
     public method: methodType = 'post';
-
+    public payload: TPayload;
     /** url parameters */
-    constructor(credential: { userId: string }, public payload?: ParameterExpr<TPayload>) {
+    constructor(credential: { userId: string }, payloadExpr?: ParameterExpr<TPayload>) {
         super(credential);
-        if (this.payload) {
-            this.setPayload(this.payload);
+        if (payloadExpr) {
+            this.setPayload(payloadExpr);
         }
     }
 
@@ -71,10 +72,12 @@ export abstract class PostProtocolBase<TPayload, TResponse, TConvert> extends Ht
 
 export abstract class PutProtocolBase<TPayload, TResponse, TConvert> extends HttpProtocolBase<TResponse, TConvert> {
     public method: methodType = 'put';
-    constructor(credential: { userId: string }, public payload?: ParameterExpr<TPayload>) {
+    public payload: TPayload;
+
+    constructor(credential: { userId: string }, payloadExpr?: ParameterExpr<TPayload>) {
         super(credential);
-        if (this.payload) {
-            this.setPayload(this.payload);
+        if (payloadExpr) {
+            this.setPayload(payloadExpr);
         }
     }
 

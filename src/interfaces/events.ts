@@ -1,5 +1,6 @@
 import { WalletProtocol } from '../providers/nsus/notification.service';
 import { Ticker } from '../models/nwallet/protocol/ticker';
+import { GetWalletTransactions } from '../models/nwallet/protocol';
 
 export class EventParameter<T> {
     constructor(private name: string) {}
@@ -25,5 +26,10 @@ export const NWEvent = {
     Stream: {
         ticker: EventParameter.create<Ticker>('stream-ticker'),
         wallet: EventParameter.create<WalletProtocol[]>('stream-wallet')
+    },
+
+    Protocol: {
+        change_tab: EventParameter.create<GetWalletTransactions>('app-change_tab')
+
     }
 };

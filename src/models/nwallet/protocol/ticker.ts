@@ -15,6 +15,6 @@ export class Ticker {
     last_updated_date_raw: Date;
 }
 
-export class GetTickerProtocol extends GetProtocolBase<NoQuery, Ticker[], NoConvert> {
+export class GetTickers extends GetProtocolBase<NoQuery, Ticker[], NoConvert> {
     public url = () => Paths.get.ticker(this.credential.userId);
 }

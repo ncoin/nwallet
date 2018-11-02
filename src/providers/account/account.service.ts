@@ -5,7 +5,6 @@ import { NWAccount, NWAsset, NWTransaction, NWProtocol } from '../../models/nwal
 import { PromiseWaiter } from 'forge/dist/helpers/Promise/PromiseWaiter';
 import { Debug } from '../../utils/helper/debug';
 import { BehaviorSubject, Subscription, Subject, AsyncSubject, Observable, ReplaySubject } from 'rxjs';
-import { ParameterExpr } from 'forge';
 import { EventService } from '../common/event/event';
 import { NWEvent } from '../../interfaces/events';
 import { NsusChannelService } from '../nsus/nsus-channel.service';
@@ -45,7 +44,7 @@ export class AccountService {
             });
         });
 
-        this.channel.register(NWProtocol.PutWalletAlignProtocol, order => {
+        this.channel.register(NWProtocol.PutWalletAlign, order => {
             if (order.length < 1) {
                 return;
             }
@@ -59,7 +58,7 @@ export class AccountService {
             this.account.inventory.refresh();
         });
 
-        this.channel.register(NWProtocol.PutWalletVisibilityProtocol, context => {
+        this.channel.register(NWProtocol.PutWalletVisibility, context => {
             const item = this.account.inventory.getAssetItems().getValue().find(e => e.getWalletId() === context.walletId);
             if (item) {
                 item.option.isShow = context.isVisible;

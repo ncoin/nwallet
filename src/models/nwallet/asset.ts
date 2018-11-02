@@ -39,3 +39,20 @@ export class Item {
     }
 }
 
+export class Available {
+    constructor(data: Available) {
+        Object.assign(this, data);
+        Debug.assert(this);
+    }
+    public getSymbol(): string {
+        return this.currency;
+    }
+
+    public setAlign(value: number): void {
+        this.align_number = value;
+    }
+
+    public getAlign(): number {
+        return this.align_number;
+    }
+}
