@@ -13,7 +13,7 @@ export class Token extends PostProtocolBase<TokenPayload, _Token, _Token> {
         };
     }
     public url = () => Paths.token();
-    public convert(): _Token {
+    public convert = (): _Token => {
         return Object.assign(new _Token(), this.response).setExpiration();
     }
 }

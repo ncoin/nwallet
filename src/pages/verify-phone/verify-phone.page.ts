@@ -8,7 +8,7 @@ import { LocaleService, CountryService } from 'ng4-intl-phone';
 import { InternationalPhoneComponent } from '../../components/popovers/international-phone/international-phone';
 import { VerifySuccessPage } from './verify-success/verify-success.page';
 import { VerifySecuritycodePage } from './verify-security-code/verify-security-code.page';
-import { ScreenOrientation, ORien } from '@ionic-native/screen-orientation';
+import { ScreenOrientation } from '@ionic-native/screen-orientation';
 
 // todo [important] Guard impl!!
 @IonicPage()

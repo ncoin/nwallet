@@ -5,6 +5,7 @@ import { ModalNavPage } from '../../0.base/modal-nav.page';
 import { EventService } from '../../../providers/common/event/event';
 import { NWEvent } from '../../../interfaces/events';
 import { NWalletAppService } from '../../../providers/app/app.service';
+import { ScreenOrientation } from '@ionic-native/screen-orientation';
 
 @IonicPage()
 @Component({

@@ -42,6 +42,6 @@ export class AddWalletPage {
     }
 
     public onClick_AddAsset(asset: NWAsset.Available): void {
-        this.channel.createWallet
+        // this.channel.createWallet
     }
 }

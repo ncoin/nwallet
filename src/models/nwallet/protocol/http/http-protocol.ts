@@ -33,9 +33,7 @@ export abstract class HttpProtocolBase<TResponse, TConvert> extends HttpProtocol
         super();
     }
 
-    public convert(): TConvert {
-        throw new Error(`[${this.name}] convert method not impled.`);
-    }
+    public convert: () => TConvert;
 }
 
 export abstract class GetProtocolBase<TQuery, TResponse, TConvert> extends HttpProtocolBase<TResponse, TConvert> {
