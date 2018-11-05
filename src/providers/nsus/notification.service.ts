@@ -74,7 +74,7 @@ export class NotificationService {
         this.logger.debug('[notification] on wallet :', walletData);
 
         this.event.publish(NWEvent.Stream.wallet, walletData);
-    };
+    }
 
     private onTickerEvent = (event: MessageEvent): void => {
         const tickerData = JSON.parse(event.data) as Ticker;
@@ -84,5 +84,5 @@ export class NotificationService {
         this.logger.debug('[notification] on ticker :', tickerData);
 
         this.event.publish(NWEvent.Stream.ticker, tickerData);
-    };
+    }
 }

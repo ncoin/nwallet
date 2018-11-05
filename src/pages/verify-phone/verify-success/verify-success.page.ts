@@ -32,7 +32,6 @@ export class VerifySuccessPage {
     public ionViewDidLoad() {
         setTimeout(() => {
         this.logger.debug('[verify-success-page] ionViewDidLoad - phoneNumber : ', this.phoneNumber);
-
             this.navCtrl.push(VerifySecuritycodePage, { viewCtrl: this.viewCtrl, phoneNumber: this.phoneNumber });
         }, 1000);
     }

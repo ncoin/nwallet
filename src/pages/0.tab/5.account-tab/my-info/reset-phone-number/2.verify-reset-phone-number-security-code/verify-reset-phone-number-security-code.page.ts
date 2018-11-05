@@ -1,18 +1,16 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
-import { LoggerService } from '../../../providers/common/logger/logger.service';
-import { ModalNavPage } from '../../0.base/modal-nav.page';
-import { EventService } from '../../../providers/common/event/event';
-import { NWEvent } from '../../../interfaces/events';
-import { NWalletAppService } from '../../../providers/app/app.service';
 import { ScreenOrientation } from '@ionic-native/screen-orientation';
+import { LoggerService } from '../../../../../../providers/common/logger/logger.service';
+import { ModalNavPage } from '../../../../../0.base/modal-nav.page';
+import { NWalletAppService } from '../../../../../../providers/app/app.service';
 
 @IonicPage()
 @Component({
-    selector: 'page-verify-security-code',
-    templateUrl: 'verify-security-code.page.html'
+    selector: 'page-verify-reset-phone-number-security-code',
+    templateUrl: 'verify-reset-phone-number-security-code.page.html'
 })
-export class VerifySecuritycodePage {
+export class VerifyResetPhoneNumberSecuritycodePage {
     private previousView: ViewController;
     private isCountBegin: boolean;
     public securityCodes = [];
