@@ -133,5 +133,14 @@ export class AuthorizationService {
 
     public async verifyMobileNumber(countryCode: string, number: number, deviceId: string) {}
 
+    public async verifyResetMobileNumber(phoneNumber: string): Promise<boolean> {
+        return true;
+    }
+
+    public async resetResetNewMobileNumber(phoneNumber: string): Promise<boolean> {
+        return true;
+    }
+
+
     public async verifySecurityCode() {}
 }

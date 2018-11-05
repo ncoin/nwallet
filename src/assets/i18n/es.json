@@ -35,6 +35,7 @@
   "LogoutAskContent": "Your registered mobile number will be required to login.",
   "YourMobileNumberIs": "Your mobile number is",
   "EnterNewMobileNumber": "If you would like to change, enter your new mobile number below",
+  "ResetMobileNumberSuccess": "Mobile number successfully changed!",
   "Cancel": "Cancel",
   "TransactionDate": "Date",
   "TransactionTo": "Destination",

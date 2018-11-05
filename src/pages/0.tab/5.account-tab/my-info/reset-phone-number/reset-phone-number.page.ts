@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { IonicPage, NavController, NavParams, PopoverController, LoadingController } from 'ionic-angular';
 import { ModalBasePage } from '../../../../0.base/modal.page';
 import { ModalNavPage } from '../../../../0.base/modal-nav.page';
@@ -7,6 +7,7 @@ import { InternationalPhoneComponent } from '../../../../../components/popovers/
 import { VerifyResetPhoneNumberCodeSentPage } from './1.verify-reset-phone-number-code-sent/verify-reset-phone-number-code-sent.page';
 import { VerifyResetPhoneNumberSecuritycodePage } from './2.verify-reset-phone-number-security-code/verify-reset-phone-number-security-code.page';
 import { VerfiyResetPhoneNumberSuccessPage } from './3.verfy-reset-phone-number-success/verify-reset-phone-number-success.page';
+import { PlatformService } from '../../../../../providers/common/platform/platform.service';
 
 // todo [important] Guard impl!!
 @IonicPage()
@@ -14,7 +15,8 @@ import { VerfiyResetPhoneNumberSuccessPage } from './3.verfy-reset-phone-number-
     selector: 'page-reset-phone-number',
     templateUrl: 'reset-phone-number.page.html'
 })
-export class ResetPhoneNumberPage extends ModalBasePage {
+export class ResetPhoneNumberPage extends ModalBasePage implements OnDestroy {
+
     public countryCode = '';
     public phoneNumber = '';
     public selectedCountry: { country: string; code: string };
@@ -25,9 +27,15 @@ export class ResetPhoneNumberPage extends ModalBasePage {
         parent: ModalNavPage,
         private popover: PopoverController,
         protected logger: LoggerService,
-        private loading: LoadingController
+        private loading: LoadingController,
+        private platform: PlatformService
     ) {
         super(navCtrl, navParams, parent);
+        this.platform.orientation.lock(this.platform.orientation.ORIENTATIONS.LANDSCAPE_PRIMARY);
+    }
+
+    ngOnDestroy(): void {
+        this.platform.orientation.unlock();
     }
 
     public onInput(input: any): void {

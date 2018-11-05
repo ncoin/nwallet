@@ -26,14 +26,13 @@ export class VerifyPhonePage extends ModalBasePage {
         navCtrl: NavController,
         navParams: NavParams,
         parent: ModalNavPage,
-        private orientation: ScreenOrientation,
         private popover: PopoverController,
         protected logger: LoggerService,
         private loading: LoadingController,
         private platform: PlatformService
     ) {
         super(navCtrl, navParams, parent);
-        this.logger.debug(this.orientation.type);
+        this.platform.orientation.lock(this.platform.orientation.ORIENTATIONS.LANDSCAPE_PRIMARY);
     }
 
     public onInput(input: any): void {

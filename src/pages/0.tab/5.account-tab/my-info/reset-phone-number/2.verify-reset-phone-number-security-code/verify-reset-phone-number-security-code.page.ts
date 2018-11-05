@@ -4,6 +4,7 @@ import { ScreenOrientation } from '@ionic-native/screen-orientation';
 import { LoggerService } from '../../../../../../providers/common/logger/logger.service';
 import { ModalNavPage } from '../../../../../0.base/modal-nav.page';
 import { NWalletAppService } from '../../../../../../providers/app/app.service';
+import { VerfiyResetPhoneNumberSuccessPage } from '../3.verfy-reset-phone-number-success/verify-reset-phone-number-success.page';
 
 @IonicPage()
 @Component({
@@ -54,10 +55,7 @@ export class VerifyResetPhoneNumberSecuritycodePage {
 
     public onClick_Next(): void {
         this.isCountBegin = false;
-        // todo auth success --sky
-        this.app.enter(this.phoneNumber);
-        this.parent.close();
-        this.orientation.unlock();
+        this.navCtrl.push(VerfiyResetPhoneNumberSuccessPage);
     }
 
     public onInput(input: any): void {

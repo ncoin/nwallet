@@ -36,7 +36,7 @@ export class PlatformService {
     public isMobile: boolean;
     public isDevel: boolean;
 
-    constructor(private platform: Platform, private orientation: ScreenOrientation, private logger: LoggerService) {
+    constructor(private platform: Platform, private logger: LoggerService, public orientation: ScreenOrientation) {
         let userAgent = navigator ? navigator.userAgent : null;
 
         if (!userAgent) {

@@ -97,6 +97,8 @@ export class NsusChannelService {
         return true;
     }
 
+
+
     public async requestResetPincode(currentPin: string, newPin: string): Promise<boolean> {
         return true;
     }

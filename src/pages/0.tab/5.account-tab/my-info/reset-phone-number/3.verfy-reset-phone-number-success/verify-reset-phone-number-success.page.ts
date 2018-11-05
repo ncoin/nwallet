@@ -3,6 +3,7 @@ import { IonicPage, NavController, Navbar, NavParams, ViewController } from 'ion
 import { LoggerService } from '../../../../../../providers/common/logger/logger.service';
 import { NsusChannelService } from '../../../../../../providers/nsus/nsus-channel.service';
 import { ModalNavPage } from '../../../../../0.base/modal-nav.page';
+import { AuthorizationService } from '../../../../../../providers/auth/authorization.service';
 
 @IonicPage()
 @Component({
@@ -12,10 +13,10 @@ import { ModalNavPage } from '../../../../../0.base/modal-nav.page';
 export class VerfiyResetPhoneNumberSuccessPage {
     private currentPin: string;
     private newPin: string;
-    constructor(private navParams: NavParams, private logger: LoggerService, private channel: NsusChannelService, private parent: ModalNavPage) {}
+    constructor(private navParams: NavParams, private logger: LoggerService, private parent: ModalNavPage, private auth: AuthorizationService) {}
 
     public ionViewCanEnter(): Promise<boolean> {
-        return this.channel.requestResetPincode('', '');
+        return this.auth.resetResetNewMobileNumber('');
     }
 
     public ionViewDidLoad() {
