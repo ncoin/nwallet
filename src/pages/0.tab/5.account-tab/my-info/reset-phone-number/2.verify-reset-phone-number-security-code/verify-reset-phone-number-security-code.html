@@ -1,0 +1,32 @@
+<ion-header>
+    <ion-navbar>
+    </ion-navbar>
+</ion-header>
+<ion-content padding>
+    <div class="content">
+        <div class="header">
+            The code is sent to
+            the mobile number below:
+        </div>
+        <div class="phone-number">
+            {{phoneNumber}}
+        </div>
+        <div class="input-seurity-desc">
+            Please check your SMS inbox
+            and enter the code here:
+        </div>
+        <div class="security-codes">
+            <div class="digit" *ngFor="let item of [1,2,3,4,5,6]; index as i">{{securityCodes[i]}}</div>
+        </div>
+    </div>
+    <button class="button-next" ion-button block (click)="onClick_Next()">
+        Next
+    </button>
+    <div>
+        The Code will be expired in
+    </div>
+    <div>
+        [ {{expiredTimeSpan | date : 'mm:ss'}} ]
+    </div>
+    <nw-key-pad (keystroke)=onInput($event)></nw-key-pad>
+</ion-content>

@@ -1,0 +1,34 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title>
+            Mobile Number Setting
+        </ion-title>
+    </ion-navbar>
+</ion-header>
+<ion-content padding>
+    <div class="container">
+        <img class="logo" src="assets/img/appicon.png">
+        <div class="enter-mobile-number">
+            {{'YourMobileNumberIs' | translate}}
+        </div>
+        <div >
+            {{'EnterNewMobileNumber' | translate}}
+        </div>
+        <div class="country">
+            <button class="country-code-button" (click)="onCountryChanged($event)">
+                <span class="country-code-logo">ㅇ</span>
+                <div class="country-code-dial">
+                    <span *ngIf="selectedCountry">+{{selectedCountry.code}}</span>
+                    <ion-icon name="arrow-dropdown"></ion-icon>
+                </div>
+            </button>
+            <input class="phone-number" [readonly]="true" [value]="phoneNumber" placeholder="{{'MobileNumber' | translate}}" />
+        </div>
+        <div>
+            <button class="next-button" (click)="onClick_Next()">
+                Next
+            </button>
+        </div>
+    </div>
+    <nw-key-pad class="keypad" (keystroke)=onInput($event)></nw-key-pad>
+</ion-content>

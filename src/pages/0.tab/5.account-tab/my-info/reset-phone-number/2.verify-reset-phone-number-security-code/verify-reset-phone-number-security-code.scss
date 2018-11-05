@@ -1,0 +1,77 @@
+page-verify-security-code {
+    $static-offset: calc(600px / 7 - 20px);
+    $dynamic-offset: 11vmin;
+
+    .content {
+        text-align: center;
+    }
+
+    .header {
+        font-size: 20px;
+        letter-spacing: -1px;
+    }
+
+    .phone-number {
+        font-size: 19px;
+        margin: 10px 0;
+    }
+
+    .input-seurity-desc {
+        font-size: 18px;
+    }
+
+    .security-codes {
+        margin-top: 6%;
+        padding: 0 5%;
+    }
+
+    .security-codes .digit {
+        display: inline-block;
+        margin: 0 1%;
+        font-size: 25px;
+        width: $static-offset;
+        line-height: $static-offset;
+        height: $static-offset;
+        border-radius: 10px;
+        background: gray;
+        color: white;
+        overflow: auto;
+    }
+
+    .button-next {
+        margin: 3% auto 0 auto;
+        width: 90%
+    }
+
+    @media screen and (max-height: 600px) {
+        nw-key-pad {
+            display: flex;
+            justify-content: center;
+        }
+    }
+
+    // dynamic state
+    @media screen and (max-width: 768px),
+    screen and (max-height:600px) {
+        .header {
+            font-size: 5vmin;
+        }
+
+        .phone-number {
+            font-size: 4vmin;
+        }
+
+
+        .input-seurity-desc {
+            font-size: 3.5vmin;
+        }
+
+        .security-codes .digit {
+            background: green;
+            font-size: 5vmin;
+            width: $dynamic-offset;
+            line-height: $dynamic-offset;
+            height: $dynamic-offset;
+        }
+    }
+}

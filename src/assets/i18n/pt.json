@@ -33,6 +33,8 @@
   "EnablePushNotification": "Enable push notification",
   "LogoutAskHeader": "Are you sure to logout?",
   "LogoutAskContent": "Your registered mobile number will be required to login.",
+  "YourMobileNumberIs": "Your mobile number is",
+  "EnterNewMobileNumber": "If you would like to change, enter your new mobile number below",
   "Cancel": "Cancel",
   "TransactionDate": "Date",
   "TransactionTo": "Destination",

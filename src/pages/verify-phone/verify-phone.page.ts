@@ -9,6 +9,7 @@ import { InternationalPhoneComponent } from '../../components/popovers/internati
 import { VerifySuccessPage } from './verify-success/verify-success.page';
 import { VerifySecuritycodePage } from './verify-security-code/verify-security-code.page';
 import { ScreenOrientation } from '@ionic-native/screen-orientation';
+import { PlatformService } from '../../providers/common/platform/platform.service';
 
 // todo [important] Guard impl!!
 @IonicPage()
@@ -28,10 +29,11 @@ export class VerifyPhonePage extends ModalBasePage {
         private orientation: ScreenOrientation,
         private popover: PopoverController,
         protected logger: LoggerService,
-        private loading: LoadingController
+        private loading: LoadingController,
+        private platform: PlatformService
     ) {
         super(navCtrl, navParams, parent);
-        this.orientation.lock(this.orientation.ORIENTATIONS.PORTRAIT);
+        this.logger.debug(this.orientation.type);
     }
 
     public onInput(input: any): void {

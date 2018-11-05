@@ -1,8 +1,8 @@
-import { MyInfoPage } from './../5.account-tab/my-info/my-info.page';
+import { MyInfoPage, MY_INFO_PAGES } from './../5.account-tab/my-info/my-info.page';
 import { AccountService } from '../../../providers/account/account.service';
 import { NWalletAppService } from '../../../providers/app/app.service';
 import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams, Tabs, Tab } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Tabs } from 'ionic-angular';
 
 import { LoggerService } from '../../../providers/common/logger/logger.service';
 
@@ -11,12 +11,8 @@ import { WalletTabPages, WalletMainTabPage } from '../3.wallet-tab/wallet-main-t
 import { AccountTabPage } from '../5.account-tab/account-tab.page';
 import { ReceivePage } from '../receive/receive.page';
 import { SendPage, SEND_PAGES } from '../send/send.page';
-import { LanguagePage } from '../5.account-tab/language/language.page';
-import { ResetPincodePage } from '../5.account-tab/my-info/reset-pincode/reset-pincode.page';
-import { ResetPincodeSuccessPage } from '../5.account-tab/my-info/reset-pincode-success/reset-pincode-success.page';
 import { EventService } from '../../../providers/common/event/event';
 import { NWEvent } from '../../../interfaces/events';
-import { SendConfirmPage } from '../send/send.confirm.page';
 export interface TabItemContext {
     // title: "Schedule",
     // name: "TabsPage",
@@ -96,5 +92,5 @@ export const NWalletTabPages = [
     AccountTabPage,
     ...SEND_PAGES,
     ...WalletTabPages,
-    ...[MyInfoPage, LanguagePage, ResetPincodePage, ResetPincodeSuccessPage]
+    ...MY_INFO_PAGES
 ];

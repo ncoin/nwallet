@@ -1,6 +1,29 @@
 import { LoggerService } from '../logger/logger.service';
-import { Injectable } from '@angular/core';
+import { Injectable, isDevMode } from '@angular/core';
 import { Platform } from 'ionic-angular';
+import { debug } from 'util';
+import { read } from 'fs';
+import { ScreenOrientation } from '@ionic-native/screen-orientation';
+import { env } from '../../../environments/environment';
+
+
+// move location
+function wrap(logger: LoggerService, orientation: ScreenOrientation) {
+    const lock = orientation.lock;
+    const unlock = orientation.unlock;
+    if (isDevMode()) {
+
+        orientation['devType'] = orientation.type;
+        orientation.lock = async (o: string): Promise<any> => {
+            logger.debug('[screen-orientaton] lock orientation :', o);
+            orientation['devType'] = o;
+        };
+
+        orientation.unlock = (): void => {
+            logger.debug('[screen-orientaton] unlock orientation');
+        };
+    }
+}
 
 @Injectable()
 export class PlatformService {
@@ -13,7 +36,7 @@ export class PlatformService {
     public isMobile: boolean;
     public isDevel: boolean;
 
-    constructor(private platform: Platform, private logger: LoggerService) {
+    constructor(private platform: Platform, private orientation: ScreenOrientation, private logger: LoggerService) {
         let userAgent = navigator ? navigator.userAgent : null;
 
         if (!userAgent) {
@@ -31,6 +54,10 @@ export class PlatformService {
         this.isNW = this.isNodeWebkit();
         this.isMobile = this.platform.is('mobile');
         this.isDevel = !this.isMobile && !this.isNW;
+
+        this.platform.ready().then(ready => {
+            wrap(this.logger, this.orientation);
+        });
     }
 
     public getBrowserName(): string {
@@ -39,7 +66,7 @@ export class PlatformService {
             chrome: /chrome/i,
             safari: /safari/i,
             firefox: /firefox/i,
-            ie: /internet explorer/i,
+            ie: /internet explorer/i
         };
 
         for (const key in browsers) {
