@@ -5,6 +5,7 @@ import { ResetPincodePage } from './reset-pincode/reset-pincode.page';
 import { ModalNavPage } from '../../../0.base/modal-nav.page';
 import { RESET_PHONE_NUMBER_COMPONENTS, ResetPhoneNumberPage } from './reset-phone-number/reset-phone-number.page';
 import { LanguagePage } from '../language/language.page';
+import { ResetPincodeSuccessPage } from './reset-pincode-success/reset-pincode-success.page';
 
 @IonicPage()
 @Component({
@@ -60,4 +61,4 @@ export class MyInfoPage {
         modal.present();
     }
 }
-export const MY_INFO_PAGES = [MyInfoPage, LanguagePage, RESET_PHONE_NUMBER_COMPONENTS, ResetPincodePage];
+export const MY_INFO_PAGES = [MyInfoPage, LanguagePage, RESET_PHONE_NUMBER_COMPONENTS, ResetPincodePage, ResetPincodeSuccessPage];

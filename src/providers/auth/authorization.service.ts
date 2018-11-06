@@ -141,6 +141,9 @@ export class AuthorizationService {
         return true;
     }
 
-
     public async verifySecurityCode() {}
+
+    public async resetPincode(currentPin: string, newPin: string): Promise<boolean> {
+        return true;
+    }
 }

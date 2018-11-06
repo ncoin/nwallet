@@ -99,9 +99,6 @@ export class NsusChannelService {
 
 
 
-    public async requestResetPincode(currentPin: string, newPin: string): Promise<boolean> {
-        return true;
-    }
 
     public async fetchTicker(): Promise<NWProtocol.Ticker[]> {
         return await this.nClient

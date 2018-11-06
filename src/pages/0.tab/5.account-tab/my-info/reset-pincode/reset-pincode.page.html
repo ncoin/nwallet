@@ -5,10 +5,10 @@
 <ion-content padding>
     <div class="content">
         <div class="header">
-            {{ pinCodeLanguageKey | translate}}
+            {{ phases[index].phaseKey | translate}}
         </div>
         <div class="pincodes">
-            <pin-dots [pin]="pinCode" [PinCount]="6" animate></pin-dots>
+            <pin-dots [pin]="phases[index].pin" [PinCount]="6" animate></pin-dots>
         </div>
     </div>
 </ion-content>
