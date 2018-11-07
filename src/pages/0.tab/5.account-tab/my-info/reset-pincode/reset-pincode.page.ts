@@ -3,7 +3,7 @@ import { IonicPage, NavController, Navbar, NavParams } from 'ionic-angular';
 import { AccountService } from '../../../../../providers/account/account.service';
 import { ModalBasePage } from '../../../../0.base/modal.page';
 import { ModalNavPage } from '../../../../0.base/modal-nav.page';
-import { AuthorizationService } from '../../../../../providers/auth/authorization.service';
+import { AuthorizationService } from '../../../../../providers/nsus/authorization.service';
 import { LoggerService } from '../../../../../providers/common/logger/logger.service';
 import { ResetPincodeSuccessPage } from '../reset-pincode-success/reset-pincode-success.page';
 

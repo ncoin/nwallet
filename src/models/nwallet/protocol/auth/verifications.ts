@@ -1,11 +1,14 @@
 import { Paths } from './paths';
-import { PostProtocolBase, NoConvert, NoQuery, NoPayload } from '../http/http-protocol';
-import { Token as _Token } from '../../token';
+import { NoConvert, NoQuery, NoPayload, NoResponseData, AuthProtocolBase, MethodTypes } from '../http/http-protocol';
 
-export class VerifyPhone extends PostProtocolBase<NoPayload, _Token, NoConvert> {
-    constructor() {
-        super({ userId: 'unknown' });
-
+export class VerifyPhone extends AuthProtocolBase<
+    NoQuery,
+    {
+        countryCode: string;
+        number: string;
+        verifyCode?: string;
     }
-    public url = () => Paths.token();
+> {
+    method = MethodTypes.POST;
+    public url = () => Paths.auth.phone();
 }

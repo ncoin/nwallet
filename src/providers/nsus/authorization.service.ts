@@ -10,8 +10,9 @@ import { Token } from '../../models/nwallet/token';
 import { EventService } from '../common/event/event';
 import { NWEvent } from '../../interfaces/events';
 import { Debug } from '../../utils/helper/debug';
-import { NClientService } from '../nsus/nclient.service';
+import { NClientService } from './nclient.service';
 import { NWAuthProtocol } from '../../models/nwallet';
+import { VerifyPhone } from '../../models/nwallet/protocol/auth/verifications';
 
 // for test (remove me) --sky`
 const nonceRange = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -56,7 +57,6 @@ export class AuthorizationService {
             if (token) {
                 this.logger.debug('[auth][initialize] stored token exist', token);
                 this.token = Object.assign(new Token(), token);
-                // Debug.assert(this.token.getUserId() === this.userName, `stored : ${this.token.getUserId()}, new : ${this.userName}`);
             } else {
                 this.logger.debug('[auth][initialize] stored token not exists');
             }
@@ -131,7 +131,46 @@ export class AuthorizationService {
         return issuedToken;
     }
 
-    public async verifyMobileNumber(countryCode: string, number: number, deviceId: string) {}
+    public authMobileNumber(countryCode: string, number: string): Promise<boolean> {
+        return this.nClient
+            .auth(
+                new NWAuthProtocol.VerifyPhone({
+                    payload: {
+                        countryCode: countryCode,
+                        number: number
+                    }
+                })
+            )
+            .then(protocol => {
+                this.logger.debug(`[auth] auth phone number (secure code request) success :`, protocol);
+                return true;
+            })
+            .catch((response: HttpErrorResponse) => {
+                this.logger.error(`[auth] auth phone number (secure code request) failed :`, response);
+                return false;
+            });
+    }
+
+    public async verifyMobileNumber(countryCode: string, number: string, securityCode: string) {
+        return this.nClient
+            .auth(
+                new NWAuthProtocol.VerifyPhone({
+                    payload: {
+                        countryCode: countryCode,
+                        number: number,
+                        verifyCode: securityCode
+                    }
+                })
+            )
+            .then(protocol => {
+                this.logger.debug(`[auth] verify phone number (secure code request) success :`, protocol);
+                return true;
+            })
+            .catch((response: HttpErrorResponse) => {
+                this.logger.error(`[auth] verify phone number (secure code request) failed :`, response);
+                return false;
+            });
+    }
 
     public async verifyResetMobileNumber(phoneNumber: string): Promise<boolean> {
         return true;

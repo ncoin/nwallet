@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { LoggerService } from '../common/logger/logger.service';
-import { GetProtocolBase, PutProtocolBase, PostProtocolBase } from '../../models/nwallet/protocol/http/http-protocol';
+import { GetProtocolBase, PutProtocolBase, PostProtocolBase, AuthProtocolBase, MethodTypes } from '../../models/nwallet/protocol/http/http-protocol';
 import { Debug } from '../../utils/helper/debug';
 
 @Injectable()
@@ -10,7 +10,7 @@ export class NClientService {
 
     public get<TQuery, TResponse, TConvert>(protocol: GetProtocolBase<TQuery, TResponse, TConvert>): Promise<GetProtocolBase<TQuery, TResponse, TConvert>> {
         this.logger.debug(`[nclient] execute protocol : ${protocol.name}`);
-        Debug.assert(protocol.method === 'get');
+        Debug.assert(protocol.method === MethodTypes.GET);
 
         return this.http
             .get<TResponse>(protocol.url(), {
@@ -30,7 +30,7 @@ export class NClientService {
 
     public put<TPayload, TResponse, TConvert>(protocol: PutProtocolBase<TPayload, TResponse, TConvert>): Promise<PutProtocolBase<TPayload, TResponse, TConvert>> {
         this.logger.debug(`[nclient] execute protocol : ${protocol.name}`);
-        Debug.assert(protocol.method === 'put');
+        Debug.assert(protocol.method === MethodTypes.PUT);
 
         return this.http
             .put<TResponse>(protocol.url(), protocol.payload, {
@@ -49,7 +49,7 @@ export class NClientService {
 
     public post<TPayload, TResponse, TConvert>(protocol: PostProtocolBase<TPayload, TResponse, TConvert>): Promise<PostProtocolBase<TPayload, TResponse, TConvert>> {
         this.logger.debug(`[nclient] execute protocol : ${protocol.name}`);
-        Debug.assert(protocol.method === 'post');
+        Debug.assert(protocol.method === MethodTypes.POST);
 
         return this.http
             .post<TResponse>(protocol.url(), protocol.payload, {
@@ -64,5 +64,56 @@ export class NClientService {
                 protocol.error = error;
                 throw error;
             });
+    }
+
+    // test
+    public auth<T1, T2, T3, T4>(protocol: AuthProtocolBase<T1, T2, T3, T4>) {
+        Debug.assert(protocol.method !== MethodTypes.INVALID);
+
+        // todo extract
+        if (protocol.method === MethodTypes.GET) {
+            return this.http
+                .get<T3>(protocol.url(), {
+                    headers: protocol.header,
+                    params: protocol.query
+                })
+                .toPromise()
+                .then(response => {
+                    protocol.response = response;
+                    return protocol;
+                })
+                .catch(error => {
+                    protocol.error = error;
+                    throw error;
+                });
+        } else if (protocol.method === MethodTypes.POST) {
+            return this.http
+                .post<T3>(protocol.url(), protocol.payload, {
+                    headers: protocol.header
+                })
+                .toPromise()
+                .then(response => {
+                    protocol.response = response;
+                    return protocol;
+                })
+                .catch(error => {
+                    protocol.error = error;
+                    throw error;
+                });
+        } else if (protocol.method === MethodTypes.PUT) {
+            return this.http
+                .put<T3>(protocol.url(), protocol.payload, {
+                    headers: protocol.header
+                })
+                .toPromise()
+                .then(response => {
+                    protocol.response = response;
+                    return protocol;
+                })
+                .catch(error => {
+                    protocol.error = error;
+                    throw error;
+                });
+        }
     }
 }

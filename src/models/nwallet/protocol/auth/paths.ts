@@ -7,7 +7,9 @@ function api(path: string) {
 export const Paths = {
     account: {},
 
-    auth: {},
+    auth: {
+        phone: () => api(`authentication/phone`),
+    },
 
     token: () => api(`oauth/token`)
 };

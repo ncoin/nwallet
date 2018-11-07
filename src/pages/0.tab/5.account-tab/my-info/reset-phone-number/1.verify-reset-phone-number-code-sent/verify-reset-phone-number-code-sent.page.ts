@@ -7,7 +7,7 @@ import { InternationalPhoneComponent } from '../../../../../../components/popove
 import { NsusChannelService } from '../../../../../../providers/nsus/nsus-channel.service';
 import { VerifyResetPhoneNumberSecuritycodePage } from '../2.verify-reset-phone-number-security-code/verify-reset-phone-number-security-code.page';
 import { ViewController } from 'ionic-angular/navigation/view-controller';
-import { AuthorizationService } from '../../../../../../providers/auth/authorization.service';
+import { AuthorizationService } from '../../../../../../providers/nsus/authorization.service';
 
 // todo [important] Guard impl!!
 @IonicPage()

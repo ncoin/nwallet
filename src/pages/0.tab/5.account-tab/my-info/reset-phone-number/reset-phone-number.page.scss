@@ -4,23 +4,52 @@ page-reset-phone-number {
         flex-direction: column;
         overflow: unset;
     }
+
     .container {
         flex-grow: 1;
-        margin-top: -50px;
+
+        display: flex;
+        flex-direction: column;
     }
+
     .logo {
-        width: 15vw;;
+        width: 15vw;
         display: block;
         margin: 0 auto;
     }
 
-    .enter-mobile-number {
+    .container .my-mobile-number {
         text-align: center;
-        font-size: 2rem;
-        margin: 6% 0 0 0;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+
+        .header {
+            color: $foreground-header;
+            font-size: 2rem;
+            flex-grow: 1;
+            flex-basis: 10%;
+        }
+
+        .content {
+            font-size: 3rem;
+            flex-grow: 1;
+            flex-basis: 10%;
+            color: $foreground-content-lightgray;
+
+
+        }
+
+        .footer {
+            flex-grow: 1;
+            flex-basis: 10%;
+            color: $foreground-content-dark;
+            font-size: 2rem;
+        }
+
     }
 
-    .country {
+    .container .country {
         width: 100%;
         padding: 4% 3% 0% 3%;
 
@@ -48,10 +77,16 @@ page-reset-phone-number {
         }
     }
 
-    .next-button {
+    .container .next {
+        flex-grow: 1.2;
         font-size: 2.5rem;
         width: 95%;
         margin: 5% 2.5% 0 2.5%;
+
+        >button {
+            text-align: center;
+            font-size: 4vmin;
+        }
     }
 
     .keypad {

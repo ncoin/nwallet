@@ -5,7 +5,6 @@ import { Injectable } from '@angular/core';
 import { LoggerService } from '../common/logger/logger.service';
 import { TranslateService } from '@ngx-translate/core';
 import { NsusChannelService } from '../nsus/nsus-channel.service';
-
 @Injectable()
 export class AppConfigService {
     constructor(
@@ -13,7 +12,7 @@ export class AppConfigService {
         private translate: TranslateService,
         private preference: PreferenceProvider,
         private event: EventService,
-        private channel: NsusChannelService
+        private channel: NsusChannelService,
     ) {}
 
     public async loadAll(): Promise<void> {
@@ -44,12 +43,12 @@ export class AppConfigService {
     }
 
     public async getCurrentLanguage(): Promise<{
-        languages: { key: string; value: string }[];
-        currentLanguage: { key: string; value: string };
+        languages: { key: string; value: string; simplified: string }[];
+        currentLanguage: { key: string; value: string; simplified: string };
     }> {
         const promises = Constants.supportedLanuages.map(async lang => {
             const trans = await this.translate.getTranslation(lang).toPromise();
-            return { key: lang, value: trans.CurrentLanguage as string };
+            return { key: lang, value: trans.CurrentLanguage as string, simplified: lang.startsWith('zh') ? lang.substring(lang.indexOf('-') + 1) : lang };
         });
 
         // prevent get traslation bug.. ask me --sky`
@@ -63,6 +62,15 @@ export class AppConfigService {
         return {
             languages: languagePairs,
             currentLanguage: currentLanguage
+        };
+    }
+
+    public async getLocale(): Promise<{ language: string; country: string; full: string }> {
+        const full = navigator.language.toLocaleLowerCase();
+        return {
+            full: full, // en-US
+            language: full.substring(0, 2), // en
+            country: full.substring(3) // US
         };
     }
 

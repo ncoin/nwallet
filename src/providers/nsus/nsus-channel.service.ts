@@ -3,7 +3,7 @@ import { NClientService } from './nclient.service';
 import { LoggerService } from '../common/logger/logger.service';
 import { NotificationService } from './notification.service';
 import { NWAsset, NWTransaction, NWProtocol } from '../../models/nwallet';
-import { AuthorizationService } from '../auth/authorization.service';
+import { AuthorizationService } from './authorization.service';
 import { HttpProtocolBase, HttpProtocol } from '../../models/nwallet/protocol/http/http-protocol';
 import { Subject, Subscription } from 'rxjs';
 interface ProtocolResolver<T, TResponse, TConvert> {
@@ -92,13 +92,6 @@ export class NsusChannelService {
     }
 
     //#endregion
-    // todo merge request process --sky
-    public async requestPhoneVerification(phoneNumber: string): Promise<boolean> {
-        return true;
-    }
-
-
-
 
     public async fetchTicker(): Promise<NWProtocol.Ticker[]> {
         return await this.nClient

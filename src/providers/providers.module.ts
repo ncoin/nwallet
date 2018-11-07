@@ -1,4 +1,4 @@
-import { AuthorizationService } from './auth/authorization.service';
+import { AuthorizationService } from './nsus/authorization.service';
 import { NgModule } from '@angular/core';
 import { LoggerService } from './common/logger/logger.service';
 import { NWalletAppService } from './app/app.service';

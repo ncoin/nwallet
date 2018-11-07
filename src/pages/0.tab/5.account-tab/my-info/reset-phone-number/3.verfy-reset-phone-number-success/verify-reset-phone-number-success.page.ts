@@ -3,7 +3,7 @@ import { IonicPage, NavController, Navbar, NavParams, ViewController } from 'ion
 import { LoggerService } from '../../../../../../providers/common/logger/logger.service';
 import { NsusChannelService } from '../../../../../../providers/nsus/nsus-channel.service';
 import { ModalNavPage } from '../../../../../0.base/modal-nav.page';
-import { AuthorizationService } from '../../../../../../providers/auth/authorization.service';
+import { AuthorizationService } from '../../../../../../providers/nsus/authorization.service';
 
 @IonicPage()
 @Component({

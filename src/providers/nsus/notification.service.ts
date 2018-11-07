@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { env } from '../../environments/environment';
-import { AuthorizationService } from '../auth/authorization.service';
+import { AuthorizationService } from './authorization.service';
 import { Debug } from '../../utils/helper/debug';
 import { EventService } from '../common/event/event';
 import { NWEvent } from '../../interfaces/events';

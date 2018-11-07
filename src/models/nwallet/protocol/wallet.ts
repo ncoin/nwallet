@@ -1,4 +1,4 @@
-import { GetProtocolBase, NoQuery, NoConvert, PutProtocolBase, NoResponse, PostProtocolBase, NoPayload } from './http/http-protocol';
+import { GetProtocolBase, NoQuery, NoConvert, PutProtocolBase, NoResponseData, PostProtocolBase, NoPayload } from './http/http-protocol';
 import { Paths } from './http/paths';
 import { NWAsset } from '../../nwallet';
 
@@ -10,7 +10,7 @@ export class GetWallets extends GetProtocolBase<NoQuery, NWAsset.Data[], NWAsset
 
 /** Create new Wallets */
 
-export class CreateWallet extends PostProtocolBase<NoPayload, NoResponse, NoConvert> {
+export class CreateWallet extends PostProtocolBase<NoPayload, NoResponseData, NoConvert> {
     public url = () => Paths.post.createWallet(this.credential.userId);
 }
 
@@ -23,7 +23,7 @@ export class GetWalletDetail extends GetProtocolBase<NoQuery, number, NoConvert>
 }
 
 /** Change Wallet Visibiltiy */
-export class PutWalletVisibility extends PutProtocolBase<{ is_show: boolean }, NoResponse, { walletId: number; isVisible: boolean }> {
+export class PutWalletVisibility extends PutProtocolBase<{ is_show: boolean }, NoResponseData, { walletId: number; isVisible: boolean }> {
     constructor(protected credential: { userId: string; userWalletId: number }) {
         super(credential);
     }
@@ -33,7 +33,7 @@ export class PutWalletVisibility extends PutProtocolBase<{ is_show: boolean }, N
 }
 
 /** Change Wallet Order */
-export class PutWalletAlign extends PutProtocolBase<{ user_wallet_ids: number[] }, NoResponse, number[]> {
+export class PutWalletAlign extends PutProtocolBase<{ user_wallet_ids: number[] }, NoResponseData, number[]> {
     public url = () => Paths.put.walletAlign(this.credential.userId);
 }
 

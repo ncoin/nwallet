@@ -10,6 +10,7 @@ import { VerifySuccessPage } from './verify-success/verify-success.page';
 import { VerifySecuritycodePage } from './verify-security-code/verify-security-code.page';
 import { ScreenOrientation } from '@ionic-native/screen-orientation';
 import { PlatformService } from '../../providers/common/platform/platform.service';
+import { AppConfigService } from '../../providers/app/app.config.service';
 
 // todo [important] Guard impl!!
 @IonicPage()
@@ -28,11 +29,30 @@ export class VerifyPhonePage extends ModalBasePage {
         parent: ModalNavPage,
         private popover: PopoverController,
         protected logger: LoggerService,
-        private loading: LoadingController,
-        private platform: PlatformService
+        private platform: PlatformService,
+        private appConfig: AppConfigService,
+        private country: CountryService
     ) {
         super(navCtrl, navParams, parent);
+        this.init();
+    }
+
+    private async init() {
         this.platform.orientation.lock(this.platform.orientation.ORIENTATIONS.LANDSCAPE_PRIMARY);
+        const locale = await this.appConfig.getLocale();
+
+        // countryCode: "tl"
+        // dialCode: "670"
+        // name: ""
+        const countries = this.country.getCountries();
+        const target = countries.find(c => c.countryCode === locale.country);
+
+        this.logger.debug('[verify-phone] remommended country :', target);
+
+        this.selectedCountry = {
+            country: target.countryCode,
+            code: target.dialCode
+        };
     }
 
     public onInput(input: any): void {
@@ -60,7 +80,8 @@ export class VerifyPhonePage extends ModalBasePage {
         this.logger.debug('[verify-phone-page] phoneNumber : ', this.phoneNumber);
 
         await this.navCtrl.push(VerifySuccessPage, {
-            phoneNumber: this.selectedCountry.code + this.phoneNumber
+            countryCode: this.selectedCountry.code,
+            phoneNumber: this.phoneNumber
         });
     }
 }

@@ -653,7 +653,31 @@ $toggle-icon-background-on: #364231;
                 justify-content: center;
             }
         }
+    }
 
+    &.alert-radio-group {
+        .alert-radio-group {
+            border-top: unset;
+            border-bottom: unset;
+
+            >button {
+                .alert-radio-label {
+                    color: $foreground-content;
+                }
+                &[aria-checked=true] {
+                    .alert-radio-label {
+                        color: $foreground-content-lightgray;
+                    }
+                }
+            }
+        }
+    }
+
+    &.auto-stretch {
+        .alert-wrapper {
+            width: auto;
+            max-width: 100%;
+        }
     }
 }
 

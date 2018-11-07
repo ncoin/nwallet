@@ -2,7 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, Navbar, NavParams, ViewController } from 'ionic-angular';
 import { ModalNavPage } from '../../../../0.base/modal-nav.page';
 import { LoggerService } from '../../../../../providers/common/logger/logger.service';
-import { AuthorizationService } from '../../../../../providers/auth/authorization.service';
+import { AuthorizationService } from '../../../../../providers/nsus/authorization.service';
 
 @IonicPage()
 @Component({

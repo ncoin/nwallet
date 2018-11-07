@@ -6,6 +6,7 @@ import { EventService } from '../../../providers/common/event/event';
 import { NWEvent } from '../../../interfaces/events';
 import { NWalletAppService } from '../../../providers/app/app.service';
 import { ScreenOrientation } from '@ionic-native/screen-orientation';
+import { AuthorizationService } from '../../../providers/nsus/authorization.service';
 
 @IonicPage()
 @Component({
@@ -14,6 +15,7 @@ import { ScreenOrientation } from '@ionic-native/screen-orientation';
 })
 export class VerifySecuritycodePage {
     private previousView: ViewController;
+    private countryCode: string;
     private isCountBegin: boolean;
     public securityCodes = [];
     public phoneNumber: string;
@@ -25,10 +27,12 @@ export class VerifySecuritycodePage {
         private orientation: ScreenOrientation,
         private logger: LoggerService,
         private parent: ModalNavPage,
-        private app: NWalletAppService
+        private app: NWalletAppService,
+        private auth: AuthorizationService
     ) {
         this.previousView = this.navParams.get('viewCtrl');
         this.phoneNumber = this.navParams.get('phoneNumber');
+        this.countryCode = this.navParams.get('countryCode');
         this.expiredTimeSpan = 60 * 3 * 1000;
     }
 
@@ -54,9 +58,11 @@ export class VerifySecuritycodePage {
         }, 1000);
     }
 
-    public onClick_Next(): void {
+    public async onClick_Next(): Promise<void> {
         this.isCountBegin = false;
         // todo auth success --sky
+        const secureCode = this.securityCodes.reduce((p, n) => p + n);
+        const result = this.auth.verifyMobileNumber(this.countryCode, this.phoneNumber, secureCode);
         this.app.enter(this.phoneNumber);
         this.parent.close();
         this.orientation.unlock();
