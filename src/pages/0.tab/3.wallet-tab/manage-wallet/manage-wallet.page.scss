@@ -2,6 +2,7 @@ manage-wallet {
     .back-button {
         display: block;
     }
+
     .refresh-button {
         position: absolute;
         top: 30px;
@@ -10,10 +11,12 @@ manage-wallet {
         color: white;
         font-size: 2rem;
     }
+
     .refresh-button:active {
         color: yellow;
         top: 31px;
     }
+
     .content {
         background: url('../assets/img/bg.png') no-repeat top center;
         background-size: cover;
@@ -21,25 +24,32 @@ manage-wallet {
 
     .asset-ion-item {
         display: block;
-        background: gray;
+        background: $border-color-7a;
+        border: 1px solid $border-color;
         border-radius: 10px;
         margin-bottom: 10px;
+
         .asset-container {
             display: grid;
             grid-template-columns: 25px 1fr 15px 50px;
+
             .asset-item {
                 height: 100%;
                 margin: auto 0;
             }
+
             .img {
                 grid-column: 1;
             }
+
             .symbol {
                 grid-column: 2;
             }
+
             .order {
                 grid-column: 3;
             }
+
             .isShow {
                 grid-column: 4;
             }
