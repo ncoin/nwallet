@@ -190,8 +190,19 @@ export class NsusChannelService {
             .catch(this.onError([]));
     }
 
-    public async createWallet() {
-        return await this.nClient.post(await this.onRequestProtocol(userId => new NWProtocol.CreateWallet({ userId: userId }, payload => {})));
+    public async createWallet(currencyId: number) {
+        return await this.nClient
+            .post(
+                await this.onRequestProtocol(
+                    userId =>
+                        new NWProtocol.CreateWallet({ userId: userId }, payload => {
+                            payload.currency_manage_id = currencyId;
+                        })
+                )
+            )
+            .then(this.onSuccess())
+            .then(this.onBroadcast(() => {}))
+            .catch(this.onError(false));
     }
 
     /**

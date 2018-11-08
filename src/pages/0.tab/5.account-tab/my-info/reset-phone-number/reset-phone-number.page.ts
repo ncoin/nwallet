@@ -1,9 +1,8 @@
 import { Component, OnDestroy } from '@angular/core';
-import { IonicPage, NavController, NavParams, PopoverController, LoadingController, AlertController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, PopoverController, AlertController } from 'ionic-angular';
 import { ModalBasePage } from '../../../../0.base/modal.page';
 import { ModalNavPage } from '../../../../0.base/modal-nav.page';
 import { LoggerService } from '../../../../../providers/common/logger/logger.service';
-import { InternationalPhoneComponent } from '../../../../../components/popovers/international-phone/international-phone';
 import { VerifyResetPhoneNumberCodeSentPage } from './1.verify-reset-phone-number-code-sent/verify-reset-phone-number-code-sent.page';
 import { VerifyResetPhoneNumberSecuritycodePage } from './2.verify-reset-phone-number-security-code/verify-reset-phone-number-security-code.page';
 import { VerfiyResetPhoneNumberSuccessPage } from './3.verfy-reset-phone-number-success/verify-reset-phone-number-success.page';
@@ -12,6 +11,7 @@ import { AccountService } from '../../../../../providers/account/account.service
 import { AppConfigService } from '../../../../../providers/app/app.config.service';
 import { CountryService, LocaleService } from 'ng4-intl-phone';
 import { TitleCasePipe } from '@angular/common';
+import { PopupService } from '../../../../../providers/popup/popop.service';
 
 // todo [important] Guard impl!!
 @IonicPage()
@@ -23,28 +23,24 @@ export class ResetPhoneNumberPage extends ModalBasePage implements OnDestroy {
     public countryCode = '';
     public newPhoneNumber = '';
     public currentPhoneNumber = '';
-    public selectedCountry: { country: string; code: string };
+    public selectedCountry: { name: string; country: string; code: string };
 
     constructor(
         navCtrl: NavController,
         navParams: NavParams,
         parent: ModalNavPage,
         private alert: AlertController,
-        private popover: PopoverController,
         private logger: LoggerService,
         private account: AccountService,
         private platform: PlatformService,
         private appConfig: AppConfigService,
         private country: CountryService,
-        private locale: LocaleService
+        private locale: LocaleService,
+        private popup: PopupService
     ) {
         super(navCtrl, navParams, parent);
         this.platform.orientation.lock(this.platform.orientation.ORIENTATIONS.LANDSCAPE_PRIMARY);
         this.init();
-    }
-
-    ngOnDestroy(): void {
-        this.platform.orientation.unlock();
     }
 
     private async init() {
@@ -57,14 +53,19 @@ export class ResetPhoneNumberPage extends ModalBasePage implements OnDestroy {
         // dialCode: "670"
         // name: ""
         const countries = this.country.getCountries();
-        const target = countries.find(c => c.countryCode === locale.country);
+        const targetCountry = countries.find(c => c.countryCode === locale.country);
 
-        this.logger.debug('[verify-phone] remommended country :', target);
+        this.logger.debug('[verify-phone] recommended country :', targetCountry);
 
         this.selectedCountry = {
-            country: target.countryCode,
-            code: target.dialCode
+            name: this.locale.getLocales(locale.language)[targetCountry.countryCode],
+            country: targetCountry.countryCode,
+            code: targetCountry.dialCode
         };
+    }
+
+    ngOnDestroy(): void {
+        this.platform.orientation.unlock();
     }
 
     public onInput(input: any): void {
@@ -76,53 +77,14 @@ export class ResetPhoneNumberPage extends ModalBasePage implements OnDestroy {
     }
 
     public async onCountryChanged(event: any): Promise<void> {
-        const alert = this.alert.create({
-            title: 'Country',
-            cssClass: 'alert-base title-underline alert-radio-group button-center auto-stretch'
-        });
-
-        const locale = await this.appConfig.getLocale();
-        const names = this.locale.getLocales(locale.language);
-        const countries = this.country.getCountries().slice();
-        countries.sort((c1, c2) => {
-            return Number.parseInt(c1.dialCode, 10) - Number.parseInt(c2.dialCode, 10);
-        });
-
-        const title = new TitleCasePipe();
-
-        countries.forEach(entity => {
-            const value = { country: names[entity.countryCode], code: entity.dialCode };
-            alert.addInput({
-                type: 'radio',
-                label: `(+${value.code}) ${title.transform(value.country)}  `,
-                checked: entity.countryCode === locale.country,
-
-                value: value.code,
-                handler: data => {
-                    const result = countries.find(c => c.dialCode === data.value);
-                    this.selectedCountry = { country: result.countryCode, code: result.dialCode };
-                    this.logger.debug('[reset-phone-number-page] selected country :', result);
-                }
-            });
-        });
-        alert.addButton({
-            role: 'cancel',
-            text: 'Close'
-        });
-        alert.present();
-
-        return;
-
-        const popover = this.popover.create(InternationalPhoneComponent);
-        popover.onWillDismiss((data, role) => {
-            if (data) {
-                this.selectedCountry = data;
-            }
-        });
-
-        await popover.present({
-            ev: event
-        });
+        const task = await this.popup.countryAlert();
+        if (task) {
+            this.selectedCountry = {
+                name: task.fullName,
+                code: task.dialCode,
+                country: task.code
+            };
+        }
     }
 
     public async onClick_Next(): Promise<void> {

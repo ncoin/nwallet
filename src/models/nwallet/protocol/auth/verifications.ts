@@ -6,9 +6,20 @@ export class VerifyPhone extends AuthProtocolBase<
     {
         countryCode: string;
         number: string;
-        verifyCode?: string;
     }
 > {
     method = MethodTypes.POST;
     public url = () => Paths.auth.phone();
+}
+
+export class VerifyPhoneComplete extends AuthProtocolBase<
+    NoQuery,
+    {
+        countryCode: string;
+        number: string;
+        verifyCode?: string;
+    }
+> {
+    method = MethodTypes.POST;
+    public url = () => Paths.auth.verifyPhone();
 }

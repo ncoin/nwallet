@@ -3,6 +3,7 @@
   "NCH": "NCash",
   "NCN": "NCoin",
   "XLM": "Stellar Lumen",
+  "XRP": "XRP",
   "CreateAccount": "Create Account",
   "ImportAccount": "Import Account",
   "Logout": "Logout",
@@ -29,6 +30,8 @@
   "Amount": "Amount",
   "Available": "Available",
   "ContinueWithMobileNumber": "Continue with Mobile Number",
+  "EnterYourMobileNumber": "Enter your mobile number",
+  "MobileNumber": "Mobile number",
   "MyInfo": "My Info",
   "EnablePushNotification": "Enable push notification es",
   "LogoutAskHeader": "Are you sure to logout?",
@@ -53,5 +56,12 @@
   "Confirm": "Confirm",
   "Next": "Next",
   "EnterYourPinToProceed": "Enter your PIN to proceed",
-  "SendAssetSuccess": "Successfully Sent!"
+  "SendAssetSuccess": "Successfully Sent!",
+  "EmailAddress": "Email address",
+  "Pin": "PIN",
+  "PinRegistered": "Registered",
+  "PinNotRegistered": "Not registered",
+  "MobileNumberSetting": "Mobile number setting",
+  "EmailAddressSetting": "Email address setting",
+  "PinSetting": "PIN setting"
 }

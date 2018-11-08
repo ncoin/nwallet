@@ -51,7 +51,10 @@ export class NWalletAppService {
     }
 
     public async enter(userName: string): Promise<void> {
-        this.event.publish(NWEvent.App.user_login, { userName: userName });
+        this.account.setAccount(userName);
+        const detail = await this.account.detail();
+
+        this.event.publish(NWEvent.App.user_login, { userName: detail.getUserName() });
         await this.beginFetch();
     }
 

@@ -31,10 +31,6 @@ export class AccountService {
 
         this.init();
 
-        this.event.subscribe(NWEvent.App.user_login, context => {
-            this.account.setUserName(context.userName);
-        });
-
         // todo
         this.event.subscribe(NWEvent.Stream.wallet, context => {
             context.forEach(wallet => {
@@ -59,11 +55,19 @@ export class AccountService {
         });
 
         this.channel.register(NWProtocol.PutWalletVisibility, context => {
-            const item = this.account.inventory.getAssetItems().getValue().find(e => e.getWalletId() === context.walletId);
+            const item = this.account.inventory
+                .getAssetItems()
+                .getValue()
+                .find(e => e.getWalletId() === context.walletId);
             if (item) {
                 item.option.isShow = context.isVisible;
                 this.account.inventory.refresh();
             }
+        });
+
+        this.channel.register(NWProtocol.CreateWallet, async () => {
+            const assets = await this.channel.getAssets();
+            this.account.inventory.setItems(assets);
         });
     }
 

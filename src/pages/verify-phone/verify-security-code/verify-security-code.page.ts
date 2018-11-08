@@ -63,9 +63,11 @@ export class VerifySecuritycodePage {
         // todo auth success --sky
         const secureCode = this.securityCodes.reduce((p, n) => p + n);
         const result = this.auth.verifyMobileNumber(this.countryCode, this.phoneNumber, secureCode);
-        this.app.enter(this.phoneNumber);
-        this.parent.close();
-        this.orientation.unlock();
+        if (result) {
+            this.app.enter(`+${this.countryCode}-${this.phoneNumber}`);
+            this.parent.close();
+            this.orientation.unlock();
+        }
     }
 
     public onInput(input: any): void {

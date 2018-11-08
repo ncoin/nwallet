@@ -12,6 +12,7 @@ import { EventService } from './common/event/event';
 import { NsusChannelService } from './nsus/nsus-channel.service';
 import { CurrencyService } from './nsus/currency.service';
 import { NotificationService } from './nsus/notification.service';
+import { PopupService } from './popup/popop.service';
 
 @NgModule({
     providers: [
@@ -27,7 +28,8 @@ import { NotificationService } from './nsus/notification.service';
         EventService,
         NsusChannelService,
         CurrencyService,
-        NotificationService
-    ],
+        NotificationService,
+        PopupService
+    ]
 })
 export class NWalletProvidersModule {}

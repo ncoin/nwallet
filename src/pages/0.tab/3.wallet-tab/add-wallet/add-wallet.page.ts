@@ -13,7 +13,9 @@ export class AddWalletPage {
     totalPrice: string;
     public _searchText = '';
     public assets: NWAsset.Available[] = [];
+    public sourceAssets: NWAsset.Available[] = [];
     constructor(public navCtrl: NavController, private accont: AccountService, private channel: NsusChannelService) {
+        this.assets = [];
         this.init();
     }
 
@@ -23,25 +25,32 @@ export class AddWalletPage {
 
     public set searchText(value: string) {
         this._searchText = value;
-        this.init();
         this.onFilterAsset(value);
     }
 
     private async init(): Promise<void> {
-        this.assets = [];
         const wallets = await this.channel.getAvailableWallets();
-        this.assets.push(...wallets);
+        this.sourceAssets.push(...wallets);
+        this.assets = this.sourceAssets.slice();
     }
 
     private onFilterAsset(value: string): void {
         if (value && value.trim() !== '') {
-            this.assets = this.assets.filter(item => {
-                return item.getSymbol().trim().toLowerCase().indexOf(value.trim().toLowerCase()) > -1;
+            this.assets = this.sourceAssets.filter(item => {
+                return (
+                    item
+                        .getSymbol()
+                        .trim()
+                        .toLowerCase()
+                        .indexOf(value.trim().toLowerCase()) > -1
+                );
             });
+        } else {
+            this.assets = this.sourceAssets.slice();
         }
     }
 
     public onClick_AddAsset(asset: NWAsset.Available): void {
-        // this.channel.createWallet
+        this.channel.createWallet(asset.id);
     }
 }

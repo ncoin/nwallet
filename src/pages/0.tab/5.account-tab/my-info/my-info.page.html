@@ -29,22 +29,22 @@
                 {{'Pin' | translate}} :
             </div>
             <div>
-                {{(pincodeEnabled ? 'Registered' : 'NotRegisterd') | translate}}
+                {{(pincodeEnabled ? 'PinRegistered' : 'PinNotRegistered') | translate}}
             </div>
         </div>
     </div>
     <button ion-item detail-none class="btn default" (click)="onClick_Phone()">
         <ion-label>
-            {{'PhoneNumberSetting' | translate}}
+            {{'MobileNumberSetting' | translate}}
         </ion-label>
     </button><button ion-item detail-none class="btn default">
         <ion-label>
-            {{'EmailSetting' | translate}}
+            {{'EmailAddressSetting' | translate}}
         </ion-label>
     </button>
     <button ion-item detail-none class="btn default" (click)="onClick_Pincode()">
         <ion-label>
-            {{'PincodeSetting' | translate}}
+            {{'PinSetting' | translate}}
         </ion-label>
     </button>
 </ion-content>

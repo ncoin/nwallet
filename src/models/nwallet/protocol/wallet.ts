@@ -10,7 +10,7 @@ export class GetWallets extends GetProtocolBase<NoQuery, NWAsset.Data[], NWAsset
 
 /** Create new Wallets */
 
-export class CreateWallet extends PostProtocolBase<NoPayload, NoResponseData, NoConvert> {
+export class CreateWallet extends PostProtocolBase<{ currency_manage_id: number }, NoResponseData, NoConvert> {
     public url = () => Paths.post.createWallet(this.credential.userId);
 }
 

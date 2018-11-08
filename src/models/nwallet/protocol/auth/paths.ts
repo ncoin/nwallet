@@ -9,6 +9,7 @@ export const Paths = {
 
     auth: {
         phone: () => api(`authentication/phone`),
+        verifyPhone: () => api(`authentication/verify-phone`)
     },
 
     token: () => api(`oauth/token`)

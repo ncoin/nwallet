@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ViewController, ToastController, PopoverController, LoadingController } from 'ionic-angular';
-import { QRScanner, QRScannerStatus } from '@ionic-native/qr-scanner';
+import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { LoggerService } from '../../providers/common/logger/logger.service';
 import { ModalBasePage } from '../0.base/modal.page';
 import { ModalNavPage } from '../0.base/modal-nav.page';
@@ -11,6 +10,8 @@ import { VerifySecuritycodePage } from './verify-security-code/verify-security-c
 import { ScreenOrientation } from '@ionic-native/screen-orientation';
 import { PlatformService } from '../../providers/common/platform/platform.service';
 import { AppConfigService } from '../../providers/app/app.config.service';
+import { PopupService } from '../../providers/popup/popop.service';
+import { TitleCasePipe } from '@angular/common';
 
 // todo [important] Guard impl!!
 @IonicPage()
@@ -21,15 +22,16 @@ import { AppConfigService } from '../../providers/app/app.config.service';
 export class VerifyPhonePage extends ModalBasePage {
     public countryCode = '';
     public phoneNumber = '';
-    public selectedCountry: { country: string; code: string };
+    public selectedCountry: { fullName: string; countryCode: string; dialCode: string };
 
     constructor(
         navCtrl: NavController,
         navParams: NavParams,
         parent: ModalNavPage,
-        private popover: PopoverController,
+        private popup: PopupService,
         protected logger: LoggerService,
         private platform: PlatformService,
+        private locale: LocaleService,
         private appConfig: AppConfigService,
         private country: CountryService
     ) {
@@ -37,6 +39,7 @@ export class VerifyPhonePage extends ModalBasePage {
         this.init();
     }
 
+    // todo fixme
     private async init() {
         this.platform.orientation.lock(this.platform.orientation.ORIENTATIONS.LANDSCAPE_PRIMARY);
         const locale = await this.appConfig.getLocale();
@@ -46,12 +49,14 @@ export class VerifyPhonePage extends ModalBasePage {
         // name: ""
         const countries = this.country.getCountries();
         const target = countries.find(c => c.countryCode === locale.country);
+        target.name = new TitleCasePipe().transform(this.locale.getLocales(locale.language)[target.countryCode]);
 
         this.logger.debug('[verify-phone] remommended country :', target);
 
         this.selectedCountry = {
-            country: target.countryCode,
-            code: target.dialCode
+            fullName: new TitleCasePipe().transform(target.name),
+            countryCode: target.countryCode,
+            dialCode: target.dialCode
         };
     }
 
@@ -64,23 +69,22 @@ export class VerifyPhonePage extends ModalBasePage {
     }
 
     public async onCountryChanged(event: any): Promise<void> {
-        const popover = this.popover.create(InternationalPhoneComponent);
-        popover.onWillDismiss((data, role) => {
-            if (data) {
-                this.selectedCountry = data;
-            }
-        });
-
-        await popover.present({
-            ev: event
-        });
+        const country = await this.popup.selectCountry(this.selectedCountry.countryCode);
+        this.logger.debug('[verify-phone-page] selected country', country);
+        if (country) {
+            this.selectedCountry = {
+                fullName: country.fullName,
+                countryCode: country.code,
+                dialCode: country.dialCode
+            };
+        }
     }
 
     public async onClick_Next(): Promise<void> {
         this.logger.debug('[verify-phone-page] phoneNumber : ', this.phoneNumber);
 
         await this.navCtrl.push(VerifySuccessPage, {
-            countryCode: this.selectedCountry.code,
+            countryCode: this.selectedCountry.dialCode,
             phoneNumber: this.phoneNumber
         });
     }

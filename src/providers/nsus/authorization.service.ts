@@ -70,6 +70,7 @@ export class AuthorizationService {
             this.logger.debug('[auth] user logout', this.userName);
             this.userName = undefined;
             this.preference.remove(Preference.Nwallet.token);
+            this.tokenSource = undefined;
         });
     }
 
@@ -154,7 +155,7 @@ export class AuthorizationService {
     public async verifyMobileNumber(countryCode: string, number: string, securityCode: string) {
         return this.nClient
             .auth(
-                new NWAuthProtocol.VerifyPhone({
+                new NWAuthProtocol.VerifyPhoneComplete({
                     payload: {
                         countryCode: countryCode,
                         number: number,

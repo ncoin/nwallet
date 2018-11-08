@@ -7,24 +7,26 @@
 <ion-content padding>
     <div class="container">
         <img class="logo" src="assets/img/appicon.png">
-        <div class="enter-mobile-number">
-            {{'EnterYourMobileNumber' | translate}}
-        </div>
-        <div class="country">
-            <button class="country-code-button" (click)="onCountryChanged($event)">
-                <span class="country-code-logo">ㅇ</span>
-                <div class="country-code-dial">
-                    <span *ngIf="selectedCountry">+{{selectedCountry.code}}</span>
+        <div class="_content">
+            <div class="enter-mobile-number">
+                {{'EnterYourMobileNumber' | translate}}
+            </div>
+            <div class="country">
+                <button class="country-code-button" (click)="onCountryChanged($event)">
+                    <div class="country-code-logo">{{selectedCountry.fullName}}</div>
+                    <div class="country-code-dial">
+                        <div *ngIf="selectedCountry">+{{selectedCountry.dialCode}}</div>
+                    </div>
                     <ion-icon name="arrow-dropdown"></ion-icon>
-                </div>
-            </button>
-            <input class="phone-number" [readonly]="true" [value]="phoneNumber" placeholder="{{'MobileNumber' | translate}}" />
+                </button>
+                <input class="phone-number" [readonly]="true" [value]="phoneNumber" placeholder="{{'MobileNumber' | translate}}" />
+            </div>
+            <div>
+                <button ion-button block class="btn default" (click)="onClick_Next()">
+                    {{'Next' | translate}}
+                </button>
+            </div>
         </div>
-        <div>
-            <button class="next-button" (click)="onClick_Next()">
-                Next
-            </button>
-        </div>
+        <nw-key-pad class="keypad" (keystroke)=onInput($event)></nw-key-pad>
     </div>
-    <nw-key-pad class="keypad" (keystroke)=onInput($event)></nw-key-pad>
 </ion-content>

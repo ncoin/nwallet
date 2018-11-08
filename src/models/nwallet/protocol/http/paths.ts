@@ -15,7 +15,7 @@ export const Paths = {
     },
 
     post: {
-        createWallet: (userId: string) => api(`/users/${userId}/wallets`),
+        createWallet: (userId: string) => api(`users/${userId}/wallets`),
         sendAsset: (userId: string, userWalletId: number) => api(`users/${userId}/wallets/${userWalletId}/send`)
     },
 
