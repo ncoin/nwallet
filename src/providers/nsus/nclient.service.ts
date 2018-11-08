@@ -68,13 +68,15 @@ export class NClientService {
     }
 
     // test
-    public auth<T1, T2, T3, T4>(protocol: AuthProtocolBase<T1, T2, T3, T4>): Promise<AuthProtocolBase<T1, T2, T3, T4>> {
+    public auth<TQuery, TPayload, TResponse, TConvert>(
+        protocol: AuthProtocolBase<TQuery, TPayload, TResponse, TConvert>
+    ): Promise<AuthProtocolBase<TQuery, TPayload, TResponse, TConvert>> {
         Debug.assert(protocol.method !== MethodTypes.INVALID);
 
         // todo extract
         if (protocol.method === MethodTypes.GET) {
             return this.http
-                .get<T3>(protocol.url(), {
+                .get<TResponse>(protocol.url(), {
                     headers: protocol.header,
                     params: protocol.query
                 })
@@ -83,7 +85,7 @@ export class NClientService {
                 .catch(this.onAuthError(protocol));
         } else if (protocol.method === MethodTypes.POST) {
             return this.http
-                .post<T3>(protocol.url(), protocol.payload, {
+                .post<TResponse>(protocol.url(), protocol.payload, {
                     headers: protocol.header
                 })
                 .toPromise()
@@ -91,7 +93,7 @@ export class NClientService {
                 .catch(this.onAuthError(protocol));
         } else if (protocol.method === MethodTypes.PUT) {
             return this.http
-                .put<T3>(protocol.url(), protocol.payload, {
+                .put<TResponse>(protocol.url(), protocol.payload, {
                     headers: protocol.header
                 })
                 .toPromise()
@@ -110,7 +112,7 @@ export class NClientService {
     private onAuthError<T extends AuthProtocolBase>(protocol: T) {
         return (error: HttpErrorResponse) => {
             protocol.error = error;
-            if (error.status === 201 || error.status === 201) {
+            if (error.status === 200 || error.status === 201) {
                 return protocol;
             }
             throw error;

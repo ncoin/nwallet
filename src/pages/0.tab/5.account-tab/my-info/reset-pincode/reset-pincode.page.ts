@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController, Navbar, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, Navbar, NavParams, ToastController } from 'ionic-angular';
 import { AccountService } from '../../../../../providers/account/account.service';
 import { ModalBasePage } from '../../../../0.base/modal.page';
 import { ModalNavPage } from '../../../../0.base/modal-nav.page';
@@ -19,15 +19,23 @@ export interface Phase {
     templateUrl: 'reset-pincode.page.html'
 })
 export class ResetPincodePage extends ModalBasePage {
+    private isPinRegistered: boolean;
     public phases: Phase[];
     public index = 0;
 
-    public constructor(navCtrl: NavController, navParams: NavParams, parent: ModalNavPage, private logger: LoggerService) {
+    public constructor(
+        navCtrl: NavController,
+        navParams: NavParams,
+        parent: ModalNavPage,
+        private logger: LoggerService,
+        private account: AccountService,
+        private toast: ToastController
+    ) {
         super(navCtrl, navParams, parent);
         this.init();
     }
 
-    private init(): void {
+    private async init(): Promise<void> {
         this.phases = [
             {
                 phaseKey: 'EnterYourCurrentPin',
@@ -42,6 +50,9 @@ export class ResetPincodePage extends ModalBasePage {
                 pin: []
             }
         ];
+
+        const account = await this.account.detail();
+        this.isPinRegistered = account.personal.pincodeEnabled;
     }
 
     private get pin(): string[] {
@@ -62,14 +73,28 @@ export class ResetPincodePage extends ModalBasePage {
 
     private async checkPhase(): Promise<void> {
         if (this.pin.length === 6) {
-            if (this.index === 2) {
-                const currentPin = this.phases[0].pin.reduce((prev, current) => prev + current);
-                const newPin = this.phases[1].pin.reduce((prev, current) => prev + current);
-                const reEnterNewPin = this.phases[2].pin.reduce((prev, current) => prev + current);
+            if (this.index === this.phases.length - 1) {
+                let currentPin,
+                    newPin,
+                    reEnterNewPin = '';
+                if (this.isPinRegistered) {
+                    currentPin = this.phases[0].pin.reduce((prev, current) => prev + current);
+                    newPin = this.phases[1].pin.reduce((prev, current) => prev + current);
+                    reEnterNewPin = this.phases[2].pin.reduce((prev, current) => prev + current);
+                } else {
+                    newPin = this.phases[0].pin.reduce((prev, current) => prev + current);
+                    reEnterNewPin = this.phases[1].pin.reduce((prev, current) => prev + current);
+                }
+
                 if (newPin === reEnterNewPin) {
                     const result = await this.navCtrl.push(ResetPincodeSuccessPage, { currentPin, newPin });
                 } else {
                     this.logger.error('new pin not matched.', newPin, reEnterNewPin);
+                    this.toast.create({
+                        position: 'middle',
+                        message: 'failed',
+                        duration: 2000
+                    }).present();
                     this.index = 0;
                     this.phases.forEach(p => (p.pin.length = 0));
                 }

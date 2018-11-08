@@ -3,7 +3,7 @@
         <ion-title>
             {{ 'ManageWallet' | translate}}
         </ion-title>
-        <button class="refresh-button"><ion-icon name="md-refresh"></ion-icon></button>
+        <!-- <button class="refresh-button"><ion-icon name="md-refresh"></ion-icon></button> -->
     </ion-navbar>
 </ion-header>
 <ion-content padding>
@@ -12,12 +12,9 @@
             <!-- inactive item preload -->
             <ion-item class="asset-ion-item" *ngFor="let asset of assets" >
                 <div class="asset-container">
-                    <img class="asset-item img" src="assets/img/symbol_BTC.png" />
+                    <img class="asset-item img" src="assets/img/symbol_{{asset.getSymbol()}}.png" />
                     <div class="asset-item symbol">
                         {{asset.getSymbol()}}
-                    </div>
-                    <div class="asset-item order">
-                        {{asset.option.order}}
                     </div>
                     <button class="asset-item isShow" (click)="onChangeVisibility(asset)">
                         {{asset.option.isShow}}
@@ -28,5 +25,5 @@
     </div>
 </ion-content>
 <ion-footer>
-    <button class="add-wallets-button" ion-button full (click)="onClick_addWallets()">Add Wallets</button>
+    <button class="btn default" ion-button block (click)="onClick_addWallets()">Add Wallets</button>
 </ion-footer>

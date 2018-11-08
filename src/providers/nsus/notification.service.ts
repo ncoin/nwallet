@@ -44,8 +44,14 @@ export class NotificationService {
         this.logger.debug('[notification][openstream] request token');
         const token = await this.auth.getToken();
 
-        const walletUrl = env.endpoint.stream('wallet', token.getValue());
-        const tickerUrl = env.endpoint.stream('ticker', token.getValue());
+        if (!token) {
+            this.logger.debug('[notification][openstream] request token failed');
+        }
+
+        const value = token ? token.getValue() : '';
+
+        const walletUrl = env.endpoint.stream('wallet', value);
+        const tickerUrl = env.endpoint.stream('ticker', value);
 
         const walletEvent = new EventSource(walletUrl, { withCredentials: true });
         const tickerEvent = new EventSource(tickerUrl, { withCredentials: true });

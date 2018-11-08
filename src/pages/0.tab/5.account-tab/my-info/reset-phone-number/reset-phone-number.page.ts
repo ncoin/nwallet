@@ -77,7 +77,7 @@ export class ResetPhoneNumberPage extends ModalBasePage implements OnDestroy {
     }
 
     public async onCountryChanged(event: any): Promise<void> {
-        const task = await this.popup.countryAlert();
+        const task = await this.popup.selectCountry();
         if (task) {
             this.selectedCountry = {
                 name: task.fullName,

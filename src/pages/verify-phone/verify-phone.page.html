@@ -12,7 +12,7 @@
                 {{'EnterYourMobileNumber' | translate}}
             </div>
             <div class="country">
-                <button class="country-code-button" (click)="onCountryChanged($event)">
+                <button class="country-code-button" (click)="onCountryChanged()">
                     <div class="country-code-logo">{{selectedCountry.fullName}}</div>
                     <div class="country-code-dial">
                         <div *ngIf="selectedCountry">+{{selectedCountry.dialCode}}</div>

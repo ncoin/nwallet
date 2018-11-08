@@ -35,8 +35,15 @@ export class NsusChannelService {
     //#region Protocol methods
     private async onRequestProtocol<T extends HttpProtocol>(func: (userId: string) => T): Promise<T> {
         const token = await this.auth.getToken();
-        const userId = token.getUserId();
-        const auth = token.getAuth();
+        let userId,
+            auth = '';
+        if (token) {
+            userId = token.getUserId();
+            auth = token.getAuth();
+        } else {
+            this.logger.debug('[channel] request token failed');
+        }
+
         const request = func(userId);
         request.header = {
             authorization: auth
@@ -202,6 +209,7 @@ export class NsusChannelService {
             )
             .then(this.onSuccess())
             .then(this.onBroadcast(() => {}))
+            .then(() => true)
             .catch(this.onError(false));
     }
 

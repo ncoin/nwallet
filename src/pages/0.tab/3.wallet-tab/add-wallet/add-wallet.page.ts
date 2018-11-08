@@ -36,21 +36,23 @@ export class AddWalletPage {
 
     private onFilterAsset(value: string): void {
         if (value && value.trim() !== '') {
-            this.assets = this.sourceAssets.filter(item => {
-                return (
+            this.assets = this.sourceAssets.filter(
+                item =>
                     item
                         .getSymbol()
                         .trim()
                         .toLowerCase()
                         .indexOf(value.trim().toLowerCase()) > -1
-                );
-            });
+            );
         } else {
             this.assets = this.sourceAssets.slice();
         }
     }
 
     public onClick_AddAsset(asset: NWAsset.Available): void {
-        this.channel.createWallet(asset.id);
+        if (this.channel.createWallet(asset.id)) {
+            this.sourceAssets.splice(this.sourceAssets.indexOf(asset), 1);
+            this.assets.splice(this.assets.indexOf(asset), 1);
+        }
     }
 }

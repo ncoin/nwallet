@@ -16,9 +16,10 @@ export class EventParameter<T> {
 export const NWEvent = {
     App: {
         initialize: EventParameter.create('app-initialize'),
-        user_login: EventParameter.create<{ userName: string}>('app-user_login'),
+        user_login: EventParameter.create<{ userName: string }>('app-user_login'),
         user_logout: EventParameter.create('app-user_logout'),
-        change_tab: EventParameter.create<{ index: number; currencyId: number }>('app-change_tab')
+        change_tab: EventParameter.create<{ index: number; currencyId: number }>('app-change_tab'),
+        error_occured: EventParameter.create<{ reason: string }>('error_occured'),
     },
 
     NWallet: {},
@@ -30,6 +31,5 @@ export const NWEvent = {
 
     Protocol: {
         change_tab: EventParameter.create<GetWalletTransactions>('app-change_tab')
-
     }
 };

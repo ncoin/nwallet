@@ -68,6 +68,7 @@ export class AccountService {
         this.channel.register(NWProtocol.CreateWallet, async () => {
             const assets = await this.channel.getAssets();
             this.account.inventory.setItems(assets);
+            this.account.inventory.refresh();
         });
     }
 

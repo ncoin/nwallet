@@ -8,7 +8,6 @@ import { NsusChannelService } from '../nsus/nsus-channel.service';
 
 /** todo change me --sky */
 import { PromiseWaiter } from 'forge/dist/helpers/Promise/PromiseWaiter';
-import { AppConfigService } from './app.config.service';
 
 /**
  * common business logic provider
@@ -26,10 +25,17 @@ export class NWalletAppService {
         private event: EventService
     ) {
         this.init();
+
+        this.event.subscribe(NWEvent.App.error_occured, async context => {
+            if (context.reason === 'unauth') {
+                await this.waitFetch();
+                this.logout();
+            }
+        });
     }
 
     // load or fetch
-    private async init(): Promise<void> {
+    private init(): void {
         this.fetchJobs = new PromiseWaiter<boolean>();
     }
 
@@ -58,24 +64,18 @@ export class NWalletAppService {
         await this.beginFetch();
     }
 
+    public async beginFetch(): Promise<void> {
+        this.logger.debug('[app] begin fetch start');
+        await Promise.all([this.account.fetchJobs()]);
+        this.logger.debug('[app] begin fetch done');
+        this.fetchJobs.set(true);
+    }
+
     public waitFetch(): Promise<boolean> {
         return this.fetchJobs.result();
     }
 
-    public async beginFetch(): Promise<void> {
-        // todo init token
-
-        this.logger.debug('[app] begin fetch start');
-        await Promise.all([this.account.fetchJobs()]);
-        this.logger.debug('[app] begin fetch done');
-
-        this.fetchJobs.set(true);
-    }
-
-    // todo fixme
-
     public async logout(): Promise<void> {
-        // todo unsubscribe
         this.init();
         this.account.flush();
         this.event.publish(NWEvent.App.user_logout);

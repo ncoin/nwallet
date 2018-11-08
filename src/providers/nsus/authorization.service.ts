@@ -65,9 +65,9 @@ export class AuthorizationService {
         });
 
         this.event.subscribe(NWEvent.App.user_logout, () => {
-            Debug.assert(this.userName);
             this.init = new PromiseWaiter<boolean>();
             this.logger.debug('[auth] user logout', this.userName);
+            this.token = undefined;
             this.userName = undefined;
             this.preference.remove(Preference.Nwallet.token);
             this.tokenSource = undefined;
@@ -85,6 +85,7 @@ export class AuthorizationService {
         if (this.token === undefined || this.token.isExpired()) {
             this.logger.debug(`[auth] token requested : use ${this.token === undefined ? 'new' : 'refresh'} token`);
             this.token = await this.issueToken(this.token === undefined ? false : this.token.isExpired());
+
             await this.preference.set(Preference.Nwallet.token, this.token);
         } else {
             this.logger.debug('[auth] token requested : use stored token');
@@ -98,7 +99,7 @@ export class AuthorizationService {
     private async issueToken(isRefresh: boolean): Promise<Token> {
         let payload: NWAuthProtocol.TokenPayload;
         const tokenKind = isRefresh ? 'refresh' : 'new';
-        this.logger.debug(`[auth] issue token begin : ${tokenKind} ...`);
+        this.logger.debug(`[auth] issue token begin : ${tokenKind}`);
 
         if (isRefresh) {
             payload = {
@@ -126,6 +127,9 @@ export class AuthorizationService {
             })
             .catch((response: HttpErrorResponse) => {
                 this.logger.error(`[auth] issue token failed : ${tokenKind}`, response);
+                if (response.status === 401) {
+                    this.event.publish(NWEvent.App.error_occured, { reason: 'unauth' });
+                }
                 return Token.Empty;
             });
 

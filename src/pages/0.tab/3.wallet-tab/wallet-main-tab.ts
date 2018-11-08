@@ -1,5 +1,5 @@
 import { LoggerService } from '../../../providers/common/logger/logger.service';
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { NavController, ModalController, LoadingController, Loading } from 'ionic-angular';
 import { EventService } from '../../../providers/common/event/event';
 import { AccountService } from '../../../providers/account/account.service';
@@ -30,7 +30,7 @@ export interface AssetSlide {
     selector: 'wallet-main-tab',
     templateUrl: 'wallet-main-tab.html'
 })
-export class WalletMainTabPage {
+export class WalletMainTabPage implements OnDestroy {
     public assetSlides: AssetSlide[] = [];
     public totalPrice: string;
     private subscriptions: Subscription[] = [];
@@ -49,10 +49,12 @@ export class WalletMainTabPage {
     }
 
     ionViewDidLeave() {
-
         // todo hmm.. logout? --sky
         // this.logger.debug('[wallet-main-tab] unsubscribe');
-        // this.subscriptions.forEach(s => s.unsubscribe());
+    }
+
+    ngOnDestroy(): void {
+        this.subscriptions.forEach(s => s.unsubscribe());
     }
 
     async init(): Promise<void> {
@@ -60,7 +62,7 @@ export class WalletMainTabPage {
             content: 'Loading Please Wait...'
         });
 
-        await this.loading.present();
+        this.loading.present();
         await this.app.waitFetch();
 
         this.account.registerSubjects(account => {
@@ -69,7 +71,6 @@ export class WalletMainTabPage {
         });
 
         await this.loading.dismiss();
-
     }
 
     private register(...subscription: Subscription[]): void {

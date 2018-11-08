@@ -44,9 +44,6 @@ export class VerifyPhonePage extends ModalBasePage {
         this.platform.orientation.lock(this.platform.orientation.ORIENTATIONS.LANDSCAPE_PRIMARY);
         const locale = await this.appConfig.getLocale();
 
-        // countryCode: "tl"
-        // dialCode: "670"
-        // name: ""
         const countries = this.country.getCountries();
         const target = countries.find(c => c.countryCode === locale.country);
         target.name = new TitleCasePipe().transform(this.locale.getLocales(locale.language)[target.countryCode]);
@@ -68,7 +65,7 @@ export class VerifyPhonePage extends ModalBasePage {
         }
     }
 
-    public async onCountryChanged(event: any): Promise<void> {
+    public async onCountryChanged(): Promise<void> {
         const country = await this.popup.selectCountry(this.selectedCountry.countryCode);
         this.logger.debug('[verify-phone-page] selected country', country);
         if (country) {
