@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { IonicPage, ToastController } from 'ionic-angular';
 import { Clipboard } from '@ionic-native/clipboard';
 import { AccountService } from '../../../providers/account/account.service';
@@ -14,12 +14,14 @@ import { NWAsset } from '../../../models/nwallet';
     selector: 'page-receive',
     templateUrl: 'receive.page.html'
 })
-export class ReceivePage {
+export class ReceivePage implements OnDestroy {
+
     qrData = null;
     scannedCode = null;
     public selectedAsset: NWAsset.Item;
     public slides: { assets: NWAsset.Item[] }[] = [];
     constructor(private account: AccountService, private clipboard: Clipboard, private toast: ToastController, private logger: LoggerService, private event: EventService) {
+        this.logger.debug('????????????????????');
         this.account.registerSubjects(stream => {
             stream.assetChanged(this.onAssetChanged);
         });
@@ -33,6 +35,10 @@ export class ReceivePage {
                 this.qrData = this.selectedAsset.getAddress();
             }
         });
+    }
+
+    ngOnDestroy(): void {
+        throw new Error('Method not implemented.');
     }
 
     onAssetChanged = (assets: NWAsset.Item[]): void => {
@@ -61,7 +67,6 @@ export class ReceivePage {
         this.qrData = targetAsset.getAddress();
         this.selectedAsset = targetAsset;
     }
-
 
     public onClick_Asset(asset: NWAsset.Item): void {
         this.qrData = asset.getAddress();
@@ -95,5 +100,4 @@ export class ReceivePage {
                     .present();
             });
     }
-
 }

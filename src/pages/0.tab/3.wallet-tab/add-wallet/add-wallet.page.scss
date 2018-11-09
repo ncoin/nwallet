@@ -36,8 +36,10 @@ add-wallet {
             height: 70px;
             display: grid;
             grid-template-columns: 70px 2fr 1fr;
-            background-color: green;
+            background-color: $border-color-7a;
+            border : 1px solid $border-color;
             border-radius: 10px;
+            margin: 5px 0 0 0;
             img {
                 margin: auto 0 auto 5px;
                 grid-column: 1;

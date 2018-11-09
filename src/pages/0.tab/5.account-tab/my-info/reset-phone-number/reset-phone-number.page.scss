@@ -31,13 +31,11 @@ page-reset-phone-number {
             flex-basis: 10%;
         }
 
-        .content {
+        .number-content {
             font-size: 3rem;
             flex-grow: 1;
             flex-basis: 10%;
             color: $foreground-content-lightgray;
-
-
         }
 
         .footer {
@@ -51,20 +49,25 @@ page-reset-phone-number {
 
     .container .country {
         width: 100%;
-        padding: 4% 3% 0% 3%;
+        //padding: 4% 3% 0% 3%;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+
+        .country-code-logo {
+            font-size: small;
+        }
 
         .country-code-button {
-            display: inline-block;
-            font-size: 2.2rem;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
             width: 30%;
+            align-items: center;
+            font-size: small;
 
-            .country-code-logo {
-                float: left;
-            }
-
-            .country-code-dial {
-                float: right;
-                margin: 0 10px 0 0;
+            >ion-icon {
+                margin: 0 0 0 5px;
             }
         }
 
@@ -96,15 +99,20 @@ page-reset-phone-number {
     // dynamic state
     @media screen and (max-width: 768px),
     screen and (max-height:600px) {
-        .logo {
-            //max-height: 200px;
+        .scroll-content {
         }
     }
 
     // static small
     @media screen and (min-width:768px) and (min-height:600px) and (max-height:768px) {
-        .logo {
-            width: 100px;
+        .scroll-content {
+            margin-top : unset !important;
+        }
+    }
+
+    // static
+    @media screen and (max-height: 600px) {
+        .scroll-content {
         }
     }
 }

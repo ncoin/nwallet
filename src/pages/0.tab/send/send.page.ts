@@ -51,7 +51,7 @@ export class SendPage {
     onAssetChanged = (assets: NWAsset.Item[]): void => {
         if (assets.length > 0) {
             const items = assets.slice();
-            this.logger.debug('[receive-page] on refresh assets');
+            this.logger.debug('[send-page] on refresh assets');
 
             this.slides.length = 0;
             let sliceWallet = items.splice(0, 3);
@@ -70,7 +70,7 @@ export class SendPage {
             .getValue()
             .find(asset => asset.getCurrencyId() === currencyId);
         Debug.assert(targetAsset);
-        this.logger.debug('[receive-page] currency', targetAsset);
+        this.logger.debug('[send-page] currency', targetAsset);
         this.selectedAsset = targetAsset;
     }
 

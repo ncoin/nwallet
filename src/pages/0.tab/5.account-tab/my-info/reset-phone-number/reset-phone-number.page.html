@@ -10,7 +10,7 @@
             <div class="header">
                 {{'YourMobileNumberIs' | translate}}:
             </div>
-            <div class="content">
+            <div class="number-content">
                 {{currentPhoneNumber}}
             </div>
             <div class="footer">
@@ -19,11 +19,11 @@
         </div>
         <div class="country">
             <button class="country-code-button" (click)="onCountryChanged($event)">
-                <span class="country-code-logo">{{selectedCountry.country}}</span>
+                <div class="country-code-logo">{{selectedCountry.name}}</div>
                 <div class="country-code-dial">
-                    <span *ngIf="selectedCountry">+{{selectedCountry.code}}</span>
-                    <ion-icon name="arrow-dropdown"></ion-icon>
+                    <div *ngIf="selectedCountry">+{{selectedCountry.code}}</div>
                 </div>
+                <ion-icon name="arrow-dropdown"></ion-icon>
             </button>
             <input class="phone-number" [readonly]="true" [value]="newPhoneNumber" placeholder="{{'MobileNumber' | translate}}" />
         </div>

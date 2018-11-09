@@ -13,7 +13,7 @@ wallet-detail {
 
         >div {
 
-            background: gray;
+            background: $border-color-7a;
             height: 100%;
             border-radius: 10px
         }
@@ -58,14 +58,14 @@ wallet-detail {
     }
 
     .loan-summary {
-        background: brown;
+         //background: brown;
         display: flex;
         justify-content: space-between;
         margin: 0 10px 10px 5px;
-
+        color: $foreground-content-lightgray;
         .circle {
             border-radius: 30px;
-            background: red;
+            background: $border-color-7a;
             width: 50px;
             height: 50px;
         }
@@ -131,7 +131,7 @@ wallet-detail {
     @media screen and (max-width: 768px),
     screen and (max-height:600px) {
         .navBar-container>div {
-            background: orange;
+            // background: $border-color-7a;
         }
     }
 
@@ -152,7 +152,7 @@ wallet-detail {
         }
 
         .navBar-container>div {
-            background: green;
+            // background: border-color-7a;
         }
 
         .header {

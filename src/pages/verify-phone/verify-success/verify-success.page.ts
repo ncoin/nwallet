@@ -18,7 +18,7 @@ export class VerifySuccessPage {
         this.countryCode = this.navParams.get('countryCode');
     }
 
-    public ionViewCanEnter(): Promise<boolean> {
+    public async ionViewCanEnter(): Promise<boolean> {
         return this.auth.authMobileNumber(this.countryCode, this.phoneNumber);
     }
 

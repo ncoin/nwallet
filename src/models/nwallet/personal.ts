@@ -10,7 +10,7 @@ export class Personal {
     constructor() {
         if (env.name === 'dev') {
             // this.email = 'sample@email.com';
-            this.phoneNumber = '+82-1068116550';
+            // this.phoneNumber = '+82-1068116550';
             // this.pincodeEnabled = true;
         }
     }

@@ -28,6 +28,7 @@ export class VerifyResetPhoneNumberSecuritycodePage {
     ) {
         this.previousView = this.navParams.get('viewCtrl');
         this.phoneNumber = this.navParams.get('phoneNumber');
+        // this.phoneNumber = '11111111111111';
         this.expiredTimeSpan = 60 * 3 * 1000;
     }
 

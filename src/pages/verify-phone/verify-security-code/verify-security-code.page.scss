@@ -2,8 +2,31 @@ page-verify-security-code {
     $static-offset: calc(600px / 7 - 20px);
     $dynamic-offset: 11vmin;
 
-    .content {
+    .scroll-content {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .container {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
         text-align: center;
+
+        .a {
+            flex-grow: 0
+        }
+
+        .b {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 10px 0 0 0;
+
+        }
+        .key {
+            flex-grow: 1;
+        }
     }
 
     .header {
@@ -33,14 +56,15 @@ page-verify-security-code {
         line-height: $static-offset;
         height: $static-offset;
         border-radius: 10px;
-        background: gray;
+        background: $input-background;
         color: white;
         overflow: auto;
     }
 
     .button-next {
         margin: 3% auto 0 auto;
-        width: 90%
+        width: 90%;
+        min-height : 30px;
     }
 
     @media screen and (max-height: 600px) {
@@ -67,7 +91,6 @@ page-verify-security-code {
         }
 
         .security-codes .digit {
-            background: green;
             font-size: 5vmin;
             width: $dynamic-offset;
             line-height: $dynamic-offset;
