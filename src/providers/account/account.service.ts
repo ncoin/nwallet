@@ -69,6 +69,11 @@ export class AccountService {
             const assets = await this.channel.getAssets();
             this.account.inventory.setItems(assets);
             this.account.inventory.refresh();
+            this.channel.fetchTicker();
+            const tickers = await this.channel.fetchTicker();
+            tickers.forEach(ticker => {
+                this.event.publish(NWEvent.Stream.ticker, ticker);
+            });
         });
     }
 
@@ -107,7 +112,7 @@ export class AccountService {
 
     public async isSaved(): Promise<boolean> {
         const detail = await this.detail();
-        return detail.getUserName() !== undefined;
+        return detail.getUserName() !== undefined && detail.getUserName() !== '';
     }
 
     public text() {
