@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ModalController } from 'ionic-angular';
-import { VerifyPhonePage } from '../verify-phone/verify-phone.page';
-import { ModalNavPage } from '../0.base/modal-nav.page';
+import { VerifyPhonePage } from './verify-phone/verify-phone.page';
+import { ModalNavPage } from '../base/modal-nav.page';
 @Component({
     selector: 'page-entrance',
     templateUrl: 'entrance.page.html'

@@ -1,16 +1,14 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { LoggerService } from '../../providers/common/logger/logger.service';
-import { ModalBasePage } from '../0.base/modal.page';
-import { ModalNavPage } from '../0.base/modal-nav.page';
+import { LoggerService } from '../../../providers/common/logger/logger.service';
+import { ModalBasePage } from '../../base/modal.page';
+import { ModalNavPage } from '../../base/modal-nav.page';
 import { LocaleService, CountryService } from 'ng4-intl-phone';
-import { InternationalPhoneComponent } from '../../components/popovers/international-phone/international-phone';
 import { VerifySuccessPage } from './verify-success/verify-success.page';
 import { VerifySecuritycodePage } from './verify-security-code/verify-security-code.page';
-import { ScreenOrientation } from '@ionic-native/screen-orientation';
-import { PlatformService } from '../../providers/common/platform/platform.service';
-import { AppConfigService } from '../../providers/app/app.config.service';
-import { PopupService } from '../../providers/popup/popop.service';
+import { PlatformService } from '../../../providers/common/platform/platform.service';
+import { AppConfigService } from '../../../providers/app/app.config.service';
+import { PopupService } from '../../../providers/popup/popop.service';
 import { TitleCasePipe } from '@angular/common';
 
 // todo [important] Guard impl!!

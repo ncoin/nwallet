@@ -1,7 +1,7 @@
 import { Component, OnDestroy } from '@angular/core';
 import { IonicPage, NavController, NavParams, PopoverController, AlertController } from 'ionic-angular';
-import { ModalBasePage } from '../../../../0.base/modal.page';
-import { ModalNavPage } from '../../../../0.base/modal-nav.page';
+import { ModalBasePage } from '../../../../base/modal.page';
+import { ModalNavPage } from '../../../../base/modal-nav.page';
 import { LoggerService } from '../../../../../providers/common/logger/logger.service';
 import { VerifyResetPhoneNumberCodeSentPage } from './1.verify-reset-phone-number-code-sent/verify-reset-phone-number-code-sent.page';
 import { VerifyResetPhoneNumberSecuritycodePage } from './2.verify-reset-phone-number-security-code/verify-reset-phone-number-security-code.page';

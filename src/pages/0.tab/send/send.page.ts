@@ -10,7 +10,7 @@ import { NWAsset } from '../../../models/nwallet';
 import { EventService } from '../../../providers/common/event/event';
 import { NWEvent } from '../../../interfaces/events';
 import { Debug } from '../../../utils/helper/debug';
-import { ModalNavPage } from '../../0.base/modal-nav.page';
+import { ModalNavPage } from '../../base/modal-nav.page';
 import { SendConfirmPage } from './send.confirm.page';
 import { SendConfirmPinPage } from './send.confirm.pin.page';
 import { SendConfirmSuccessPage } from './send.confirm.success.page';

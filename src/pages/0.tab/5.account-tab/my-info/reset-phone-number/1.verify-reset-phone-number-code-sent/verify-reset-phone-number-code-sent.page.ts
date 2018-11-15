@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, PopoverController, LoadingController } from 'ionic-angular';
-import { ModalBasePage } from '../../../../../0.base/modal.page';
-import { ModalNavPage } from '../../../../../0.base/modal-nav.page';
+import { ModalBasePage } from '../../../../../base/modal.page';
+import { ModalNavPage } from '../../../../../base/modal-nav.page';
 import { LoggerService } from '../../../../../../providers/common/logger/logger.service';
 import { InternationalPhoneComponent } from '../../../../../../components/popovers/international-phone/international-phone';
 import { NsusChannelService } from '../../../../../../providers/nsus/nsus-channel.service';

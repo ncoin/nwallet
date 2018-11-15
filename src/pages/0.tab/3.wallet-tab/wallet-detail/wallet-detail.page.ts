@@ -4,8 +4,8 @@ import { IonicPage, Navbar, InfiniteScroll, NavParams, ViewController, ModalCont
 import * as _ from 'lodash';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { NWTransaction, NWAsset } from '../../../../models/nwallet';
-import { ModalBasePage } from '../../../0.base/modal.page';
-import { ModalNavPage } from '../../../0.base/modal-nav.page';
+import { ModalBasePage } from '../../../base/modal.page';
+import { ModalNavPage } from '../../../base/modal-nav.page';
 import { AccountService } from '../../../../providers/account/account.service';
 import { Subscription } from 'rxjs';
 import { EventService } from '../../../../providers/common/event/event';

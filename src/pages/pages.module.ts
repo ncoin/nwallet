@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 import { TutorialPage } from './0.tutorial/tutorial';
-import { EntrancePage } from './0.entrance/entrance.page';
+import { EntrancePage } from './entrance/entrance.page';
 import { FingerprintModalPage } from './1.security/fingerprint/fingerprint';
 import { PinPadComponent } from './1.security/pin/pin-pad/pin-pad';
 import { PinDotsComponent } from './1.security/pin/pin-dot/pin-dots';
@@ -11,8 +11,8 @@ import { NWalletTabPages } from './0.tab/0.container/tabcontainer';
 import { NWalletComponentsModule } from '../components/components.module';
 import { TranslateModule } from '@ngx-translate/core';
 import { QRScanPage } from './qrscan/qrscan.page';
-import { ModalNavPage } from './0.base/modal-nav.page';
-import { VERIFY_PHONE_PAGES } from './verify-phone/verify-phone.page';
+import { ModalNavPage } from './base/modal-nav.page';
+import { VERIFY_PHONE_PAGES } from './entrance/verify-phone/verify-phone.page';
 
 
 @NgModule({

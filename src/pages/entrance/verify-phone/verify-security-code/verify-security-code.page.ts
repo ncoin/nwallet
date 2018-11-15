@@ -1,12 +1,10 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
-import { LoggerService } from '../../../providers/common/logger/logger.service';
-import { ModalNavPage } from '../../0.base/modal-nav.page';
-import { EventService } from '../../../providers/common/event/event';
-import { NWEvent } from '../../../interfaces/events';
-import { NWalletAppService } from '../../../providers/app/app.service';
+import { LoggerService } from '../../../../providers/common/logger/logger.service';
+import { ModalNavPage } from '../../../base/modal-nav.page';
+import { NWalletAppService } from '../../../../providers/app/app.service';
 import { ScreenOrientation } from '@ionic-native/screen-orientation';
-import { AuthorizationService } from '../../../providers/nsus/authorization.service';
+import { AuthorizationService } from '../../../../providers/nsus/authorization.service';
 
 @IonicPage()
 @Component({

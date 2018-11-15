@@ -13,7 +13,7 @@ import { Nav, Platform } from 'ionic-angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 
-import { EntrancePage } from '../pages/0.entrance/entrance.page';
+import { EntrancePage } from '../pages/entrance/entrance.page';
 import { AppConfigService } from '../providers/app/app.config.service';
 
 @Component({

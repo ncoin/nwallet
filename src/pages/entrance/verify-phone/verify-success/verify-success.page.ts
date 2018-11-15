@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
-import { LoggerService } from '../../../providers/common/logger/logger.service';
+import { LoggerService } from '../../../../providers/common/logger/logger.service';
 import { VerifySecuritycodePage } from '../verify-security-code/verify-security-code.page';
-import { AuthorizationService } from '../../../providers/nsus/authorization.service';
+import { AuthorizationService } from '../../../../providers/nsus/authorization.service';
 
 // todo [important] Guard impl!!
 @IonicPage()

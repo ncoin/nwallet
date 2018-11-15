@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
 import { ScreenOrientation } from '@ionic-native/screen-orientation';
 import { LoggerService } from '../../../../../../providers/common/logger/logger.service';
-import { ModalNavPage } from '../../../../../0.base/modal-nav.page';
+import { ModalNavPage } from '../../../../../base/modal-nav.page';
 import { NWalletAppService } from '../../../../../../providers/app/app.service';
 import { VerfiyResetPhoneNumberSuccessPage } from '../3.verfy-reset-phone-number-success/verify-reset-phone-number-success.page';
 

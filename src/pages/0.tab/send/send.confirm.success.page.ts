@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { IonicPage, NavParams, NavController, AlertController } from 'ionic-angular';
 
 import { LoggerService } from '../../../providers/common/logger/logger.service';
-import { ModalNavPage } from '../../0.base/modal-nav.page';
-import { ModalBasePage } from '../../0.base/modal.page';
+import { ModalNavPage } from '../../base/modal-nav.page';
+import { ModalBasePage } from '../../base/modal.page';
 import { NWAsset } from '../../../models/nwallet';
 import { CurrencyService } from '../../../providers/nsus/currency.service';
 import { Debug } from '../../../utils/helper/debug';

@@ -5,8 +5,8 @@ import { AccountService } from '../../../../providers/account/account.service';
 import { NWAsset, NWAccount } from '../../../../models/nwallet';
 import { AddWalletPage } from '../add-wallet/add-wallet.page';
 import { NWTransition } from '../../../../tools/extension/transition';
-import { ModalNavPage } from '../../../0.base/modal-nav.page';
-import { ModalBasePage } from '../../../0.base/modal.page';
+import { ModalNavPage } from '../../../base/modal-nav.page';
+import { ModalBasePage } from '../../../base/modal.page';
 import { Subscription } from 'rxjs';
 import { NsusChannelService } from '../../../../providers/nsus/nsus-channel.service';
 

@@ -6,12 +6,6 @@ import { NWAsset, NWTransaction, NWProtocol } from '../../models/nwallet';
 import { AuthorizationService } from './authorization.service';
 import { HttpProtocolBase, HttpProtocol } from '../../models/nwallet/protocol/http/http-protocol';
 import { Subject, Subscription } from 'rxjs';
-interface ProtocolResolver<T, TResponse, TConvert> {
-    convert: (response: TResponse) => TConvert;
-    broadCast: () => this;
-    response: () => TResponse;
-    value: () => TResponse | TConvert;
-}
 
 @Injectable()
 export class NsusChannelService {

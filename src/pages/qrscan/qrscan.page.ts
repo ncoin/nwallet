@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ViewController, ToastController } from 'ionic-angular';
 import { QRScanner, QRScannerStatus } from '@ionic-native/qr-scanner';
 import { LoggerService } from '../../providers/common/logger/logger.service';
-import { ModalBasePage } from '../0.base/modal.page';
-import { ModalNavPage } from '../0.base/modal-nav.page';
+import { ModalBasePage } from '../base/modal.page';
+import { ModalNavPage } from '../base/modal-nav.page';
 import { PlatformService } from '../../providers/common/platform/platform.service';
 
 // todo [important] Guard impl!!

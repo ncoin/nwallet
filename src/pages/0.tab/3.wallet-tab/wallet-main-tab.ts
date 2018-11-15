@@ -7,7 +7,7 @@ import { NWModalTransition } from '../../../tools/extension/transition';
 import { ManageWalletPage } from './manage-wallet/manage-wallet.page';
 import { AddWalletPage } from './add-wallet/add-wallet.page';
 import { NWAsset, NWAccount } from '../../../models/nwallet';
-import { ModalNavPage } from '../../0.base/modal-nav.page';
+import { ModalNavPage } from '../../base/modal-nav.page';
 import { NWalletAppService } from '../../../providers/app/app.service';
 import { Subscription, Observable } from 'rxjs';
 import { WalletDetailPage } from './wallet-detail/wallet-detail.page';
