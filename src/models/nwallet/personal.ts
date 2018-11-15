@@ -16,6 +16,11 @@ export class Personal {
         }
     }
 
+    public init(data: Personal): this {
+        Object.assign(this, data);
+        return this;
+    }
+
     public clear(): void {
         Debug.Clear(this);
     }

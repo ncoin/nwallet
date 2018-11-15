@@ -116,12 +116,13 @@ export class NsusChannelService {
             .catch(this.onError([]));
     }
 
-    // public getWalletDetails = async (walletId: number): Promise<NWTransaction.Item[]> => {
-    //     return await this.nClient
-    //         .get(await this.onRequest('asset-detail : request', userId => new GetWalletDetailRequest({ userId: userId, userWalletId: walletId })))
-    //         .then(this.onSuccess('asset-detail : success'))
-    //         .catch(this.onError('asset-detail : failed'));
-    // };
+    public getWalletDetails = async (walletId: number) => {
+        return await this.nClient
+            .get(await this.onRequestProtocol(userId => new NWProtocol.GetWalletDetail({ userId: userId, userWalletId: walletId })))
+            .then(this.onSuccess())
+            .then(this.onBroadcast(p => p.response))
+            .catch(this.onError([]));
+    }
 
     public async getWalletTransactions(walletId: number, offset: number, limit: number) {
         return await this.nClient

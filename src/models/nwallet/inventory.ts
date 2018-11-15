@@ -1,7 +1,7 @@
 import * as Asset from './asset';
 import * as _ from 'lodash';
 import { BehaviorSubject, Observable, Subscriber } from 'rxjs';
-import { NWTransaction } from '../nwallet';
+import { NWTransaction, NWAsset } from '../nwallet';
 
 export class Inventory {
     private _assets: BehaviorSubject<Asset.Item[]>;
@@ -10,6 +10,13 @@ export class Inventory {
     constructor() {
         this._assets = new BehaviorSubject<Asset.Item[]>([]);
         this._transactions = new Map<number, BehaviorSubject<NWTransaction.Item[]>>();
+    }
+
+    public init(data: Inventory): this {
+        if (data && data._assets && data._assets.value) {
+            this._assets.next(data._assets.value);
+        }
+        return this;
     }
 
     public getAssetItems(): BehaviorSubject<Asset.Item[]> {
@@ -44,7 +51,7 @@ export class Inventory {
         asset.push(...items);
     }
 
-    public addOrUpdateItems(items: Asset.Item[]): void {
+    public addOrUpdateItems(...items: Asset.Item[]): void {
         let copy = this._assets.getValue().slice();
 
         copy = _.remove(copy, target => {
@@ -58,6 +65,17 @@ export class Inventory {
         copy.push(...items);
         this.setItems(copy);
     }
+
+    // public addOrUpdateData(data: Asset.Data): void {
+    //     const assets = this._assets.getValue();
+    //     const target = assets.find(asset => asset.getWalletId() === data.id);
+    //     if (target) {
+    //         target.updateData(data);
+    //     } else {
+    //         const item = new NWAsset.Item().initData(data);
+    //         this.addOrUpdateItems([item]);
+    //     }
+    // }
 
     public refresh(): void {
         this.setItems(this._assets.getValue().slice());

@@ -4,7 +4,7 @@ import { PreferenceProvider, Preference } from '../common/preference/preference'
 import { NWAccount, NWAsset, NWTransaction, NWProtocol } from '../../models/nwallet';
 import { PromiseWaiter } from 'forge/dist/helpers/Promise/PromiseWaiter';
 import { Debug } from '../../utils/helper/debug';
-import { BehaviorSubject, Subscription, Subject, AsyncSubject, Observable, ReplaySubject } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { EventService } from '../common/event/event';
 import { NWEvent } from '../../interfaces/events';
 import { NsusChannelService } from '../nsus/nsus-channel.service';
@@ -32,12 +32,17 @@ export class AccountService {
         this.init();
 
         // todo
-        this.event.subscribe(NWEvent.Stream.wallet, context => {
+        this.event.subscribe(NWEvent.Stream.wallet, async context => {
             context.forEach(wallet => {
                 this.getTransactions(wallet.id, 0, 10);
-
-                // todo
+                this.channel.getWalletDetails(wallet.id);
             });
+
+        });
+
+        this.event.subscribe(NWEvent.App.user_login, async context => {
+            const detail = await this.detail();
+            this.setAccount(context.userName);
         });
 
         this.channel.register(NWProtocol.PutWalletAlign, order => {
@@ -75,10 +80,21 @@ export class AccountService {
                 this.event.publish(NWEvent.Stream.ticker, ticker);
             });
         });
+
+        this.channel.register(NWProtocol.GetWalletDetail, async data => {
+            // todo later
+            const asd = this.account.inventory.getAssetItems().getValue().slice();
+            const target = asd.find(a => a.data.id === data.id);
+            target.updateData(data);
+            this.account.inventory.setItems(asd);
+            this.account.inventory.refresh();
+
+        });
     }
 
-    public setAccount(userName: string) {
+    public async setAccount(userName: string): Promise<void> {
         this.account.setUserName(userName);
+        await this.preference.set(Preference.Nwallet.account, this.account);
     }
 
     public async fetchJobs(): Promise<void> {
@@ -93,6 +109,10 @@ export class AccountService {
 
     public async getTransactions(walletId: number, offset: number, limit: number): Promise<NWTransaction.Item[]> {
         const transactions = await this.channel.getWalletTransactions(walletId, offset, limit);
+
+        // todo fixme
+        await this.channel.getWalletDetails(walletId);
+
         this.account.inventory.insertTransactions(walletId, transactions);
         return transactions;
     }
@@ -113,11 +133,6 @@ export class AccountService {
     public async isSaved(): Promise<boolean> {
         const detail = await this.detail();
         return detail.getUserName() !== undefined && detail.getUserName() !== '';
-    }
-
-    public text() {
-        this.logger.debug('[account] on refresh');
-        this.account.inventory.refresh();
     }
 
     public registerSubjects = (onAccount: (account: AccountStream) => void): void => {

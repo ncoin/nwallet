@@ -68,6 +68,10 @@ export class WalletDetailPage extends ModalBasePage implements OnDestroy {
             }
         });
         this.skip = transactions.length;
+
+        const a = this.asset;
+        this.asset = undefined;
+        this.asset = a;
     }
 
     public async doInfinite(infinite: InfiniteScroll): Promise<void> {

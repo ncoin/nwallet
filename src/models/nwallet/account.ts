@@ -11,8 +11,8 @@ export class Account {
     }
 
     public initialize(data: Account): Account {
-        Object.assign(this.inventory, data.inventory);
-        Object.assign(this.personal, data.personal);
+        this.inventory.init(data.inventory);
+        this.personal.init(data.personal);
         Debug.assert(this.inventory);
         Debug.assert(this.personal);
         Debug.Validate(this.inventory);

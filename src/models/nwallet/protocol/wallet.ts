@@ -15,7 +15,7 @@ export class CreateWallet extends PostProtocolBase<{ currency_manage_id: number 
 }
 
 /** Get Wallet Details */
-export class GetWalletDetail extends GetProtocolBase<NoQuery, number, NoConvert> {
+export class GetWalletDetail extends GetProtocolBase<NoQuery, NWAsset.Data, NWAsset.Data> {
     constructor(protected credential: { userId: string; userWalletId: number }) {
         super(credential);
     }

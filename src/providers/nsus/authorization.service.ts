@@ -51,7 +51,7 @@ export class AuthorizationService {
         this.event.subscribe(NWEvent.App.user_login, async context => {
             Debug.assert(context.userName);
             this.logger.debug('[auth] user login', context);
-            this.userName = context.userName;
+            this.userName = context.userName.replace('+', '').replace('-', '');
 
             const token = await this.preference.get(Preference.Nwallet.token);
             if (token) {

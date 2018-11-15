@@ -4,6 +4,17 @@ import { NWAccount } from '../../../models/nwallet';
 import { Token } from '../../../models/nwallet/token';
 
 export namespace Preference {
+    // sample
+    const p = {};
+
+    export function Item<T>(name: string): Item<T> {
+        if (p[name]) {
+            throw new Error(`[preference] Preference already exist : ${name}`);
+        }
+        p[name] = { name: name };
+        return p[name];
+    }
+
     export interface Item<T> {
         name: string;
         type?: T;
@@ -12,25 +23,23 @@ export namespace Preference {
 
 export namespace Preference.App {
     /** is tutorial proceeded? */
-    export const hasSeenTutorial: Item<boolean> = { name: 'hasSeenTutorial' };
-    export const language: Item<string> = { name: 'language' };
-    export const pinCode: Item<any> = { name: 'pinCode' };
-    export const backupWallet: Item<any> = { name: 'backupWallet' };
-    export const notification: Item<boolean> = { name: 'notification' };
+
+    export const hasSeenTutorial = Item<boolean>('app-hasSeenTutorial');
+    export const language = Item<string>('app-language');
+    export const pinCode  = Item<any>('app-pinCode');
+    export const backupWallet = Item<any>('app-backupWallet');
+    export const notification = Item<any>('app-notification');
 }
 
 export namespace Preference.Nwallet {
-    export const account: Item<NWAccount.Account> = { name: 'nwallet-account' };
-    export const token: Item<Token> = { name: 'nwallet-account' };
+    export const account = Item<NWAccount.Account>('nwallet-account');
+    export const token = Item<Token>('nwallet-token');
 }
 
 @Injectable()
 /** Storage strict type proxy */
 export class PreferenceProvider {
-    constructor(private storage: Storage) {
-
-    }
-
+    constructor(private storage: Storage) {}
 
     public get<T>(item: Preference.Item<T>): Promise<T> {
         return this.storage.get(item.name);
