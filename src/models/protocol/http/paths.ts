@@ -1,4 +1,4 @@
-import { env } from '../../../../environments/environment';
+import { env } from '../../../environments/environment';
 
 function api(path: string) {
     return env.endpoint.api(path);

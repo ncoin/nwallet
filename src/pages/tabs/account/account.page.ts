@@ -10,10 +10,10 @@ import { TranslateService } from '@ngx-translate/core';
 
 @IonicPage()
 @Component({
-    selector: 'account-tab',
-    templateUrl: 'account-tab.page.html'
+    selector: 'page-account',
+    templateUrl: 'account.page.html'
 })
-export class AccountTabPage {
+export class AccountPage {
     _enablePushNotification: boolean;
 
     public get enablePushNotification(): boolean {

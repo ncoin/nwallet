@@ -1,12 +1,10 @@
 import { LoggerService } from '../../../providers/common/logger/logger.service';
 import { Component, OnDestroy } from '@angular/core';
 import { NavController, ModalController, LoadingController, Loading } from 'ionic-angular';
-import { EventService } from '../../../providers/common/event/event';
 import { AccountService } from '../../../providers/account/account.service';
-import { NWModalTransition } from '../../../tools/extension/transition';
 import { ManageWalletPage } from './manage-wallet/manage-wallet.page';
 import { AddWalletPage } from './add-wallet/add-wallet.page';
-import { NWAsset, NWAccount } from '../../../models/nwallet';
+import { NWAsset } from '../../../models/nwallet';
 import { ModalNavPage } from '../../base/modal-nav.page';
 import { NWalletAppService } from '../../../providers/app/app.service';
 import { Subscription, Observable } from 'rxjs';
@@ -15,22 +13,15 @@ import { CurrencyService } from '../../../providers/nsus/currency.service';
 import _ from 'lodash';
 import { WalletTransactionDetailPage } from './wallet-detail/wallet-transaction-detail.page';
 
-/**
- * Generated class for the WalletPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
-
 export interface AssetSlide {
     assets: NWAsset.Item[];
 }
 
 @Component({
-    selector: 'wallet-main-tab',
-    templateUrl: 'wallet-main-tab.html'
+    selector: 'page-wallet-main',
+    templateUrl: 'wallet-main.page.html'
 })
-export class WalletMainTabPage implements OnDestroy {
+export class WalletMainPage implements OnDestroy {
     public assetSlides: AssetSlide[] = [];
     public totalPrice: string;
     private subscriptions: Subscription[] = [];
@@ -51,6 +42,7 @@ export class WalletMainTabPage implements OnDestroy {
     ionViewDidLeave() {
         // todo hmm.. logout? --sky
         // this.logger.debug('[wallet-main-tab] unsubscribe');
+
     }
 
     ngOnDestroy(): void {
@@ -124,4 +116,4 @@ export class WalletMainTabPage implements OnDestroy {
     }
 }
 
-export const WalletTabPages = [WalletMainTabPage, WalletDetailPage, ManageWalletPage, AddWalletPage, WalletTransactionDetailPage];
+export const WalletTabPages = [WalletMainPage, WalletDetailPage, ManageWalletPage, AddWalletPage, WalletTransactionDetailPage];

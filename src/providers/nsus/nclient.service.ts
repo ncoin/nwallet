@@ -1,7 +1,7 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { LoggerService } from '../common/logger/logger.service';
-import { GetProtocolBase, PutProtocolBase, PostProtocolBase, AuthProtocolBase, MethodTypes } from '../../models/nwallet/protocol/http/http-protocol';
+import { GetProtocolBase, PutProtocolBase, PostProtocolBase, AuthProtocolBase, MethodTypes } from '../../models/protocol/http/http-protocol';
 import { Debug } from '../../utils/helper/debug';
 import { Observable } from 'rxjs';
 

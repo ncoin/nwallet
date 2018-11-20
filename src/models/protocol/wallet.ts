@@ -1,6 +1,6 @@
 import { GetProtocolBase, NoQuery, NoConvert, PutProtocolBase, NoResponseData, PostProtocolBase, NoPayload } from './http/http-protocol';
 import { Paths } from './http/paths';
-import { NWAsset } from '../../nwallet';
+import { NWAsset } from '../nwallet';
 
 /** Get Wallets */
 export class GetWallets extends GetProtocolBase<NoQuery, NWAsset.Data[], NWAsset.Item[]> {

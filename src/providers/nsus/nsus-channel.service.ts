@@ -4,7 +4,7 @@ import { LoggerService } from '../common/logger/logger.service';
 import { NotificationService } from './notification.service';
 import { NWAsset, NWTransaction, NWProtocol } from '../../models/nwallet';
 import { AuthorizationService } from './authorization.service';
-import { HttpProtocolBase, HttpProtocol } from '../../models/nwallet/protocol/http/http-protocol';
+import { HttpProtocolBase, HttpProtocol } from '../../models/protocol/http/http-protocol';
 import { Subject, Subscription } from 'rxjs';
 
 @Injectable()

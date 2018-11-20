@@ -2,7 +2,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { NWEvent } from '../interfaces/events';
 import { EventService } from '../providers/common/event/event';
 import { NWalletAppService } from '../providers/app/app.service';
-import { TabcontainerPage } from '../pages/0.tab/0.container/tabcontainer';
+import { TabcontainerPage } from '../pages/tabs/container/tabcontainer';
 import { AccountService } from '../providers/account/account.service';
 import { LockProvider } from '../providers/common/lock/lock';
 

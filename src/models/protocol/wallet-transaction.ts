@@ -1,5 +1,5 @@
 import { GetProtocolBase } from './http/http-protocol';
-import { NWTransaction } from '../../nwallet';
+import { NWTransaction } from '../nwallet';
 import { Paths } from './http/paths';
 
 export class GetWalletTransactions extends GetProtocolBase<{ offset: number; limit: number }, NWTransaction.Data[], NWTransaction.Item[]> {

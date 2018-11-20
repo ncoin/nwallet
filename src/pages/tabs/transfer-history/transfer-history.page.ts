@@ -4,22 +4,16 @@ import { IonicPage, NavController, Navbar, InfiniteScroll, ModalController } fro
 import { NWalletAppService } from '../../../providers/app/app.service';
 import * as _ from 'lodash';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
-import { NWTransition, NWModalTransition } from '../../../tools/extension/transition';
+import { NWModalTransition } from '../../../tools/extension/transition';
 import { SendPage } from '../send/send.page';
 import { NWTransaction } from '../../../models/nwallet';
-/**
- * Generated class for the WalletDetailPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
 
 @IonicPage()
 @Component({
-    selector: 'transfer-history-tab',
-    templateUrl: 'transfer-history-tab.html',
+    selector: 'page-transfer-history',
+    templateUrl: 'transfer-history.page.html'
 })
-export class TransferHistoryTabPage {
+export class TransferHistoryPage {
     public transactionMaps: Array<{ date: string; transactions: NWTransaction.Item[] }> = new Array<{ date: string; transactions: NWTransaction.Item[] }>();
     private skip = 0;
     @ViewChild(Navbar)
@@ -44,18 +38,15 @@ export class TransferHistoryTabPage {
         // const transactionGroups = _.groupBy(transactions, (t: NWTransaction.Item) => {
         //     return new Date(t.created_date.getFullYear(), t.created_date.getMonth(), t.created_date.getDate());
         // });
-
         // Object.keys(transactionGroups).forEach(date => {
         //     const transfers = transactionGroups[date];
         //     const transactionMap = this.transactionMaps.find(map => map.date === date);
-
         //     if (transactionMap) {
         //         transactionMap.transactions.push(...transfers);
         //     } else {
         //         this.transactionMaps.push({ date: date, transactions: transfers });
         //     }
         // });
-
         // this.skip += transactions.length;
     }
 
@@ -80,16 +71,13 @@ export class TransferHistoryTabPage {
         //     toolbar: 'yes',
         //     closebuttoncaption: 'done',
         // });
-
         // browser.insertCSS({
         //     code: 'body { margin-top : 50px;}',
         // });
-
         // browser.show();
     }
 
-    public onReceiveClick(): void {
-    }
+    public onReceiveClick(): void {}
 
     public onSendClick(): void {
         const modal = this.modal.create(SendPage, {}, NWModalTransition.Slide());

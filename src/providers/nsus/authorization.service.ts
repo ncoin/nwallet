@@ -12,7 +12,7 @@ import { NWEvent } from '../../interfaces/events';
 import { Debug } from '../../utils/helper/debug';
 import { NClientService } from './nclient.service';
 import { NWAuthProtocol } from '../../models/nwallet';
-import { VerifyPhone } from '../../models/nwallet/protocol/auth/verifications';
+import { VerifyPhone } from '../../models/protocol/auth/verifications';
 
 // for test (remove me) --sky`
 const nonceRange = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';

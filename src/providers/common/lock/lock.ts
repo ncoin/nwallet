@@ -1,5 +1,5 @@
-import { PinModalPage } from '../../../pages/1.security/pin/pin';
-// import { FingerprintModalPage } from './../../../pages/1.security/fingerprint/fingerprint';
+import { PinModalPage } from '../../../pages/security/pin/pin';
+// import { FingerprintModalPage } from './../../../pages/security/fingerprint/fingerprint';
 import { Injectable } from '@angular/core';
 import { ModalController, ModalOptions } from 'ionic-angular';
 import { LoggerService } from '../logger/logger.service';

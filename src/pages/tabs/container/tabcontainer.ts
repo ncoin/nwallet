@@ -1,4 +1,4 @@
-import { MyInfoPage, MY_INFO_PAGES } from './../5.account-tab/my-info/my-info.page';
+import { MY_INFO_PAGES } from './../account/my-info/my-info.page';
 import { AccountService } from '../../../providers/account/account.service';
 import { NWalletAppService } from '../../../providers/app/app.service';
 import { Component, ViewChild } from '@angular/core';
@@ -6,9 +6,9 @@ import { IonicPage, NavController, NavParams, Tabs } from 'ionic-angular';
 
 import { LoggerService } from '../../../providers/common/logger/logger.service';
 
-import { TransferHistoryTabPage } from '../1.transfer-tab/transfer-history-tab';
-import { WalletTabPages, WalletMainTabPage } from '../3.wallet-tab/wallet-main-tab';
-import { AccountTabPage } from '../5.account-tab/account-tab.page';
+import { TransferHistoryPage } from '../transfer-history/transfer-history.page';
+import { WalletTabPages, WalletMainPage } from '../wallet-main/wallet-main.page';
+import { AccountPage } from '../account/account.page';
 import { ReceivePage } from '../receive/receive.page';
 import { SendPage, SEND_PAGES } from '../send/send.page';
 import { EventService } from '../../../providers/common/event/event';
@@ -34,7 +34,7 @@ export class TabcontainerPage {
     selectedIndex: number;
     tabItems: TabItemContext[] = [
         {
-            component: TransferHistoryTabPage,
+            component: TransferHistoryPage,
             icon: 'nwallet-transfer',
             isEnable: true
         },
@@ -44,7 +44,7 @@ export class TabcontainerPage {
             isEnable: true
         },
         {
-            component: WalletMainTabPage,
+            component: WalletMainPage,
             icon: 'nwallet-home',
             isEnable: true
         },
@@ -54,20 +54,13 @@ export class TabcontainerPage {
             isEnable: true
         },
         {
-            component: AccountTabPage,
+            component: AccountPage,
             icon: 'nwallet-account',
             isEnable: true
         }
     ];
 
-    constructor(
-        public navCtrl: NavController,
-        public navParams: NavParams,
-        private appService: NWalletAppService,
-        private account: AccountService,
-        private logger: LoggerService,
-        private event: EventService
-    ) {
+    constructor(public navCtrl: NavController, public navParams: NavParams, private event: EventService) {
         this.selectedIndex = 2;
         this.event.RxSubscribe(NWEvent.App.change_tab, context => {
             if (context) {
@@ -76,21 +69,7 @@ export class TabcontainerPage {
         });
     }
 
-    chat() {}
-
-    public changeTransition(event: any): void {
-        // var index = event.index;
-        // const direction = index < this.selectedIndex ? 'left' : 'right';
-        // const e = event;
-    }
+    public changeTransition(event) {}
 }
 
-export const NWalletTabPages = [
-    TabcontainerPage,
-    TransferHistoryTabPage,
-    ReceivePage,
-    AccountTabPage,
-    ...SEND_PAGES,
-    ...WalletTabPages,
-    ...MY_INFO_PAGES
-];
+export const NWalletTabPages = [TabcontainerPage, TransferHistoryPage, ReceivePage, AccountPage, ...SEND_PAGES, ...WalletTabPages, ...MY_INFO_PAGES];

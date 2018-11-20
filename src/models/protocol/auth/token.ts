@@ -1,6 +1,6 @@
 import { Paths } from './paths';
 import { PostProtocolBase } from '../http/http-protocol';
-import { Token as _Token } from '../../token';
+import { Token as _Token } from '../../nwallet/token';
 
 export type TokenPayload = { refresh_token: string; grant_type: string } | { username: string; device_id: string; grant_type: string };
 export class Token extends PostProtocolBase<TokenPayload, _Token, _Token> {
