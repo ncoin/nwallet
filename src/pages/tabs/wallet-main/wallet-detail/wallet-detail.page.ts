@@ -29,7 +29,15 @@ export class WalletDetailPage extends ModalBasePage implements OnDestroy {
     private limit = 10;
     public asset: NWAsset.Item;
     private subscriptions: Subscription[] = [];
-    constructor(navCtrl: NavController, params: NavParams, parent: ModalNavPage, private logger: LoggerService, private account: AccountService, private event: EventService) {
+    constructor(
+        navCtrl: NavController,
+        params: NavParams,
+        parent: ModalNavPage,
+        private logger: LoggerService,
+        private account: AccountService,
+        private event: EventService,
+        private channel: NsusChannelService
+    ) {
         super(navCtrl, params, parent);
         this.asset = params.get('asset');
         this.init();
@@ -40,7 +48,8 @@ export class WalletDetailPage extends ModalBasePage implements OnDestroy {
             this.subscriptions.push(account.assetTransaction(this.asset.getWalletId(), this.arrange));
         });
 
-        this.account.getTransactions(this.asset.getWalletId(), 0, this.limit);
+        this.channel.getWalletTransactions(this.asset.getWalletId(), 0, this.limit);
+        const data = await this.channel.getWalletDetails(this.asset.getWalletId());
     }
 
     ngOnDestroy() {
@@ -75,7 +84,7 @@ export class WalletDetailPage extends ModalBasePage implements OnDestroy {
     }
 
     public async doInfinite(infinite: InfiniteScroll): Promise<void> {
-        const transactions = await this.account.getTransactions(this.asset.getWalletId(), this.skip, this.limit);
+        const transactions = await this.channel.getWalletTransactions(this.asset.getWalletId(), this.skip, this.limit);
         if (transactions.length < 1) {
             this.logger.debug('[transfer-tab-page] response transfers length =', transactions.length);
             infinite.enable(false);

@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, ModalController, IonicPage } from 'ionic-angular';
-import { AccountService } from '../../../../services/account/account.service';
+import { NavController,  IonicPage } from 'ionic-angular';
 import { NWAsset } from '../../../../models/nwallet';
 import { NsusChannelService } from '../../../../services/nsus/nsus-channel.service';
 
@@ -14,8 +13,7 @@ export class AddWalletPage {
     public _searchText = '';
     public assets: NWAsset.Available[] = [];
     public sourceAssets: NWAsset.Available[] = [];
-    constructor(public navCtrl: NavController, private accont: AccountService, private channel: NsusChannelService) {
-        this.assets = [];
+    constructor(public navCtrl: NavController, private channel: NsusChannelService) {
         this.init();
     }
 

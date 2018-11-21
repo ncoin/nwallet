@@ -30,17 +30,65 @@ export class AccountService {
         };
 
         this.init();
+    }
 
-        // todo
+    public async setAccount(userName: string): Promise<void> {
+        this.account.setUserName(userName);
+        await this.preference.set(Preference.Nwallet.account, this.account);
+    }
+
+    public async fetchJobs(): Promise<void> {
+        const assets = await this.channel.getAssets();
+        const tickers = await this.channel.fetchTicker();
+        tickers.forEach(ticker => {
+            this.event.publish(NWEvent.Stream.ticker, ticker);
+        });
+
+        this.account.inventory.setItems(assets);
+    }
+
+    private async init(): Promise<void> {
+        this.subscribes();
+        const accountData = await this.preference.get(Preference.Nwallet.account);
+        if (accountData) {
+            this.account.initialize(accountData);
+        }
+
+        this.task.trySet(this.account);
+    }
+
+    public async detail(): Promise<NWAccount.Account> {
+        return await this.task.result();
+    }
+
+    public async isSaved(): Promise<boolean> {
+        const detail = await this.detail();
+        return detail.getUserName() !== undefined && detail.getUserName() !== '';
+    }
+
+    public registerSubjects = (onAccount: (account: AccountStream) => void): void => {
+        onAccount(this.streams);
+    }
+
+    public fillData(expr: (personal: NWAccount.Personal) => void): void {
+        Debug.assert(this.account);
+        expr(this.account.personal);
+    }
+
+    public async flush(): Promise<void> {
+        await this.preference.remove(Preference.Nwallet.account);
+        this.account.flush();
+    }
+
+    private subscribes() {
         this.event.subscribe(NWEvent.Stream.wallet, async context => {
             context.forEach(wallet => {
-                this.getTransactions(wallet.id, 0, 10);
+                this.channel.getWalletTransactions(wallet.id, 0, 10);
                 this.channel.getWalletDetails(wallet.id);
             });
         });
 
         this.event.subscribe(NWEvent.App.user_login, async context => {
-            const detail = await this.detail();
             this.setAccount(context.userName);
         });
 
@@ -83,6 +131,12 @@ export class AccountService {
                 this.event.publish(NWEvent.Stream.ticker, ticker);
             });
         });
+        this.channel.register(NWProtocol.GetWalletTransactions, async protocol => {
+            // todo fixme
+            if (protocol.data && protocol.data.length > 0) {
+                this.account.inventory.insertTransactions(protocol.credential.userWalletId, protocol.data);
+            }
+        });
 
         this.channel.register(NWProtocol.GetWalletDetail, async protocol => {
             const data = protocol.response;
@@ -96,62 +150,5 @@ export class AccountService {
             this.account.inventory.setItems(copy);
             this.account.inventory.refresh();
         });
-    }
-
-    public async setAccount(userName: string): Promise<void> {
-        this.account.setUserName(userName);
-        await this.preference.set(Preference.Nwallet.account, this.account);
-    }
-
-    public async fetchJobs(): Promise<void> {
-        const assets = await this.channel.getAssets();
-        const tickers = await this.channel.fetchTicker();
-        tickers.forEach(ticker => {
-            this.event.publish(NWEvent.Stream.ticker, ticker);
-        });
-
-        this.account.inventory.setItems(assets);
-    }
-
-    public async getTransactions(walletId: number, offset: number, limit: number): Promise<NWTransaction.Item[]> {
-        const transactions = await this.channel.getWalletTransactions(walletId, offset, limit);
-
-        // todo fixme
-        await this.channel.getWalletDetails(walletId);
-
-        this.account.inventory.insertTransactions(walletId, transactions);
-        return transactions;
-    }
-
-    private async init(): Promise<void> {
-        const accountData = await this.preference.get(Preference.Nwallet.account);
-        if (accountData) {
-            this.account.initialize(accountData);
-        }
-
-        this.task.trySet(this.account);
-    }
-
-    public async detail(): Promise<NWAccount.Account> {
-        return await this.task.result();
-    }
-
-    public async isSaved(): Promise<boolean> {
-        const detail = await this.detail();
-        return detail.getUserName() !== undefined && detail.getUserName() !== '';
-    }
-
-    public registerSubjects = (onAccount: (account: AccountStream) => void): void => {
-        onAccount(this.streams);
-    }
-
-    public fillData(expr: (personal: NWAccount.Personal) => void): void {
-        Debug.assert(this.account);
-        expr(this.account.personal);
-    }
-
-    public async flush(): Promise<void> {
-        await this.preference.remove(Preference.Nwallet.account);
-        this.account.flush();
     }
 }
