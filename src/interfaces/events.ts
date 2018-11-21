@@ -1,6 +1,6 @@
 import { WalletProtocol } from '../providers/nsus/notification.service';
-import { Ticker } from '../models/protocol/ticker';
-import { GetWalletTransactions } from '../models/protocol';
+import { Ticker } from '../models/protocol/api/ticker';
+import { GetWalletTransactions } from '../models/protocol/api';
 
 export class EventParameter<T> {
     constructor(private name: string) {}

@@ -1,5 +1,3 @@
-import { TestabilityRegistry } from '@angular/core';
-import { TypeScriptEmitter } from '@angular/compiler';
 import { Debug } from '../../utils/helper/debug';
 
 export class Token {
@@ -8,6 +6,14 @@ export class Token {
     private expiredDate: number;
     /** exprire seconds */
     private expires_in = 0;
+
+    static fromProtocol(token: Token): Token {
+        return Object.assign(new Token(), token).setExpiration();
+    }
+
+    static fromStorage(token: Token): Token {
+        return Object.assign(new Token(), token);
+    }
 
     // todo extract --sky`
     static capitalize(value: string) {

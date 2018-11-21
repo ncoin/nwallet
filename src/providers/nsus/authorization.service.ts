@@ -1,7 +1,6 @@
-import { AccountService } from '../account/account.service';
 import { env } from '../../environments/environment';
 import { LoggerService } from '../common/logger/logger.service';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import {  HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Device } from '@ionic-native/device';
 import { PromiseWaiter } from 'forge/dist/helpers/Promise/PromiseWaiter';
@@ -12,7 +11,6 @@ import { NWEvent } from '../../interfaces/events';
 import { Debug } from '../../utils/helper/debug';
 import { NClientService } from './nclient.service';
 import { NWAuthProtocol } from '../../models/nwallet';
-import { VerifyPhone } from '../../models/protocol/auth/verifications';
 
 // for test (remove me) --sky`
 const nonceRange = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -56,7 +54,7 @@ export class AuthorizationService {
             const token = await this.preference.get(Preference.Nwallet.token);
             if (token) {
                 this.logger.debug('[auth][initialize] stored token exist', token);
-                this.token = Object.assign(new Token(), token);
+                this.token = Token.fromStorage(token);
             } else {
                 this.logger.debug('[auth][initialize] stored token not exists');
             }
@@ -120,7 +118,7 @@ export class AuthorizationService {
         }
 
         const issuedToken = await this.nClient
-            .post(new NWAuthProtocol.Token().setPayload(payload))
+            .auth(new NWAuthProtocol.IssueToken().setPayload(payload))
             .then(protocol => {
                 this.logger.debug(`[auth] issue token done : ${tokenKind}`);
                 return protocol.convert();

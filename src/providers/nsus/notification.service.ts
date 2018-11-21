@@ -5,7 +5,7 @@ import { Debug } from '../../utils/helper/debug';
 import { EventService } from '../common/event/event';
 import { NWEvent } from '../../interfaces/events';
 import { LoggerService } from '../common/logger/logger.service';
-import { Ticker } from '../../models/protocol/ticker';
+import { Ticker } from '../../models/protocol/api/ticker';
 
 export class WalletProtocol {
     address: string;

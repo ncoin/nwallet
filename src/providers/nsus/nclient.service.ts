@@ -1,70 +1,45 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { LoggerService } from '../common/logger/logger.service';
-import { GetProtocolBase, PutProtocolBase, PostProtocolBase, AuthProtocolBase, MethodTypes } from '../../models/protocol/http/http-protocol';
+import { MethodTypes, HttpProtocol } from '../../models/http/http-protocol';
 import { Debug } from '../../utils/helper/debug';
-import { Observable } from 'rxjs';
+import { NClientProtocolBase } from '../../models/protocol/api/http-protocol';
+import { AuthProtocolBase } from '../../models/protocol/auth/impl';
 
 @Injectable()
 export class NClientService {
     constructor(private logger: LoggerService, private http: HttpClient) {}
 
-    public get<TQuery, TResponse, TConvert>(protocol: GetProtocolBase<TQuery, TResponse, TConvert>): Promise<GetProtocolBase<TQuery, TResponse, TConvert>> {
+    public request<T extends NClientProtocolBase>(protocol: T): Promise<T> {
         this.logger.debug(`[nclient] execute protocol : ${protocol.name}`);
-        Debug.assert(protocol.method === MethodTypes.GET);
-
-        return this.http
-            .get<TResponse>(protocol.url(), {
-                headers: protocol.header,
-                params: protocol.query
-            })
-            .toPromise()
-            .then(response => {
-                protocol.response = response;
-                return protocol;
-            })
-            .catch(error => {
-                protocol.error = error;
-                throw protocol;
-            });
-    }
-
-    public put<TPayload, TResponse, TConvert>(protocol: PutProtocolBase<TPayload, TResponse, TConvert>): Promise<PutProtocolBase<TPayload, TResponse, TConvert>> {
-        this.logger.debug(`[nclient] execute protocol : ${protocol.name}`);
-        Debug.assert(protocol.method === MethodTypes.PUT);
-
-        return this.http
-            .put<TResponse>(protocol.url(), protocol.payload, {
-                headers: protocol.header
-            })
-            .toPromise()
-            .then(response => {
-                protocol.response = response;
-                return protocol;
-            })
-            .catch(error => {
-                protocol.error = error;
-                throw error;
-            });
-    }
-
-    public post<TPayload, TResponse, TConvert>(protocol: PostProtocolBase<TPayload, TResponse, TConvert>): Promise<PostProtocolBase<TPayload, TResponse, TConvert>> {
-        this.logger.debug(`[nclient] execute protocol : ${protocol.name}`);
-        Debug.assert(protocol.method === MethodTypes.POST);
-
-        return this.http
-            .post<TResponse>(protocol.url(), protocol.payload, {
-                headers: protocol.header
-            })
-            .toPromise()
-            .then(response => {
-                protocol.response = response;
-                return protocol;
-            })
-            .catch(error => {
-                protocol.error = error;
-                throw error;
-            });
+        Debug.assert(protocol.method !== MethodTypes.INVALID);
+        // todo extract
+        if (protocol.method === MethodTypes.GET) {
+            return this.http
+                .get(protocol.url(), {
+                    headers: protocol.header,
+                    params: protocol.query
+                })
+                .toPromise()
+                .then(this.onSuccess(protocol))
+                .catch(this.onError(protocol));
+        } else if (protocol.method === MethodTypes.POST) {
+            return this.http
+                .post<Object>(protocol.url(), protocol.payload, {
+                    headers: protocol.header
+                })
+                .toPromise()
+                .then(this.onSuccess(protocol))
+                .catch(this.onError(protocol));
+        } else if (protocol.method === MethodTypes.PUT) {
+            return this.http
+                .put<Object>(protocol.url(), protocol.payload, {
+                    headers: protocol.header
+                })
+                .toPromise()
+                .then(this.onSuccess(protocol))
+                .catch(this.onError(protocol));
+        }
     }
 
     // test
@@ -72,7 +47,6 @@ export class NClientService {
         protocol: AuthProtocolBase<TQuery, TPayload, TResponse, TConvert>
     ): Promise<AuthProtocolBase<TQuery, TPayload, TResponse, TConvert>> {
         Debug.assert(protocol.method !== MethodTypes.INVALID);
-
         // todo extract
         if (protocol.method === MethodTypes.GET) {
             return this.http
@@ -81,37 +55,38 @@ export class NClientService {
                     params: protocol.query
                 })
                 .toPromise()
-                .then(this.onAuthSuccess(protocol))
-                .catch(this.onAuthError(protocol));
+                .then(this.onSuccess(protocol))
+                .catch(this.onError(protocol));
         } else if (protocol.method === MethodTypes.POST) {
             return this.http
                 .post<TResponse>(protocol.url(), protocol.payload, {
                     headers: protocol.header
                 })
                 .toPromise()
-                .then(this.onAuthSuccess(protocol))
-                .catch(this.onAuthError(protocol));
+                .then(this.onSuccess(protocol))
+                .catch(this.onError(protocol));
         } else if (protocol.method === MethodTypes.PUT) {
             return this.http
                 .put<TResponse>(protocol.url(), protocol.payload, {
                     headers: protocol.header
                 })
                 .toPromise()
-                .then(this.onAuthSuccess(protocol))
-                .catch(this.onAuthError(protocol));
+                .then(this.onSuccess(protocol))
+                .catch(this.onError(protocol));
         }
     }
 
-    private onAuthSuccess<T extends AuthProtocolBase>(protocol: T) {
+    private onSuccess<T extends HttpProtocol>(protocol: T) {
         return response => {
             protocol.response = response;
             return protocol;
         };
     }
 
-    private onAuthError<T extends AuthProtocolBase>(protocol: T) {
+    private onError<T extends HttpProtocol>(protocol: T) {
         return (error: HttpErrorResponse) => {
             protocol.error = error;
+            // application : text
             if (error.status === 200 || error.status === 201) {
                 return protocol;
             }
