@@ -39,7 +39,7 @@ export class VerifyPhonePage extends ModalBasePage {
 
     // todo fixme
     private async init() {
-        this.platform.orientation.lock(this.platform.orientation.ORIENTATIONS.LANDSCAPE_PRIMARY);
+        this.platform.orientation.lock(this.platform.orientation.ORIENTATIONS.PORTRAIT_PRIMARY);
         const locale = await this.appConfig.getLocale();
 
         const countries = this.country.getCountries();

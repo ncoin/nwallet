@@ -39,7 +39,7 @@ export class ResetPhoneNumberPage extends ModalBasePage implements OnDestroy {
         private popup: PopupService
     ) {
         super(navCtrl, navParams, parent);
-        this.platform.orientation.lock(this.platform.orientation.ORIENTATIONS.LANDSCAPE_PRIMARY);
+        this.platform.orientation.lock(this.platform.orientation.ORIENTATIONS.PORTRAIT_PRIMARY);
         this.init();
     }
 

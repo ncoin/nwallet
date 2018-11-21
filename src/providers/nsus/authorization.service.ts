@@ -1,16 +1,15 @@
 import { env } from '../../environments/environment';
 import { LoggerService } from '../common/logger/logger.service';
-import {  HttpErrorResponse } from '@angular/common/http';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Device } from '@ionic-native/device';
 import { PromiseWaiter } from 'forge/dist/helpers/Promise/PromiseWaiter';
 import { PreferenceProvider, Preference } from '../common/preference/preference';
-import { Token } from '../../models/nwallet/token';
 import { EventService } from '../common/event/event';
 import { NWEvent } from '../../interfaces/events';
 import { Debug } from '../../utils/helper/debug';
 import { NClientService } from './nclient.service';
-import { NWAuthProtocol } from '../../models/nwallet';
+import { NWAuthProtocol, NWData } from '../../models/nwallet';
 
 // for test (remove me) --sky`
 const nonceRange = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -32,8 +31,8 @@ export function getNonce(): string {
 
 @Injectable()
 export class AuthorizationService {
-    private token: Token;
-    private tokenSource: PromiseWaiter<Token>;
+    private token: NWData.Token;
+    private tokenSource: PromiseWaiter<NWData.Token>;
     private init: PromiseWaiter<boolean>;
     private deviceId: string;
     private userName: string;
@@ -54,7 +53,7 @@ export class AuthorizationService {
             const token = await this.preference.get(Preference.Nwallet.token);
             if (token) {
                 this.logger.debug('[auth][initialize] stored token exist', token);
-                this.token = Token.fromStorage(token);
+                this.token = NWData.Token.fromStorage(token);
             } else {
                 this.logger.debug('[auth][initialize] stored token not exists');
             }
@@ -72,13 +71,13 @@ export class AuthorizationService {
         });
     }
 
-    public async getToken(): Promise<Token> {
+    public async getToken(): Promise<NWData.Token> {
         await this.init.result();
         if (this.tokenSource) {
             return await this.tokenSource.result();
         }
 
-        this.tokenSource = new PromiseWaiter<Token>();
+        this.tokenSource = new PromiseWaiter<NWData.Token>();
 
         if (this.token === undefined || this.token.isExpired()) {
             this.logger.debug(`[auth] token requested : use ${this.token === undefined ? 'new' : 'refresh'} token`);
@@ -94,7 +93,7 @@ export class AuthorizationService {
         return this.token;
     }
 
-    private async issueToken(isRefresh: boolean): Promise<Token> {
+    private async issueToken(isRefresh: boolean): Promise<NWData.Token> {
         let payload: NWAuthProtocol.TokenPayload;
         const tokenKind = isRefresh ? 'refresh' : 'new';
         this.logger.debug(`[auth] issue token begin : ${tokenKind}`);
@@ -128,7 +127,7 @@ export class AuthorizationService {
                 if (response.status === 401) {
                     this.event.publish(NWEvent.App.error_occured, { reason: 'unauth' });
                 }
-                return Token.Empty;
+                return NWData.Token.Empty;
             });
 
         return issuedToken;

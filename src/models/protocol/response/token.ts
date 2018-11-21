@@ -1,5 +1,5 @@
-import { Token as T } from '../../models/nwallet/token';
-declare module '../../models/nwallet/token' {
+import { Token } from '../../nwallet/token';
+declare module '../../nwallet/token' {
     interface Token {
         access_token: string;
         token_type: string;
@@ -9,3 +9,5 @@ declare module '../../models/nwallet/token' {
         jti: string;
     }
 }
+
+export { Token };
