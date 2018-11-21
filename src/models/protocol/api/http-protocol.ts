@@ -5,6 +5,7 @@ export abstract class NClientProtocolBase<TQuery = NoQuery, TPayload = NoPayload
     public payload: TPayload;
     public response: TResponse;
     public error: any;
+
     constructor(protected credential: { userId: string; userWalletId?: number }, data?: { query?: TQuery; payload?: TPayload }) {
         super();
 
@@ -26,5 +27,15 @@ export abstract class NClientProtocolBase<TQuery = NoQuery, TPayload = NoPayload
     public setPayload(expr: ParameterExpr<TPayload>): this {
         this.payload = createExpr(expr);
         return this;
+    }
+
+    public setResponse(response: TResponse): this {
+        super.setResponse(response);
+        this.manufacture();
+        return this;
+    }
+
+    public manufacture() {
+
     }
 }

@@ -1,6 +1,6 @@
-import { Data } from '../../models/nwallet/transaction';
+import * as Transaction from '../../nwallet/transaction';
 
-declare module '../../models/nwallet/transaction' {
+declare module '../../nwallet/transaction' {
     interface Data {
         id: number;
         user_wallet_id: number;
@@ -66,3 +66,5 @@ declare module '../../models/nwallet/transaction' {
         isPayGo: boolean;
     }
 }
+
+export { Transaction };

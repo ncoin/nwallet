@@ -37,7 +37,6 @@ export class AccountService {
                 this.getTransactions(wallet.id, 0, 10);
                 this.channel.getWalletDetails(wallet.id);
             });
-
         });
 
         this.event.subscribe(NWEvent.App.user_login, async context => {
@@ -45,10 +44,13 @@ export class AccountService {
             this.setAccount(context.userName);
         });
 
-        this.channel.register(NWProtocol.PutWalletAlign, order => {
+        this.channel.register(NWProtocol.SetWalletAlign, protocol => {
+            const order = protocol.data;
+
             if (order.length < 1) {
                 return;
             }
+
             const assets = this.account.inventory.getAssetItems().getValue();
             order.forEach((walletId, index) => {
                 const targetAsset = assets.find(asset => asset.getWalletId() === walletId);
@@ -59,13 +61,14 @@ export class AccountService {
             this.account.inventory.refresh();
         });
 
-        this.channel.register(NWProtocol.PutWalletVisibility, context => {
+        this.channel.register(NWProtocol.SetWalletVisibility, protocol => {
+            const data = protocol.data;
             const item = this.account.inventory
                 .getAssetItems()
                 .getValue()
-                .find(e => e.getWalletId() === context.walletId);
+                .find(e => e.getWalletId() === data.walletId);
             if (item) {
-                item.option.isShow = context.isVisible;
+                item.option.isShow = data.isVisible;
                 this.account.inventory.refresh();
             }
         });
@@ -81,14 +84,17 @@ export class AccountService {
             });
         });
 
-        this.channel.register(NWProtocol.GetWalletDetail, async data => {
+        this.channel.register(NWProtocol.GetWalletDetail, async protocol => {
+            const data = protocol.response;
             // todo later
-            const asd = this.account.inventory.getAssetItems().getValue().slice();
-            const target = asd.find(a => a.data.id === data.id);
+            const copy = this.account.inventory
+                .getAssetItems()
+                .getValue()
+                .slice();
+            const target = copy.find(a => a.data.id === data.id);
             target.updateData(data);
-            this.account.inventory.setItems(asd);
+            this.account.inventory.setItems(copy);
             this.account.inventory.refresh();
-
         });
     }
 

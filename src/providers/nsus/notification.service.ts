@@ -5,7 +5,7 @@ import { Debug } from '../../utils/helper/debug';
 import { EventService } from '../common/event/event';
 import { NWEvent } from '../../interfaces/events';
 import { LoggerService } from '../common/logger/logger.service';
-import { Ticker } from '../../models/protocol/api/ticker';
+import { NWResponse } from '../../models/nwallet';
 
 export class WalletProtocol {
     address: string;
@@ -83,7 +83,7 @@ export class NotificationService {
     }
 
     private onTickerEvent = (event: MessageEvent): void => {
-        const tickerData = JSON.parse(event.data) as Ticker;
+        const tickerData = JSON.parse(event.data) as NWResponse.Ticker;
         tickerData.last_updated_date_raw = new Date(Number.parseInt(tickerData.last_updated_date, 10));
         Debug.Validate(tickerData);
         Debug.assert(tickerData);

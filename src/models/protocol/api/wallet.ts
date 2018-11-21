@@ -1,13 +1,18 @@
 import { NoQuery, NoConvert, NoResponseData, MethodTypes, NoPayload } from '../../http/http-protocol';
 import { Paths } from './paths';
-import { NWAsset } from '../../nwallet';
+import { NWAsset, NWResponse } from '../../nwallet';
 import { NClientProtocolBase } from './http-protocol';
 
 /** Get Wallets */
-export class GetWallets extends NClientProtocolBase<NoQuery, NoPayload, NWAsset.Data[]> {
+export class GetWallets extends NClientProtocolBase<NoQuery, NoPayload, NWResponse.Asset.Data[]> {
     public method = MethodTypes.GET;
+    public data: NWAsset.Item[];
     // todo decorator
     public url = () => Paths.get.wallets(this.credential.userId);
+
+    public manufacture() {
+        this.data = this.response.map(data => new NWAsset.Item().initData(data));
+    }
 }
 
 /** Create new Wallets */
@@ -18,7 +23,7 @@ export class CreateWallet extends NClientProtocolBase<NoQuery, { currency_manage
 }
 
 /** Get Wallet Details */
-export class GetWalletDetail extends NClientProtocolBase<NoQuery, NoPayload, NWAsset.Data> {
+export class GetWalletDetail extends NClientProtocolBase<NoQuery, NoPayload, NWResponse.Asset.Data> {
     public method = MethodTypes.GET;
     constructor(protected credential: { userId: string; userWalletId: number }) {
         super(credential);
@@ -27,23 +32,38 @@ export class GetWalletDetail extends NClientProtocolBase<NoQuery, NoPayload, NWA
 }
 
 /** Change Wallet Visibiltiy */
-export class PutWalletVisibility extends NClientProtocolBase<NoQuery, { is_show: boolean }, NoResponseData> {
+export class SetWalletVisibility extends NClientProtocolBase<NoQuery, { is_show: boolean }, NoResponseData> {
     public method = MethodTypes.PUT;
-    constructor(protected credential: { userId: string; userWalletId: number }) {
+    public data: { walletId: number; isVisible: boolean };
+    constructor(public credential: { userId: string; userWalletId: number }) {
         super(credential);
     }
 
     public url = () => Paths.put.walletVisibility(this.credential.userId, this.credential.userWalletId);
+
+    public manufacture() {
+        this.data = { walletId: this.credential.userWalletId, isVisible: this.payload.is_show };
+        return this;
+    }
 }
 
 /** Change Wallet Order */
-export class PutWalletAlign extends NClientProtocolBase<NoQuery, { user_wallet_ids: number[] }, NoResponseData> {
+export class SetWalletAlign extends NClientProtocolBase<NoQuery, { user_wallet_ids: number[] }, NoResponseData> {
     public method = MethodTypes.PUT;
+    public data: number[];
     public url = () => Paths.put.walletAlign(this.credential.userId);
+    public manufacture() {
+        this.data = this.payload.user_wallet_ids;
+    }
 }
 
 /** Get Creation Available Wallet List */
-export class AvailableWallet extends NClientProtocolBase<NoQuery, NoPayload, NWAsset.Available[]> {
+export class GetAvailableWallet extends NClientProtocolBase<NoQuery, NoPayload, NWResponse.Asset.Available[]> {
     public method = MethodTypes.GET;
+    public data: NWAsset.Available[];
     public url = () => Paths.get.creationAvailableWallets(this.credential.userId);
+
+    public manufacture() {
+        this.data = this.response.map(available => Object.assign(new NWAsset.Available(available)));
+    }
 }

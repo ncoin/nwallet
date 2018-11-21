@@ -1,1 +1,3 @@
-export class WalletAvailable {}
+export class Temp {
+
+}

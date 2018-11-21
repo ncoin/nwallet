@@ -10,13 +10,13 @@ import { AuthProtocolBase } from '../../models/protocol/auth/impl';
 export class NClientService {
     constructor(private logger: LoggerService, private http: HttpClient) {}
 
-    public request<T extends NClientProtocolBase>(protocol: T): Promise<T> {
+    public request<T extends HttpProtocol>(protocol: T): Promise<T> {
         this.logger.debug(`[nclient] execute protocol : ${protocol.name}`);
         Debug.assert(protocol.method !== MethodTypes.INVALID);
         // todo extract
         if (protocol.method === MethodTypes.GET) {
             return this.http
-                .get(protocol.url(), {
+                .get<any>(protocol.url(), {
                     headers: protocol.header,
                     params: protocol.query
                 })
@@ -25,7 +25,7 @@ export class NClientService {
                 .catch(this.onError(protocol));
         } else if (protocol.method === MethodTypes.POST) {
             return this.http
-                .post<Object>(protocol.url(), protocol.payload, {
+                .post<any>(protocol.url(), protocol.payload, {
                     headers: protocol.header
                 })
                 .toPromise()
@@ -33,7 +33,7 @@ export class NClientService {
                 .catch(this.onError(protocol));
         } else if (protocol.method === MethodTypes.PUT) {
             return this.http
-                .put<Object>(protocol.url(), protocol.payload, {
+                .put<any>(protocol.url(), protocol.payload, {
                     headers: protocol.header
                 })
                 .toPromise()
@@ -78,8 +78,7 @@ export class NClientService {
 
     private onSuccess<T extends HttpProtocol>(protocol: T) {
         return response => {
-            protocol.response = response;
-            return protocol;
+            return protocol.setResponse(response);
         };
     }
 

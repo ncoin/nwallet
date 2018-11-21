@@ -41,7 +41,7 @@ import { VERIFY_PHONE_PAGES } from './entrance/verify-phone/verify-phone.page';
         IonicPageModule.forChild(NWalletTabPages),
         IonicPageModule.forChild(QRScanPage),
         IonicPageModule.forChild(VERIFY_PHONE_PAGES),
-        IonicPageModule.forChild(ModalNavPage)
+        IonicPageModule.forChild(ModalNavPage),
     ],
     entryComponents: [TutorialPage, EntrancePage, ...NWalletTabPages, ModalNavPage]
 })

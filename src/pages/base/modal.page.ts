@@ -4,17 +4,12 @@ import { ViewChild, Component } from '@angular/core';
 import { NavParams } from 'ionic-angular/navigation/nav-params';
 import { Newable, ModalNavPage } from './modal-nav.page';
 import { ModalParameter } from './modal.parameter';
-
-@Component({
-    styleUrls: ['modal.page.scss']
-})
-// rename
 export abstract class ModalBasePage {
     @ViewChild(Navbar)
     public navBar: Navbar;
     public params: ModalParameter;
 
-    protected constructor(protected navCtrl: NavController, params: NavParams, protected parent: ModalNavPage) {
+    public constructor(protected navCtrl: NavController, params: NavParams, protected parent: ModalNavPage) {
         this.params = params.data;
     }
 

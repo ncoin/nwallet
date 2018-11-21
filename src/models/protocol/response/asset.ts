@@ -1,6 +1,6 @@
-import { Item } from '../../models/nwallet/asset';
+import * as Asset from '../../nwallet/asset';
 // todo move location
-declare module '../../models/nwallet/asset' {
+declare module '../../nwallet/asset' {
     interface Data {
         id: number;
         bitgo_wallet_id: number;
@@ -27,4 +27,14 @@ declare module '../../models/nwallet/asset' {
         /** wallet order index */
         order: number;
     }
+
+    interface Available {
+        id: number;
+        currency: string;
+        bitgo_symbol: string;
+        is_use_wallet: number;
+        align_number: number;
+    }
 }
+
+export { Asset };
