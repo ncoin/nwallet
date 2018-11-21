@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, ToastController } from 'ionic-angular';
-import { AppConfigService } from '../../../../providers/app/app.config.service';
+import { AppConfigService } from '../../../../services/app/app.config.service';
 
 @IonicPage()
 @Component({

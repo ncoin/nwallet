@@ -1,13 +1,13 @@
-import { AccountService } from '../../../providers/account/account.service';
+import { AccountService } from '../../../services/account/account.service';
 import { QRScanPage } from '../../qrscan/qrscan.page';
 import { Component } from '@angular/core';
 import { IonicPage, ViewController, ModalController, NavParams, NavController } from 'ionic-angular';
 
 import { QRScanner } from '@ionic-native/qr-scanner';
-import { LoggerService } from '../../../providers/common/logger/logger.service';
+import { LoggerService } from '../../../services/common/logger/logger.service';
 import { NWModalTransition } from '../../../tools/extension/transition';
 import { NWAsset } from '../../../models/nwallet';
-import { EventService } from '../../../providers/common/event/event';
+import { EventService } from '../../../services/common/event/event';
 import { NWEvent } from '../../../interfaces/events';
 import { Debug } from '../../../utils/helper/debug';
 import { ModalNavPage } from '../../base/modal-nav.page';

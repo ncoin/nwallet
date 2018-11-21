@@ -1,17 +1,17 @@
 import { MY_INFO_PAGES } from './../account/my-info/my-info.page';
-import { AccountService } from '../../../providers/account/account.service';
-import { NWalletAppService } from '../../../providers/app/app.service';
+import { AccountService } from '../../../services/account/account.service';
+import { NWalletAppService } from '../../../services/app/app.service';
 import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams, Tabs } from 'ionic-angular';
 
-import { LoggerService } from '../../../providers/common/logger/logger.service';
+import { LoggerService } from '../../../services/common/logger/logger.service';
 
 import { TransferHistoryPage } from '../transfer-history/transfer-history.page';
 import { WalletTabPages, WalletMainPage } from '../wallet-main/wallet-main.page';
 import { AccountPage } from '../account/account.page';
 import { ReceivePage } from '../receive/receive.page';
 import { SendPage, SEND_PAGES } from '../send/send.page';
-import { EventService } from '../../../providers/common/event/event';
+import { EventService } from '../../../services/common/event/event';
 import { NWEvent } from '../../../interfaces/events';
 export interface TabItemContext {
     // title: "Schedule",

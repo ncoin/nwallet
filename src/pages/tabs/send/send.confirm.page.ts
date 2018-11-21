@@ -1,14 +1,14 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavParams, NavController, AlertController, LoadingController } from 'ionic-angular';
 
-import { LoggerService } from '../../../providers/common/logger/logger.service';
+import { LoggerService } from '../../../services/common/logger/logger.service';
 import { ModalNavPage } from '../../base/modal-nav.page';
 import { ModalBasePage } from '../../base/modal.page';
 import { NWAsset } from '../../../models/nwallet';
-import { CurrencyService } from '../../../providers/nsus/currency.service';
+import { CurrencyService } from '../../../services/nsus/currency.service';
 import { Debug } from '../../../utils/helper/debug';
 import { TranslateService } from '@ngx-translate/core';
-import { NsusChannelService } from '../../../providers/nsus/nsus-channel.service';
+import { NsusChannelService } from '../../../services/nsus/nsus-channel.service';
 import { SendConfirmPinPage } from './send.confirm.pin.page';
 
 const messageTemplate = (symbol: string, amount: number, fee: number, address: string, lang: any): string => {

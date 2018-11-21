@@ -1,7 +1,7 @@
-import { LoggerService } from '../../../providers/common/logger/logger.service';
+import { LoggerService } from '../../../services/common/logger/logger.service';
 import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, Navbar, InfiniteScroll, ModalController } from 'ionic-angular';
-import { NWalletAppService } from '../../../providers/app/app.service';
+import { NWalletAppService } from '../../../services/app/app.service';
 import * as _ from 'lodash';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { NWModalTransition } from '../../../tools/extension/transition';

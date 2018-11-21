@@ -1,15 +1,15 @@
-import { LoggerService } from '../../../providers/common/logger/logger.service';
+import { LoggerService } from '../../../services/common/logger/logger.service';
 import { Component, OnDestroy } from '@angular/core';
 import { NavController, ModalController, LoadingController, Loading } from 'ionic-angular';
-import { AccountService } from '../../../providers/account/account.service';
+import { AccountService } from '../../../services/account/account.service';
 import { ManageWalletPage } from './manage-wallet/manage-wallet.page';
 import { AddWalletPage } from './add-wallet/add-wallet.page';
 import { NWAsset } from '../../../models/nwallet';
 import { ModalNavPage } from '../../base/modal-nav.page';
-import { NWalletAppService } from '../../../providers/app/app.service';
+import { NWalletAppService } from '../../../services/app/app.service';
 import { Subscription, Observable } from 'rxjs';
 import { WalletDetailPage } from './wallet-detail/wallet-detail.page';
-import { CurrencyService } from '../../../providers/nsus/currency.service';
+import { CurrencyService } from '../../../services/nsus/currency.service';
 import _ from 'lodash';
 import { WalletTransactionDetailPage } from './wallet-detail/wallet-transaction-detail.page';
 

@@ -2,16 +2,16 @@ import { Component, OnDestroy } from '@angular/core';
 import { IonicPage, NavController, NavParams, PopoverController, AlertController } from 'ionic-angular';
 import { ModalBasePage } from '../../../../base/modal.page';
 import { ModalNavPage } from '../../../../base/modal-nav.page';
-import { LoggerService } from '../../../../../providers/common/logger/logger.service';
+import { LoggerService } from '../../../../../services/common/logger/logger.service';
 import { VerifyResetPhoneNumberCodeSentPage } from './1.verify-reset-phone-number-code-sent/verify-reset-phone-number-code-sent.page';
 import { VerifyResetPhoneNumberSecuritycodePage } from './2.verify-reset-phone-number-security-code/verify-reset-phone-number-security-code.page';
 import { VerfiyResetPhoneNumberSuccessPage } from './3.verfy-reset-phone-number-success/verify-reset-phone-number-success.page';
-import { PlatformService } from '../../../../../providers/common/platform/platform.service';
-import { AccountService } from '../../../../../providers/account/account.service';
-import { AppConfigService } from '../../../../../providers/app/app.config.service';
+import { PlatformService } from '../../../../../services/common/platform/platform.service';
+import { AccountService } from '../../../../../services/account/account.service';
+import { AppConfigService } from '../../../../../services/app/app.config.service';
 import { CountryService, LocaleService } from 'ng4-intl-phone';
 import { TitleCasePipe } from '@angular/common';
-import { PopupService } from '../../../../../providers/popup/popop.service';
+import { PopupService } from '../../../../../services/popup/popop.service';
 
 // todo [important] Guard impl!!
 @IonicPage()

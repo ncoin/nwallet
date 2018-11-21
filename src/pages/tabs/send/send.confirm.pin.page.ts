@@ -1,8 +1,8 @@
 import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, Navbar, NavParams, LoadingController, ToastController } from 'ionic-angular';
 import { NWAsset } from '../../../models/nwallet';
-import { NsusChannelService } from '../../../providers/nsus/nsus-channel.service';
-import { LoggerService } from '../../../providers/common/logger/logger.service';
+import { NsusChannelService } from '../../../services/nsus/nsus-channel.service';
+import { LoggerService } from '../../../services/common/logger/logger.service';
 import { SendConfirmSuccessPage } from './send.confirm.success.page';
 import { ViewController } from 'ionic-angular/navigation/view-controller';
 import { SendPage } from './send.page';

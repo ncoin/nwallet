@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavParams, NavController, AlertController } from 'ionic-angular';
 
-import { LoggerService } from '../../../providers/common/logger/logger.service';
+import { LoggerService } from '../../../services/common/logger/logger.service';
 import { ModalNavPage } from '../../base/modal-nav.page';
 import { ModalBasePage } from '../../base/modal.page';
 import { NWAsset } from '../../../models/nwallet';
-import { CurrencyService } from '../../../providers/nsus/currency.service';
+import { CurrencyService } from '../../../services/nsus/currency.service';
 import { Debug } from '../../../utils/helper/debug';
-import { NsusChannelService } from '../../../providers/nsus/nsus-channel.service';
+import { NsusChannelService } from '../../../services/nsus/nsus-channel.service';
 import { SendPage } from './send.page';
 
 @IonicPage()

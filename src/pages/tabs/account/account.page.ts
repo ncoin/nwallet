@@ -1,9 +1,9 @@
-import { AppConfigService } from '../../../providers/app/app.config.service';
-import { LoggerService } from '../../../providers/common/logger/logger.service';
+import { AppConfigService } from '../../../services/app/app.config.service';
+import { LoggerService } from '../../../services/common/logger/logger.service';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, ToastController, AlertController } from 'ionic-angular';
 import { EntrancePage } from '../../entrance/entrance.page';
-import { NWalletAppService } from '../../../providers/app/app.service';
+import { NWalletAppService } from '../../../services/app/app.service';
 import { MyInfoPage } from './my-info/my-info.page';
 import { LanguagePage } from './language/language.page';
 import { TranslateService } from '@ngx-translate/core';

@@ -1,12 +1,12 @@
 import { Subscription } from 'rxjs/Subscription';
 import { NWEvent } from '../interfaces/events';
-import { EventService } from '../providers/common/event/event';
-import { NWalletAppService } from '../providers/app/app.service';
+import { EventService } from '../services/common/event/event';
+import { NWalletAppService } from '../services/app/app.service';
 import { TabcontainerPage } from '../pages/tabs/container/tabcontainer';
-import { AccountService } from '../providers/account/account.service';
-import { LockProvider } from '../providers/common/lock/lock';
+import { AccountService } from '../services/account/account.service';
+import { LockProvider } from '../services/common/lock/lock';
 
-import { LoggerService } from '../providers/common/logger/logger.service';
+import { LoggerService } from '../services/common/logger/logger.service';
 import { Component, ViewChild, OnDestroy } from '@angular/core';
 
 import { Nav, Platform } from 'ionic-angular';
@@ -14,7 +14,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 
 import { EntrancePage } from '../pages/entrance/entrance.page';
-import { AppConfigService } from '../providers/app/app.config.service';
+import { AppConfigService } from '../services/app/app.config.service';
 
 @Component({
     templateUrl: 'app.template.html'

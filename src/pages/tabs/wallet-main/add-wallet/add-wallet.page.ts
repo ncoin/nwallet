@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { NavController, ModalController, IonicPage } from 'ionic-angular';
-import { AccountService } from '../../../../providers/account/account.service';
+import { AccountService } from '../../../../services/account/account.service';
 import { NWAsset } from '../../../../models/nwallet';
-import { NsusChannelService } from '../../../../providers/nsus/nsus-channel.service';
+import { NsusChannelService } from '../../../../services/nsus/nsus-channel.service';
 
 @IonicPage()
 @Component({

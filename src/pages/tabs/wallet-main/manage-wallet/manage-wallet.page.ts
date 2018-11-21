@@ -1,14 +1,14 @@
 import { Component, OnDestroy } from '@angular/core';
 import { NavController, ModalController, LoadingController, Loading, IonicPage, Navbar, NavParams } from 'ionic-angular';
-import { LoggerService } from '../../../../providers/common/logger/logger.service';
-import { AccountService } from '../../../../providers/account/account.service';
+import { LoggerService } from '../../../../services/common/logger/logger.service';
+import { AccountService } from '../../../../services/account/account.service';
 import { NWAsset, NWAccount } from '../../../../models/nwallet';
 import { AddWalletPage } from '../add-wallet/add-wallet.page';
 import { NWTransition } from '../../../../tools/extension/transition';
 import { ModalNavPage } from '../../../base/modal-nav.page';
 import { ModalBasePage } from '../../../base/modal.page';
 import { Subscription } from 'rxjs';
-import { NsusChannelService } from '../../../../providers/nsus/nsus-channel.service';
+import { NsusChannelService } from '../../../../services/nsus/nsus-channel.service';
 
 @IonicPage()
 @Component({

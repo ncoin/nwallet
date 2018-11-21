@@ -1,9 +1,9 @@
 import { Component, OnDestroy } from '@angular/core';
 import { IonicPage, ToastController } from 'ionic-angular';
 import { Clipboard } from '@ionic-native/clipboard';
-import { AccountService } from '../../../providers/account/account.service';
-import { LoggerService } from '../../../providers/common/logger/logger.service';
-import { EventService } from '../../../providers/common/event/event';
+import { AccountService } from '../../../services/account/account.service';
+import { LoggerService } from '../../../services/common/logger/logger.service';
+import { EventService } from '../../../services/common/event/event';
 import { NWEvent } from '../../../interfaces/events';
 
 import { Debug } from '../../../utils/helper/debug';

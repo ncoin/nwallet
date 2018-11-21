@@ -1,4 +1,4 @@
-import { LoggerService } from './../../providers/common/logger/logger.service';
+import { LoggerService } from './../../services/common/logger/logger.service';
 import { NavController, ViewController, Navbar, ModalOptions } from 'ionic-angular';
 import { Component, ViewChild, ReflectiveInjector } from '@angular/core';
 import { IonicPage } from 'ionic-angular/navigation/ionic-page';

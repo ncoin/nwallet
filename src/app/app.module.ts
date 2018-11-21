@@ -8,7 +8,7 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { IonicStorageModule } from '@ionic/storage';
 import { NWalletApp } from './app.component';
-import { NWalletProvidersModule } from '../providers/providers.module';
+import { NWalletProvidersModule } from '../services/services.module';
 import { ScreenOrientation } from '@ionic-native/screen-orientation';
 import { FingerprintAIO } from '@ionic-native/fingerprint-aio';
 import { StatusBar } from '@ionic-native/status-bar';

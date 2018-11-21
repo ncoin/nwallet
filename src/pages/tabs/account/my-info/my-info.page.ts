@@ -1,6 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, Navbar, ModalController } from 'ionic-angular';
-import { AccountService } from '../../../../providers/account/account.service';
+import { AccountService } from '../../../../services/account/account.service';
 import { ResetPincodePage } from './reset-pincode/reset-pincode.page';
 import { ModalNavPage } from '../../../base/modal-nav.page';
 import { RESET_PHONE_NUMBER_COMPONENTS, ResetPhoneNumberPage } from './reset-phone-number/reset-phone-number.page';

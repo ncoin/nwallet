@@ -1,4 +1,4 @@
-import { WalletProtocol } from '../providers/nsus/notification.service';
+import { WalletProtocol } from '../services/nsus/notification.service';
 import { GetWalletTransactions } from '../models/protocol/api';
 import { Ticker } from '../models/nwallet/data';
 

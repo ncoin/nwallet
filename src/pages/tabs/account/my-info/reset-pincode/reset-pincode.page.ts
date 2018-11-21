@@ -1,10 +1,10 @@
 import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, Navbar, NavParams, ToastController } from 'ionic-angular';
-import { AccountService } from '../../../../../providers/account/account.service';
+import { AccountService } from '../../../../../services/account/account.service';
 import { ModalBasePage } from '../../../../base/modal.page';
 import { ModalNavPage } from '../../../../base/modal-nav.page';
-import { AuthorizationService } from '../../../../../providers/nsus/authorization.service';
-import { LoggerService } from '../../../../../providers/common/logger/logger.service';
+import { AuthorizationService } from '../../../../../services/nsus/authorization.service';
+import { LoggerService } from '../../../../../services/common/logger/logger.service';
 import { ResetPincodeSuccessPage } from '../reset-pincode-success/reset-pincode-success.page';
 
 export type PinPhase = 'EnterYourCurrentPin' | 'EnterYourNewPin' | 'ReEnterYourNewPin';
