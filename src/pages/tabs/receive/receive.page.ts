@@ -23,7 +23,7 @@ export class ReceivePage implements OnDestroy {
     constructor(private account: AccountService, private clipboard: Clipboard, private toast: ToastController, private logger: LoggerService, private event: EventService) {
         this.logger.debug('????????????????????');
         this.account.registerSubjects(stream => {
-            stream.assetChanged(this.onAssetChanged);
+            stream.assets(this.onAssetChanged);
         });
 
         this.event.RxSubscribe(NWEvent.App.change_tab, context => {

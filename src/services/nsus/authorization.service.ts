@@ -10,6 +10,8 @@ import { NWEvent } from '../../interfaces/events';
 import { Debug } from '../../utils/helper/debug';
 import { NClientService } from './nclient.service';
 import { NWAuthProtocol, NWData } from '../../models/nwallet';
+import { HttpProtocol } from '../../models/http/protocol';
+import { AuthProtocolBase } from '../../models/protocol/auth/_impl';
 
 // for test (remove me) --sky`
 const nonceRange = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -71,6 +73,32 @@ export class AuthorizationService {
         });
     }
 
+    private auth<T extends AuthProtocolBase>(protocol: T): Promise<boolean> {
+        return this.nClient
+            .auth(protocol)
+            .then(this.onSuccess())
+            .then(() => true)
+            .catch(this.onError(false));
+    }
+
+    private onSuccess<T extends HttpProtocol>(): (p: T) => T | PromiseLike<T> {
+        return (protocol: T) => {
+            this.logger.debug(`[auth] protocol succeed : ${protocol.name}`);
+            if (protocol.response) {
+                this.logger.debug(`[auth] protocol response : ${protocol.name}`, protocol.response);
+            }
+
+            return protocol;
+        };
+    }
+
+    private onError<T>(failover?: T): (protocol: any) => T | PromiseLike<T> {
+        return protocol => {
+            this.logger.error(`[auth] protocol error : ${protocol.name}`, protocol);
+            return failover;
+        };
+    }
+
     public async getToken(): Promise<NWData.Token> {
         await this.init.result();
         if (this.tokenSource) {
@@ -104,24 +132,17 @@ export class AuthorizationService {
                 grant_type: 'refresh_token'
             };
         } else {
-            if (env.name === 'dev') {
-                /** todo api aggregate --sky */
-                payload = {
-                    username: this.userName,
-                    device_id: this.deviceId,
-                    grant_type: 'password'
-                };
-            } else {
-                throw new Error('stage / prod issue token not implemented yet.');
-            }
+            payload = {
+                username: this.userName,
+                device_id: this.deviceId,
+                grant_type: 'password'
+            };
         }
 
-        const issuedToken = await this.nClient
+        return await this.nClient
             .auth(new NWAuthProtocol.IssueToken().setPayload(payload))
-            .then(protocol => {
-                this.logger.debug(`[auth] issue token done : ${tokenKind}`);
-                return protocol.convert();
-            })
+            .then(this.onSuccess())
+            .then(p => p.convert())
             .catch((response: HttpErrorResponse) => {
                 this.logger.error(`[auth] issue token failed : ${tokenKind}`, response);
                 if (response.status === 401) {
@@ -129,49 +150,29 @@ export class AuthorizationService {
                 }
                 return NWData.Token.Empty;
             });
-
-        return issuedToken;
     }
 
     public authMobileNumber(countryCode: string, number: string): Promise<boolean> {
-        return this.nClient
-            .auth(
-                new NWAuthProtocol.VerifyPhone({
-                    payload: {
-                        countryCode: countryCode,
-                        number: number
-                    }
-                })
-            )
-            .then(protocol => {
-                this.logger.debug(`[auth] auth phone number (secure code request) success :`, protocol);
-                return true;
+        return this.auth(
+            new NWAuthProtocol.VerifyPhone({
+                payload: {
+                    countryCode: countryCode,
+                    number: number
+                }
             })
-            .catch((response: HttpErrorResponse) => {
-                this.logger.error(`[auth] auth phone number (secure code request) failed :`, response);
-                return false;
-            });
+        );
     }
 
-    public async verifyMobileNumber(countryCode: string, number: string, securityCode: string) {
-        return this.nClient
-            .auth(
-                new NWAuthProtocol.VerifyPhoneComplete({
-                    payload: {
-                        countryCode: countryCode,
-                        number: number,
-                        verifyCode: securityCode
-                    }
-                })
-            )
-            .then(protocol => {
-                this.logger.debug(`[auth] verify phone number (secure code request) success :`, protocol);
-                return true;
+    public async verifyMobileNumber(countryCode: string, number: string, securityCode: string): Promise<boolean> {
+        return this.auth(
+            new NWAuthProtocol.VerifyPhoneComplete({
+                payload: {
+                    countryCode: countryCode,
+                    number: number,
+                    verifyCode: securityCode
+                }
             })
-            .catch((response: HttpErrorResponse) => {
-                this.logger.error(`[auth] verify phone number (secure code request) failed :`, response);
-                return false;
-            });
+        );
     }
 
     public async verifyResetMobileNumber(phoneNumber: string): Promise<boolean> {

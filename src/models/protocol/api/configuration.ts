@@ -1,5 +1,5 @@
-import { NoResponseData,  MethodTypes, NoQuery } from '../../http/http-protocol';
-import { NClientProtocolBase } from './http-protocol';
+import { NoResponseData,  MethodTypes, NoQuery } from '../../http/protocol';
+import { NClientProtocolBase } from './_impl';
 import { Paths } from './paths';
 
 export class SetConfigurations extends NClientProtocolBase<NoQuery, { device_id: string; is_push_notification: boolean }, NoResponseData> {

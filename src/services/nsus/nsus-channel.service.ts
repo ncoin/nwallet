@@ -5,7 +5,7 @@ import { NotificationService } from './notification.service';
 import { NWAsset, NWTransaction, NWProtocol, NWData } from '../../models/nwallet';
 import { AuthorizationService } from './authorization.service';
 import { Subject, Subscription } from 'rxjs';
-import { NClientProtocolBase } from '../../models/protocol/api/http-protocol';
+import { NClientProtocolBase } from '../../models/protocol/api/_impl';
 
 @Injectable()
 export class NsusChannelService {

@@ -58,7 +58,7 @@ export class WalletMainPage implements OnDestroy {
         await this.app.waitFetch();
 
         this.account.registerSubjects(account => {
-            this.register(account.assetChanged(this.onAssetChanged));
+            this.register(account.assets(this.onAssetChanged));
             this.register(this.currency.currencyChanged.subscribe(this.calculateTotalPrice));
         });
 

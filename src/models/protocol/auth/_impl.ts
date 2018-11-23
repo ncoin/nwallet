@@ -1,12 +1,11 @@
-import { NoQuery, NoPayload, NoResponseData, HttpProtocol } from '../../http/http-protocol';
+import { HttpProtocol, NoQuery, NoPayload, NoResponseData, NoConvert } from '../../http/protocol';
 import { ParameterExpr, createExpr } from 'forge';
 
-export abstract class NClientProtocolBase<TQuery = NoQuery, TPayload = NoPayload, TResponse = NoResponseData> extends HttpProtocol {
+export abstract class AuthProtocolBase<TQuery = NoQuery, TPayload = NoPayload, TResponse = NoResponseData, TConvert = NoConvert> extends HttpProtocol {
     public payload: TPayload;
     public response: TResponse;
-    public error: any;
-
-    constructor(protected credential: { userId: string; userWalletId?: number }, data?: { query?: TQuery; payload?: TPayload }) {
+    public convert: () => TConvert;
+    constructor(data?: { query?: TQuery; payload?: TPayload }) {
         super();
 
         if (data) {
@@ -27,15 +26,5 @@ export abstract class NClientProtocolBase<TQuery = NoQuery, TPayload = NoPayload
     public setPayload(expr: ParameterExpr<TPayload>): this {
         this.payload = createExpr(expr);
         return this;
-    }
-
-    public setResponse(response: TResponse): this {
-        super.setResponse(response);
-        this.manufacture();
-        return this;
-    }
-
-    public manufacture() {
-
     }
 }

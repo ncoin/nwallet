@@ -1,7 +1,7 @@
 import { NWTransaction, NWResponse } from '../../nwallet';
 import { Paths } from './paths';
-import { NClientProtocolBase } from './http-protocol';
-import { MethodTypes, NoPayload } from '../../http/http-protocol';
+import { NClientProtocolBase } from './_impl';
+import { MethodTypes, NoPayload } from '../../http/protocol';
 
 export class GetWalletTransactions extends NClientProtocolBase<{ offset: number; limit: number }, NoPayload, NWResponse.Transaction.Data[]> {
     public method = MethodTypes.GET;

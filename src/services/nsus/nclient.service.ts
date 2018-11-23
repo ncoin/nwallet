@@ -1,10 +1,8 @@
-import { HttpClient, HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { LoggerService } from '../common/logger/logger.service';
-import { MethodTypes, HttpProtocol } from '../../models/http/http-protocol';
+import { MethodTypes, HttpProtocol } from '../../models/http/protocol';
 import { Debug } from '../../utils/helper/debug';
-import { NClientProtocolBase } from '../../models/protocol/api/http-protocol';
-import { AuthProtocolBase } from '../../models/protocol/auth/impl';
 
 @Injectable()
 export class NClientService {
@@ -43,14 +41,12 @@ export class NClientService {
     }
 
     // test
-    public auth<TQuery, TPayload, TResponse, TConvert>(
-        protocol: AuthProtocolBase<TQuery, TPayload, TResponse, TConvert>
-    ): Promise<AuthProtocolBase<TQuery, TPayload, TResponse, TConvert>> {
+    public auth<T extends HttpProtocol>(protocol: T): Promise<T> {
         Debug.assert(protocol.method !== MethodTypes.INVALID);
         // todo extract
         if (protocol.method === MethodTypes.GET) {
             return this.http
-                .get<TResponse>(protocol.url(), {
+                .get(protocol.url(), {
                     headers: protocol.header,
                     params: protocol.query
                 })
@@ -59,7 +55,7 @@ export class NClientService {
                 .catch(this.onError(protocol));
         } else if (protocol.method === MethodTypes.POST) {
             return this.http
-                .post<TResponse>(protocol.url(), protocol.payload, {
+                .post(protocol.url(), protocol.payload, {
                     headers: protocol.header
                 })
                 .toPromise()
@@ -67,7 +63,7 @@ export class NClientService {
                 .catch(this.onError(protocol));
         } else if (protocol.method === MethodTypes.PUT) {
             return this.http
-                .put<TResponse>(protocol.url(), protocol.payload, {
+                .put(protocol.url(), protocol.payload, {
                     headers: protocol.header
                 })
                 .toPromise()

@@ -1,6 +1,6 @@
 import { Paths } from './paths';
-import { NoConvert, NoQuery, NoPayload, NoResponseData, MethodTypes } from '../../http/http-protocol';
-import { AuthProtocolBase } from './impl';
+import { NoConvert, NoQuery, NoPayload, NoResponseData, MethodTypes } from '../../http/protocol';
+import { AuthProtocolBase } from './_impl';
 
 export class VerifyPhone extends AuthProtocolBase<
     NoQuery,

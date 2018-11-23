@@ -1,7 +1,7 @@
-import { NoQuery, NoConvert, MethodTypes, NoPayload } from '../../http/http-protocol';
+import { NoQuery, NoConvert, MethodTypes, NoPayload } from '../../http/protocol';
 import { NWResponse } from '../../nwallet';
 import { Paths } from './paths';
-import { NClientProtocolBase } from './http-protocol';
+import { NClientProtocolBase } from './_impl';
 
 export class GetSendAssetFee extends NClientProtocolBase<NoQuery, NoPayload, number> {
     public method = MethodTypes.GET;

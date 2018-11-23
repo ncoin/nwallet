@@ -1,7 +1,7 @@
-import { NoQuery, NoConvert, NoResponseData, MethodTypes, NoPayload } from '../../http/http-protocol';
+import { NoQuery, NoConvert, NoResponseData, MethodTypes, NoPayload } from '../../http/protocol';
 import { Paths } from './paths';
 import { NWAsset, NWResponse } from '../../nwallet';
-import { NClientProtocolBase } from './http-protocol';
+import { NClientProtocolBase } from './_impl';
 
 /** Get Wallets */
 export class GetWallets extends NClientProtocolBase<NoQuery, NoPayload, NWResponse.Asset.Data[]> {

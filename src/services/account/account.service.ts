@@ -1,18 +1,13 @@
 import { LoggerService } from '../common/logger/logger.service';
 import { Injectable } from '@angular/core';
 import { PreferenceProvider, Preference } from '../common/preference/preference';
-import { NWAccount, NWAsset, NWTransaction, NWProtocol } from '../../models/nwallet';
+import { NWAccount, NWProtocol } from '../../models/nwallet';
 import { PromiseWaiter } from 'forge/dist/helpers/Promise/PromiseWaiter';
 import { Debug } from '../../utils/helper/debug';
-import { Subscription } from 'rxjs';
 import { EventService } from '../common/event/event';
 import { NWEvent } from '../../interfaces/events';
 import { NsusChannelService } from '../nsus/nsus-channel.service';
-
-interface AccountStream {
-    assetChanged: (func: (asset: NWAsset.Item[]) => void) => Subscription;
-    assetTransaction: (walletId: number, func: (asset: NWTransaction.Item[]) => void) => Subscription;
-}
+import { AccountStream } from './account.service.callback';
 
 @Injectable()
 export class AccountService {
@@ -23,11 +18,6 @@ export class AccountService {
     constructor(private preference: PreferenceProvider, private logger: LoggerService, private event: EventService, private channel: NsusChannelService) {
         this.account = new NWAccount.Account();
         this.task = new PromiseWaiter<NWAccount.Account>();
-
-        this.streams = {
-            assetChanged: assets => this.account.inventory.getAssetItems().subscribe(assets), // todo change me
-            assetTransaction: (walletId, walletFunc) => this.account.inventory.getTransaction(walletId).subscribe(walletFunc)
-        };
 
         this.init();
     }
@@ -48,7 +38,13 @@ export class AccountService {
     }
 
     private async init(): Promise<void> {
+        this.streams = {
+            assets: assetExpr => this.account.inventory.getAssetItems().subscribe(assetExpr), // todo change me
+            assetTransactions: (walletId, transactionExpr) => this.account.inventory.getTransaction(walletId).subscribe(transactionExpr)
+        };
+
         this.subscribes();
+
         const accountData = await this.preference.get(Preference.Nwallet.account);
         if (accountData) {
             this.account.initialize(accountData);
