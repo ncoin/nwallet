@@ -1,9 +1,9 @@
 import * as NWAsset from './nwallet/asset';
 import * as NWAccount from './nwallet/account';
 import * as NWTransaction from './nwallet/transaction';
-import * as NWProtocol from './protocol/api';
-import * as NWAuthProtocol from './protocol/auth';
-import * as NWResponse from './protocol/response';
+import * as NWProtocol from './api/nwallet';
+import * as NWAuthProtocol from './api/auth';
+import * as NWResponse from './api/response';
 import * as NWData from './nwallet/data';
 
 import '../utils/extensions';

@@ -11,7 +11,7 @@ import { Debug } from '../../utils/helper/debug';
 import { NClientService } from './nclient.service';
 import { NWAuthProtocol, NWData } from '../../models/nwallet';
 import { HttpProtocol } from '../../models/http/protocol';
-import { AuthProtocolBase } from '../../models/protocol/auth/_impl';
+import { AuthProtocolBase } from '../../models/api/auth/_impl';
 
 // for test (remove me) --sky`
 const nonceRange = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';

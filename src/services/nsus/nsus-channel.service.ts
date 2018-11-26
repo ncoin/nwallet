@@ -5,7 +5,7 @@ import { NotificationService } from './notification.service';
 import { NWAsset, NWTransaction, NWProtocol, NWData } from '../../models/nwallet';
 import { AuthorizationService } from './authorization.service';
 import { Subject, Subscription } from 'rxjs';
-import { NClientProtocolBase } from '../../models/protocol/api/_impl';
+import { NClientProtocolBase } from '../../models/api/nwallet/_impl';
 
 @Injectable()
 export class NsusChannelService {
@@ -47,7 +47,7 @@ export class NsusChannelService {
     // hmm.... 1
     private onBroadcast<T extends NClientProtocolBase>(): (value: T) => T | PromiseLike<T> {
         return protocol => {
-            this.logger.debug(`[channel] protocol broadcast : ${protocol.name}`, protocol);
+            this.logger.debug(`[channel] protocol broadcast :`, protocol);
             this.getOrAdd(protocol.name).next(protocol);
             return protocol;
         };
@@ -55,10 +55,7 @@ export class NsusChannelService {
 
     private onSuccess<T extends NClientProtocolBase>(): (p: T) => T | PromiseLike<T> {
         return (protocol: T) => {
-            this.logger.debug(`[channel] protocol succeed : ${protocol.name}`);
-            if (protocol.response) {
-                this.logger.debug(`[channel] protocol response : ${protocol.name}`, protocol.response);
-            }
+            this.logger.debug(`[channel] protocol succeed : ${protocol.name}`, protocol.response);
 
             return protocol;
         };
@@ -203,7 +200,14 @@ export class NsusChannelService {
      */
     public async setUserPush(isOn: boolean): Promise<boolean> {
         return await this.nClient
-            .request(await this.resolve(userId => new NWProtocol.SetConfigurations({ userId: userId })))
+            .request(
+                await this.resolve(userId =>
+                    new NWProtocol.SetConfigurations({ userId: userId }).setPayload({
+                        device_id: undefined,
+                        is_push_notification: isOn
+                    })
+                )
+            )
             .then(this.onSuccess())
             .then(() => true)
             .catch(this.onError(false));

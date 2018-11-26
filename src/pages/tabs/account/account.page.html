@@ -10,35 +10,35 @@
         <button ion-item detail-none class="btn default" (click)="onClick_MyInfo()">
             <ion-label>
                 <fa-icon name="question"></fa-icon>
-                <span translate>MyInfo</span>
+                <span>{{'MyInfo' | translate}}</span>
             </ion-label>
         </button>
 
         <button ion-item detail-none class="btn default" (click)="onClick_Language()">
             <ion-label>
                 <fa-icon name="language"></fa-icon>
-                <span translate>Language</span>
+                <span>{{'Language' | translate}}</span>
             </ion-label>
         </button>
 
         <!-- <button ion-item detail-none class="btn default">
             <ion-label>
                 <fa-icon name="lock"></fa-icon>
-                <span translate>PinSetting</span>
+                <span>{{'PinSetting' | translate}}</span>
             </ion-label>
         </button>
 
         <button ion-item detail-none class="btn default">
             <ion-label>
                 <fa-icon name="download"></fa-icon>
-                <span translate>WalletBackup</span>
+                <span>{{'WalletBackup' | translate}}</span>
             </ion-label>
         </button> -->
 
         <button ion-item detail-none class="btn default" (click)="onClick_Notification(!_enablePushNotification)">
             <ion-label>
                 <fa-icon name="bell"></fa-icon>
-                <span translate>EnablePushNotification</span>
+                <span>EnablePushNotification</span>
             </ion-label>
             <ion-toggle [(ngModel)]="enablePushNotification"></ion-toggle>
         </button>
@@ -46,7 +46,7 @@
         <button ion-item detail-none class="btn default" (click)="onLogout()">
             <ion-label>
                 <fa-icon name="sign-out"></fa-icon>
-                <span translate>Logout</span>
+                <span>{{'Logout' | translate}}</span>
             </ion-label>
         </button>
     </ion-list>

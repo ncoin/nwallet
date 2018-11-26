@@ -7,19 +7,35 @@ import { Debug } from '../../utils/helper/debug';
 import { EventService } from '../common/event/event';
 import { NWEvent } from '../../interfaces/events';
 import { NsusChannelService } from '../nsus/nsus-channel.service';
-import { AccountStream } from './account.service.callback';
+import { AccountSubject, AccountCallbackImpl } from './account.service.callback';
 
 @Injectable()
 export class AccountService {
     private task: PromiseWaiter<NWAccount.Account>;
     private account: NWAccount.Account;
-    private streams: AccountStream;
+    private streams: AccountSubject;
 
     constructor(private preference: PreferenceProvider, private logger: LoggerService, private event: EventService, private channel: NsusChannelService) {
         this.account = new NWAccount.Account();
+        this.streams = new AccountCallbackImpl(this.account);
         this.task = new PromiseWaiter<NWAccount.Account>();
 
         this.init();
+    }
+
+    private async init(): Promise<void> {
+        this.subscribes();
+
+        const accountData = await this.preference.get(Preference.Nwallet.account);
+        if (accountData) {
+            this.account.initialize(accountData);
+        }
+
+        this.task.trySet(this.account);
+    }
+
+    public registerSubjects = (onAccount: (account: AccountSubject) => void): void => {
+        onAccount(this.streams);
     }
 
     public async setAccount(userName: string): Promise<void> {
@@ -37,22 +53,6 @@ export class AccountService {
         this.account.inventory.setItems(assets);
     }
 
-    private async init(): Promise<void> {
-        this.streams = {
-            assets: assetExpr => this.account.inventory.getAssetItems().subscribe(assetExpr), // todo change me
-            assetTransactions: (walletId, transactionExpr) => this.account.inventory.getTransaction(walletId).subscribe(transactionExpr)
-        };
-
-        this.subscribes();
-
-        const accountData = await this.preference.get(Preference.Nwallet.account);
-        if (accountData) {
-            this.account.initialize(accountData);
-        }
-
-        this.task.trySet(this.account);
-    }
-
     public async detail(): Promise<NWAccount.Account> {
         return await this.task.result();
     }
@@ -60,15 +60,6 @@ export class AccountService {
     public async isSaved(): Promise<boolean> {
         const detail = await this.detail();
         return detail.getUserName() !== undefined && detail.getUserName() !== '';
-    }
-
-    public registerSubjects = (onAccount: (account: AccountStream) => void): void => {
-        onAccount(this.streams);
-    }
-
-    public fillData(expr: (personal: NWAccount.Personal) => void): void {
-        Debug.assert(this.account);
-        expr(this.account.personal);
     }
 
     public async flush(): Promise<void> {
@@ -121,12 +112,13 @@ export class AccountService {
             const assets = await this.channel.getAssets();
             this.account.inventory.setItems(assets);
             this.account.inventory.refresh();
-            this.channel.fetchTicker();
+
             const tickers = await this.channel.fetchTicker();
             tickers.forEach(ticker => {
                 this.event.publish(NWEvent.Stream.ticker, ticker);
             });
         });
+
         this.channel.register(NWProtocol.GetWalletTransactions, async protocol => {
             // todo fixme
             if (protocol.data && protocol.data.length > 0) {
