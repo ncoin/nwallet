@@ -8,6 +8,6 @@ export const env: Environments = {
     endpoint: {
         stream: (type: 'ticker' | 'wallet', token: string) => `http://api.ncoin.com:4001/streams/${type}?token=${token}`,
         uaa: (path: string) => `http://api.ncoin.com:8080/uaa/api/${path}`,
-        api: (path: string) => `http://api.ncoin.com:8080/wallet/api/${path}`,
+        api: (path: string) => `http://api.ncoin.com:8080/wallet/v1/${path}`,
     }
 };

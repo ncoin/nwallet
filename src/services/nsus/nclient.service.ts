@@ -14,7 +14,7 @@ export class NClientService {
         // todo extract
         if (protocol.method === MethodTypes.GET) {
             return this.http
-                .get<any>(protocol.url(), {
+                .get(protocol.url(), {
                     headers: protocol.header,
                     params: protocol.query
                 })
@@ -23,7 +23,7 @@ export class NClientService {
                 .catch(this.onError(protocol));
         } else if (protocol.method === MethodTypes.POST) {
             return this.http
-                .post<any>(protocol.url(), protocol.payload, {
+                .post(protocol.url(), protocol.payload, {
                     headers: protocol.header
                 })
                 .toPromise()
@@ -31,7 +31,7 @@ export class NClientService {
                 .catch(this.onError(protocol));
         } else if (protocol.method === MethodTypes.PUT) {
             return this.http
-                .put<any>(protocol.url(), protocol.payload, {
+                .put(protocol.url(), protocol.payload, {
                     headers: protocol.header
                 })
                 .toPromise()
