@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController,  IonicPage } from 'ionic-angular';
+import { NavController, IonicPage } from 'ionic-angular';
 import { NWAsset } from '../../../../models/nwallet';
 import { NsusChannelService } from '../../../../services/nsus/nsus-channel.service';
 

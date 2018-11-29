@@ -4,7 +4,7 @@ function api(path: string) {
     return env.endpoint.api(path);
 }
 
-export const Paths = {
+export const WalletApiPaths = {
     get: {
         currency: () => api('currencies/'),
         wallets: (userId: string) => api(`users/${userId}/wallets`),

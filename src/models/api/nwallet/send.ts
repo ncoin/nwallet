@@ -1,6 +1,6 @@
 import { NoQuery, NoConvert, MethodTypes, NoPayload } from '../../http/protocol';
 import { NWResponse } from '../../nwallet';
-import { Paths } from './paths';
+import { WalletApiPaths } from './paths';
 import { NClientProtocolBase } from './_impl';
 
 export class GetSendAssetFee extends NClientProtocolBase<NoQuery, NoPayload, number> {
@@ -14,7 +14,7 @@ export class GetSendAssetFee extends NClientProtocolBase<NoQuery, NoPayload, num
     constructor(protected credential: { userId: string; userWalletId: number }) {
         super(credential);
     }
-    public url = () => Paths.get.sendAssetFee(this.credential.userId, this.credential.userWalletId);
+    public url = () => WalletApiPaths.get.sendAssetFee(this.credential.userId, this.credential.userWalletId);
 }
 export class SendAsset extends NClientProtocolBase<NoQuery, { recipient_address: string; amount: number }, NWResponse.Transaction.Detail> {
     public method = MethodTypes.POST;
@@ -28,5 +28,5 @@ export class SendAsset extends NClientProtocolBase<NoQuery, { recipient_address:
         super(credential);
     }
 
-    public url = () => Paths.post.sendAsset(this.credential.userId, this.credential.userWalletId);
+    public url = () => WalletApiPaths.post.sendAsset(this.credential.userId, this.credential.userWalletId);
 }

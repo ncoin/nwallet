@@ -1,4 +1,4 @@
-import { Paths } from './paths';
+import { AuthApiPaths } from './paths';
 import { AuthProtocolBase } from './_impl';
 import { MethodTypes, NoQuery } from '../../http/protocol';
 import { NWResponse, NWData } from '../../nwallet';
@@ -24,6 +24,6 @@ export class IssueToken extends AuthProtocolBase<NoQuery, TokenPayload, NWRespon
             Accept: 'application/json'
         };
     }
-    public url = () => Paths.token();
+    public url = () => AuthApiPaths.token();
     public convert = (): NWData.Token => NWData.Token.fromProtocol(this.response);
 }

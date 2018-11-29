@@ -26,10 +26,6 @@ export class CurrencyService {
     constructor(event: EventService, private channel: NsusChannelService) {
         this.currencyChanged = new Subject<CurrencyInfo>();
 
-        event.subscribe(NWEvent.Stream.ticker, ticker => {
-            this.addOrUpdate(ticker.currency_id, info => (info.ticker = ticker));
-        });
-
         this.channel.register(NWProtocol.GetTickers, protocol => {
             protocol.response.forEach(ticker => {
                 this.addOrUpdate(ticker.currency_id, info => (info.ticker = ticker));
@@ -49,6 +45,10 @@ export class CurrencyService {
                     asset.setCurrency(currencyInfo.data);
                 }
             });
+        });
+
+        event.subscribe(NWEvent.Stream.ticker, ticker => {
+            this.addOrUpdate(ticker.currency_id, info => (info.ticker = ticker));
         });
     }
 

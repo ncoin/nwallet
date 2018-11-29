@@ -4,7 +4,7 @@ function api(path: string) {
     return env.endpoint.uaa(path);
 }
 
-export const Paths = {
+export const AuthApiPaths = {
     account: {},
 
     auth: {

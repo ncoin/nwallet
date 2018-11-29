@@ -1,4 +1,4 @@
-import { Paths } from './paths';
+import { AuthApiPaths } from './paths';
 import { NoConvert, NoQuery, NoPayload, NoResponseData, MethodTypes } from '../../http/protocol';
 import { AuthProtocolBase } from './_impl';
 
@@ -10,7 +10,7 @@ export class VerifyPhone extends AuthProtocolBase<
     }
 > {
     method = MethodTypes.POST;
-    public url = () => Paths.auth.phone();
+    public url = () => AuthApiPaths.auth.phone();
 }
 
 export class VerifyPhoneComplete extends AuthProtocolBase<
@@ -22,5 +22,5 @@ export class VerifyPhoneComplete extends AuthProtocolBase<
     }
 > {
     method = MethodTypes.POST;
-    public url = () => Paths.auth.verifyPhone();
+    public url = () => AuthApiPaths.auth.verifyPhone();
 }
