@@ -32,14 +32,14 @@
             <div>
                 {{'TransactionConfirm' | translate}} >
                 <div>
-                    {{transaction.detail.confirmation}}
+                    {{transaction.confirmation}}
                 </div>
             </div>
         </div>
         <div class="container send" *ngSwitchCase="'SEND'">
             <div>
                 {{'TransactionDate' | translate}} >
-                <div>{{transaction.date  | date: 'yyyy/mm/dd HH:mm:ss'}}</div>
+                <div>{{transaction.date | date: 'yyyy/mm/dd HH:mm:ss'}}</div>
             </div>
             <div>
                 {{'TransactionTo' | translate}} >
@@ -62,7 +62,7 @@
             <div>
                 {{'TransactionConfirm' | translate}} >
                 <div>
-                    {{transaction.detail.confirmation}}
+                    {{transaction.confirmation}}
                 </div>
             </div>
         </div>

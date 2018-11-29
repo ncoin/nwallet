@@ -48,21 +48,14 @@ export class AccountService {
     }
 
     private async refreshAssets() {
-        const refreshes = await Promise.all([this.channel.fetchCurrencies(), this.channel.fetchTicker(), this.channel.getAssets()]);
+        const refreshes = await Promise.all([this.channel.fetchCurrencies(), this.channel.fetchTicker()]);
         const currencies = refreshes[0];
-        const assets = refreshes[2];
         const tickers = refreshes[1];
 
+        const assets = await this.channel.getAssets();
         // tickers.forEach(ticker => {
         //     this.event.publish(NWEvent.Stream.ticker, ticker);
         // });
-
-        assets.forEach(asset => {
-            const target = currencies.find(c => c.id === asset.getCurrencyId());
-            if (target) {
-                asset.setCurrency(target);
-            }
-        });
 
         this.account.inventory.setItems(assets);
         this.account.inventory.refresh();

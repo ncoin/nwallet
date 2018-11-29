@@ -32,7 +32,7 @@ export class GetWalletDetail extends NClientProtocolBase<NoQuery, NoPayload, NWR
 }
 
 /** Change Wallet Visibiltiy */
-export class SetWalletVisibility extends NClientProtocolBase<NoQuery, { is_show: boolean }, NoResponseData> {
+export class SetWalletVisibility extends NClientProtocolBase<NoQuery, { isShow: boolean }, NoResponseData> {
     public method = MethodTypes.PUT;
     public data: { walletId: number; isVisible: boolean };
     constructor(public credential: { userId: string; userWalletId: number }) {
@@ -42,18 +42,18 @@ export class SetWalletVisibility extends NClientProtocolBase<NoQuery, { is_show:
     public url = () => Paths.put.walletVisibility(this.credential.userId, this.credential.userWalletId);
 
     public manufacture() {
-        this.data = { walletId: this.credential.userWalletId, isVisible: this.payload.is_show };
+        this.data = { walletId: this.credential.userWalletId, isVisible: this.payload.isShow };
         return this;
     }
 }
 
 /** Change Wallet Order */
-export class SetWalletAlign extends NClientProtocolBase<NoQuery, { user_wallet_ids: number[] }, NoResponseData> {
+export class SetWalletAlign extends NClientProtocolBase<NoQuery, { alignNumbers: number[] }, NoResponseData> {
     public method = MethodTypes.PUT;
     public data: number[];
     public url = () => Paths.put.walletAlign(this.credential.userId);
     public manufacture() {
-        this.data = this.payload.user_wallet_ids;
+        this.data = this.payload.alignNumbers;
     }
 }
 

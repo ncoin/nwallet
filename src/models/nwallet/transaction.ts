@@ -7,12 +7,8 @@ export class Item {
         this.data = new Data(this.raw);
 
         Debug.assert(this.data);
-        Debug.assert(this.detail);
     }
 
-    public get detail(): Detail {
-        return this.data.detail;
-    }
 
     public get id(): number {
         return this.data.id;
@@ -35,15 +31,16 @@ export class Item {
     }
 
     public get fee() {
-        return this.detail.feeString;
+        return this.data.fee;
     }
 
     public get transactionId(): string {
-        return this.data.transaction_id;
+        return this.data.id.toString();
     }
 
-    public get confirmaiton(): number {
-        return this.detail.confirmations;
+    public get confirmation(): number {
+        return -99999;
+        // return this.data.;
     }
 
     public get amount(): number {
@@ -62,7 +59,7 @@ export class Data {
     public readonly detail: Detail;
 
     constructor(raw: Data) {
-        this.detail = Object.assign(new Detail(), JSON.parse(raw.response_detail.toString()));
+        // this.detail = Object.assign(new Detail(), JSON.parse(raw.response_detail.toString()));
         Object.assign(this, raw);
 
         this.creationDate = new Date(raw.created_date);
@@ -70,7 +67,7 @@ export class Data {
         this.groupDate = new Date(this.occuredDate.getFullYear(), this.occuredDate.getMonth(), this.occuredDate.getDate());
 
         Debug.Validate(this);
-        Debug.Validate(this.detail);
+        // Debug.Validate(this.detail);
     }
 }
 

@@ -90,11 +90,12 @@ export class NsusChannelService {
         return await this.nClient
             .request(this.resolve(userId => new NWProtocol.GetWallets({ userId: userId })))
             .then(this.onSuccess())
+            .then(this.onBroadcast())
             .then(p => p.data)
             .catch(this.onError([]));
     }
 
-    public getWalletDetails = async (walletId: number): Promise<NWAsset.Data> => {
+    public async getWalletDetails(walletId: number): Promise<NWAsset.Data> {
         return await this.nClient
             .request(this.resolve(userId => new NWProtocol.GetWalletDetail({ userId: userId, userWalletId: walletId })))
             .then(this.onSuccess())
@@ -147,7 +148,7 @@ export class NsusChannelService {
             .request(
                 this.resolve(userId =>
                     new NWProtocol.SetWalletAlign({ userId: userId }).setPayload(payload => {
-                        payload.user_wallet_ids = align;
+                        payload.alignNumbers = align;
                     })
                 )
             )
@@ -162,7 +163,7 @@ export class NsusChannelService {
             .request(
                 this.resolve(userId =>
                     new NWProtocol.SetWalletVisibility({ userId: userId, userWalletId: walletId }).setPayload(payload => {
-                        payload.is_show = isVisible;
+                        payload.isShow = isVisible;
                     })
                 )
             )

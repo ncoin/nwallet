@@ -6,20 +6,20 @@ declare module '../../nwallet/transaction' {
         user_wallet_id: number;
         main_transaction_type: string;
         transaction_type: string;
-        transaction_type_value: string;
-        transaction_id: string;
         from_address: string;
         to_address: string;
         amount: number;
-        balance: number;
         occur_date: string;
-        occur_yyyy: string;
-        occur_eng_mm: string;
-        occur_dd: string;
-        status_type: string;
-        response_detail: Detail;
         created_by: string;
         created_date: string;
+
+        bc_status_type: string;
+        bc_transaction_id: string;
+        fee: number;
+        last_modified_by: string;
+        last_modified_date: string;
+        succeed: boolean;
+        transfer_id: string;
     }
 
     interface Detail {

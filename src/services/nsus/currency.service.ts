@@ -41,6 +41,15 @@ export class CurrencyService {
                 this.addOrUpdate(currency.id, info => (info.data = currency));
             });
         });
+
+        this.channel.register(NWProtocol.GetWallets, protocol => {
+            protocol.data.forEach(asset => {
+                const currencyInfo = this.get(asset.getCurrencyId()).getValue();
+                if (currencyInfo.data) {
+                    asset.setCurrency(currencyInfo.data);
+                }
+            });
+        });
     }
 
     public addOrUpdate(currencyId: number, func: (currency: CurrencyInfo) => void): Subject<CurrencyInfo> {

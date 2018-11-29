@@ -9,7 +9,8 @@ export const Paths = {
         currency: () => api('currencies/'),
         wallets: (userId: string) => api(`users/${userId}/wallets`),
         walletDetail: (userId: string, userWalletId: number) => api(`users/${userId}/wallets/${userWalletId}`),
-        walletTransactions: (userId: string, userWalletId: number) => api(`users/${userId}/wallets/${userWalletId}/transactions`),
+        walletTransactions: (userId: string, userWalletId: number) => api(`wallets/${userWalletId}/transactions`),
+        transactionDetail: (userWalletId: number) => api(`wallets/${userWalletId}/transactions`),
         creationAvailableWallets: (userId: string) => api(`users/${userId}/wallets/available`),
         ticker: () => api(`tickers`),
         sendAssetFee: (userId: string, userWalletId: number) => api(`users/${userId}/wallets/${userWalletId}/send/fee`)
@@ -22,7 +23,7 @@ export const Paths = {
 
     put: {
         configuraton: (userId: string) => api(`users/${userId}/cofiguration/push`),
-        walletAlign: (userId: string) => api(`users/${userId}/wallets/align`),
-        walletVisibility: (userId: string, userWalletId: number) => api(`users/${userId}/wallets/${userWalletId}/visibility`)
+        walletAlign: (userId: string) => api(`users/${userId}/wallets`),
+        walletVisibility: (userId: string, userWalletId: number) => api(`wallets/${userWalletId}`)
     }
 };
