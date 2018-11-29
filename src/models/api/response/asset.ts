@@ -9,6 +9,7 @@ declare module '../../nwallet/asset' {
         created_date: string;
         currency_id: number;
         id: number;
+        user_id: number;
         is_show: boolean;
         last_modified_date: string;
     }

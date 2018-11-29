@@ -1,4 +1,4 @@
-import { NoQuery, NoConvert, NoResponseData, MethodTypes, NoPayload } from '../../http/protocol';
+import { NoQuery, NoResponseData, MethodTypes, NoPayload } from '../../http/protocol';
 import { Paths } from './paths';
 import { NWAsset, NWResponse } from '../../nwallet';
 import { NClientProtocolBase } from './_impl';
@@ -17,7 +17,7 @@ export class GetWallets extends NClientProtocolBase<NoQuery, NoPayload, NWRespon
 
 /** Create new Wallets */
 
-export class CreateWallet extends NClientProtocolBase<NoQuery, { currency_manage_id: number }> {
+export class CreateWallet extends NClientProtocolBase<NoQuery, { currencyId: number }> {
     public method = MethodTypes.POST;
     public url = () => Paths.post.createWallet(this.credential.userId);
 }

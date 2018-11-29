@@ -189,7 +189,7 @@ export class NsusChannelService {
                         new NWProtocol.CreateWallet(
                             { userId: userId },
                             {
-                                payload: { currency_manage_id: currencyId }
+                                payload: { currencyId: currencyId }
                             }
                         )
                 )

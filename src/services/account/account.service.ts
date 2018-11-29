@@ -44,14 +44,11 @@ export class AccountService {
     }
 
     public async fetchJobs(): Promise<void> {
+        await Promise.all([this.channel.fetchCurrencies(), this.channel.fetchTicker()]);
         this.refreshAssets();
     }
 
     private async refreshAssets() {
-        const refreshes = await Promise.all([this.channel.fetchCurrencies(), this.channel.fetchTicker()]);
-        const currencies = refreshes[0];
-        const tickers = refreshes[1];
-
         const assets = await this.channel.getAssets();
         // tickers.forEach(ticker => {
         //     this.event.publish(NWEvent.Stream.ticker, ticker);

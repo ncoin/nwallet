@@ -8,16 +8,16 @@ export const Paths = {
     get: {
         currency: () => api('currencies/'),
         wallets: (userId: string) => api(`users/${userId}/wallets`),
-        walletDetail: (userId: string, userWalletId: number) => api(`users/${userId}/wallets/${userWalletId}`),
+        walletDetail: (userId: string, userWalletId: number) => api(`wallets/${userWalletId}`),
         walletTransactions: (userId: string, userWalletId: number) => api(`wallets/${userWalletId}/transactions`),
-        transactionDetail: (userWalletId: number) => api(`wallets/${userWalletId}/transactions`),
+        // transactionDetail: (userWalletId: number) => api(`wallets/${userWalletId}/transactions`),
         creationAvailableWallets: (userId: string) => api(`users/${userId}/wallets/available`),
         ticker: () => api(`tickers`),
         sendAssetFee: (userId: string, userWalletId: number) => api(`users/${userId}/wallets/${userWalletId}/send/fee`)
     },
 
     post: {
-        createWallet: (userId: string) => api(`users/${userId}/wallets`),
+        createWallet: (userId: string) => api(`wallets`),
         sendAsset: (userId: string, userWalletId: number) => api(`users/${userId}/wallets/${userWalletId}/send`)
     },
 
