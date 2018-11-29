@@ -131,15 +131,36 @@ export class NsusChannelService {
     public async sendAsset(walletId: number, address: string, amount: number): Promise<boolean> {
         return await this.nClient
             .request(
-                this.resolve(userId =>
-                    new NWProtocol.SendAsset({ userId: userId, userWalletId: walletId }).setPayload(payload => {
+                this.resolve(u =>
+                    new NWProtocol.SendAsset(walletId).setPayload(payload => {
                         payload.amount = amount;
-                        payload.recipient_address = address;
+                        payload.recipientAddress = address;
+                        payload.walletId = walletId;
                     })
                 )
             )
             .then(this.onSuccess())
-            .then(() => true)
+            .then(async protocol => {
+                // todo extract
+                if (protocol.isXdr()) {
+                    const signed = this.auth.signXdr(protocol.response.xdr);
+                    return await this.nClient
+                        .request(
+                            this.resolve(u =>
+                                new NWProtocol.SendAssetXdr(walletId).setPayload({
+                                    transactionId: protocol.response.id,
+                                    walletId: walletId,
+                                    xdr: signed
+                                })
+                            )
+                        )
+                        .then(this.onSuccess())
+                        .then(() => true)
+                        .catch(this.onError(false));
+                }
+
+                return true;
+            })
             .catch(this.onError(false));
     }
 

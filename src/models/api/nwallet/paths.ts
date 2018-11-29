@@ -18,12 +18,13 @@ export const WalletApiPaths = {
 
     post: {
         createWallet: (userId: string) => api(`wallets`),
-        sendAsset: (userId: string, userWalletId: number) => api(`users/${userId}/wallets/${userWalletId}/send`)
+        sendAsset: (userWalletId: number) => api(`wallets/${userWalletId}/withdrawals`)
     },
 
     put: {
         configuraton: (userId: string) => api(`users/${userId}/cofiguration/push`),
         walletAlign: (userId: string) => api(`users/${userId}/wallets`),
-        walletVisibility: (userId: string, userWalletId: number) => api(`wallets/${userWalletId}`)
+        walletVisibility: (userId: string, userWalletId: number) => api(`wallets/${userWalletId}`),
+        sendAssetXdr: (userWalletId: number) => api(`wallets/${userWalletId}/withdrawals`)
     }
 };

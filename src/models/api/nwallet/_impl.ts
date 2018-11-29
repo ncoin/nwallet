@@ -6,7 +6,7 @@ export abstract class NClientProtocolBase<TQuery = NoQuery, TPayload = NoPayload
     public response: TResponse;
     public error: any;
 
-    constructor(protected credential?: { userId: string; userWalletId?: number }, data?: { query?: TQuery; payload?: TPayload }) {
+    constructor(protected credential?: { userId?: string; userWalletId?: number }, data?: { query?: TQuery; payload?: TPayload }) {
         super();
 
         if (data) {

@@ -16,17 +16,24 @@ export class GetSendAssetFee extends NClientProtocolBase<NoQuery, NoPayload, num
     }
     public url = () => WalletApiPaths.get.sendAssetFee(this.credential.userId, this.credential.userWalletId);
 }
-export class SendAsset extends NClientProtocolBase<NoQuery, { recipient_address: string; amount: number }, NWResponse.Transaction.Detail> {
+export class SendAsset extends NClientProtocolBase<NoQuery, { walletId: number; recipientAddress: string; amount: number }, { xdr?: string; id: number }> {
     public method = MethodTypes.POST;
-    /**
-     *Creates an instance of SendAssetRequest.
-     * @param {{ userId: string; userWalletId: number }} credential
-     * @response transaction detail
-     * @memberof SendAssetRequest
-     */
-    constructor(protected credential: { userId: string; userWalletId: number }) {
-        super(credential);
+    constructor(protected userWalletId: number) {
+        super();
     }
 
-    public url = () => WalletApiPaths.post.sendAsset(this.credential.userId, this.credential.userWalletId);
+    public isXdr(): boolean {
+        return this.isSuccess() && this.response.xdr !== undefined;
+    }
+
+    public url = () => WalletApiPaths.post.sendAsset(this.userWalletId);
+}
+
+export class SendAssetXdr extends NClientProtocolBase<NoQuery, { walletId: number; transactionId: number; xdr: string }, { success: boolean }> {
+    public method = MethodTypes.PUT;
+    constructor(protected userWalletId: number) {
+        super();
+    }
+
+    public url = () => WalletApiPaths.put.sendAssetXdr(this.userWalletId);
 }

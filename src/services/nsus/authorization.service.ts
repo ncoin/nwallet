@@ -12,6 +12,7 @@ import { NClientService } from './nclient.service';
 import { NWAuthProtocol, NWData } from '../../models/nwallet';
 import { HttpProtocol } from '../../models/http/protocol';
 import { AuthProtocolBase } from '../../models/api/auth/_impl';
+import { Transaction as StellarTransaction, Keypair as StellarKeypair } from 'stellar-sdk';
 
 // for test (remove me) --sky`
 const nonceRange = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -150,6 +151,19 @@ export class AuthorizationService {
                 }
                 return NWData.Token.Empty;
             });
+    }
+
+    public signXdr(xdr: string): string {
+        const transaction = new StellarTransaction(xdr);
+        const temp = StellarKeypair.random();
+        // sign
+        transaction.sign(StellarKeypair.fromSecret(temp.secret()));
+
+        // transaction to xdr;
+        return transaction
+            .toEnvelope()
+            .toXDR()
+            .toString('base64');
     }
 
     public authMobileNumber(countryCode: string, number: string): Promise<boolean> {

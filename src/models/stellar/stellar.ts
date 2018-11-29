@@ -13,7 +13,6 @@ export class Sample {
         if (xdrResponse) {
             // transaction from xdr;
             const transaction = new Stellar.Transaction(xdrResponse.xdr);
-
             // sign
             transaction.sign(Keypair.fromSecret(sig.private_key));
 
