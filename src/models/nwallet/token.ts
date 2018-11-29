@@ -1,7 +1,10 @@
 import { Debug } from '../../utils/helper/debug';
 
 export class Token {
-    static readonly Empty = <Token>undefined;
+    static readonly Empty = <Token>{
+        access_token : 'invalid',
+        //todo
+    };
 
     private expiredDate: number;
     /** exprire seconds */

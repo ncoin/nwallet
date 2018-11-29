@@ -72,7 +72,7 @@ export class Inventory {
     //     if (target) {
     //         target.updateData(data);
     //     } else {
-    //         const item = new NWAsset.Item().initData(data);
+    //         const item = new NWAsset.Item(data);
     //         this.addOrUpdateItems([item]);
     //     }
     // }

@@ -1,4 +1,5 @@
 import { Debug } from '../../utils/helper/debug';
+import { NWData } from '../nwallet';
 
 /** wallet protocol interface */
 export class Data {}
@@ -8,13 +9,25 @@ export class Option {}
 
 /** asset information */
 export class Item {
-    public data: Data;
     /** asset option */
     public option: Option;
+    public currency: NWData.Currency;
+
+    constructor(public data: Data) {
+        this.option = {
+            isActive: true,
+            isShow: <boolean>this.data.is_show,
+            order: this.data.align_number
+        };
+    }
+
+    public setCurrency(currency: NWData.Currency) {
+        this.currency = currency;
+    }
 
     public getSymbol(): string {
         Debug.assert(this.data);
-        return this.data.currency;
+        return this.currency.label;
     }
 
     public getAmount(): number {
@@ -25,7 +38,7 @@ export class Item {
     /** symbol id */
     public getCurrencyId(): number {
         Debug.assert(this.data);
-        return this.data.currency_manage_id;
+        return this.data.currency_id;
     }
 
     public getWalletId(): number {

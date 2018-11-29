@@ -44,13 +44,28 @@ export class AccountService {
     }
 
     public async fetchJobs(): Promise<void> {
-        const assets = await this.channel.getAssets();
-        const tickers = await this.channel.fetchTicker();
-        tickers.forEach(ticker => {
-            this.event.publish(NWEvent.Stream.ticker, ticker);
+        this.refreshAssets();
+    }
+
+    private async refreshAssets() {
+        const refreshes = await Promise.all([this.channel.fetchCurrencies(), this.channel.fetchTicker(), this.channel.getAssets()]);
+        const currencies = refreshes[0];
+        const assets = refreshes[2];
+        const tickers = refreshes[1];
+
+        // tickers.forEach(ticker => {
+        //     this.event.publish(NWEvent.Stream.ticker, ticker);
+        // });
+
+        assets.forEach(asset => {
+            const target = currencies.find(c => c.id === asset.getCurrencyId());
+            if (target) {
+                asset.setCurrency(target);
+            }
         });
 
         this.account.inventory.setItems(assets);
+        this.account.inventory.refresh();
     }
 
     public async detail(): Promise<NWAccount.Account> {
@@ -109,14 +124,7 @@ export class AccountService {
         });
 
         this.channel.register(NWProtocol.CreateWallet, async () => {
-            const assets = await this.channel.getAssets();
-            this.account.inventory.setItems(assets);
-            this.account.inventory.refresh();
-
-            const tickers = await this.channel.fetchTicker();
-            tickers.forEach(ticker => {
-                this.event.publish(NWEvent.Stream.ticker, ticker);
-            });
+            this.refreshAssets();
         });
 
         this.channel.register(NWProtocol.GetWalletTransactions, async protocol => {

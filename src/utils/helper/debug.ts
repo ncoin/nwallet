@@ -2,6 +2,7 @@ import { env } from '../../environments/environment.stage';
 import { isDevMode } from '@angular/core';
 
 export class Debug {
+    // todo
     /** property validation check */
     static Validate(obj: any): void {
         Object.keys(obj).forEach(key => {

@@ -3,12 +3,14 @@ import { Injectable } from '@angular/core';
 import { LoggerService } from '../common/logger/logger.service';
 import { MethodTypes, HttpProtocol } from '../../models/http/protocol';
 import { Debug } from '../../utils/helper/debug';
+import { AuthProtocolBase } from '../../models/api/auth/_impl';
 
 @Injectable()
 export class NClientService {
     constructor(private logger: LoggerService, private http: HttpClient) {}
 
-    public request<T extends HttpProtocol>(protocol: T): Promise<T> {
+    public async request<T extends HttpProtocol>(promise: Promise<T>): Promise<T> {
+        const protocol = await promise;
         this.logger.debug(`[nclient] execute protocol : ${protocol.name}`);
         Debug.assert(protocol.method !== MethodTypes.INVALID);
         // todo extract

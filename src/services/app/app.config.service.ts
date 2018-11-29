@@ -12,7 +12,7 @@ export class AppConfigService {
         private translate: TranslateService,
         private preference: PreferenceProvider,
         private event: EventService,
-        private channel: NsusChannelService,
+        private channel: NsusChannelService
     ) {}
 
     public async loadAll(): Promise<void> {
@@ -93,3 +93,37 @@ export class AppConfigService {
         return result;
     }
 }
+
+function extract<T>(properties: Record<keyof T, any>) {
+    return function<TActual extends T>(value: TActual) {
+        const result = {} as T;
+        for (const property of Object.keys(properties) as Array<keyof T>) {
+            result[property] = value[property];
+        }
+        return result;
+    };
+}
+
+// interface ISpecific {
+//     A: string;
+//     B: string;
+// }
+// const extractISpecific = extract<ISpecific>({
+//     // This object literal is guaranteed by the compiler to have no more and no less properties then ISpecific
+//     A: true,
+//     B: true
+// });
+
+// class Extended implements ISpecific {
+//     public A = '1';
+//     public B = '2';
+//     public C = '3';
+// }
+
+// const someObject = new Extended();
+// const subset = extractISpecific(someObject);
+
+// const subset2 = extract<ISpecific>({ A: 5, B: '5', C : 100 });
+// const subset3 = subset2(someObject);
+// console.log('dddddddddddd', subset);
+// console.log('dddddddddddd', subset3);

@@ -2,20 +2,15 @@ import * as Asset from '../../nwallet/asset';
 // todo move location
 declare module '../../nwallet/asset' {
     interface Data {
-        id: number;
-        bitgo_wallet_id: number;
-        currency_manage_id: number;
-        currency: string;
-        user_id: string;
         address: string;
-        balance: number;
-        lock_balance: number;
-        loan_amt: number;
-        current_ltv: number;
         align_number: number;
-        is_show: boolean | number;
-        created_date: Date;
-        last_modified_date: Date;
+        balance: number;
+        bitgo_wallet_id: number;
+        created_date: string;
+        currency_id: number;
+        id: number;
+        is_show: boolean;
+        last_modified_date: string;
     }
 
     /** asset option protocol */

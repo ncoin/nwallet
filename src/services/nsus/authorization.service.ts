@@ -123,7 +123,7 @@ export class AuthorizationService {
 
     private async issueToken(isRefresh: boolean): Promise<NWData.Token> {
         let payload: NWAuthProtocol.TokenPayload;
-        const tokenKind = isRefresh ? 'refresh' : 'new';
+        const tokenKind = isRefresh ? 'refresh token' : 'new token';
         this.logger.debug(`[auth] issue token begin : ${tokenKind}`);
 
         if (isRefresh) {
@@ -145,7 +145,7 @@ export class AuthorizationService {
             .then(p => p.convert())
             .catch((response: HttpErrorResponse) => {
                 this.logger.error(`[auth] issue token failed : ${tokenKind}`, response);
-                if (response.status === 401) {
+                if (response.status === 401 || response.status === 0) {
                     this.event.publish(NWEvent.App.error_occured, { reason: 'unauth' });
                 }
                 return NWData.Token.Empty;

@@ -86,7 +86,6 @@ export class NotificationService {
         const tickerData = JSON.parse(event.data) as NWResponse.Ticker;
         tickerData.last_updated_date_raw = new Date(Number.parseInt(tickerData.last_updated_date, 10));
         Debug.Validate(tickerData);
-        Debug.assert(tickerData);
         this.logger.debug('[notification] on ticker :', tickerData);
 
         this.event.publish(NWEvent.Stream.ticker, tickerData);

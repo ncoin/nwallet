@@ -7,5 +7,5 @@ import { NWResponse } from '../../nwallet';
 
 export class GetTickers extends NClientProtocolBase<NoQuery, NoPayload, NWResponse.Ticker[]> {
     public method = MethodTypes.GET;
-    public url = () => Paths.get.ticker(this.credential.userId);
+    public url = () => Paths.get.ticker();
 }

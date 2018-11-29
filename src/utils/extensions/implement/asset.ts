@@ -1,9 +1,6 @@
 import { Item, Data } from '../../../models/nwallet/asset';
 
 function processData(item: Item, data: Data): void {
-    item.data.is_show = data.is_show === 1;
-    item.data.created_date = new Date(data.created_date);
-    item.data.last_modified_date = new Date(item.data.last_modified_date);
 
     Object.keys(data).forEach(key => {
         if (data[key] === undefined) {
@@ -12,22 +9,22 @@ function processData(item: Item, data: Data): void {
     });
 }
 
-export function initProtocolStatic(this: Item, data: Data): Item {
-    if (this.data) {
-        throw new Error('Asset already initialized');
-    }
+// export function initProtocolStatic(this: Item, data: Data): Item {
+//     if (this.data) {
+//         throw new Error('Asset already initialized');
+//     }
 
-    this.data = data;
-    processData(this, data);
+//     this.data = data;
+//     processData(this, data);
 
-    this.option = {
-        isActive: true,
-        isShow: <boolean>this.data.is_show,
-        order: this.data.align_number
-    };
+//     this.option = {
+//         isActive: true,
+//         isShow: <boolean>this.data.is_show,
+//         order: this.data.align_number
+//     };
 
-    return this;
-}
+//     return this;
+// }
 
 export function updateProtocolStatic(this: Item, data: Data): Item {
     if (!this.data) {
@@ -44,5 +41,5 @@ export function updateProtocolStatic(this: Item, data: Data): Item {
     return this;
 }
 
-Item.prototype.initData = initProtocolStatic;
+// Item.prototype.initData = initProtocolStatic;
 Item.prototype.updateData = updateProtocolStatic;

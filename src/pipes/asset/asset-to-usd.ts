@@ -18,7 +18,7 @@ export class AssetToUSDPipe implements PipeTransform {
      * Takes a value and makes it lowercase.
      */
     transform(assetItem: NWAsset.Item) {
-        return this.currency.getOrAdd(assetItem.data.currency_manage_id).map(currency => {
+        return this.currency.get(assetItem.data.currency_id).map(currency => {
             Debug.assert(assetItem.getCurrencyId() === currency.currencyId);
 
             const value = assetItem.getAmount() * currency.price;

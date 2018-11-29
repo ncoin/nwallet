@@ -6,11 +6,12 @@ function api(path: string) {
 
 export const Paths = {
     get: {
+        currency: () => api('currencies/'),
         wallets: (userId: string) => api(`users/${userId}/wallets`),
         walletDetail: (userId: string, userWalletId: number) => api(`users/${userId}/wallets/${userWalletId}`),
         walletTransactions: (userId: string, userWalletId: number) => api(`users/${userId}/wallets/${userWalletId}/transactions`),
         creationAvailableWallets: (userId: string) => api(`users/${userId}/wallets/available`),
-        ticker: (userId: string) => api(`users/${userId}/tickers`),
+        ticker: () => api(`tickers`),
         sendAssetFee: (userId: string, userWalletId: number) => api(`users/${userId}/wallets/${userWalletId}/send/fee`)
     },
 

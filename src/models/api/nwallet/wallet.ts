@@ -11,7 +11,7 @@ export class GetWallets extends NClientProtocolBase<NoQuery, NoPayload, NWRespon
     public url = () => Paths.get.wallets(this.credential.userId);
 
     public manufacture() {
-        this.data = this.response.map(data => new NWAsset.Item().initData(data));
+        this.data = this.response.map(data => new NWAsset.Item(data));
     }
 }
 
