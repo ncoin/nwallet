@@ -8,6 +8,7 @@ import { NWEvent } from '../../../interfaces/events';
 
 import { Debug } from '../../../utils/helper/debug';
 import { NWAsset } from '../../../models/nwallet';
+import { PopupService } from '../../../services/popup/popop.service';
 
 @IonicPage()
 @Component({
@@ -15,13 +16,18 @@ import { NWAsset } from '../../../models/nwallet';
     templateUrl: 'receive.page.html'
 })
 export class ReceivePage implements OnDestroy {
-
     qrData = null;
     scannedCode = null;
     public selectedAsset: NWAsset.Item;
-    public slides: { assets: NWAsset.Item[] }[] = [];
-    constructor(private account: AccountService, private clipboard: Clipboard, private toast: ToastController, private logger: LoggerService, private event: EventService) {
-        this.logger.debug('????????????????????');
+    public assets: NWAsset.Item[] = [];
+    constructor(
+        private account: AccountService,
+        private clipboard: Clipboard,
+        private toast: ToastController,
+        private logger: LoggerService,
+        private event: EventService,
+        private popup: PopupService
+    ) {
         this.account.registerSubjects(stream => {
             stream.assets(this.onAssetChanged);
         });
@@ -31,7 +37,7 @@ export class ReceivePage implements OnDestroy {
                 this.onSelectAsset(context.currencyId);
             } else {
                 // reset;
-                this.selectedAsset = this.slides[0].assets[0];
+                this.selectedAsset = this.assets[0];
                 this.qrData = this.selectedAsset.getAddress();
             }
         });
@@ -43,16 +49,16 @@ export class ReceivePage implements OnDestroy {
 
     onAssetChanged = (assets: NWAsset.Item[]): void => {
         if (assets.length > 0) {
-            const items = assets.slice();
             this.logger.debug('[receive-page] on refresh assets');
+            this.assets = assets.slice();
+            this.selectedAsset = assets[0];
+        }
+    }
 
-            this.slides.length = 0;
-            let sliceWallet = items.splice(0, 3);
-
-            while (sliceWallet.length > 0) {
-                this.slides.push({ assets: sliceWallet });
-                sliceWallet = items.splice(0, 3);
-            }
+    public async onClick_SelectAsset() {
+        const target = await this.popup.selecteWallet(this.selectedAsset, this.assets);
+        if (target) {
+            this.selectedAsset = target;
         }
     }
 

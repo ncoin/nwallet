@@ -1,9 +1,9 @@
 import { NWTransaction, NWResponse } from '../../nwallet';
 import { WalletApiPaths } from './paths';
-import { NClientProtocolBase } from './_impl';
+import { NWalletProtocolBase } from './_impl';
 import { MethodTypes, NoPayload } from '../../http/protocol';
 
-export class GetWalletTransactions extends NClientProtocolBase<{ offset: number; limit: number }, NoPayload, NWResponse.Transaction.Data[]> {
+export class GetWalletTransactions extends NWalletProtocolBase<{ offset: number; limit: number }, NoPayload, NWResponse.Transaction.Data[]> {
     public method = MethodTypes.GET;
     public data: NWTransaction.Item[];
     constructor(public credential: { userId: string; userWalletId: number }) {

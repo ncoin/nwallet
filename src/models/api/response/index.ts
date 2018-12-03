@@ -1,9 +1,9 @@
-export * from './ticker';
-export * from './asset';
-export * from './transaction';
-export * from './wallet';
-export * from './currency';
-export * from './token';
+export * from './ticker.response';
+export * from './asset.response';
+export * from './transaction.response';
+export * from './wallet.response';
+export * from './currency.response';
+export * from './token.response';
 
 export enum ResultCode {
     Unknown = -1,

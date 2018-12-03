@@ -664,11 +664,18 @@ $toggle-icon-background-on: #364231;
                 .alert-radio-label {
                     color: $foreground-content;
                 }
+
                 &[aria-checked=true] {
                     .alert-radio-label {
                         color: $foreground-content-lightgray;
                     }
                 }
+            }
+        }
+
+        &.label-justify {
+            .alert-radio-label {
+                text-align-last: justify;
             }
         }
     }
@@ -679,6 +686,8 @@ $toggle-icon-background-on: #364231;
             max-width: 100%;
         }
     }
+
+
 }
 
 .alert-base.alert-send-confirm {

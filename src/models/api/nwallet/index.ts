@@ -1,7 +1,7 @@
-export * from './configuration';
-export * from './send';
-export * from './ticker';
-export * from './wallet-transaction';
-export * from './wallet';
-export * from './currency';
+export * from './configuration.protocol';
+export * from './send.protocol';
+export * from './ticker.protocol';
+export * from './wallet-transaction.protocol';
+export * from './wallet.protocol';
+export * from './currency.protocol';
 

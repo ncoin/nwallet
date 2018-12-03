@@ -5,7 +5,7 @@ import { NotificationService } from './notification.service';
 import { NWAsset, NWTransaction, NWProtocol, NWData } from '../../models/nwallet';
 import { AuthorizationService } from './authorization.service';
 import { Subject, Subscription } from 'rxjs';
-import { NClientProtocolBase } from '../../models/api/nwallet/_impl';
+import { NWalletProtocolBase } from '../../models/api/nwallet/_impl';
 
 @Injectable()
 export class NsusChannelService {
@@ -19,12 +19,12 @@ export class NsusChannelService {
     private getOrAdd(key: string): Subject<any> {
         return this.subscriptionMap.has(key) ? this.subscriptionMap.get(key) : this.subscriptionMap.set(key, new Subject<any>()).get(key);
     }
-    public register<T extends NClientProtocolBase>(request: { new ({}): T } | T, func: (value: T) => void): Subscription {
+    public register<T extends NWalletProtocolBase>(request: { new ({}): T } | T, func: (value: T) => void): Subscription {
         return this.getOrAdd(request.name).subscribe(func);
     }
 
     //#region Protocol methods
-    private async resolve<T extends NClientProtocolBase>(func: (userId: string) => T): Promise<T> {
+    private async resolve<T extends NWalletProtocolBase>(func: (userId: string) => T): Promise<T> {
         const token = await this.auth.getToken();
         let userId,
             auth = '';
@@ -43,7 +43,7 @@ export class NsusChannelService {
     }
 
     // hmm.... 1
-    private onBroadcast<T extends NClientProtocolBase>(): (value: T) => T | PromiseLike<T> {
+    private onBroadcast<T extends NWalletProtocolBase>(): (value: T) => T | PromiseLike<T> {
         return protocol => {
             this.logger.debug(`[channel] protocol broadcast :`, protocol);
             this.getOrAdd(protocol.name).next(protocol);
@@ -51,7 +51,7 @@ export class NsusChannelService {
         };
     }
 
-    private onSuccess<T extends NClientProtocolBase>(): (p: T) => T | PromiseLike<T> {
+    private onSuccess<T extends NWalletProtocolBase>(): (p: T) => T | PromiseLike<T> {
         return (protocol: T) => {
             this.logger.debug(`[channel] protocol succeed : ${protocol.name}`, protocol.response);
 

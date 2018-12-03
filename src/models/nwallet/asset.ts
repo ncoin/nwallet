@@ -57,15 +57,15 @@ export class Available {
         Object.assign(this, data);
         Debug.assert(this);
     }
-    public getSymbol(): string {
-        return this.currency;
-    }
+    // public getSymbol(): string {
+    //     //return this.currency;
+    // }
 
-    public setAlign(value: number): void {
-        this.align_number = value;
-    }
+    // public setAlign(value: number): void {
+    //     this.align_number = value;
+    // }
 
-    public getAlign(): number {
-        return this.align_number;
-    }
+    // public getAlign(): number {
+    //     return this.align_number;
+    // }
 }

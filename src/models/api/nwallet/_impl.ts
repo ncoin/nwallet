@@ -1,7 +1,7 @@
 import { NoQuery, NoPayload, NoResponseData, HttpProtocol } from '../../http/protocol';
 import { ParameterExpr, createExpr } from 'forge';
 
-export abstract class NClientProtocolBase<TQuery = NoQuery, TPayload = NoPayload, TResponse = NoResponseData> extends HttpProtocol {
+export abstract class NWalletProtocolBase<TQuery = NoQuery, TPayload = NoPayload, TResponse = NoResponseData> extends HttpProtocol {
     public payload: TPayload;
     public response: TResponse;
     public error: any;

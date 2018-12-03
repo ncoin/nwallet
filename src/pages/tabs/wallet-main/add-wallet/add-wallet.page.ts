@@ -33,18 +33,18 @@ export class AddWalletPage {
     }
 
     private onFilterAsset(value: string): void {
-        if (value && value.trim() !== '') {
-            this.assets = this.sourceAssets.filter(
-                item =>
-                    item
-                        .getSymbol()
-                        .trim()
-                        .toLowerCase()
-                        .indexOf(value.trim().toLowerCase()) > -1
-            );
-        } else {
-            this.assets = this.sourceAssets.slice();
-        }
+        // if (value && value.trim() !== '') {
+        //     this.assets = this.sourceAssets.filter(
+        //         item =>
+        //             item
+        //                 .getSymbol()
+        //                 .trim()
+        //                 .toLowerCase()
+        //                 .indexOf(value.trim().toLowerCase()) > -1
+        //     );
+        // } else {
+        //     this.assets = this.sourceAssets.slice();
+        // }
     }
 
     public onClick_AddAsset(asset: NWAsset.Available): void {

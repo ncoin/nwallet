@@ -1,10 +1,10 @@
 import { NoQuery, NoResponseData, MethodTypes, NoPayload } from '../../http/protocol';
 import { WalletApiPaths } from './paths';
 import { NWAsset, NWResponse } from '../../nwallet';
-import { NClientProtocolBase } from './_impl';
+import { NWalletProtocolBase } from './_impl';
 
 /** Get Wallets */
-export class GetWallets extends NClientProtocolBase<NoQuery, NoPayload, NWResponse.Asset.Data[]> {
+export class GetWallets extends NWalletProtocolBase<NoQuery, NoPayload, NWResponse.Asset.Data[]> {
     public method = MethodTypes.GET;
     public data: NWAsset.Item[];
     // todo decorator
@@ -17,13 +17,13 @@ export class GetWallets extends NClientProtocolBase<NoQuery, NoPayload, NWRespon
 
 /** Create new Wallets */
 
-export class CreateWallet extends NClientProtocolBase<NoQuery, { currencyId: number }> {
+export class CreateWallet extends NWalletProtocolBase<NoQuery, { currencyId: number }> {
     public method = MethodTypes.POST;
     public url = () => WalletApiPaths.post.createWallet(this.credential.userId);
 }
 
 /** Get Wallet Details */
-export class GetWalletDetail extends NClientProtocolBase<NoQuery, NoPayload, NWResponse.Asset.Data> {
+export class GetWalletDetail extends NWalletProtocolBase<NoQuery, NoPayload, NWResponse.Asset.Data> {
     public method = MethodTypes.GET;
     constructor(protected credential: { userId: string; userWalletId: number }) {
         super(credential);
@@ -32,7 +32,7 @@ export class GetWalletDetail extends NClientProtocolBase<NoQuery, NoPayload, NWR
 }
 
 /** Change Wallet Visibiltiy */
-export class SetWalletVisibility extends NClientProtocolBase<NoQuery, { isShow: boolean }, NoResponseData> {
+export class SetWalletVisibility extends NWalletProtocolBase<NoQuery, { isShow: boolean }, NoResponseData> {
     public method = MethodTypes.PUT;
     public data: { walletId: number; isVisible: boolean };
     constructor(public credential: { userId: string; userWalletId: number }) {
@@ -48,7 +48,7 @@ export class SetWalletVisibility extends NClientProtocolBase<NoQuery, { isShow: 
 }
 
 /** Change Wallet Order */
-export class SetWalletAlign extends NClientProtocolBase<NoQuery, { alignNumbers: number[] }, NoResponseData> {
+export class SetWalletAlign extends NWalletProtocolBase<NoQuery, { alignNumbers: number[] }, NoResponseData> {
     public method = MethodTypes.PUT;
     public data: number[];
     public url = () => WalletApiPaths.put.walletAlign(this.credential.userId);
@@ -58,7 +58,7 @@ export class SetWalletAlign extends NClientProtocolBase<NoQuery, { alignNumbers:
 }
 
 /** Get Creation Available Wallet List */
-export class GetAvailableWallet extends NClientProtocolBase<NoQuery, NoPayload, NWResponse.Asset.Available[]> {
+export class GetAvailableWallet extends NWalletProtocolBase<NoQuery, NoPayload, NWResponse.Asset.Available[]> {
     public method = MethodTypes.GET;
     public data: NWAsset.Available[];
     public url = () => WalletApiPaths.get.creationAvailableWallets(this.credential.userId);

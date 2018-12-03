@@ -9,7 +9,7 @@
     <div class="container">
         <div class="asset">
             <img src="assets/img/symbol_{{asset.getSymbol()}}.png" />
-            <div>{{asset | assetName | async}}</div>
+            <div>{{asset | assetToFullName | async}}</div>
         </div>
         <div >
             <div class="input-wrap">

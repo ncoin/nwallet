@@ -4,7 +4,7 @@ import { NWAsset } from '../../models/nwallet';
 
 /** obsoleted --sky` */
 @Pipe({
-    name: 'assetName'
+    name: 'assetToFullName'
 })
 export class AssetNamePipe implements PipeTransform {
     constructor(private translate: TranslateService) {}

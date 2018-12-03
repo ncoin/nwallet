@@ -11,15 +11,12 @@
 
     <div class="container">
         <div>
-            <ion-slides>
-                <ion-slide *ngFor="let slide of slides">
-                    <div class="slide">
-                        <button *ngFor="let asset of slide.assets; index as i" (click)=onClick_Asset(asset) [ngClass]="{'button-left' : i === 0, 'button-right' : i===2, 'selected-button' : asset.getCurrencyId() === selectedAsset.getCurrencyId()}">
-                            <img src="assets/img/symbol_{{asset.getSymbol()}}.png" />
-                            {{asset.getSymbol()}}</button>
-                    </div>
-                </ion-slide>
-            </ion-slides>
+            <button class="country-code-button" (click)="onClick_SelectAsset()">
+                <img src="assets/img/symbol_{{selectedAsset.getSymbol()}}.png" />
+                <div>{{selectedAsset | assetToFullName | async}}</div>
+                <div>{{selectedAsset | assetFormat}}</div>
+                <ion-icon name="arrow-dropdown"></ion-icon>
+            </button>
         </div>
         <div class="qrContainer">
             <ion-card class="qrCard" *ngIf="qrData">

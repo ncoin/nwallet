@@ -25,11 +25,11 @@ declare module '../../nwallet/asset' {
     }
 
     interface Available {
-        id: number;
-        currency: string;
-        bitgo_symbol: string;
-        is_use_wallet: number;
+        currency_id: number;
+        label: string;
+        symbol: string;
         align_number: number;
+        bitgo_wallet_id: number;
     }
 }
 
