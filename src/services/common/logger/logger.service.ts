@@ -2,8 +2,8 @@ import { Injectable, isDevMode } from '@angular/core';
 
 import * as _ from 'lodash';
 
-type loglevels = 'debug' | 'info' | 'warn' | 'error';
-type loglabels = 'Debug' | 'Info' | 'Warning' | 'Error';
+type loglevels = 'debug' | 'info' | 'warn' | 'error' | 'verbose';
+type loglabels = 'Debug' | 'Info' | 'Warning' | 'Error' | 'Verbose';
 interface LogLevel {
     level: loglevels;
     weight: number;
@@ -25,7 +25,8 @@ export class LoggerService {
             { level: 'error', weight: 1, label: 'Error' },
             { level: 'warn', weight: 2, label: 'Warning' },
             { level: 'info', weight: 3, label: 'Info', default: true },
-            { level: 'debug', weight: 4, label: 'Debug' }
+            { level: 'debug', weight: 4, label: 'Debug' },
+            { level: 'verbose', weight: 5, label: 'Verbose' }
         ];
 
         // Create an array of level weights for performant filtering.
@@ -81,30 +82,37 @@ export class LoggerService {
         );
     }
 
+    public log(message?: any, ...optionalParams: any[]): void {
+        let msg = this.timeStamp(`[verbose] ${_.isString(message) ? message : JSON.stringify(message)}`);
+        if (isDevMode() && !this.isFilteredLevel('verbose') && !this.isFilteredText(message)) console.log(msg, ...optionalParams);
+        let args = this.processingArgs(arguments);
+        this.add('verbose', args);
+    }
+
     public error(message?: any, ...optionalParams: any[]): void {
         let msg = this.timeStamp(`[error] ${_.isString(message) ? message : JSON.stringify(message)}`);
-        if (isDevMode() && !this.isFilteredLevel('error') && !this.isFilteredText(message)) console.log(msg, ...optionalParams);
+        if (isDevMode() && !this.isFilteredLevel('error') && !this.isFilteredText(message)) console.error(msg, ...optionalParams);
         let args = this.processingArgs(arguments);
         this.add('error', args);
     }
 
     public debug(message?: any, ...optionalParams: any[]): void {
         let msg = this.timeStamp(`[debug] ${_.isString(message) ? message : JSON.stringify(message)}`);
-        if (isDevMode() && !this.isFilteredLevel('debug') && !this.isFilteredText(message)) console.log(msg, ...optionalParams);
+        if (isDevMode() && !this.isFilteredLevel('debug') && !this.isFilteredText(message)) console.debug(msg, ...optionalParams);
         let args = this.processingArgs(arguments);
         this.add('debug', args);
     }
 
     public info(message?: any, ...optionalParams: any[]): void {
         let msg = this.timeStamp(`[info] ${_.isString(message) ? message : JSON.stringify(message)}`);
-        if (isDevMode() && !this.isFilteredLevel('info') && !this.isFilteredText(message)) console.log(msg, ...optionalParams);
+        if (isDevMode() && !this.isFilteredLevel('info') && !this.isFilteredText(message)) console.info(msg, ...optionalParams);
         let args = this.processingArgs(arguments);
         this.add('info', args);
     }
 
     public warn(message?: any, ...optionalParams: any[]): void {
         let msg = this.timeStamp(`[warn] ${_.isString(message) ? message : JSON.stringify(message)}`);
-        if (isDevMode() && !this.isFilteredLevel('warn') && !this.isFilteredText(message)) console.log(msg, ...optionalParams);
+        if (isDevMode() && !this.isFilteredLevel('warn') && !this.isFilteredText(message)) console.warn(msg, ...optionalParams);
         let args = this.processingArgs(arguments);
         this.add('warn', args);
     }
@@ -153,8 +161,12 @@ export class LoggerService {
         var args = Array.prototype.slice.call(argsValues);
         args = args.map(v => {
             try {
-                if (typeof v == 'undefined') v = 'undefined';
-                if (!v) v = 'null';
+                if (typeof v == 'undefined') {
+                    v = 'undefined';
+                }
+                if (!v) {
+                    v = 'null';
+                }
                 if (typeof v == 'object') {
                     v = v.message ? v.message : JSON.stringify(v);
                 }
@@ -162,8 +174,9 @@ export class LoggerService {
                 // tslint:disable-next-line:no-console
                 console.log('Error at log decorator:', e);
                 v = 'undefined';
+            } finally {
+                return v;
             }
-            return v;
         });
         return args.join(' ');
     }
