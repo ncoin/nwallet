@@ -36,7 +36,7 @@ export class AccountService {
 
     public registerSubjects = (onAccount: (account: AccountSubject) => void): void => {
         onAccount(this.streams);
-    }
+    };
 
     public async setAccount(userName: string): Promise<void> {
         this.account.setUserName(userName);
@@ -101,7 +101,7 @@ export class AccountService {
             this.account.inventory.refresh();
         });
 
-        this.channel.register(NWProtocol.SetWalletVisibility, protocol => {
+        this.channel.register(NWProtocol.WalletOptionChange, protocol => {
             const data = protocol.data;
             const item = this.account.inventory
                 .getAssetItems()

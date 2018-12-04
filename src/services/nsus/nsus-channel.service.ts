@@ -183,7 +183,7 @@ export class NsusChannelService {
         this.nClient
             .request(
                 this.resolve(userId =>
-                    new NWProtocol.SetWalletVisibility({ userId: userId, userWalletId: walletId }).setPayload(payload => {
+                    new NWProtocol.WalletOptionChange({ userId: userId, userWalletId: walletId }).setPayload(payload => {
                         payload.isShow = isVisible;
                     })
                 )

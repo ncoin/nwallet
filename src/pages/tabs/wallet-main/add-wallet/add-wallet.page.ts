@@ -48,7 +48,7 @@ export class AddWalletPage {
     }
 
     public onClick_AddAsset(asset: NWAsset.Available): void {
-        if (this.channel.createWallet(asset.id)) {
+        if (this.channel.createWallet(asset.Id)) {
             this.sourceAssets.splice(this.sourceAssets.indexOf(asset), 1);
             this.assets.splice(this.assets.indexOf(asset), 1);
         }

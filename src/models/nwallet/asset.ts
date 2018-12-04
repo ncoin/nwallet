@@ -1,5 +1,5 @@
 import { Debug } from '../../utils/helper/debug';
-import { NWData } from '../nwallet';
+import { NWData, NWResponse } from '../nwallet';
 
 /** wallet protocol interface */
 export class Data {}
@@ -53,9 +53,14 @@ export class Item {
 }
 
 export class Available {
-    constructor(data: Available) {
+    constructor(data: NWResponse.Asset.Available) {
         Object.assign(this, data);
         Debug.assert(this);
+    }
+
+    public get Id() {
+        Debug.assert(this.currency_id);
+        return this.currency_id;
     }
     // public getSymbol(): string {
     //     //return this.currency;
