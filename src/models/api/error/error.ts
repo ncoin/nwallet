@@ -1,3 +1,5 @@
+import { HttpProtocol } from '../../http/protocol';
+
 export interface HttpError {
     message: string; // 'error.userexists';
     status: number; // 400;
@@ -10,3 +12,4 @@ export interface HttpAuthError extends HttpError {
     title: string; // 'Login already in use';
     type: string; // 'http://www.jhipster.tech/problem/login-already-used';
 }
+

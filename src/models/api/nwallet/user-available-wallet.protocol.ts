@@ -7,6 +7,11 @@ import { WalletApiPaths } from './paths';
 export class GetAvailableWallet extends NWalletProtocolBase<NoQuery, NoPayload, NWResponse.Asset.Available[]> {
     public method = MethodTypes.GET;
     public data: NWAsset.Available[];
+    protected errorMessages = {
+        400: 'InvalidFormat',
+        404: 'NoAvailables',
+    };
+
     public url = () => WalletApiPaths.get.availableWallets(this.credential.userId);
 
     public manufacture() {

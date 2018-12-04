@@ -59,9 +59,15 @@ export class NsusChannelService {
         };
     }
 
-    private onError<T>(failover?: T): (protocol: any) => T | PromiseLike<T> {
+    private onError<T, TProtocol extends NWalletProtocolBase>(failover?: T): (protocol: TProtocol) => T | PromiseLike<T> {
         return protocol => {
-            this.logger.error(`[channel] protocol error : ${protocol.name}`, protocol);
+            const errorMessage = protocol.getErrorMessage();
+            if (errorMessage) {
+                this.logger.warn(`[channel] protocol rejected : ${protocol.name} ${errorMessage}`);
+            } else {
+                this.logger.error(`[channel] protocol failed (unhandled): ${protocol.name}`, protocol);
+            }
+
             return failover;
         };
     }

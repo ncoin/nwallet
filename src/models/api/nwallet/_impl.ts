@@ -4,7 +4,6 @@ import { ParameterExpr, createExpr } from 'forge';
 export abstract class NWalletProtocolBase<TQuery = NoQuery, TPayload = NoPayload, TResponse = NoResponseData> extends HttpProtocol {
     public payload: TPayload;
     public response: TResponse;
-    public error: any;
 
     constructor(protected credential?: { userId?: string; userWalletId?: number }, data?: { query?: TQuery; payload?: TPayload }) {
         super();

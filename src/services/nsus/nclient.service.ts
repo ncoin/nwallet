@@ -11,7 +11,7 @@ export class NClientService {
 
     public async request<T extends HttpProtocol>(promise: Promise<T>): Promise<T> {
         const protocol = await promise;
-        this.logger.debug(`[nclient] execute protocol : ${protocol.name}`);
+        this.logger.debug(`[nclient] protocol execute : ${protocol.name}`);
         Debug.assert(protocol.method !== MethodTypes.INVALID);
         // todo extract
         if (protocol.method === MethodTypes.GET) {
@@ -45,6 +45,8 @@ export class NClientService {
     // test
     public auth<T extends HttpProtocol>(protocol: T): Promise<T> {
         Debug.assert(protocol.method !== MethodTypes.INVALID);
+        this.logger.debug(`[nclient] auth protocol execute : ${protocol.name}`);
+
         // todo extract
         if (protocol.method === MethodTypes.GET) {
             return this.http
@@ -87,7 +89,7 @@ export class NClientService {
             if (error.status === 200 || error.status === 201) {
                 return protocol;
             }
-            throw error;
+            throw protocol;
         };
     }
 }
