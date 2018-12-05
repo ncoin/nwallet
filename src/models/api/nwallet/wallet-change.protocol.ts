@@ -10,7 +10,7 @@ import { WalletApiPaths } from './paths';
 export class WalletOptionChange extends NWalletProtocolBase<NoQuery, { isShow: boolean }, NoResponseData> {
     public method = MethodTypes.PUT;
     public data: { walletId: number; isVisible: boolean };
-    constructor(public credential: { userId: string; userWalletId: number }) {
+    constructor(public credential: { userId: number; userWalletId: number }) {
         super(credential);
     }
 

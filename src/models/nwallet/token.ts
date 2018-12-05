@@ -2,8 +2,8 @@ import { Debug } from '../../utils/helper/debug';
 
 export class Token {
     static readonly Empty = <Token>{
-        access_token : 'invalid',
-        //todo
+        access_token: 'invalid'
+        // todo
     };
 
     private expiredDate: number;
@@ -29,8 +29,8 @@ export class Token {
     }
 
     /** user Id */
-    public getUserId(): string {
-        return this.user_id.toString();
+    public getUserId(): number {
+        return this.user_id;
     }
 
     /** user credential */
@@ -47,5 +47,9 @@ export class Token {
     public isExpired(): boolean {
         Debug.assert(this.expiredDate);
         return Date.now() > this.expiredDate;
+    }
+
+    public isInvalid(): boolean {
+        return this.access_token === 'invalid';
     }
 }

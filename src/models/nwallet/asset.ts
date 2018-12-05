@@ -58,10 +58,19 @@ export class Available {
         Debug.assert(this);
     }
 
+    public get Symbol() {
+        return this.label;
+    }
+
     public get Id() {
         Debug.assert(this.currency_id);
         return this.currency_id;
     }
+
+    public get WalletId() {
+        return this.bitgo_wallet_id;
+    }
+
     // public getSymbol(): string {
     //     //return this.currency;
     // }

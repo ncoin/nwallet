@@ -7,11 +7,11 @@ export class GetSendAssetFee extends NWalletProtocolBase<NoQuery, NoPayload, num
     public method = MethodTypes.GET;
     /**
      *Creates an instance of GetSendAssetFeeRequest.
-     * @param {{ userId: string; userWalletId: number }} credential
+     * @param {{ userId: number; userWalletId: number }} credential
      * @resposne fee amount
      * @memberof GetSendAssetFeeRequest
      */
-    constructor(protected credential: { userId: string; userWalletId: number }) {
+    constructor(protected credential: { userId: number; userWalletId: number }) {
         super(credential);
     }
     public url = () => WalletApiPaths.get.sendAssetFee(this.credential.userId, this.credential.userWalletId);

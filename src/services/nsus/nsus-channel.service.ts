@@ -6,6 +6,7 @@ import { NWAsset, NWTransaction, NWProtocol, NWData } from '../../models/nwallet
 import { AuthorizationService } from './authorization.service';
 import { Subject, Subscription } from 'rxjs';
 import { NWalletProtocolBase } from '../../models/api/nwallet/_impl';
+import { NWConstants } from '../../models/constants';
 
 @Injectable()
 export class NsusChannelService {
@@ -24,7 +25,7 @@ export class NsusChannelService {
     }
 
     //#region Protocol methods
-    private async resolve<T extends NWalletProtocolBase>(func: (userId: string) => T): Promise<T> {
+    private async resolve<T extends NWalletProtocolBase>(func: (userId: number) => T): Promise<T> {
         const token = await this.auth.getToken();
         let userId,
             auth = '';
@@ -61,6 +62,8 @@ export class NsusChannelService {
 
     private onError<T, TProtocol extends NWalletProtocolBase>(failover?: T): (protocol: TProtocol) => T | PromiseLike<T> {
         return protocol => {
+            this.logger.log(`[channel] protocol rejected : ${protocol.name}`, protocol);
+
             const errorMessage = protocol.getErrorMessage();
             if (errorMessage) {
                 this.logger.warn(`[channel] protocol rejected : ${protocol.name} ${errorMessage}`);
@@ -208,19 +211,18 @@ export class NsusChannelService {
             .catch(this.onError([]));
     }
 
-    public async createWallet(currencyId: number): Promise<boolean> {
+    public async createWallet(available: NWAsset.Available): Promise<boolean> {
         return await this.nClient
-            .request(
-                this.resolve(
-                    userId =>
-                        new NWProtocol.CreateWallet(
-                            { userId: userId },
-                            {
-                                payload: { currencyId: currencyId }
-                            }
-                        )
-                )
-            )
+            .request(this.resolve(userId => new NWProtocol.CreateWallet().setPayload({ userId: userId, currencyId: available.Id, bitgoWalletId: available.WalletId })))
+            .then(this.onSuccess())
+            .then(this.onBroadcast())
+            .then(() => true)
+            .catch(this.onError(false));
+    }
+
+    public async createNCNWallet(address: string): Promise<boolean> {
+        return await this.nClient
+            .request(this.resolve(userId => new NWProtocol.CreateNCNWallet().setPayload({ userId: userId, currencyId: NWConstants.NCN.currencyId, ncoinPublicKey: address })))
             .then(this.onSuccess())
             .then(this.onBroadcast())
             .then(() => true)

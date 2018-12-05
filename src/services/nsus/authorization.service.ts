@@ -13,6 +13,7 @@ import { NWAuthProtocol, NWData } from '../../models/nwallet';
 import { HttpProtocol } from '../../models/http/protocol';
 import { AuthProtocolBase } from '../../models/api/auth/_impl';
 import { Transaction as StellarTransaction, Keypair as StellarKeypair } from 'stellar-sdk';
+import { Token } from '../../models/api/response';
 
 // for test (remove me) --sky`
 const nonceRange = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -32,15 +33,54 @@ export function getNonce(): string {
     }
 }
 
+class TokenIssuer {
+    private token: NWData.Token;
+
+    constructor() {}
+
+    public get tokenType(): string {
+        return this.token === undefined ? 'new' : 'refresh';
+    }
+
+    public get isRefresh(): boolean {
+        return this.token === undefined ? false : this.token.isExpired();
+    }
+
+    public setToken(token: NWData.Token): this {
+        if (token && token.access_token !== 'invalid') {
+            this.token = NWData.Token.fromStorage(token);
+        }
+
+        return this;
+    }
+
+    public isValid(): boolean {
+        return this.token && this.token.access_token !== 'invalid';
+    }
+
+    public flush(): void {
+        this.token = undefined;
+    }
+
+    public canUse(): boolean {
+        return this.token && !this.token.isExpired() && this.isValid();
+    }
+
+    public issueToken(): NWData.Token {
+        return this.token;
+    }
+}
+
 @Injectable()
 export class AuthorizationService {
-    private token: NWData.Token;
+    private tokenIssuer: TokenIssuer;
     private tokenSource: PromiseWaiter<NWData.Token>;
     private init: PromiseWaiter<boolean>;
     private deviceId: string;
     private userName: string;
     constructor(private logger: LoggerService, private device: Device, private preference: PreferenceProvider, private event: EventService, private nClient: NClientService) {
         this.deviceId = this.device.uuid ? this.device.uuid : getNonce();
+        this.tokenIssuer = new TokenIssuer();
         this.initialize();
     }
 
@@ -52,11 +92,11 @@ export class AuthorizationService {
             Debug.assert(context.userName);
             this.logger.debug('[auth] user login', context);
             this.userName = context.userName.replace('+', '').replace('-', '');
+            this.tokenIssuer.setToken(await this.preference.get(Preference.Nwallet.token));
 
-            const token = await this.preference.get(Preference.Nwallet.token);
-            if (token) {
+            if (this.tokenIssuer.isValid()) {
+                const token = this.tokenIssuer.issueToken();
                 this.logger.debug('[auth][initialize] stored token exist', token);
-                this.token = NWData.Token.fromStorage(token);
             } else {
                 this.logger.debug('[auth][initialize] stored token not exists');
             }
@@ -67,7 +107,7 @@ export class AuthorizationService {
         this.event.subscribe(NWEvent.App.user_logout, () => {
             this.init = new PromiseWaiter<boolean>();
             this.logger.debug('[auth] user logout', this.userName);
-            this.token = undefined;
+            this.tokenIssuer.flush();
             this.userName = undefined;
             this.preference.remove(Preference.Nwallet.token);
             this.tokenSource = undefined;
@@ -108,28 +148,32 @@ export class AuthorizationService {
 
         this.tokenSource = new PromiseWaiter<NWData.Token>();
 
-        if (this.token === undefined || this.token.isExpired()) {
-            this.logger.debug(`[auth] token requested : use ${this.token === undefined ? 'new' : 'refresh'} token`);
-            this.token = await this.issueToken(this.token === undefined ? false : this.token.isExpired());
-
-            await this.preference.set(Preference.Nwallet.token, this.token);
-        } else {
+        if (this.tokenIssuer.canUse()) {
             this.logger.debug('[auth] token requested : use stored token');
+        } else {
+            this.logger.debug(`[auth] token requested : use ${this.tokenIssuer.tokenType} token`);
+
+            this.tokenIssuer.setToken(await this.issueToken());
+            if (this.tokenIssuer.isValid()) {
+                await this.preference.set(Preference.Nwallet.token, this.tokenIssuer.issueToken());
+            }
         }
 
-        this.tokenSource.set(this.token);
+        const token = this.tokenIssuer.issueToken();
+        this.tokenSource.set(token);
         this.tokenSource = undefined;
-        return this.token;
+        return token;
     }
 
-    private async issueToken(isRefresh: boolean): Promise<NWData.Token> {
+    private async issueToken(): Promise<NWData.Token> {
+        const isRefresh = this.tokenIssuer.isRefresh;
         let payload: NWAuthProtocol.TokenPayload;
         const tokenKind = isRefresh ? 'refresh token' : 'new token';
         this.logger.debug(`[auth] issue token begin : ${tokenKind}`);
 
         if (isRefresh) {
             payload = {
-                refresh_token: this.token.refresh_token,
+                refresh_token: this.tokenIssuer.issueToken().refresh_token,
                 grant_type: 'refresh_token'
             };
         } else {

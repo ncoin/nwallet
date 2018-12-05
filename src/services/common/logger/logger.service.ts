@@ -84,35 +84,45 @@ export class LoggerService {
 
     public log(message?: any, ...optionalParams: any[]): void {
         let msg = this.timeStamp(`[verbose] ${_.isString(message) ? message : JSON.stringify(message)}`);
-        if (isDevMode() && !this.isFilteredLevel('verbose') && !this.isFilteredText(message)) console.log(msg, ...optionalParams);
+        if (isDevMode() && !this.isFilteredLevel('verbose') && !this.isFilteredText(message)) {
+            console.log(msg, ...optionalParams);
+        }
         let args = this.processingArgs(arguments);
         this.add('verbose', args);
     }
 
     public error(message?: any, ...optionalParams: any[]): void {
         let msg = this.timeStamp(`[error] ${_.isString(message) ? message : JSON.stringify(message)}`);
-        if (isDevMode() && !this.isFilteredLevel('error') && !this.isFilteredText(message)) console.error(msg, ...optionalParams);
+        if (isDevMode() && !this.isFilteredLevel('error') && !this.isFilteredText(message)) {
+            console.error(msg, ...optionalParams);
+        }
         let args = this.processingArgs(arguments);
         this.add('error', args);
     }
 
     public debug(message?: any, ...optionalParams: any[]): void {
         let msg = this.timeStamp(`[debug] ${_.isString(message) ? message : JSON.stringify(message)}`);
-        if (isDevMode() && !this.isFilteredLevel('debug') && !this.isFilteredText(message)) console.debug(msg, ...optionalParams);
+        if (isDevMode() && !this.isFilteredLevel('debug') && !this.isFilteredText(message)) {
+            console.debug(msg, ...optionalParams);
+        }
         let args = this.processingArgs(arguments);
         this.add('debug', args);
     }
 
     public info(message?: any, ...optionalParams: any[]): void {
         let msg = this.timeStamp(`[info] ${_.isString(message) ? message : JSON.stringify(message)}`);
-        if (isDevMode() && !this.isFilteredLevel('info') && !this.isFilteredText(message)) console.info(msg, ...optionalParams);
+        if (isDevMode() && !this.isFilteredLevel('info') && !this.isFilteredText(message)) {
+            console.info(msg, ...optionalParams);
+        }
         let args = this.processingArgs(arguments);
         this.add('info', args);
     }
 
     public warn(message?: any, ...optionalParams: any[]): void {
         let msg = this.timeStamp(`[warn] ${_.isString(message) ? message : JSON.stringify(message)}`);
-        if (isDevMode() && !this.isFilteredLevel('warn') && !this.isFilteredText(message)) console.warn(msg, ...optionalParams);
+        if (isDevMode() && !this.isFilteredLevel('warn') && !this.isFilteredText(message)) {
+            console.warn(msg, ...optionalParams);
+        }
         let args = this.processingArgs(arguments);
         this.add('warn', args);
     }
