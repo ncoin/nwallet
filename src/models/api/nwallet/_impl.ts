@@ -5,7 +5,7 @@ export abstract class NWalletProtocolBase<TQuery = NoQuery, TPayload = NoPayload
     public payload: TPayload;
     public response: TResponse;
 
-    constructor(protected credential?: { userId?: number; userWalletId?: number }, data?: { query?: TQuery; payload?: TPayload }) {
+    constructor(protected credential?: { userId?: number; walletId?: number }, data?: { query?: TQuery; payload?: TPayload }) {
         super();
 
         if (data) {

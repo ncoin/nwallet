@@ -1,8 +1,7 @@
 import { LoggerService } from '../../../../services/common/logger/logger.service';
 import { Component, ViewChild, OnDestroy } from '@angular/core';
-import { IonicPage, Navbar, InfiniteScroll, NavParams, ViewController, ModalController, NavController } from 'ionic-angular';
+import { IonicPage, Navbar, InfiniteScroll, NavParams, NavController } from 'ionic-angular';
 import * as _ from 'lodash';
-import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { NWTransaction, NWAsset } from '../../../../models/nwallet';
 import { ModalBasePage } from '../../../base/modal.page';
 import { ModalNavPage } from '../../../base/modal-nav.page';
@@ -81,7 +80,7 @@ export class WalletDetailPage extends ModalBasePage implements OnDestroy {
         const a = this.asset;
         this.asset = undefined;
         this.asset = a;
-    }
+    };
 
     public async doInfinite(infinite: InfiniteScroll): Promise<void> {
         const transactions = await this.channel.getWalletTransactions(this.asset.getWalletId(), this.skip, this.limit);
@@ -95,17 +94,6 @@ export class WalletDetailPage extends ModalBasePage implements OnDestroy {
     }
 
     public onExploreTransaction(transaction: NWTransaction.Item): void {
-        // const browser = this.browser.create(`https://stellar.expert/explorer/testnet/tx/${transaction.transaction_hash}`, '_blank', {
-        //     location: 'no',
-        //     clearcache: 'yes',
-        //     footer: 'yes',
-        //     toolbar: 'no',
-        //     closebuttoncaption: 'done',
-        // });
-        // browser.insertCSS({
-        //     code: 'body { margin-top : 50px;}',
-        // });
-        // browser.show();
         this.navCtrl.push(WalletTransactionDetailPage, { transaction: transaction }, NWTransition.Slide('left'));
     }
 

@@ -63,7 +63,7 @@ export class NsusChannelService {
 
     private onError<T, TProtocol extends NWalletProtocolBase>(failover?: T): (protocol: TProtocol) => T | PromiseLike<T> {
         return protocol => {
-            this.logger.warn(`[channel] protocol error :`, protocol);
+            this.logger.debug(`[channel] protocol error :`, protocol);
 
             const errorMessage = protocol.getErrorMessage();
             if (errorMessage) {
@@ -107,7 +107,7 @@ export class NsusChannelService {
 
     public async getWalletDetails(walletId: number): Promise<NWAsset.Data> {
         return await this.nClient
-            .request(this.resolve(userId => new NWProtocol.GetWalletDetail({ userId: userId, userWalletId: walletId })))
+            .request(this.resolve(userId => new NWProtocol.GetWalletDetail({ userId: userId, walletId: walletId })))
             .then(this.onSuccess())
             .then(this.onBroadcast())
             .then(p => p.response)
@@ -118,7 +118,7 @@ export class NsusChannelService {
         return await this.nClient
             .request(
                 this.resolve(userId =>
-                    new NWProtocol.GetWalletTransactions({ userId: userId, userWalletId: walletId }).setQuery(query => {
+                    new NWProtocol.GetWalletTransactions({ userId: userId, walletId: walletId }).setQuery(query => {
                         query.offset = offset;
                         query.limit = limit;
                     })
@@ -132,7 +132,7 @@ export class NsusChannelService {
 
     public async getSendAssetFee(walletId: number): Promise<number> {
         return await this.nClient
-            .request(this.resolve(userId => new NWProtocol.GetSendAssetFee({ userId: userId, userWalletId: walletId })))
+            .request(this.resolve(userId => new NWProtocol.GetSendAssetFee({ userId: userId, walletId: walletId })))
             .then(this.onSuccess())
             .then(p => p.response)
             .catch(this.onError(-1));
@@ -157,7 +157,7 @@ export class NsusChannelService {
             .catch(this.onError(false));
     }
 
-    public async sendNCNAsset(walletId: number, address: string, amount: number): Promise<boolean> {
+    public async sendNCNAsset(walletId: number, address: string, amount: number, tempPvt: string): Promise<boolean> {
         return await this.nClient
             .request(
                 this.resolve(u =>
@@ -172,7 +172,7 @@ export class NsusChannelService {
             .then(async protocol => {
                 Debug.assert(protocol.isXdr());
                 // todo extract
-                const signed = this.auth.signXdr(protocol.response.xdr);
+                const signed = this.auth.signXdr(protocol.response.xdr, tempPvt);
                 return await this.nClient
                     .request(
                         this.resolve(u =>
@@ -209,7 +209,7 @@ export class NsusChannelService {
         this.nClient
             .request(
                 this.resolve(userId =>
-                    new NWProtocol.WalletOptionChange({ userId: userId, userWalletId: walletId }).setPayload(payload => {
+                    new NWProtocol.WalletOptionChange({ userId: userId, walletId: walletId }).setPayload(payload => {
                         payload.isShow = isVisible;
                     })
                 )
@@ -237,7 +237,7 @@ export class NsusChannelService {
             .catch(this.onError(false));
     }
 
-    public async createNCNWallet(address: string): Promise<boolean> {
+    public async createNCNWallet(address: string, tempPvt: string): Promise<boolean> {
         return await this.nClient
             .request(this.resolve(userId => new NWProtocol.CreateNCNWallet().setPayload({ userId: userId, currencyId: NWConstants.NCN.currencyId, ncoinPublicKey: address })))
             .then(this.onSuccess())
@@ -251,7 +251,7 @@ export class NsusChannelService {
                     .catch(this.onError(''));
 
                 if (xdr !== '') {
-                    const signedXdr = this.auth.signXdr(xdr);
+                    const signedXdr = this.auth.signXdr(xdr, tempPvt);
 
                     await this.nClient
                         .request(this.resolve(() => new NWProtocol.ExecuteWalletTrust().setPayload({ walletId: walletId, xdr: signedXdr })))

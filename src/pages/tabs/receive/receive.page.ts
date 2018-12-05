@@ -53,7 +53,7 @@ export class ReceivePage implements OnDestroy {
             this.assets = assets.slice();
             this.selectedAsset = assets[0];
         }
-    }
+    };
 
     public async onClick_SelectAsset() {
         const target = await this.popup.selecteWallet(this.selectedAsset, this.assets);

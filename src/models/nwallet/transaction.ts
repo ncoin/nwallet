@@ -19,7 +19,7 @@ export class Item {
     }
 
     public get date(): Date {
-        return this.data.occuredDate;
+        return this.data.creationDate;
     }
 
     public get addressFrom(): string {
@@ -54,7 +54,6 @@ export class Item {
 
 export class Data {
     public readonly creationDate: Date;
-    public readonly occuredDate: Date;
     public readonly groupDate: Date;
     public readonly detail: Detail;
 
@@ -63,8 +62,7 @@ export class Data {
         Object.assign(this, raw);
 
         this.creationDate = new Date(raw.created_date);
-        this.occuredDate = new Date(raw.occur_date);
-        this.groupDate = new Date(this.occuredDate.getFullYear(), this.occuredDate.getMonth(), this.occuredDate.getDate());
+        this.groupDate = new Date(this.creationDate.getFullYear(), this.creationDate.getMonth(), this.creationDate.getDate());
 
         Debug.Validate(this);
         // Debug.Validate(this.detail);

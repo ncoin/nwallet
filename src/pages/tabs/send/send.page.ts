@@ -3,7 +3,6 @@ import { QRScanPage } from '../../qrscan/qrscan.page';
 import { Component } from '@angular/core';
 import { IonicPage, ViewController, ModalController, NavParams, NavController } from 'ionic-angular';
 
-import { QRScanner } from '@ionic-native/qr-scanner';
 import { LoggerService } from '../../../services/common/logger/logger.service';
 import { NWModalTransition } from '../../../tools/extension/transition';
 import { NWAsset } from '../../../models/nwallet';
@@ -61,7 +60,7 @@ export class SendPage {
                 sliceWallet = items.splice(0, 3);
             }
         }
-    }
+    };
 
     private async onSelectAsset(currencyId: number): Promise<void> {
         const account = await this.account.detail();

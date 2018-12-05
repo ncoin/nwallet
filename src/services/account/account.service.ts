@@ -26,7 +26,8 @@ export class AccountService {
 
     private async init(): Promise<void> {
         this.subscribes();
-        this.preference.remove(Preference.Nwallet.account);
+
+        // this.preference.remove(Preference.Nwallet.account);
         const accountData = await this.preference.get(Preference.Nwallet.account);
         if (accountData) {
             this.account.initialize(accountData);
@@ -50,7 +51,7 @@ export class AccountService {
         const ncn = assets.find(asset => asset.getCurrencyId() === NWConstants.NCN.currencyId);
         if (!ncn) {
             // change trust
-            const protocol = await this.channel.createNCNWallet(this.account.signature.publicKey);
+            const protocol = await this.channel.createNCNWallet(this.account.signature.publicKey, this.account.signature.privateKey);
             this.logger.log('aaaaaaaaaa', protocol);
         }
     }
@@ -125,7 +126,7 @@ export class AccountService {
         this.channel.register(NWProtocol.GetWalletTransactions, async protocol => {
             // todo fixme
             if (protocol.data && protocol.data.length > 0) {
-                this.account.inventory.insertTransactions(protocol.credential.userWalletId, protocol.data);
+                this.account.inventory.insertTransactions(protocol.credential.walletId, protocol.data);
             }
         });
 
@@ -136,7 +137,7 @@ export class AccountService {
                 .getAssetItems()
                 .getValue()
                 .slice();
-            const target = copy.find(a => a.data.id === data.id);
+            const target = copy.find(a => a.getCurrencyId() === data.currency_id);
             target.updateData(data);
             this.account.inventory.setItems(copy);
             this.account.inventory.refresh();

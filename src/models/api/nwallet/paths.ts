@@ -8,25 +8,25 @@ export const WalletApiPaths = {
     get: {
         currency: () => api('currencies/'),
         wallets: (userId: number) => api(`users/${userId}/wallets`),
-        walletDetail: (userId: number, userWalletId: number) => api(`wallets/${userWalletId}`),
-        walletTransactions: (userId: number, userWalletId: number) => api(`wallets/${userWalletId}/transactions`),
-        // transactionDetail: (userWalletId: number) => api(`wallets/${userWalletId}/transactions`),
+        walletDetail: (userId: number, walletId: number) => api(`wallets/${walletId}`),
+        walletTransactions: (userId: number, walletId: number) => api(`wallets/${walletId}/transactions`),
+        // transactionDetail: (walletId: number) => api(`wallets/${walletId}/transactions`),
         availableWallets: (userId: number) => api(`users/${userId}/wallets/available`),
         ticker: () => api(`tickers`),
-        sendAssetFee: (userId: number, userWalletId: number) => api(`users/${userId}/wallets/${userWalletId}/send/fee`)
+        sendAssetFee: (userId: number, walletId: number) => api(`users/${userId}/wallets/${walletId}/send/fee`)
     },
 
     post: {
         createWallet: () => api(`wallets`),
-        sendAsset: (userWalletId: number) => api(`wallets/${userWalletId}/withdrawals`),
-        createTrust: (userWalletId: number) => api(`wallets/${userWalletId}/trust`)
+        sendAsset: (walletId: number) => api(`wallets/${walletId}/withdrawals`),
+        createTrust: (walletId: number) => api(`wallets/${walletId}/trust`)
     },
 
     put: {
         configuraton: (userId: number) => api(`users/${userId}/cofiguration/push`),
         walletAlign: (userId: number) => api(`users/${userId}/wallets`),
-        walletVisibility: (userId: number, userWalletId: number) => api(`wallets/${userWalletId}`),
-        sendAssetXdr: (userWalletId: number) => api(`wallets/${userWalletId}/withdrawals`),
-        executeTrust: (userWalletId: number) => api(`wallets/${userWalletId}/trust`)
+        walletVisibility: (userId: number, walletId: number) => api(`wallets/${walletId}`),
+        sendAssetXdr: (walletId: number) => api(`wallets/${walletId}/withdrawals`),
+        executeTrust: (walletId: number) => api(`wallets/${walletId}/trust`)
     }
 };

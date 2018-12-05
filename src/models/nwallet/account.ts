@@ -5,6 +5,8 @@ import { Debug } from '../../utils/helper/debug';
 export class Account {
     public inventory: Inventory;
     public personal: Personal;
+
+    // todo secure storage
     public signature: {
         publicKey: string;
         privateKey: string;

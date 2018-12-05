@@ -10,14 +10,14 @@ import { WalletApiPaths } from './paths';
 export class WalletOptionChange extends NWalletProtocolBase<NoQuery, { isShow: boolean }, NoResponseData> {
     public method = MethodTypes.PUT;
     public data: { walletId: number; isVisible: boolean };
-    constructor(public credential: { userId: number; userWalletId: number }) {
+    constructor(public credential: { userId: number; walletId: number }) {
         super(credential);
     }
 
-    public url = () => WalletApiPaths.put.walletVisibility(this.credential.userId, this.credential.userWalletId);
+    public url = () => WalletApiPaths.put.walletVisibility(this.credential.userId, this.credential.walletId);
 
     public manufacture() {
-        this.data = { walletId: this.credential.userWalletId, isVisible: this.payload.isShow };
+        this.data = { walletId: this.credential.walletId, isVisible: this.payload.isShow };
         return this;
     }
 }

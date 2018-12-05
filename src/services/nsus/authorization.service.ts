@@ -76,6 +76,7 @@ class TokenIssuer {
 
     public done(token: NWData.Token): this {
         Debug.assert(this.tokenSource);
+        this.token = NWData.Token.fromStorage(token);
         this.tokenSource.setResult(token);
         this.tokenSource = undefined;
         return this;
@@ -181,11 +182,10 @@ export class AuthorizationService {
             });
     }
 
-    public signXdr(xdr: string): string {
+    public signXdr(xdr: string, tempPvt: string): string {
         const transaction = new StellarTransaction(xdr);
-        const temp = StellarKeypair.random();
         // sign
-        transaction.sign(StellarKeypair.fromSecret(temp.secret()));
+        transaction.sign(StellarKeypair.fromSecret(tempPvt));
 
         // transaction to xdr;
         return transaction

@@ -42,7 +42,6 @@ export class WalletMainPage implements OnDestroy {
     ionViewDidLeave() {
         // todo hmm.. logout? --sky
         // this.logger.debug('[wallet-main-tab] unsubscribe');
-
     }
 
     ngOnDestroy(): void {
@@ -83,14 +82,14 @@ export class WalletMainPage implements OnDestroy {
         }
 
         this.calculateTotalPrice();
-    }
+    };
 
     private calculateTotalPrice = () => {
         this.totalPrice = _.sumBy(this.assetSlides, slide => _.sumBy(slide.assets, asset => asset.getAmount() * this.currency.getPrice(asset.getCurrencyId())))
             .toFixed(2)
             .toString();
         this.logger.debug('[wallet-main-tab] total price update', this.totalPrice);
-    }
+    };
 
     public async onSelectAsset(wallet: NWAsset.Item) {
         const modal = this.modalCtrl.create(

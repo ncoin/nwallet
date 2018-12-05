@@ -9,8 +9,8 @@ import { WalletApiPaths } from './paths';
 /** Get Wallet Details */
 export class GetWalletDetail extends NWalletProtocolBase<NoQuery, NoPayload, NWResponse.Asset.Data> {
     public method = MethodTypes.GET;
-    constructor(protected credential: { userId: number; userWalletId: number }) {
+    constructor(protected credential: { userId: number; walletId: number }) {
         super(credential);
     }
-    public url = () => WalletApiPaths.get.walletDetail(this.credential.userId, this.credential.userWalletId);
+    public url = () => WalletApiPaths.get.walletDetail(this.credential.userId, this.credential.walletId);
 }
