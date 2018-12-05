@@ -7,6 +7,7 @@ import { AuthorizationService } from './authorization.service';
 import { Subject, Subscription } from 'rxjs';
 import { NWalletProtocolBase } from '../../models/api/nwallet/_impl';
 import { NWConstants } from '../../models/constants';
+import { Debug } from '../../utils/helper/debug';
 
 @Injectable()
 export class NsusChannelService {
@@ -62,6 +63,8 @@ export class NsusChannelService {
 
     private onError<T, TProtocol extends NWalletProtocolBase>(failover?: T): (protocol: TProtocol) => T | PromiseLike<T> {
         return protocol => {
+            this.logger.warn(`[channel] protocol error :`, protocol);
+
             const errorMessage = protocol.getErrorMessage();
             if (errorMessage) {
                 this.logger.warn(`[channel] protocol rejected : ${protocol.name} ${errorMessage}`);
@@ -147,26 +150,42 @@ export class NsusChannelService {
                 )
             )
             .then(this.onSuccess())
-            .then(async protocol => {
-                // todo extract
-                if (protocol.isXdr()) {
-                    const signed = this.auth.signXdr(protocol.response.xdr);
-                    return await this.nClient
-                        .request(
-                            this.resolve(u =>
-                                new NWProtocol.SendAssetXdr(walletId).setPayload({
-                                    transactionId: protocol.response.id,
-                                    walletId: walletId,
-                                    xdr: signed
-                                })
-                            )
-                        )
-                        .then(this.onSuccess())
-                        .then(() => true)
-                        .catch(this.onError(false));
-                }
-
+            .then(protocol => {
+                Debug.assert(!protocol.isXdr());
                 return true;
+            })
+            .catch(this.onError(false));
+    }
+
+    public async sendNCNAsset(walletId: number, address: string, amount: number): Promise<boolean> {
+        return await this.nClient
+            .request(
+                this.resolve(u =>
+                    new NWProtocol.SendAsset(walletId).setPayload(payload => {
+                        payload.amount = amount;
+                        payload.recipientAddress = address;
+                        payload.walletId = walletId;
+                    })
+                )
+            )
+            .then(this.onSuccess())
+            .then(async protocol => {
+                Debug.assert(protocol.isXdr());
+                // todo extract
+                const signed = this.auth.signXdr(protocol.response.xdr);
+                return await this.nClient
+                    .request(
+                        this.resolve(u =>
+                            new NWProtocol.SendAssetXdr(walletId).setPayload({
+                                transactionId: protocol.response.id,
+                                walletId: walletId,
+                                xdr: signed
+                            })
+                        )
+                    )
+                    .then(this.onSuccess())
+                    .then(() => true)
+                    .catch(this.onError(false));
             })
             .catch(this.onError(false));
     }
@@ -223,9 +242,36 @@ export class NsusChannelService {
             .request(this.resolve(userId => new NWProtocol.CreateNCNWallet().setPayload({ userId: userId, currencyId: NWConstants.NCN.currencyId, ncoinPublicKey: address })))
             .then(this.onSuccess())
             .then(this.onBroadcast())
-            .then(() => true)
+            .then(async protocol => {
+                const walletId = protocol.response.id;
+                const xdr = await this.nClient
+                    .request(this.resolve(() => new NWProtocol.CreateWalletTrust().setPayload({ walletId: walletId })))
+                    .then(this.onSuccess())
+                    .then(trustProtocol => trustProtocol.response.xdr)
+                    .catch(this.onError(''));
+
+                if (xdr !== '') {
+                    const signedXdr = this.auth.signXdr(xdr);
+
+                    await this.nClient
+                        .request(this.resolve(() => new NWProtocol.ExecuteWalletTrust().setPayload({ walletId: walletId, xdr: signedXdr })))
+                        .then(this.onSuccess())
+                        .catch(this.onError(''));
+                }
+
+                return true;
+            })
             .catch(this.onError(false));
     }
+
+    // public async createNCNWallet(address: string): Promise<boolean> {
+    //     return await this.nClient
+    //         .request(this.resolve(userId => new NWProtocol.CreateNCNWallet().setPayload({ userId: userId, currencyId: NWConstants.NCN.currencyId, ncoinPublicKey: address })))
+    //         .then(this.onSuccess())
+    //         .then(this.onBroadcast())
+    //         .then(() => true)
+    //         .catch(this.onError(false));
+    // }
 
     /**
      *

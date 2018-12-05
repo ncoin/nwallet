@@ -1,13 +1,14 @@
 import { LoggerService } from '../common/logger/logger.service';
 import { Injectable } from '@angular/core';
 import { PreferenceProvider, Preference } from '../common/preference/preference';
-import { NWAccount, NWProtocol } from '../../models/nwallet';
+import { NWAccount, NWProtocol, NWAsset } from '../../models/nwallet';
 import { Debug } from '../../utils/helper/debug';
 import { EventService } from '../common/event/event';
 import { NWEvent } from '../../interfaces/events';
 import { NsusChannelService } from '../nsus/nsus-channel.service';
 import { AccountSubject, AccountCallbackImpl } from './account.service.callback';
 import { PromiseCompletionSource } from '../../../common/models';
+import { NWConstants } from '../../models/constants';
 
 @Injectable()
 export class AccountService {
@@ -25,7 +26,7 @@ export class AccountService {
 
     private async init(): Promise<void> {
         this.subscribes();
-
+        this.preference.remove(Preference.Nwallet.account);
         const accountData = await this.preference.get(Preference.Nwallet.account);
         if (accountData) {
             this.account.initialize(accountData);
@@ -45,17 +46,21 @@ export class AccountService {
 
     public async fetchJobs(): Promise<void> {
         await Promise.all([this.channel.fetchCurrencies(), this.channel.fetchTicker()]);
-        this.refreshAssets();
+        const assets = await this.refreshAssets();
+        const ncn = assets.find(asset => asset.getCurrencyId() === NWConstants.NCN.currencyId);
+        if (!ncn) {
+            // change trust
+            const protocol = await this.channel.createNCNWallet(this.account.signature.publicKey);
+            this.logger.log('aaaaaaaaaa', protocol);
+        }
     }
 
-    private async refreshAssets() {
+    private async refreshAssets(): Promise<NWAsset.Item[]> {
         const assets = await this.channel.getAssets();
-        // tickers.forEach(ticker => {
-        //     this.event.publish(NWEvent.Stream.ticker, ticker);
-        // });
 
         this.account.inventory.setItems(assets);
         this.account.inventory.refresh();
+        return assets;
     }
 
     public async detail(): Promise<NWAccount.Account> {

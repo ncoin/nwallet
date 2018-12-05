@@ -5,6 +5,11 @@ import { Debug } from '../../utils/helper/debug';
 export class Account {
     public inventory: Inventory;
     public personal: Personal;
+    public signature: {
+        publicKey: string;
+        privateKey: string;
+    };
+
     constructor() {
         this.inventory = new Inventory();
         this.personal = new Personal();
@@ -32,6 +37,10 @@ export class Account {
 
     public setUserName(userName: string): void {
         this.personal.phoneNumber = userName;
+    }
+
+    public setSignatrue(signature: { publicKey: string; privateKey: string }) {
+        this.signature = signature;
     }
 }
 

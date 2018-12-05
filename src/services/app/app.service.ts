@@ -7,21 +7,11 @@ import { NWEvent } from '../../interfaces/events';
 import { NsusChannelService } from '../nsus/nsus-channel.service';
 import { PromiseCompletionSource } from '../../../common/models';
 
-/**
- * common business logic provider
- */
-
 @Injectable()
 export class NWalletAppService {
     private fetchJobs: PromiseCompletionSource<boolean>;
 
-    constructor(
-        private preference: PreferenceProvider,
-        private channel: NsusChannelService,
-        private logger: LoggerService,
-        private account: AccountService,
-        private event: EventService
-    ) {
+    constructor(private preference: PreferenceProvider, private logger: LoggerService, private account: AccountService, private event: EventService) {
         this.init();
 
         this.event.subscribe(NWEvent.App.error_occured, async context => {
@@ -32,17 +22,10 @@ export class NWalletAppService {
         });
     }
 
-    // load or fetch
     private init(): void {
         this.fetchJobs = new PromiseCompletionSource<boolean>();
     }
 
-    /**
-     *
-     *
-     * @returns {Promise<string>} userName
-     * @memberof NWalletAppService
-     */
     public async canLogin(): Promise<string> {
         if (await this.account.isSaved()) {
             this.account.isSaved();

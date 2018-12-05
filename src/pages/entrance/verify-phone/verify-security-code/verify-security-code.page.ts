@@ -5,6 +5,8 @@ import { ModalNavPage } from '../../../base/modal-nav.page';
 import { NWalletAppService } from '../../../../services/app/app.service';
 import { ScreenOrientation } from '@ionic-native/screen-orientation';
 import { AuthorizationService } from '../../../../services/nsus/authorization.service';
+import { Keypair } from 'stellar-sdk';
+import { AccountService } from '../../../../services/account/account.service';
 
 @IonicPage()
 @Component({
@@ -26,7 +28,8 @@ export class VerifySecuritycodePage {
         private logger: LoggerService,
         private parent: ModalNavPage,
         private app: NWalletAppService,
-        private auth: AuthorizationService
+        private auth: AuthorizationService,
+        private account: AccountService
     ) {
         this.previousView = this.navParams.get('viewCtrl');
         this.phoneNumber = this.navParams.get('phoneNumber');
@@ -58,10 +61,16 @@ export class VerifySecuritycodePage {
 
     public async onClick_Next(): Promise<void> {
         this.isCountBegin = false;
-        // todo auth success --sky
         const secureCode = this.securityCodes.reduce((p, n) => p + n);
         const result = this.auth.verifyMobileNumber(this.countryCode, this.phoneNumber, secureCode);
         if (result) {
+            // todo display private key
+            const pair = Keypair.random();
+            const signature = { publicKey: pair.publicKey(), privateKey: pair.secret() };
+
+            this.logger.debug('[verify-security-code] signature :', signature);
+            (await this.account.detail()).setSignatrue(signature);
+
             this.app.enter(`+${this.countryCode}-${this.phoneNumber}`);
             this.parent.close();
             this.orientation.unlock();

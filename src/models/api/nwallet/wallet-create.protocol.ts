@@ -7,7 +7,7 @@ import { join } from 'path';
 
 /** Create new Wallets */
 
-export class CreateWallet extends NWalletProtocolBase<NoQuery, { userId: number; currencyId: number; bitgoWalletId: number }> {
+export class CreateWallet extends NWalletProtocolBase<NoQuery, { userId: number; currencyId: number; bitgoWalletId: number }, NWAsset.Data> {
     public method = MethodTypes.POST;
     errorMessages: {
         400: 'InvalidFormat';
@@ -19,7 +19,7 @@ export class CreateWallet extends NWalletProtocolBase<NoQuery, { userId: number;
 
 /** Create ncn Wallet */
 
-export class CreateNCNWallet extends NWalletProtocolBase<NoQuery, { userId: number; currencyId: number; ncoinPublicKey: string }> {
+export class CreateNCNWallet extends NWalletProtocolBase<NoQuery, { userId: number; currencyId: number; ncoinPublicKey: string }, NWAsset.Data> {
     public method = MethodTypes.POST;
     errorMessages: {
         400: 'InvalidFormat';

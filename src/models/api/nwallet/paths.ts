@@ -18,13 +18,15 @@ export const WalletApiPaths = {
 
     post: {
         createWallet: () => api(`wallets`),
-        sendAsset: (userWalletId: number) => api(`wallets/${userWalletId}/withdrawals`)
+        sendAsset: (userWalletId: number) => api(`wallets/${userWalletId}/withdrawals`),
+        createTrust: (userWalletId: number) => api(`wallets/${userWalletId}/trust`)
     },
 
     put: {
         configuraton: (userId: number) => api(`users/${userId}/cofiguration/push`),
         walletAlign: (userId: number) => api(`users/${userId}/wallets`),
         walletVisibility: (userId: number, userWalletId: number) => api(`wallets/${userWalletId}`),
-        sendAssetXdr: (userWalletId: number) => api(`wallets/${userWalletId}/withdrawals`)
+        sendAssetXdr: (userWalletId: number) => api(`wallets/${userWalletId}/withdrawals`),
+        executeTrust: (userWalletId: number) => api(`wallets/${userWalletId}/trust`)
     }
 };

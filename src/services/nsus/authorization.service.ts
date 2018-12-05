@@ -3,7 +3,6 @@ import { LoggerService } from '../common/logger/logger.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Device } from '@ionic-native/device';
-import { PreferenceProvider, Preference } from '../common/preference/preference';
 import { EventService } from '../common/event/event';
 import { NWEvent } from '../../interfaces/events';
 import { Debug } from '../../utils/helper/debug';
@@ -75,11 +74,11 @@ class TokenIssuer {
         this.tokenSource = new PromiseCompletionSource<NWData.Token>();
     }
 
-    public done(token: NWData.Token): NWData.Token {
+    public done(token: NWData.Token): this {
         Debug.assert(this.tokenSource);
         this.tokenSource.setResult(token);
         this.tokenSource = undefined;
-        return token;
+        return this;
     }
 
     public isProcessing(): boolean {
@@ -145,8 +144,7 @@ export class AuthorizationService {
 
         this.logger.debug(`[auth] token requested : use [${this.tokenIssuer.tokenType}] token`);
         const token = await this.issueToken();
-        this.tokenIssuer.done(token);
-        this.tokenIssuer.prepare();
+        this.tokenIssuer.done(token).prepare();
         this.isProcessing = false;
         return token;
     }
