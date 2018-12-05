@@ -62,8 +62,6 @@ export class NsusChannelService {
 
     private onError<T, TProtocol extends NWalletProtocolBase>(failover?: T): (protocol: TProtocol) => T | PromiseLike<T> {
         return protocol => {
-            this.logger.log(`[channel] protocol rejected : ${protocol.name}`, protocol);
-
             const errorMessage = protocol.getErrorMessage();
             if (errorMessage) {
                 this.logger.warn(`[channel] protocol rejected : ${protocol.name} ${errorMessage}`);

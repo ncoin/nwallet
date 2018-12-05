@@ -33,7 +33,6 @@ export namespace Preference.App {
 
 export namespace Preference.Nwallet {
     export const account = Item<NWAccount.Account>('nwallet-account');
-    export const token = Item<Token>('nwallet-token');
 }
 
 @Injectable()

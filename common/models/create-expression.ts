@@ -11,7 +11,7 @@ type ParameterExpr<T> = ((param?: T) => T | void) | T;
 export { ParameterExpr };
 
 export function createExpr<T>(expr: ParameterExpr<T>): T {
-    let instance = (<T>{});
+    let instance = <T>{};
     let result: any;
     if (typeof expr === 'function') {
         result = expr(instance);

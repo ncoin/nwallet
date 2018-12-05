@@ -4,9 +4,9 @@ import { Component, ViewChild, ReflectiveInjector } from '@angular/core';
 import { IonicPage } from 'ionic-angular/navigation/ionic-page';
 import { NavParams } from 'ionic-angular/navigation/nav-params';
 import { ModalBasePage } from './modal.page';
-import { ParameterExpr, createExpr } from 'forge';
 import { NavOptions, TransitionDoneFn } from 'ionic-angular/navigation/nav-util';
 import { ModalParameter } from './modal.parameter';
+import { ParameterExpr, createExpr } from '../../../common/models';
 
 export interface Newable<T> {
     new (...args: any[]): T;

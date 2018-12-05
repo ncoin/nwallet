@@ -5,9 +5,7 @@ import { PreferenceProvider, Preference } from '../common/preference/preference'
 import { LoggerService } from '../common/logger/logger.service';
 import { NWEvent } from '../../interfaces/events';
 import { NsusChannelService } from '../nsus/nsus-channel.service';
-
-/** todo change me --sky */
-import { PromiseWaiter } from 'forge/dist/helpers/Promise/PromiseWaiter';
+import { PromiseCompletionSource } from '../../../common/models';
 
 /**
  * common business logic provider
@@ -15,7 +13,7 @@ import { PromiseWaiter } from 'forge/dist/helpers/Promise/PromiseWaiter';
 
 @Injectable()
 export class NWalletAppService {
-    private fetchJobs: PromiseWaiter<boolean>;
+    private fetchJobs: PromiseCompletionSource<boolean>;
 
     constructor(
         private preference: PreferenceProvider,
@@ -36,7 +34,7 @@ export class NWalletAppService {
 
     // load or fetch
     private init(): void {
-        this.fetchJobs = new PromiseWaiter<boolean>();
+        this.fetchJobs = new PromiseCompletionSource<boolean>();
     }
 
     /**
@@ -66,11 +64,11 @@ export class NWalletAppService {
         this.logger.debug('[app] begin fetch start');
         await Promise.all([this.account.fetchJobs()]);
         this.logger.debug('[app] begin fetch done');
-        this.fetchJobs.set(true);
+        this.fetchJobs.setResult(true);
     }
 
     public waitFetch(): Promise<boolean> {
-        return this.fetchJobs.result();
+        return this.fetchJobs.getResultAsync();
     }
 
     public async logout(): Promise<void> {

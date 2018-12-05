@@ -1,5 +1,5 @@
 import { HttpProtocol, NoQuery, NoPayload, NoResponseData, NoConvert } from '../../http/protocol';
-import { ParameterExpr, createExpr } from 'forge';
+import { ParameterExpr, createExpr } from '../../../../common/models';
 
 export abstract class AuthProtocolBase<TQuery = NoQuery, TPayload = NoPayload, TResponse = NoResponseData, TConvert = NoConvert> extends HttpProtocol {
     public payload: TPayload;

@@ -48,8 +48,4 @@ export class Token {
         Debug.assert(this.expiredDate);
         return Date.now() > this.expiredDate;
     }
-
-    public isInvalid(): boolean {
-        return this.access_token === 'invalid';
-    }
 }

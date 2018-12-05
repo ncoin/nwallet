@@ -2,23 +2,23 @@ import { LoggerService } from '../common/logger/logger.service';
 import { Injectable } from '@angular/core';
 import { PreferenceProvider, Preference } from '../common/preference/preference';
 import { NWAccount, NWProtocol } from '../../models/nwallet';
-import { PromiseWaiter } from 'forge/dist/helpers/Promise/PromiseWaiter';
 import { Debug } from '../../utils/helper/debug';
 import { EventService } from '../common/event/event';
 import { NWEvent } from '../../interfaces/events';
 import { NsusChannelService } from '../nsus/nsus-channel.service';
 import { AccountSubject, AccountCallbackImpl } from './account.service.callback';
+import { PromiseCompletionSource } from '../../../common/models';
 
 @Injectable()
 export class AccountService {
-    private task: PromiseWaiter<NWAccount.Account>;
+    private accountSource: PromiseCompletionSource<NWAccount.Account>;
     private account: NWAccount.Account;
     private streams: AccountSubject;
 
     constructor(private preference: PreferenceProvider, private logger: LoggerService, private event: EventService, private channel: NsusChannelService) {
         this.account = new NWAccount.Account();
         this.streams = new AccountCallbackImpl(this.account);
-        this.task = new PromiseWaiter<NWAccount.Account>();
+        this.accountSource = new PromiseCompletionSource<NWAccount.Account>();
 
         this.init();
     }
@@ -31,7 +31,7 @@ export class AccountService {
             this.account.initialize(accountData);
         }
 
-        this.task.trySet(this.account);
+        this.accountSource.trySetResult(this.account);
     }
 
     public registerSubjects = (onAccount: (account: AccountSubject) => void): void => {
@@ -59,7 +59,7 @@ export class AccountService {
     }
 
     public async detail(): Promise<NWAccount.Account> {
-        return await this.task.result();
+        return await this.accountSource.getResultAsync();
     }
 
     public async isSaved(): Promise<boolean> {

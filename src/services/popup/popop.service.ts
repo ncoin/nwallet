@@ -4,11 +4,11 @@ import { Injectable } from '@angular/core';
 import { AppConfigService } from '../app/app.config.service';
 import { TitleCasePipe } from '@angular/common';
 import { LoggerService } from '../common/logger/logger.service';
-import { PromiseWaiter } from 'forge/dist/helpers/Promise/PromiseWaiter';
 import { NWAsset } from '../../models/nwallet';
 import { AssetFormatPipe } from '../../pipes/asset/asset-format';
 import { AssetNamePipe } from '../../pipes/asset/asset-name';
 import { TranslateService } from '@ngx-translate/core';
+import { PromiseCompletionSource } from '../../../common/models';
 
 @Injectable()
 export class PopupService {
@@ -32,7 +32,7 @@ export class PopupService {
     }
 
     public async selectCountry(currentCode?: string) {
-        const wait = new PromiseWaiter<{ code: string; fullName: string; dialCode: string }>();
+        const wait = new PromiseCompletionSource<{ code: string; fullName: string; dialCode: string }>();
         const alert = this.alert.create({
             cssClass: 'alert-base alert-radio-group button-center auto-stretch'
         });
@@ -54,18 +54,18 @@ export class PopupService {
         });
 
         alert.onWillDismiss((data, role) => {
-            wait.set(data);
+            wait.setResult(data);
         });
 
         alert.present();
-        return wait.result();
+        return wait.getResultAsync();
     }
 
     public async selecteWallet(selectedAsset: NWAsset.Item, assets: NWAsset.Item[]) {
         if (!assets || assets.length < 1) {
             return;
         }
-        const wait = new PromiseWaiter<NWAsset.Item>();
+        const wait = new PromiseCompletionSource<NWAsset.Item>();
         const alert = this.alert.create({
             cssClass: 'alert-base alert-radio-group button-center auto-stretch label-justify'
         });
@@ -84,10 +84,10 @@ export class PopupService {
         });
 
         alert.onWillDismiss((data, role) => {
-            wait.set(data);
+            wait.setResult(data);
         });
 
         alert.present();
-        return wait.result();
+        return wait.getResultAsync();
     }
 }

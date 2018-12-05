@@ -3,7 +3,6 @@ import { LoggerService } from '../common/logger/logger.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Device } from '@ionic-native/device';
-import { PromiseWaiter } from 'forge/dist/helpers/Promise/PromiseWaiter';
 import { PreferenceProvider, Preference } from '../common/preference/preference';
 import { EventService } from '../common/event/event';
 import { NWEvent } from '../../interfaces/events';
@@ -13,7 +12,7 @@ import { NWAuthProtocol, NWData } from '../../models/nwallet';
 import { HttpProtocol } from '../../models/http/protocol';
 import { AuthProtocolBase } from '../../models/api/auth/_impl';
 import { Transaction as StellarTransaction, Keypair as StellarKeypair } from 'stellar-sdk';
-import { Token } from '../../models/api/response';
+import { PromiseCompletionSource } from '../../../common/models';
 
 // for test (remove me) --sky`
 const nonceRange = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -34,9 +33,12 @@ export function getNonce(): string {
 }
 
 class TokenIssuer {
+    private tokenSource: PromiseCompletionSource<NWData.Token>;
     private token: NWData.Token;
 
-    constructor() {}
+    constructor() {
+        this.prepare();
+    }
 
     public get tokenType(): string {
         return this.token === undefined ? 'new' : 'refresh';
@@ -46,122 +48,106 @@ class TokenIssuer {
         return this.token === undefined ? false : this.token.isExpired();
     }
 
-    public setToken(token: NWData.Token): this {
-        if (token && token.access_token !== 'invalid') {
-            this.token = NWData.Token.fromStorage(token);
-        }
-
-        return this;
+    public canUse(): boolean {
+        return this.isValid() && !this.token.isExpired();
     }
 
     public isValid(): boolean {
         return this.token && this.token.access_token !== 'invalid';
     }
 
+    public trySetToken(token: NWData.Token): boolean {
+        if (token && token.access_token !== 'invalid') {
+            this.token = NWData.Token.fromStorage(token);
+            this.tokenSource.setResult(this.token);
+            return true;
+        }
+
+        return false;
+    }
+
     public flush(): void {
         this.token = undefined;
+        this.tokenSource = undefined;
     }
 
-    public canUse(): boolean {
-        return this.token && !this.token.isExpired() && this.isValid();
+    public prepare(): void {
+        this.tokenSource = new PromiseCompletionSource<NWData.Token>();
     }
 
-    public issueToken(): NWData.Token {
-        return this.token;
+    public done(token: NWData.Token): NWData.Token {
+        Debug.assert(this.tokenSource);
+        this.tokenSource.setResult(token);
+        this.tokenSource = undefined;
+        return token;
+    }
+
+    public isProcessing(): boolean {
+        return !this.tokenSource.isCompleted();
+    }
+
+    public getValueAsync(): Promise<NWData.Token> {
+        return this.tokenSource.getResultAsync();
     }
 }
 
 @Injectable()
 export class AuthorizationService {
     private tokenIssuer: TokenIssuer;
-    private tokenSource: PromiseWaiter<NWData.Token>;
-    private init: PromiseWaiter<boolean>;
-    private deviceId: string;
+    private init: PromiseCompletionSource<boolean>;
+    private isProcessing = false;
     private userName: string;
-    constructor(private logger: LoggerService, private device: Device, private preference: PreferenceProvider, private event: EventService, private nClient: NClientService) {
-        this.deviceId = this.device.uuid ? this.device.uuid : getNonce();
+    constructor(private logger: LoggerService, private device: Device, private event: EventService, private nClient: NClientService) {
         this.tokenIssuer = new TokenIssuer();
         this.initialize();
     }
 
+    private get deviceId(): string {
+        return this.device.uuid ? this.device.uuid : getNonce();
+    }
+
     private async initialize(): Promise<void> {
-        this.init = new PromiseWaiter<boolean>();
+        this.init = new PromiseCompletionSource<boolean>();
         this.logger.debug('[auth] initialize');
 
         this.event.subscribe(NWEvent.App.user_login, async context => {
             Debug.assert(context.userName);
-            this.logger.debug('[auth] user login', context);
+            this.logger.debug('[auth] user login :', context);
             this.userName = context.userName.replace('+', '').replace('-', '');
-            this.tokenIssuer.setToken(await this.preference.get(Preference.Nwallet.token));
-
-            if (this.tokenIssuer.isValid()) {
-                const token = this.tokenIssuer.issueToken();
-                this.logger.debug('[auth][initialize] stored token exist', token);
-            } else {
-                this.logger.debug('[auth][initialize] stored token not exists');
-            }
-
-            this.init.set(true);
+            this.init.setResult(true);
         });
 
         this.event.subscribe(NWEvent.App.user_logout, () => {
-            this.init = new PromiseWaiter<boolean>();
-            this.logger.debug('[auth] user logout', this.userName);
+            this.init = new PromiseCompletionSource<boolean>();
+            this.logger.debug('[auth] user logout :', this.userName);
             this.tokenIssuer.flush();
             this.userName = undefined;
-            this.preference.remove(Preference.Nwallet.token);
-            this.tokenSource = undefined;
         });
     }
 
-    private auth<T extends AuthProtocolBase>(protocol: T): Promise<boolean> {
-        return this.nClient
-            .auth(protocol)
-            .then(this.onSuccess())
-            .then(() => true)
-            .catch(this.onError(false));
-    }
-
-    private onSuccess<T extends HttpProtocol>(): (p: T) => T | PromiseLike<T> {
-        return (protocol: T) => {
-            this.logger.debug(`[auth] protocol succeed : ${protocol.name}`);
-            if (protocol.response) {
-                this.logger.debug(`[auth] protocol response : ${protocol.name}`, protocol.response);
-            }
-
-            return protocol;
-        };
-    }
-
-    private onError<T>(failover?: T): (protocol: any) => T | PromiseLike<T> {
-        return protocol => {
-            this.logger.error(`[auth] protocol error : ${protocol.name}`, protocol);
-            return failover;
-        };
-    }
-
     public async getToken(): Promise<NWData.Token> {
-        await this.init.result();
-        if (this.tokenSource) {
-            return await this.tokenSource.result();
+        // wait service initialization
+        await this.init.getResultAsync();
+
+        // 1. prevent multiple issue requests
+        if (this.isProcessing) {
+            this.logger.debug('[auth] token requested : token issue processing');
+            return this.tokenIssuer.getValueAsync();
         }
 
-        this.tokenSource = new PromiseWaiter<NWData.Token>();
-
+        // 2. if token were already issued, return current token value
         if (this.tokenIssuer.canUse()) {
             this.logger.debug('[auth] token requested : use stored token');
-        } else {
-            this.logger.debug(`[auth] token requested : use ${this.tokenIssuer.tokenType} token`);
-
-            this.tokenIssuer.setToken(await this.issueToken());
-            if (this.tokenIssuer.isValid()) {
-                await this.preference.set(Preference.Nwallet.token, this.tokenIssuer.issueToken());
-            }
+            return this.tokenIssuer.getValueAsync();
         }
 
-        const token = this.tokenIssuer.issueToken();
-        this.tokenSource.set(token);
-        this.tokenSource = undefined;
+        this.isProcessing = true;
+
+        this.logger.debug(`[auth] token requested : use [${this.tokenIssuer.tokenType}] token`);
+        const token = await this.issueToken();
+        this.tokenIssuer.done(token);
+        this.tokenIssuer.prepare();
+        this.isProcessing = false;
         return token;
     }
 
@@ -169,11 +155,11 @@ export class AuthorizationService {
         const isRefresh = this.tokenIssuer.isRefresh;
         let payload: NWAuthProtocol.TokenPayload;
         const tokenKind = isRefresh ? 'refresh token' : 'new token';
-        this.logger.debug(`[auth] issue token begin : ${tokenKind}`);
+        this.logger.debug(`[auth] issue token prepare : ${tokenKind}`);
 
         if (isRefresh) {
             payload = {
-                refresh_token: this.tokenIssuer.issueToken().refresh_token,
+                refresh_token: (await this.tokenIssuer.getValueAsync()).refresh_token,
                 grant_type: 'refresh_token'
             };
         } else {
@@ -245,5 +231,31 @@ export class AuthorizationService {
 
     public async resetPincode(currentPin: string, newPin: string): Promise<boolean> {
         return true;
+    }
+
+    private auth<T extends AuthProtocolBase>(protocol: T): Promise<boolean> {
+        return this.nClient
+            .auth(protocol)
+            .then(this.onSuccess())
+            .then(() => true)
+            .catch(this.onError(false));
+    }
+
+    private onSuccess<T extends HttpProtocol>(): (p: T) => T | PromiseLike<T> {
+        return (protocol: T) => {
+            this.logger.debug(`[auth] protocol succeed : ${protocol.name}`);
+            if (protocol.response) {
+                this.logger.debug(`[auth] protocol response : ${protocol.name}`, protocol.response);
+            }
+
+            return protocol;
+        };
+    }
+
+    private onError<T>(failover?: T): (protocol: any) => T | PromiseLike<T> {
+        return protocol => {
+            this.logger.error(`[auth] protocol error : ${protocol.name}`, protocol);
+            return failover;
+        };
     }
 }
