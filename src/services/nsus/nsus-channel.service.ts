@@ -55,7 +55,7 @@ export class NsusChannelService {
 
     private onSuccess<T extends NWalletProtocolBase>(): (p: T) => T | PromiseLike<T> {
         return (protocol: T) => {
-            this.logger.debug(`[channel] protocol succeed : ${protocol.name}`, protocol.response);
+            this.logger.debug('[channel] protocol succeed :', protocol.name, protocol.response);
 
             return protocol;
         };
