@@ -1,15 +1,24 @@
-import { WalletProtocol } from '../services/nsus/notification.service';
 import { GetWalletTransactions } from '../models/api/nwallet';
-import { Ticker } from '../models/nwallet/data';
+import { StreamType, TickerStreamData, WalletStreamData } from './stream';
+import { Debug } from '../utils/helper/debug';
+import { ErrorCode } from './error';
 
 export class EventParameter<T> {
+    static dic: Map<string, EventParameter<any>> = new Map<string, EventParameter<any>>();
     constructor(private name: string) {}
     public get key(): string {
         return this.name;
     }
 
     static create<T>(value: string): EventParameter<T> {
-        return new EventParameter<T>(value);
+        Debug.assert(!EventParameter.dic.has(value));
+        const event = new EventParameter<T>(value);
+        EventParameter.dic.set(event.key, event);
+        return event;
+    }
+
+    static from(value: string): EventParameter<any> {
+        return EventParameter.dic.get(value);
     }
 }
 
@@ -19,17 +28,17 @@ export const NWEvent = {
         user_login: EventParameter.create<{ userName: string }>('app-user_login'),
         user_logout: EventParameter.create('app-user_logout'),
         change_tab: EventParameter.create<{ index: number; currencyId: number }>('app-change_tab'),
-        error_occured: EventParameter.create<{ reason: string }>('error_occured'),
+        error_occured: EventParameter.create<{ reason: ErrorCode }>('error_occured')
     },
 
     NWallet: {},
 
     Stream: {
-        ticker: EventParameter.create<Ticker>('stream-ticker'),
-        wallet: EventParameter.create<WalletProtocol[]>('stream-wallet')
+        ticker: EventParameter.create<TickerStreamData>(StreamType.Ticker),
+        wallet: EventParameter.create<WalletStreamData[]>(StreamType.Wallet)
     },
 
     Protocol: {
-        change_tab: EventParameter.create<GetWalletTransactions>('app-change_tab')
+        change_tab: EventParameter.create<GetWalletTransactions>('protocol-change_tab')
     }
 };

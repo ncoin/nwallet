@@ -3,7 +3,7 @@ import { IonicPage, NavController, NavParams, PopoverController, LoadingControll
 import { LoggerService } from '../../../../../../services/common/logger/logger.service';
 import { VerifyResetPhoneNumberSecuritycodePage } from '../2.verify-reset-phone-number-security-code/verify-reset-phone-number-security-code.page';
 import { ViewController } from 'ionic-angular/navigation/view-controller';
-import { AuthorizationService } from '../../../../../../services/nsus/authorization.service';
+import { AuthorizationService } from '../../../../../../services/nwallet/authorization.service';
 
 // todo [important] Guard impl!!
 @IonicPage()

@@ -1,16 +1,12 @@
 import { Inventory } from './inventory';
 import { Personal } from './personal';
 import { Debug } from '../../utils/helper/debug';
+import { Signature } from '../../interfaces/signature';
 
 export class Account {
     public inventory: Inventory;
     public personal: Personal;
 
-    // todo secure storage
-    public signature: {
-        publicKey: string;
-        privateKey: string;
-    };
 
     constructor() {
         this.inventory = new Inventory();
@@ -39,10 +35,6 @@ export class Account {
 
     public setUserName(userName: string): void {
         this.personal.phoneNumber = userName;
-    }
-
-    public setSignatrue(signature: { publicKey: string; privateKey: string }) {
-        this.signature = signature;
     }
 }
 

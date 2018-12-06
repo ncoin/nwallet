@@ -8,7 +8,7 @@ import { ModalNavPage } from '../../../base/modal-nav.page';
 import { AccountService } from '../../../../services/account/account.service';
 import { Subscription } from 'rxjs';
 import { EventService } from '../../../../services/common/event/event';
-import { NsusChannelService } from '../../../../services/nsus/nsus-channel.service';
+import { ChannelService } from '../../../../services/nwallet/channel.service';
 import { NWEvent } from '../../../../interfaces/events';
 import { WalletTransactionDetailPage } from './wallet-transaction-detail.page';
 import { NWTransition } from '../../../../tools/extension/transition';
@@ -35,7 +35,7 @@ export class WalletDetailPage extends ModalBasePage implements OnDestroy {
         private logger: LoggerService,
         private account: AccountService,
         private event: EventService,
-        private channel: NsusChannelService
+        private channel: ChannelService
     ) {
         super(navCtrl, params, parent);
         this.asset = params.get('asset');

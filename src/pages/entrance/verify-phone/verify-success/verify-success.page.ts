@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
 import { LoggerService } from '../../../../services/common/logger/logger.service';
 import { VerifySecuritycodePage } from '../verify-security-code/verify-security-code.page';
-import { AuthorizationService } from '../../../../services/nsus/authorization.service';
+import { AuthorizationService } from '../../../../services/nwallet/authorization.service';
 
 // todo [important] Guard impl!!
 @IonicPage()

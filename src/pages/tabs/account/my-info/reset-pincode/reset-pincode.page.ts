@@ -3,7 +3,7 @@ import { IonicPage, NavController, Navbar, NavParams, ToastController } from 'io
 import { AccountService } from '../../../../../services/account/account.service';
 import { ModalBasePage } from '../../../../base/modal.page';
 import { ModalNavPage } from '../../../../base/modal-nav.page';
-import { AuthorizationService } from '../../../../../services/nsus/authorization.service';
+import { AuthorizationService } from '../../../../../services/nwallet/authorization.service';
 import { LoggerService } from '../../../../../services/common/logger/logger.service';
 import { ResetPincodeSuccessPage } from '../reset-pincode-success/reset-pincode-success.page';
 

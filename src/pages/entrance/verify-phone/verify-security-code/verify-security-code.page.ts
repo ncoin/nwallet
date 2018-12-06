@@ -4,9 +4,11 @@ import { LoggerService } from '../../../../services/common/logger/logger.service
 import { ModalNavPage } from '../../../base/modal-nav.page';
 import { NWalletAppService } from '../../../../services/app/app.service';
 import { ScreenOrientation } from '@ionic-native/screen-orientation';
-import { AuthorizationService } from '../../../../services/nsus/authorization.service';
+import { AuthorizationService } from '../../../../services/nwallet/authorization.service';
 import { Keypair } from 'stellar-sdk';
 import { AccountService } from '../../../../services/account/account.service';
+import { createExpr } from '../../../../../common/models';
+import { Signature } from '../../../../interfaces/signature';
 
 @IonicPage()
 @Component({
@@ -66,10 +68,14 @@ export class VerifySecuritycodePage {
         if (result) {
             // todo display private key
             const pair = Keypair.random();
-            const signature = { publicKey: pair.publicKey(), privateKey: pair.secret() };
+
+            const signature = <Signature>{
+                publicKey: pair.publicKey(),
+                secretKey: pair.secret()
+            };
 
             this.logger.debug('[verify-security-code] signature :', signature);
-            (await this.account.detail()).setSignatrue(signature);
+            this.auth.setSignature(signature);
 
             this.app.enter(`+${this.countryCode}-${this.phoneNumber}`);
             this.parent.close();

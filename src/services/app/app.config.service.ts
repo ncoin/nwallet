@@ -4,7 +4,7 @@ import { PreferenceProvider, Preference } from '../common/preference/preference'
 import { Injectable } from '@angular/core';
 import { LoggerService } from '../common/logger/logger.service';
 import { TranslateService } from '@ngx-translate/core';
-import { NsusChannelService } from '../nsus/nsus-channel.service';
+import { ChannelService } from '../nwallet/channel.service';
 @Injectable()
 export class AppConfigService {
     constructor(
@@ -12,7 +12,7 @@ export class AppConfigService {
         private translate: TranslateService,
         private preference: PreferenceProvider,
         private event: EventService,
-        private channel: NsusChannelService
+        private channel: ChannelService
     ) {}
 
     public async loadAll(): Promise<void> {

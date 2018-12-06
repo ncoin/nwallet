@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
 import { NWAccount } from '../../../models/nwallet';
 import { Token } from '../../../models/nwallet/token';
+import { Signature } from '../../../interfaces/signature';
 
 export namespace Preference {
     // sample
@@ -26,13 +27,15 @@ export namespace Preference.App {
 
     export const hasSeenTutorial = Item<boolean>('app-hasSeenTutorial');
     export const language = Item<string>('app-language');
-    export const pinCode  = Item<any>('app-pinCode');
+    export const pinCode = Item<any>('app-pinCode');
     export const backupWallet = Item<any>('app-backupWallet');
     export const notification = Item<any>('app-notification');
 }
 
 export namespace Preference.Nwallet {
     export const account = Item<NWAccount.Account>('nwallet-account');
+    // todo secure --sky`
+    export const signature = Item<Signature>('nwallet-signature');
 }
 
 @Injectable()

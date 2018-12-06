@@ -9,7 +9,7 @@ import { ModalNavPage } from '../../base/modal-nav.page';
 import { NWalletAppService } from '../../../services/app/app.service';
 import { Subscription, Observable } from 'rxjs';
 import { WalletDetailPage } from './wallet-detail/wallet-detail.page';
-import { CurrencyService } from '../../../services/nsus/currency.service';
+import { CurrencyService } from '../../../services/nwallet/currency.service';
 import _ from 'lodash';
 import { WalletTransactionDetailPage } from './wallet-detail/wallet-transaction-detail.page';
 

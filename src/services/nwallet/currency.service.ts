@@ -2,9 +2,11 @@ import { Injectable } from '@angular/core';
 import { Subject, BehaviorSubject, Observable } from 'rxjs';
 import { EventService } from '../common/event/event';
 import { NWEvent } from '../../interfaces/events';
-import { NsusChannelService } from './nsus-channel.service';
-import { NWData, NWProtocol } from '../../models/nwallet';
+import { ChannelService } from './channel.service';
+import { NWData, NWProtocol, NWResponse } from '../../models/nwallet';
+import { TickerStreamData } from '../../interfaces/stream';
 
+// todo move
 class CurrencyInfo {
     data: NWData.Currency;
     ticker: NWData.Ticker;
@@ -16,6 +18,11 @@ class CurrencyInfo {
         }
         return 0;
     }
+
+    public updateTicker(ticker: NWResponse.Ticker) {
+        this.ticker = ticker;
+        this.ticker.last_updated_date_raw = new Date(Number.parseInt(ticker.last_updated_date, 10));
+    }
 }
 
 @Injectable()
@@ -23,19 +30,19 @@ export class CurrencyService {
     private currencies: Map<number, BehaviorSubject<CurrencyInfo>> = new Map<number, BehaviorSubject<CurrencyInfo>>();
     public currencyChanged: Observable<CurrencyInfo>;
 
-    constructor(event: EventService, private channel: NsusChannelService) {
+    constructor(event: EventService, private channel: ChannelService) {
         this.currencyChanged = new Subject<CurrencyInfo>();
 
         this.channel.register(NWProtocol.GetTickers, protocol => {
-            protocol.response.forEach(ticker => {
-                this.addOrUpdate(ticker.currency_id, info => (info.ticker = ticker));
-            });
+            protocol.response.forEach(ticker =>
+                this.addOrUpdate(ticker.currency_id, info => {
+                    info.updateTicker(ticker);
+                })
+            );
         });
 
         this.channel.register(NWProtocol.GetCurrency, protocol => {
-            protocol.response.forEach(currency => {
-                this.addOrUpdate(currency.id, info => (info.data = currency));
-            });
+            protocol.response.forEach(currency => this.addOrUpdate(currency.id, info => (info.data = currency)));
         });
 
         this.channel.register(NWProtocol.GetWallets, protocol => {
@@ -48,7 +55,10 @@ export class CurrencyService {
         });
 
         event.subscribe(NWEvent.Stream.ticker, ticker => {
-            this.addOrUpdate(ticker.currency_id, info => (info.ticker = ticker));
+            this.addOrUpdate(ticker.currency_id, info => {
+                // todo
+                info.updateTicker(<NWData.Ticker>ticker);
+            });
         });
     }
 

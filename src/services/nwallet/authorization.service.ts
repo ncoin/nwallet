@@ -6,12 +6,16 @@ import { Device } from '@ionic-native/device';
 import { EventService } from '../common/event/event';
 import { NWEvent } from '../../interfaces/events';
 import { Debug } from '../../utils/helper/debug';
-import { NClientService } from './nclient.service';
+import { NetworkService } from './network.service';
 import { NWAuthProtocol, NWData } from '../../models/nwallet';
 import { HttpProtocol } from '../../models/http/protocol';
 import { AuthProtocolBase } from '../../models/api/auth/_impl';
 import { Transaction as StellarTransaction, Keypair as StellarKeypair } from 'stellar-sdk';
 import { PromiseCompletionSource } from '../../../common/models';
+import { TokenIssuer } from './token-issuer';
+import { Signature } from '../../interfaces/signature';
+import { PreferenceProvider, Preference } from '../common/preference/preference';
+import { ErrorCode } from '../../interfaces/error';
 
 // for test (remove me) --sky`
 const nonceRange = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -31,134 +35,69 @@ export function getNonce(): string {
     }
 }
 
-class TokenIssuer {
-    private tokenSource: PromiseCompletionSource<NWData.Token>;
-    private token: NWData.Token;
-
-    constructor() {
-        this.prepare();
-    }
-
-    public get tokenType(): string {
-        return this.token === undefined ? 'new' : 'refresh';
-    }
-
-    public get isRefresh(): boolean {
-        return this.token === undefined ? false : this.token.isExpired();
-    }
-
-    public canUse(): boolean {
-        return this.isValid() && !this.token.isExpired();
-    }
-
-    public isValid(): boolean {
-        return this.token && this.token.access_token !== 'invalid';
-    }
-
-    public trySetToken(token: NWData.Token): boolean {
-        if (token && token.access_token !== 'invalid') {
-            this.token = NWData.Token.fromStorage(token);
-            this.tokenSource.setResult(this.token);
-            return true;
-        }
-
-        return false;
-    }
-
-    public flush(): void {
-        this.token = undefined;
-        this.tokenSource = undefined;
-    }
-
-    public prepare(): void {
-        this.tokenSource = new PromiseCompletionSource<NWData.Token>();
-    }
-
-    public done(token: NWData.Token): this {
-        Debug.assert(this.tokenSource);
-        this.token = NWData.Token.fromStorage(token);
-        this.tokenSource.setResult(token);
-        this.tokenSource = undefined;
-        return this;
-    }
-
-    public isProcessing(): boolean {
-        return !this.tokenSource.isCompleted();
-    }
-
-    public getValueAsync(): Promise<NWData.Token> {
-        return this.tokenSource.getResultAsync();
-    }
-}
-
 @Injectable()
 export class AuthorizationService {
     private tokenIssuer: TokenIssuer;
-    private init: PromiseCompletionSource<boolean>;
-    private isProcessing = false;
+
+    // todo secure --sky
+    private signature: Signature;
     private userName: string;
-    constructor(private logger: LoggerService, private device: Device, private event: EventService, private nClient: NClientService) {
-        this.tokenIssuer = new TokenIssuer();
-        this.initialize();
+    constructor(private logger: LoggerService, private device: Device, private event: EventService, private nClient: NetworkService, private preference: PreferenceProvider) {
+        this.tokenIssuer = new TokenIssuer(this.logger);
+        this.logger.debug('[auth] initialize');
+        this.event.subscribe(NWEvent.App.user_login, async context => {
+            Debug.assert(context.userName);
+            this.logger.debug('[auth] user login :', context);
+            this.userName = context.userName.replace('+', '').replace('-', '');
+            this.signature = await this.preference.get(Preference.Nwallet.signature);
+
+            // todo signature
+        });
+
+        this.event.subscribe(NWEvent.App.user_logout, () => {
+            this.logger.debug('[auth] user logout :', this.userName);
+            this.tokenIssuer.flush();
+            this.userName = undefined;
+            this.signature = undefined;
+            this.preference.remove(Preference.Nwallet.signature);
+        });
     }
 
     private get deviceId(): string {
         return this.device.uuid ? this.device.uuid : getNonce();
     }
 
-    private async initialize(): Promise<void> {
-        this.init = new PromiseCompletionSource<boolean>();
-        this.logger.debug('[auth] initialize');
+    public getNCNAddress(): string {
+        Debug.assert(this.signature);
+        return this.signature.publicKey;
+    }
 
-        this.event.subscribe(NWEvent.App.user_login, async context => {
-            Debug.assert(context.userName);
-            this.logger.debug('[auth] user login :', context);
-            this.userName = context.userName.replace('+', '').replace('-', '');
-            this.init.setResult(true);
-        });
+    public setSignature(signature: Signature): void {
+        this.signature = signature;
+        this.preference.set(Preference.Nwallet.signature, this.signature);
+    }
 
-        this.event.subscribe(NWEvent.App.user_logout, () => {
-            this.init = new PromiseCompletionSource<boolean>();
-            this.logger.debug('[auth] user logout :', this.userName);
-            this.tokenIssuer.flush();
-            this.userName = undefined;
+    public getToken(): Promise<NWData.Token> {
+        return this.tokenIssuer.process(async () => {
+            this.logger.debug(`[auth] token requested : use [${this.tokenIssuer.tokenType}] token`);
+            const result = await this.issueToken();
+            if (!result.isSuccess) {
+                this.event.publish(NWEvent.App.error_occured, { reason: ErrorCode.UnAuth });
+            }
+
+            return result.token;
         });
     }
 
-    public async getToken(): Promise<NWData.Token> {
-        // wait service initialization
-        await this.init.getResultAsync();
-
-        // 1. prevent multiple issue requests
-        if (this.isProcessing) {
-            this.logger.debug('[auth] token requested : token issue processing');
-            return this.tokenIssuer.getValueAsync();
-        }
-
-        // 2. if token were already issued, return current token value
-        if (this.tokenIssuer.canUse()) {
-            this.logger.debug('[auth] token requested : use stored token');
-            return this.tokenIssuer.getValueAsync();
-        }
-
-        this.isProcessing = true;
-
-        this.logger.debug(`[auth] token requested : use [${this.tokenIssuer.tokenType}] token`);
-        const token = await this.issueToken();
-        this.tokenIssuer.done(token).prepare();
-        this.isProcessing = false;
-        return token;
-    }
-
-    private async issueToken(): Promise<NWData.Token> {
-        const isRefresh = this.tokenIssuer.isRefresh;
+    private async issueToken(): Promise<{ isSuccess: boolean; token: NWData.Token }> {
         let payload: NWAuthProtocol.TokenPayload;
-        const tokenKind = isRefresh ? 'refresh token' : 'new token';
-        this.logger.debug(`[auth] issue token prepare : ${tokenKind}`);
 
-        if (isRefresh) {
+        const refreshToken = this.tokenIssuer.tryGetRefreshToken();
+        const tokenKind = refreshToken ? 'refresh token' : 'new token';
+        this.logger.debug(`[auth] issue token prepare : ${tokenKind}`);
+        if (refreshToken) {
             payload = {
-                refresh_token: (await this.tokenIssuer.getValueAsync()).refresh_token,
+                refresh_token: refreshToken.refresh_token,
                 grant_type: 'refresh_token'
             };
         } else {
@@ -172,21 +111,19 @@ export class AuthorizationService {
         return await this.nClient
             .auth(new NWAuthProtocol.IssueToken().setPayload(payload))
             .then(this.onSuccess())
-            .then(p => p.convert())
+            .then(p => ({ isSuccess: true, token: p.convert() }))
             .catch((response: HttpErrorResponse) => {
                 this.logger.error(`[auth] issue token failed : ${tokenKind}`, response);
-                if (response.status === 401 || response.status === 0) {
-                    this.event.publish(NWEvent.App.error_occured, { reason: 'unauth' });
-                }
-                return NWData.Token.Empty;
+                return {
+                    isSuccess: false,
+                    token: NWData.Token.Empty
+                };
             });
     }
 
-    public signXdr(xdr: string, tempPvt: string): string {
+    public signXdr(xdr: string): string {
         const transaction = new StellarTransaction(xdr);
-        // sign
-        transaction.sign(StellarKeypair.fromSecret(tempPvt));
-
+        transaction.sign(StellarKeypair.fromSecret(this.signature.secretKey));
         // transaction to xdr;
         return transaction
             .toEnvelope()

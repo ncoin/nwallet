@@ -8,7 +8,7 @@ import { NWTransition } from '../../../../tools/extension/transition';
 import { ModalNavPage } from '../../../base/modal-nav.page';
 import { ModalBasePage } from '../../../base/modal.page';
 import { Subscription } from 'rxjs';
-import { NsusChannelService } from '../../../../services/nsus/nsus-channel.service';
+import { ChannelService } from '../../../../services/nwallet/channel.service';
 
 @IonicPage()
 @Component({
@@ -27,7 +27,7 @@ export class ManageWalletPage extends ModalBasePage implements OnDestroy {
         public logger: LoggerService,
         private account: AccountService,
         parent: ModalNavPage,
-        private channel: NsusChannelService
+        private channel: ChannelService
     ) {
         super(navCtrl, navParam, parent);
         this.assets = new Array<NWAsset.Item>();

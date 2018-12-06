@@ -3,10 +3,9 @@ import { Injectable } from '@angular/core';
 import { LoggerService } from '../common/logger/logger.service';
 import { MethodTypes, HttpProtocol } from '../../models/http/protocol';
 import { Debug } from '../../utils/helper/debug';
-import { AuthProtocolBase } from '../../models/api/auth/_impl';
 
 @Injectable()
-export class NClientService {
+export class NetworkService {
     constructor(private logger: LoggerService, private http: HttpClient) {}
 
     public async request<T extends HttpProtocol>(promise: Promise<T>): Promise<T> {

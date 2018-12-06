@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { NWAsset } from '../../models/nwallet';
-import { CurrencyService } from '../../services/nsus/currency.service';
+import { CurrencyService } from '../../services/nwallet/currency.service';
 
 @Pipe({
     name: 'assetToSymbol'

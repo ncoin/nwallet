@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { NClientService } from './nclient.service';
+import { NetworkService } from './network.service';
 import { LoggerService } from '../common/logger/logger.service';
 import { NotificationService } from './notification.service';
 import { NWAsset, NWTransaction, NWProtocol, NWData } from '../../models/nwallet';
@@ -10,10 +10,10 @@ import { NWConstants } from '../../models/constants';
 import { Debug } from '../../utils/helper/debug';
 
 @Injectable()
-export class NsusChannelService {
+export class ChannelService {
     private subscriptionMap = new Map<string, Subject<any>>();
 
-    constructor(private logger: LoggerService, private nClient: NClientService, private auth: AuthorizationService, private notification: NotificationService) {
+    constructor(private logger: LoggerService, private nClient: NetworkService, private auth: AuthorizationService, private notification: NotificationService) {
         // this.AddOrUpdate();
     }
 
@@ -64,7 +64,6 @@ export class NsusChannelService {
     private onError<T, TProtocol extends NWalletProtocolBase>(failover?: T): (protocol: TProtocol) => T | PromiseLike<T> {
         return protocol => {
             this.logger.debug(`[channel] protocol error :`, protocol);
-
             const errorMessage = protocol.getErrorMessage();
             if (errorMessage) {
                 this.logger.warn(`[channel] protocol rejected : ${protocol.name} ${errorMessage}`);
@@ -157,7 +156,7 @@ export class NsusChannelService {
             .catch(this.onError(false));
     }
 
-    public async sendNCNAsset(walletId: number, address: string, amount: number, tempPvt: string): Promise<boolean> {
+    public async sendNCNAsset(walletId: number, address: string, amount: number): Promise<boolean> {
         return await this.nClient
             .request(
                 this.resolve(u =>
@@ -172,7 +171,7 @@ export class NsusChannelService {
             .then(async protocol => {
                 Debug.assert(protocol.isXdr());
                 // todo extract
-                const signed = this.auth.signXdr(protocol.response.xdr, tempPvt);
+                const signed = this.auth.signXdr(protocol.response.xdr);
                 return await this.nClient
                     .request(
                         this.resolve(u =>
@@ -237,7 +236,8 @@ export class NsusChannelService {
             .catch(this.onError(false));
     }
 
-    public async createNCNWallet(address: string, tempPvt: string): Promise<boolean> {
+    public async createNCNWallet(): Promise<boolean> {
+        const address = this.auth.getNCNAddress();
         return await this.nClient
             .request(this.resolve(userId => new NWProtocol.CreateNCNWallet().setPayload({ userId: userId, currencyId: NWConstants.NCN.currencyId, ncoinPublicKey: address })))
             .then(this.onSuccess())
@@ -251,7 +251,7 @@ export class NsusChannelService {
                     .catch(this.onError(''));
 
                 if (xdr !== '') {
-                    const signedXdr = this.auth.signXdr(xdr, tempPvt);
+                    const signedXdr = this.auth.signXdr(xdr);
 
                     await this.nClient
                         .request(this.resolve(() => new NWProtocol.ExecuteWalletTrust().setPayload({ walletId: walletId, xdr: signedXdr })))
@@ -263,15 +263,6 @@ export class NsusChannelService {
             })
             .catch(this.onError(false));
     }
-
-    // public async createNCNWallet(address: string): Promise<boolean> {
-    //     return await this.nClient
-    //         .request(this.resolve(userId => new NWProtocol.CreateNCNWallet().setPayload({ userId: userId, currencyId: NWConstants.NCN.currencyId, ncoinPublicKey: address })))
-    //         .then(this.onSuccess())
-    //         .then(this.onBroadcast())
-    //         .then(() => true)
-    //         .catch(this.onError(false));
-    // }
 
     /**
      *

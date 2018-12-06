@@ -8,7 +8,7 @@ export interface Environments {
     endpoint: {
         api: (path: string) => string;
         uaa: (path: string) => string;
-        stream: (type: 'ticker' | 'wallet', token: string) => string;
+        stream: (type: string, token: string) => string;
     };
 }
 

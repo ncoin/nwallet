@@ -4,26 +4,35 @@ import { Injectable } from '@angular/core';
 import { PreferenceProvider, Preference } from '../common/preference/preference';
 import { LoggerService } from '../common/logger/logger.service';
 import { NWEvent } from '../../interfaces/events';
-import { NsusChannelService } from '../nsus/nsus-channel.service';
+import { ChannelService } from '../nwallet/channel.service';
 import { PromiseCompletionSource } from '../../../common/models';
+import { ErrorCode } from '../../interfaces/error';
 
 @Injectable()
 export class NWalletAppService {
     private fetchJobs: PromiseCompletionSource<boolean>;
 
     constructor(private preference: PreferenceProvider, private logger: LoggerService, private account: AccountService, private event: EventService) {
-        this.init();
+        this.fetchJobs = new PromiseCompletionSource<boolean>();
 
         this.event.subscribe(NWEvent.App.error_occured, async context => {
-            if (context.reason === 'unauth') {
-                await this.waitFetch();
+            if (context.reason === ErrorCode.UnAuth) {
+                this.fetchJobs.trySetResult(false);
                 this.logout();
             }
         });
-    }
 
-    private init(): void {
-        this.fetchJobs = new PromiseCompletionSource<boolean>();
+        this.event.subscribe(NWEvent.App.user_login, async context => {
+            this.fetchJobs.trySetResult(true);
+            await this.beginFetch();
+        });
+
+        this.event.subscribe(NWEvent.App.user_logout, async () => {
+            if (this.fetchJobs.isCompleted()) {
+                this.fetchJobs = new PromiseCompletionSource<boolean>();
+            }
+            this.account.flush();
+        });
     }
 
     public async canLogin(): Promise<string> {
@@ -40,14 +49,12 @@ export class NWalletAppService {
 
     public async enter(userName: string): Promise<void> {
         this.event.publish(NWEvent.App.user_login, { userName: userName });
-        await this.beginFetch();
     }
 
-    public async beginFetch(): Promise<void> {
+    private async beginFetch(): Promise<void> {
         this.logger.debug('[app] begin fetch start');
         await Promise.all([this.account.fetchJobs()]);
         this.logger.debug('[app] begin fetch done');
-        this.fetchJobs.setResult(true);
     }
 
     public waitFetch(): Promise<boolean> {
@@ -55,8 +62,6 @@ export class NWalletAppService {
     }
 
     public async logout(): Promise<void> {
-        this.init();
-        this.account.flush();
         this.event.publish(NWEvent.App.user_logout);
     }
 

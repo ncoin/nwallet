@@ -5,7 +5,7 @@ import { NWAccount, NWProtocol, NWAsset } from '../../models/nwallet';
 import { Debug } from '../../utils/helper/debug';
 import { EventService } from '../common/event/event';
 import { NWEvent } from '../../interfaces/events';
-import { NsusChannelService } from '../nsus/nsus-channel.service';
+import { ChannelService } from '../nwallet/channel.service';
 import { AccountSubject, AccountCallbackImpl } from './account.service.callback';
 import { PromiseCompletionSource } from '../../../common/models';
 import { NWConstants } from '../../models/constants';
@@ -16,7 +16,7 @@ export class AccountService {
     private account: NWAccount.Account;
     private streams: AccountSubject;
 
-    constructor(private preference: PreferenceProvider, private logger: LoggerService, private event: EventService, private channel: NsusChannelService) {
+    constructor(private preference: PreferenceProvider, private logger: LoggerService, private event: EventService, private channel: ChannelService) {
         this.account = new NWAccount.Account();
         this.streams = new AccountCallbackImpl(this.account);
         this.accountSource = new PromiseCompletionSource<NWAccount.Account>();
@@ -50,9 +50,7 @@ export class AccountService {
         const assets = await this.refreshAssets();
         const ncn = assets.find(asset => asset.getCurrencyId() === NWConstants.NCN.currencyId);
         if (!ncn) {
-            // change trust
-            const protocol = await this.channel.createNCNWallet(this.account.signature.publicKey, this.account.signature.privateKey);
-            this.logger.log('aaaaaaaaaa', protocol);
+            await this.channel.createNCNWallet();
         }
     }
 

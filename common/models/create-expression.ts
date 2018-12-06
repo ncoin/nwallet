@@ -14,7 +14,7 @@ export function createExpr<T>(expr: ParameterExpr<T>): T {
     let instance = <T>{};
     let result: any;
     if (typeof expr === 'function') {
-        result = expr(instance);
+        result = (<Function>expr)(instance);
     } else {
         instance = <T>expr;
     }

@@ -5,10 +5,10 @@ import { LoggerService } from '../../../services/common/logger/logger.service';
 import { ModalNavPage } from '../../base/modal-nav.page';
 import { ModalBasePage } from '../../base/modal.page';
 import { NWAsset } from '../../../models/nwallet';
-import { CurrencyService } from '../../../services/nsus/currency.service';
+import { CurrencyService } from '../../../services/nwallet/currency.service';
 import { Debug } from '../../../utils/helper/debug';
 import { TranslateService } from '@ngx-translate/core';
-import { NsusChannelService } from '../../../services/nsus/nsus-channel.service';
+import { ChannelService } from '../../../services/nwallet/channel.service';
 import { SendConfirmPinPage } from './send.confirm.pin.page';
 
 const messageTemplate = (symbol: string, amount: number, fee: number, address: string, lang: any): string => {
@@ -74,7 +74,7 @@ export class SendConfirmPage extends ModalBasePage {
         private logger: LoggerService,
         private currency: CurrencyService,
         private translate: TranslateService,
-        private channel: NsusChannelService,
+        private channel: ChannelService,
     ) {
         super(navCtrl, navParam, parent);
         this.asset = navParam.get('asset');
