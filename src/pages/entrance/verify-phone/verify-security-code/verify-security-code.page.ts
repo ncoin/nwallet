@@ -5,10 +5,9 @@ import { ModalNavPage } from '../../../base/modal-nav.page';
 import { NWalletAppService } from '../../../../services/app/app.service';
 import { ScreenOrientation } from '@ionic-native/screen-orientation';
 import { AuthorizationService } from '../../../../services/nwallet/authorization.service';
-import { Keypair } from 'stellar-sdk';
 import { AccountService } from '../../../../services/account/account.service';
-import { createExpr } from '../../../../../common/models';
 import { Signature } from '../../../../interfaces/signature';
+import { NWStellar } from '../../../../models/stellar/stellar';
 
 @IonicPage()
 @Component({
@@ -67,7 +66,7 @@ export class VerifySecuritycodePage {
         const result = this.auth.verifyMobileNumber(this.countryCode, this.phoneNumber, secureCode);
         if (result) {
             // todo display private key
-            const pair = Keypair.random();
+            const pair = NWStellar.Keypair.random();
 
             const signature = <Signature>{
                 publicKey: pair.publicKey(),

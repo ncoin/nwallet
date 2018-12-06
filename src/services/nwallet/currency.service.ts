@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Subject, BehaviorSubject, Observable } from 'rxjs';
-import { EventService } from '../common/event/event';
+import { EventService } from '../common/event/event.service';
 import { NWEvent } from '../../interfaces/events';
 import { ChannelService } from './channel.service';
 import { NWData, NWProtocol, NWResponse } from '../../models/nwallet';
-import { TickerStreamData } from '../../interfaces/stream';
 
 // todo move
 class CurrencyInfo {

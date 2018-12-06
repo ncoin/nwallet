@@ -11,7 +11,7 @@ import { WalletTabPages, WalletMainPage } from '../wallet-main/wallet-main.page'
 import { AccountPage } from '../account/account.page';
 import { ReceivePage } from '../receive/receive.page';
 import { SendPage, SEND_PAGES } from '../send/send.page';
-import { EventService } from '../../../services/common/event/event';
+import { EventService } from '../../../services/common/event/event.service';
 import { NWEvent } from '../../../interfaces/events';
 export interface TabItemContext {
     // title: "Schedule",

@@ -6,7 +6,7 @@ import { IonicPage, ViewController, ModalController, NavParams, NavController } 
 import { LoggerService } from '../../../services/common/logger/logger.service';
 import { NWModalTransition } from '../../../tools/extension/transition';
 import { NWAsset } from '../../../models/nwallet';
-import { EventService } from '../../../services/common/event/event';
+import { EventService } from '../../../services/common/event/event.service';
 import { NWEvent } from '../../../interfaces/events';
 import { Debug } from '../../../utils/helper/debug';
 import { ModalNavPage } from '../../base/modal-nav.page';

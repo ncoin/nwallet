@@ -1,0 +1,12 @@
+import { Signature } from '../../interfaces/signature';
+
+export const devSigs = {
+    test: <Signature>{
+        publicKey: 'GB37D3KYP7OS6DHFUNMEKCUEYPGZFO5RUBNDV4G6S575GWUXDKVBZCVX',
+        secretKey: 'SCFYXFYU2LKDVRSLMK43CZBD2X45EJEG3SN6OCNZFMBK6G2Q74N5DBLY'
+    },
+    sky: <Signature>{
+        publicKey: 'GB37D3KYP7OS6DHFUNMEKCUEYPGZFO5RUBNDV4G6S575GWUXDKVBZCVX',
+        secretKey: 'SCFYXFYU2LKDVRSLMK43CZBD2X45EJEG3SN6OCNZFMBK6G2Q74N5DBLY'
+    }
+};

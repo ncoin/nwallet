@@ -1,9 +1,9 @@
 import { LoggerService } from '../common/logger/logger.service';
 import { Injectable } from '@angular/core';
-import { PreferenceProvider, Preference } from '../common/preference/preference';
+import { PreferenceService, Preference } from '../common/preference/preference.service';
 import { NWAccount, NWProtocol, NWAsset } from '../../models/nwallet';
 import { Debug } from '../../utils/helper/debug';
-import { EventService } from '../common/event/event';
+import { EventService } from '../common/event/event.service';
 import { NWEvent } from '../../interfaces/events';
 import { ChannelService } from '../nwallet/channel.service';
 import { AccountSubject, AccountCallbackImpl } from './account.service.callback';
@@ -16,7 +16,7 @@ export class AccountService {
     private account: NWAccount.Account;
     private streams: AccountSubject;
 
-    constructor(private preference: PreferenceProvider, private logger: LoggerService, private event: EventService, private channel: ChannelService) {
+    constructor(private preference: PreferenceService, private logger: LoggerService, private event: EventService, private channel: ChannelService) {
         this.account = new NWAccount.Account();
         this.streams = new AccountCallbackImpl(this.account);
         this.accountSource = new PromiseCompletionSource<NWAccount.Account>();

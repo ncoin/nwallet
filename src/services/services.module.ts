@@ -4,11 +4,11 @@ import { LoggerService } from './common/logger/logger.service';
 import { NWalletAppService } from './app/app.service';
 import { AppConfigService } from './app/app.config.service';
 import { AccountService } from './account/account.service';
-import { PreferenceProvider } from './common/preference/preference';
+import { PreferenceService } from './common/preference/preference.service';
 import { NetworkService } from './nwallet/network.service';
-import { LockProvider } from './common/lock/lock';
+import { LockService } from './common/lock/lock.service';
 import { PlatformService } from './common/platform/platform.service';
-import { EventService } from './common/event/event';
+import { EventService } from './common/event/event.service';
 import { ChannelService } from './nwallet/channel.service';
 import { CurrencyService } from './nwallet/currency.service';
 import { NotificationService } from './nwallet/notification.service';
@@ -18,12 +18,12 @@ import { PopupService } from './popup/popop.service';
     providers: [
         LoggerService,
         NetworkService,
-        PreferenceProvider,
+        PreferenceService,
         AccountService,
         NWalletAppService,
         AppConfigService,
         PlatformService,
-        LockProvider,
+        LockService,
         AuthorizationService,
         EventService,
         ChannelService,

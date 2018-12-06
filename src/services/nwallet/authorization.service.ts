@@ -3,37 +3,22 @@ import { LoggerService } from '../common/logger/logger.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Device } from '@ionic-native/device';
-import { EventService } from '../common/event/event';
+import { EventService } from '../common/event/event.service';
 import { NWEvent } from '../../interfaces/events';
 import { Debug } from '../../utils/helper/debug';
 import { NetworkService } from './network.service';
 import { NWAuthProtocol, NWData } from '../../models/nwallet';
 import { HttpProtocol } from '../../models/http/protocol';
 import { AuthProtocolBase } from '../../models/api/auth/_impl';
-import { Transaction as StellarTransaction, Keypair as StellarKeypair } from 'stellar-sdk';
-import { PromiseCompletionSource } from '../../../common/models';
 import { TokenIssuer } from './token-issuer';
 import { Signature } from '../../interfaces/signature';
-import { PreferenceProvider, Preference } from '../common/preference/preference';
+import { PreferenceService, Preference } from '../common/preference/preference.service';
 import { ErrorCode } from '../../interfaces/error';
 
 // for test (remove me) --sky`
-const nonceRange = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-let devNonce = '';
-export function getNonce(): string {
-    if (devNonce) {
-        return devNonce;
-    } else {
-        let nonce = '';
-        for (let i = 0; i < 20; i++) {
-            nonce += nonceRange.charAt(Math.floor(Math.random() * nonceRange.length));
-        }
-
-        const current = new Date();
-        devNonce = `${env.name}_${current.getFullYear()}/${current.getMonth() + 1}/${current.getDate()}_nonce_${nonce}`;
-        return devNonce;
-    }
-}
+import { getNonceOnce } from '../../../common/models/nonce';
+import { NWConstants } from '../../models/constants';
+import { NWStellar } from '../../models/stellar/stellar';
 
 @Injectable()
 export class AuthorizationService {
@@ -42,7 +27,7 @@ export class AuthorizationService {
     // todo secure --sky
     private signature: Signature;
     private userName: string;
-    constructor(private logger: LoggerService, private device: Device, private event: EventService, private nClient: NetworkService, private preference: PreferenceProvider) {
+    constructor(private logger: LoggerService, private device: Device, private event: EventService, private nClient: NetworkService, private preference: PreferenceService) {
         this.tokenIssuer = new TokenIssuer(this.logger);
         this.logger.debug('[auth] initialize');
         this.event.subscribe(NWEvent.App.user_login, async context => {
@@ -51,7 +36,12 @@ export class AuthorizationService {
             this.userName = context.userName.replace('+', '').replace('-', '');
             this.signature = await this.preference.get(Preference.Nwallet.signature);
 
-            // todo signature
+            this.logger.debug('[auth] user signature :', this.signature);
+
+            // dev sig usage
+            const skySig = NWConstants.devSigs.sky;
+
+            // todo signature secure
         });
 
         this.event.subscribe(NWEvent.App.user_logout, () => {
@@ -61,10 +51,6 @@ export class AuthorizationService {
             this.signature = undefined;
             this.preference.remove(Preference.Nwallet.signature);
         });
-    }
-
-    private get deviceId(): string {
-        return this.device.uuid ? this.device.uuid : getNonce();
     }
 
     public getNCNAddress(): string {
@@ -103,7 +89,7 @@ export class AuthorizationService {
         } else {
             payload = {
                 username: this.userName,
-                device_id: this.deviceId,
+                device_id: this.device.uuid ? this.device.uuid : getNonceOnce(),
                 grant_type: 'password'
             };
         }
@@ -122,9 +108,8 @@ export class AuthorizationService {
     }
 
     public signXdr(xdr: string): string {
-        const transaction = new StellarTransaction(xdr);
-        transaction.sign(StellarKeypair.fromSecret(this.signature.secretKey));
-        // transaction to xdr;
+        const transaction = new NWStellar.Transaction(xdr);
+        transaction.sign(NWStellar.Keypair.fromSecret(this.signature.secretKey));
         return transaction
             .toEnvelope()
             .toXDR()
@@ -178,7 +163,7 @@ export class AuthorizationService {
 
     private onSuccess<T extends HttpProtocol>(): (p: T) => T | PromiseLike<T> {
         return (protocol: T) => {
-            this.logger.debug(`[auth] protocol succeed : ${protocol.name}`);
+            this.logger.debug(`[auth] protocol success : ${protocol.name}`);
             if (protocol.response) {
                 this.logger.debug(`[auth] protocol response : ${protocol.name}`, protocol.response);
             }

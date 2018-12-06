@@ -12,12 +12,9 @@ import { Debug } from '../../utils/helper/debug';
 @Injectable()
 export class ChannelService {
     private subscriptionMap = new Map<string, Subject<any>>();
+    constructor(private logger: LoggerService, private nClient: NetworkService, private auth: AuthorizationService, private notification: NotificationService) {}
 
-    constructor(private logger: LoggerService, private nClient: NetworkService, private auth: AuthorizationService, private notification: NotificationService) {
-        // this.AddOrUpdate();
-    }
-
-    // hmm...
+    //#region prococol subscribe methopds
     private getOrAdd(key: string): Subject<any> {
         return this.subscriptionMap.has(key) ? this.subscriptionMap.get(key) : this.subscriptionMap.set(key, new Subject<any>()).get(key);
     }
@@ -25,7 +22,9 @@ export class ChannelService {
         return this.getOrAdd(request.name).subscribe(func);
     }
 
-    //#region Protocol methods
+    //#endregion
+
+    //#region Service methods
     private async resolve<T extends NWalletProtocolBase>(func: (userId: number) => T): Promise<T> {
         const token = await this.auth.getToken();
         let userId,
@@ -44,7 +43,6 @@ export class ChannelService {
         return request;
     }
 
-    // hmm.... 1
     private onBroadcast<T extends NWalletProtocolBase>(): (value: T) => T | PromiseLike<T> {
         return protocol => {
             this.logger.debug(`[channel] protocol broadcast :`, protocol);
@@ -264,14 +262,7 @@ export class ChannelService {
             .catch(this.onError(false));
     }
 
-    /**
-     *
-     *
-     * @param {boolean} isOn - notification on/off
-     * @returns {Promise<boolean>} request success
-     * @memberof NsusChannelService
-     */
-    public async setUserPush(isOn: boolean): Promise<boolean> {
+    public async setUserNotifications(isOn: boolean): Promise<boolean> {
         return await this.nClient
             .request(
                 this.resolve(userId =>

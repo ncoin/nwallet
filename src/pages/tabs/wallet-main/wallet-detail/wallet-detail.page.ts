@@ -7,7 +7,7 @@ import { ModalBasePage } from '../../../base/modal.page';
 import { ModalNavPage } from '../../../base/modal-nav.page';
 import { AccountService } from '../../../../services/account/account.service';
 import { Subscription } from 'rxjs';
-import { EventService } from '../../../../services/common/event/event';
+import { EventService } from '../../../../services/common/event/event.service';
 import { ChannelService } from '../../../../services/nwallet/channel.service';
 import { NWEvent } from '../../../../interfaces/events';
 import { WalletTransactionDetailPage } from './wallet-transaction-detail.page';

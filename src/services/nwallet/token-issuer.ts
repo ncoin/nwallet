@@ -2,6 +2,7 @@ import { PromiseCompletionSource } from '../../../common/models';
 import { NWData } from '../../models/nwallet';
 import { LoggerService } from '../common/logger/logger.service';
 
+// note: injectable (to service)?
 export class TokenIssuer {
     private isProcessing: boolean;
     private tokenSource: PromiseCompletionSource<NWData.Token>;

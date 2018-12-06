@@ -1,6 +1,6 @@
 import { Constants } from '../../environments/template';
-import { EventService } from '../common/event/event';
-import { PreferenceProvider, Preference } from '../common/preference/preference';
+import { EventService } from '../common/event/event.service';
+import { PreferenceService, Preference } from '../common/preference/preference.service';
 import { Injectable } from '@angular/core';
 import { LoggerService } from '../common/logger/logger.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -10,7 +10,7 @@ export class AppConfigService {
     constructor(
         private logger: LoggerService,
         private translate: TranslateService,
-        private preference: PreferenceProvider,
+        private preference: PreferenceService,
         private event: EventService,
         private channel: ChannelService
     ) {}
@@ -85,7 +85,7 @@ export class AppConfigService {
     }
 
     public async setPushNotification(isEnable: boolean): Promise<boolean> {
-        const result = await this.channel.setUserPush(isEnable);
+        const result = await this.channel.setUserNotifications(isEnable);
         if (result) {
             await this.preference.set(Preference.App.notification, isEnable);
         }

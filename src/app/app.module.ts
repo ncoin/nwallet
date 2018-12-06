@@ -19,7 +19,7 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { QRScanner } from '@ionic-native/qr-scanner';
 import { NWPageTransitions } from '../transitions';
-import Stellar, { Keypair } from 'stellar-sdk';
+import { NWStellar } from '../models/stellar/stellar';
 BootStrap();
 export class MissingHandler implements MissingTranslationHandler {
     handle(params: MissingTranslationHandlerParams) {
@@ -86,16 +86,15 @@ export class AppModule {
                 config.setTransition(transition.NAME, transition);
             });
 
-            Stellar.Network.useTestNetwork();
+            NWStellar.Network.useTestNetwork();
         }
 
         if (env.name === 'stage') {
-            Stellar.Network.useTestNetwork();
+            NWStellar.Network.useTestNetwork();
         }
 
         if (env.name === 'prod') {
-            Stellar.Network.usePublicNetwork();
-
+            NWStellar.Network.usePublicNetwork();
         }
     }
 }

@@ -6,7 +6,7 @@ import { LoggerService } from '../logger/logger.service';
 import { PlatformService } from '../platform/platform.service';
 
 @Injectable()
-export class LockProvider {
+export class LockService {
     public isModalProcessing: Boolean;
     constructor(private logger: LoggerService, private modalController: ModalController, private platform: PlatformService) {}
 

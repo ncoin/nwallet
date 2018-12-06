@@ -1,3 +1,3 @@
 import { NCN } from './ncn.constants';
-
-export const NWConstants = { NCN };
+import { devSigs } from './dev.signature';
+export const NWConstants = { NCN, devSigs };

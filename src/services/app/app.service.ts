@@ -1,7 +1,7 @@
-import { EventService } from '../common/event/event';
+import { EventService } from '../common/event/event.service';
 import { AccountService } from '../account/account.service';
 import { Injectable } from '@angular/core';
-import { PreferenceProvider, Preference } from '../common/preference/preference';
+import { PreferenceService, Preference } from '../common/preference/preference.service';
 import { LoggerService } from '../common/logger/logger.service';
 import { NWEvent } from '../../interfaces/events';
 import { ChannelService } from '../nwallet/channel.service';
@@ -12,7 +12,7 @@ import { ErrorCode } from '../../interfaces/error';
 export class NWalletAppService {
     private fetchJobs: PromiseCompletionSource<boolean>;
 
-    constructor(private preference: PreferenceProvider, private logger: LoggerService, private account: AccountService, private event: EventService) {
+    constructor(private preference: PreferenceService, private logger: LoggerService, private account: AccountService, private event: EventService) {
         this.fetchJobs = new PromiseCompletionSource<boolean>();
 
         this.event.subscribe(NWEvent.App.error_occured, async context => {

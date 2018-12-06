@@ -2,8 +2,6 @@ import { NWalletProtocolBase } from './_impl';
 import { NoQuery, MethodTypes } from '../../http/protocol';
 import { WalletApiPaths } from './paths';
 import { NWAsset } from '../../nwallet';
-import { Keypair } from 'stellar-sdk';
-import { join } from 'path';
 
 /** Create new Wallets */
 

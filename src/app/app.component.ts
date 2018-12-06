@@ -1,10 +1,10 @@
 import { Subscription } from 'rxjs/Subscription';
 import { NWEvent } from '../interfaces/events';
-import { EventService } from '../services/common/event/event';
+import { EventService } from '../services/common/event/event.service';
 import { NWalletAppService } from '../services/app/app.service';
 import { TabcontainerPage } from '../pages/tabs/container/tabcontainer';
 import { AccountService } from '../services/account/account.service';
-import { LockProvider } from '../services/common/lock/lock';
+import { LockService } from '../services/common/lock/lock.service';
 
 import { LoggerService } from '../services/common/logger/logger.service';
 import { Component, ViewChild, OnDestroy } from '@angular/core';
@@ -35,7 +35,7 @@ export class NWalletApp implements OnDestroy {
         private splashScreen: SplashScreen,
         private statusBar: StatusBar,
         private logger: LoggerService,
-        private lock: LockProvider,
+        private lock: LockService,
         private account: AccountService,
         private appConfig: AppConfigService,
         private app: NWalletAppService,
