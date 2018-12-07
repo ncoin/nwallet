@@ -33,7 +33,7 @@ export class SendPage {
         private event: EventService
     ) {
         this.account.registerSubjects(stream => {
-            stream.assets(this.onAssetChanged);
+            stream.assetChanged(this.onAssetChanged);
         });
 
         this.event.RxSubscribe(NWEvent.App.change_tab, context => {

@@ -1,4 +1,3 @@
-import { env } from '../../environments/environment';
 import { Debug } from '../../utils/helper/debug';
 
 export class Personal {
@@ -7,14 +6,7 @@ export class Personal {
     private pincode: string;
     public pincodeEnabled: boolean;
 
-    constructor() {
-        if (env.name === 'dev') {
-            // this.email = 'sample@email.com';
-            // this.phoneNumber = '821088888888';
-            // this.phoneNumber = '+82-1068116550';
-            // this.pincodeEnabled = true;
-        }
-    }
+    constructor() {}
 
     public init(data: Personal): this {
         Object.assign(this, data);

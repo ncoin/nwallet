@@ -1,7 +1,6 @@
 import { Inventory } from './inventory';
 import { Personal } from './personal';
 import { Debug } from '../../utils/helper/debug';
-import { Signature } from '../../interfaces/signature';
 
 export class Account {
     public inventory: Inventory;

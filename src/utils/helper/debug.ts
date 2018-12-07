@@ -1,4 +1,3 @@
-import { env } from '../../environments/environment.stage';
 import { isDevMode } from '@angular/core';
 
 export class Debug {

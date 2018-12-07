@@ -6,9 +6,11 @@ import { Debug } from '../../utils/helper/debug';
 import { EventService } from '../common/event/event.service';
 import { NWEvent } from '../../interfaces/events';
 import { ChannelService } from '../nwallet/channel.service';
-import { AccountSubject, AccountCallbackImpl } from './account.service.callback';
+import { AccountSubject } from './account.service.callback';
 import { PromiseCompletionSource } from '../../../common/models';
 import { NWConstants } from '../../models/constants';
+import { env } from '../../environments/environment';
+import { AuthorizationService } from '../nwallet/authorization.service';
 
 @Injectable()
 export class AccountService {
@@ -16,9 +18,15 @@ export class AccountService {
     private account: NWAccount.Account;
     private streams: AccountSubject;
 
-    constructor(private preference: PreferenceService, private logger: LoggerService, private event: EventService, private channel: ChannelService) {
+    constructor(
+        private preference: PreferenceService,
+        private logger: LoggerService,
+        private event: EventService,
+        private channel: ChannelService,
+        private auth: AuthorizationService
+    ) {
         this.account = new NWAccount.Account();
-        this.streams = new AccountCallbackImpl(this.account);
+        this.streams = new AccountSubject(this.account);
         this.accountSource = new PromiseCompletionSource<NWAccount.Account>();
 
         this.init();
@@ -27,18 +35,22 @@ export class AccountService {
     private async init(): Promise<void> {
         this.subscribes();
 
-        // this.preference.remove(Preference.Nwallet.account);
         const accountData = await this.preference.get(Preference.Nwallet.account);
         if (accountData) {
             this.account.initialize(accountData);
         }
 
+        if (env.name === 'dev' && NWConstants.devSig.use) {
+            this.setAccount(NWConstants.devSig.user.name);
+            this.auth.setSignature(NWConstants.devSig.user.signature);
+        }
+
         this.accountSource.trySetResult(this.account);
     }
 
-    public registerSubjects = (onAccount: (account: AccountSubject) => void): void => {
-        onAccount(this.streams);
-    };
+    public registerSubjects(expr: (account: AccountSubject) => void): void {
+        expr(this.streams);
+    }
 
     public async setAccount(userName: string): Promise<void> {
         this.account.setUserName(userName);
@@ -56,7 +68,6 @@ export class AccountService {
 
     private async refreshAssets(): Promise<NWAsset.Item[]> {
         const assets = await this.channel.getAssets();
-
         this.account.inventory.setItems(assets);
         this.account.inventory.refresh();
         return assets;
@@ -66,7 +77,7 @@ export class AccountService {
         return await this.accountSource.getResultAsync();
     }
 
-    public async isSaved(): Promise<boolean> {
+    public async isExistAccount(): Promise<boolean> {
         const detail = await this.detail();
         return detail.getUserName() !== undefined && detail.getUserName() !== '';
     }
@@ -76,7 +87,7 @@ export class AccountService {
         this.account.flush();
     }
 
-    private subscribes() {
+    private subscribes(): void {
         this.event.subscribe(NWEvent.Stream.wallet, async context => {
             context.forEach(wallet => {
                 this.channel.getWalletTransactions(wallet.id, 0, 10);
@@ -117,8 +128,10 @@ export class AccountService {
             }
         });
 
-        this.channel.register(NWProtocol.CreateWallet, async () => {
-            this.refreshAssets();
+        this.channel.register(NWProtocol.CreateWallet, p => {
+            if (p) {
+                this.refreshAssets();
+            }
         });
 
         this.channel.register(NWProtocol.GetWalletTransactions, async protocol => {

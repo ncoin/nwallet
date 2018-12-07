@@ -44,7 +44,7 @@ export class WalletDetailPage extends ModalBasePage implements OnDestroy {
 
     private async init(): Promise<void> {
         this.account.registerSubjects(account => {
-            this.subscriptions.push(account.assetTransactions(this.asset.getWalletId(), this.arrange));
+            this.subscriptions.push(account.assetTransactionsChanged(this.asset.getWalletId(), this.arrange));
         });
 
         this.channel.getWalletTransactions(this.asset.getWalletId(), 0, this.limit);

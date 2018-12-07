@@ -36,10 +36,9 @@ export class NWalletAppService {
     }
 
     public async canLogin(): Promise<string> {
-        if (await this.account.isSaved()) {
-            this.account.isSaved();
+        if (await this.account.isExistAccount()) {
             const account = await this.account.detail();
-            this.logger.debug('[app] account already exist. : ', account.getUserName());
+            this.logger.debug('[app] account already exist. :', account.getUserName());
             return account.getUserName();
         } else {
             this.logger.debug('[app] account not exist.');

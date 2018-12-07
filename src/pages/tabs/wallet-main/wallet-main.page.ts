@@ -57,15 +57,12 @@ export class WalletMainPage implements OnDestroy {
         await this.app.waitFetch();
 
         this.account.registerSubjects(account => {
-            this.register(account.assets(this.onAssetChanged));
-            this.register(this.currency.currencyChanged.subscribe(this.calculateTotalPrice));
+            this.subscriptions.push(account.assetChanged(this.onAssetChanged));
         });
 
-        await this.loading.dismiss();
-    }
+        this.currency.currencyChanged.subscribe(this.calculateTotalPrice);
 
-    private register(...subscription: Subscription[]): void {
-        this.subscriptions.push(...subscription);
+        await this.loading.dismiss();
     }
 
     private onAssetChanged = async (assets: NWAsset.Item[]): Promise<void> => {
@@ -88,7 +85,7 @@ export class WalletMainPage implements OnDestroy {
         this.totalPrice = _.sumBy(this.assetSlides, slide => _.sumBy(slide.assets, asset => asset.getAmount() * this.currency.getPrice(asset.getCurrencyId())))
             .toFixed(2)
             .toString();
-        this.logger.debug('[wallet-main-tab] total price update', this.totalPrice);
+        this.logger.debug('[wallet-main-tab] total price update :', this.totalPrice);
     };
 
     public async onSelectAsset(wallet: NWAsset.Item) {

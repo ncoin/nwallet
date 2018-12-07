@@ -10,7 +10,7 @@ export class NetworkService {
 
     public async request<T extends HttpProtocol>(promise: Promise<T>): Promise<T> {
         const protocol = await promise;
-        this.logger.debug(`[nclient] protocol execute : ${protocol.name}`);
+        this.logger.debug(`[network] protocol execute : ${protocol.name}`);
         Debug.assert(protocol.method !== MethodTypes.INVALID);
         // todo extract
         if (protocol.method === MethodTypes.GET) {
@@ -44,7 +44,7 @@ export class NetworkService {
     // test
     public auth<T extends HttpProtocol>(protocol: T): Promise<T> {
         Debug.assert(protocol.method !== MethodTypes.INVALID);
-        this.logger.debug(`[nclient] auth protocol execute : ${protocol.name}`);
+        this.logger.debug(`[network] auth protocol execute : ${protocol.name}`);
 
         // todo extract
         if (protocol.method === MethodTypes.GET) {

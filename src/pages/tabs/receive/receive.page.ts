@@ -29,7 +29,7 @@ export class ReceivePage implements OnDestroy {
         private popup: PopupService
     ) {
         this.account.registerSubjects(stream => {
-            stream.assets(this.onAssetChanged);
+            stream.assetChanged(this.onAssetChanged);
         });
 
         this.event.RxSubscribe(NWEvent.App.change_tab, context => {

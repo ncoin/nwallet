@@ -30,18 +30,13 @@ export class AuthorizationService {
     constructor(private logger: LoggerService, private device: Device, private event: EventService, private nClient: NetworkService, private preference: PreferenceService) {
         this.tokenIssuer = new TokenIssuer(this.logger);
         this.logger.debug('[auth] initialize');
+
         this.event.subscribe(NWEvent.App.user_login, async context => {
             Debug.assert(context.userName);
             this.logger.debug('[auth] user login :', context);
             this.userName = context.userName.replace('+', '').replace('-', '');
             this.signature = await this.preference.get(Preference.Nwallet.signature);
-
             this.logger.debug('[auth] user signature :', this.signature);
-
-            // dev sig usage
-            const skySig = NWConstants.devSigs.sky;
-
-            // todo signature secure
         });
 
         this.event.subscribe(NWEvent.App.user_logout, () => {

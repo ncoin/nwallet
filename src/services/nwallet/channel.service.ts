@@ -39,7 +39,7 @@ export class ChannelService {
             authorization: auth
         };
 
-        this.logger.debug(`[channel] protcol requested : ${request.name}`);
+        this.logger.debug(`[channel] protocol requested : ${request.name}`);
         return request;
     }
 
