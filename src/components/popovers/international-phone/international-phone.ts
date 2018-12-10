@@ -2,6 +2,9 @@ import { Component } from '@angular/core';
 import { ViewController } from 'ionic-angular';
 import { LocaleService, CountryService } from 'ng4-intl-phone';
 
+/**
+ * oboleted -- sky^
+ */
 @Component({
     template: `
       <ion-list>
