@@ -26,7 +26,7 @@
         <ion-slides pager>
             <ion-slide *ngFor="let slide of slides">
                 <ion-list>
-                    <nw-colleteral-item *ngFor="let item of slide.items" [wallet]="item"></nw-colleteral-item>
+                    <nw-colleteral-item *ngFor="let item of slide.items" [wallet]="item" (click)="onClick_Wallet(item)"></nw-colleteral-item>
                 </ion-list>
             </ion-slide>
         </ion-slides>

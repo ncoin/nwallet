@@ -7,12 +7,6 @@ export class Data {}
 /** asset option information */
 export class Option {}
 
-export class Collateral {
-    public asd() {
-        // this.
-    }
-}
-
 /** asset information */
 export class Item {
     /** asset option */
@@ -25,6 +19,10 @@ export class Item {
             isShow: <boolean>this.data.is_show,
             order: this.data.align_number
         };
+
+        if (this.hasColleteral()) {
+            this.data.collateral = Object.assign(new NWAsset.Collateral(), this.data.collateral);
+        }
     }
 
     // todo property
@@ -65,6 +63,22 @@ export class Item {
 
     public get Colleteral(): NWAsset.Collateral {
         return this.data.collateral;
+    }
+}
+
+export class Collateral {
+    public get Available(): number {
+        return this.available_loan_amout;
+    }
+    public get Loaned(): number {
+        return this.loan_sum;
+    }
+    public get Lock(): number {
+        return this.lock_balance;
+    }
+
+    public get Ltv(): number {
+        return this.ltv;
     }
 }
 

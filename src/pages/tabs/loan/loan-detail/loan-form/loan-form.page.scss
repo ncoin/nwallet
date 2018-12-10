@@ -1,0 +1,10 @@
+page-loan-form {
+    .loan-form-container {
+        display: flex;
+        flex-direction: column;
+
+        ion-scroll {
+            height: 15.5vh;
+        }
+    }
+}

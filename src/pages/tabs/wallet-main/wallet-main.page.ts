@@ -12,7 +12,7 @@ import { WalletDetailPage } from './wallet-detail/wallet-detail.page';
 import { CurrencyService } from '../../../services/nwallet/currency.service';
 import _ from 'lodash';
 import { WalletTransactionDetailPage } from './wallet-detail/wallet-transaction-detail.page';
-import { LoanPage } from '../loan/loan.page';
+import { LoanPage, LOAN_PAGES } from '../loan/loan.page';
 
 export interface AssetSlide {
     assets: NWAsset.Item[];
@@ -113,4 +113,4 @@ export class WalletMainPage implements OnDestroy {
     }
 }
 
-export const WalletTabPages = [WalletMainPage, WalletDetailPage, ManageWalletPage, AddWalletPage, WalletTransactionDetailPage, LoanPage];
+export const WalletTabPages = [WalletMainPage, WalletDetailPage, ManageWalletPage, AddWalletPage, WalletTransactionDetailPage, ...LOAN_PAGES];
