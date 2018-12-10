@@ -1,6 +1,6 @@
-import {  updateProtocolStatic } from '../implement/asset';
+import {  updateProtocolStatic } from '../implement/wallet';
 
-declare module '../../../models/nwallet/asset' {
+declare module '../../../models/nwallet/wallet' {
     interface Item {
         // initData: typeof initProtocolStatic;
         updateData: typeof updateProtocolStatic;

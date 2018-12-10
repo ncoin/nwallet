@@ -1,0 +1,42 @@
+nw-colleteral-item {
+    .colleteral-container {
+        border: 1px solid red;
+        border-radius: 5px;
+        padding: 5px;
+        margin: 5px 0 10px 0;
+
+        .wallet {
+            display: flex;
+            justify-content: space-between;
+
+            .info {
+                display: flex;
+                align-items: center;
+
+                img {
+                    width: 24px;
+                    height: 24px;
+                }
+
+                div {
+                    flex-grow: 1;
+                    text-align: left;
+                    padding: 0 0 0 5px;
+                }
+            }
+        }
+
+        .colleteral {
+            display: flex;
+            justify-content: space-between;
+
+            >div {
+                flex: 1;
+            }
+
+            .content {
+                text-align: center;
+            }
+        }
+    }
+}

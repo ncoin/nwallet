@@ -1,4 +1,4 @@
-import * as Asset from './asset';
+import * as Asset from './wallet';
 import * as _ from 'lodash';
 import { BehaviorSubject, Observable, Subscriber } from 'rxjs';
 import { NWTransaction, NWAsset } from '../nwallet';

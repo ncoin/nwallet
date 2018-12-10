@@ -3,14 +3,12 @@ import { NWAsset } from '../../models/nwallet';
 import { CurrencyService } from '../../services/nwallet/currency.service';
 
 @Pipe({
-    name: 'assetToSymbol'
+    name: 'walletToSymbol'
 })
-export class AssetSymbolPipe implements PipeTransform {
+export class WalletToSymbolPipe implements PipeTransform {
     constructor(private currency: CurrencyService) {}
 
     transform(assetItem: NWAsset.Item) {
-        return this.currency.get(assetItem.data.currency_id).map(currency => {
-            return currency.data.label;
-        });
+        return this.currency.get(assetItem.data.currency_id).map(currency => currency.data.label);
     }
 }

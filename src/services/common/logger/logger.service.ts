@@ -36,6 +36,7 @@ export class LoggerService {
         }
 
         this.addFilterText('refresh wallets');
+        this.addFilterText('on stream');
     }
 
     public addFilterLevels(level: loglevels) {

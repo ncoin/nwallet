@@ -1,5 +1,5 @@
 export * from './ticker.response';
-export * from './asset.response';
+export * from './wallet.response';
 export * from './transaction.response';
 export * from './wallet.response';
 export * from './currency.response';

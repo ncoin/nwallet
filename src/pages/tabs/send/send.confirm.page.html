@@ -9,7 +9,7 @@
     <div class="container">
         <div class="asset">
             <img src="assets/img/symbol_{{asset.getSymbol()}}.png" />
-            <div>{{asset | assetToFullName | async}}</div>
+            <div>{{asset | walletToFullName | async}}</div>
         </div>
         <div >
             <div class="input-wrap">
@@ -19,7 +19,7 @@
                 </div>
             </div>
             <div class="input-foot">
-                {{'Available' | translate}} : {{asset | assetFormat}} / {{asset | assetToUSD | async }}
+                {{'Available' | translate}} : {{asset | walletToFormat}} / {{asset | walletToUSD | async }}
             </div>
             <button class="button-max" (click)="onClick_Max()"><div class="label">{{'Button_Max' | translate | uppercase}}</div></button>
         </div>

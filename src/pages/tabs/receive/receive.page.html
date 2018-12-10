@@ -13,8 +13,8 @@
         <div>
             <button class="country-code-button" (click)="onClick_SelectAsset()">
                 <img src="assets/img/symbol_{{selectedAsset.getSymbol()}}.png" />
-                <div>{{selectedAsset | assetToFullName | async}}</div>
-                <div>{{selectedAsset | assetFormat}}</div>
+                <div>{{selectedAsset | walletToFullName | async}}</div>
+                <div>{{selectedAsset | walletToFormat}}</div>
                 <ion-icon name="arrow-dropdown"></ion-icon>
             </button>
         </div>

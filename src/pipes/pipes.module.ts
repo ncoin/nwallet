@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
-import { AssetFormatPipe } from './asset/asset-format';
-import { AssetToUSDPipe } from './asset/asset-to-usd';
-import { AssetNamePipe } from './asset/asset-name';
+import { WalletToFormatPipe } from './wallet/wallet-to-format';
+import { WalletToUSDPipe } from './wallet/wallet-to-usd';
+import { WalletToNamePipe } from './wallet/wallet-to-name';
 import { StringToDatePipe } from './date/string-to-date';
-import { AssetSymbolPipe } from './asset/asset-symbol';
+import { WalletToSymbolPipe } from './wallet/wallet-to-symbol';
 import { CurrencyIdToSymbolPipe } from './currency/currencyId-to-symbol';
 
-const PIPES = [AssetToUSDPipe, AssetNamePipe, AssetFormatPipe, AssetSymbolPipe, StringToDatePipe, CurrencyIdToSymbolPipe];
+const PIPES = [WalletToUSDPipe, WalletToNamePipe, WalletToFormatPipe, WalletToSymbolPipe, StringToDatePipe, CurrencyIdToSymbolPipe];
 @NgModule({
     declarations: PIPES,
     imports: [],

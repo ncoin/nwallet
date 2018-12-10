@@ -4,9 +4,9 @@ import { NWAsset } from '../../models/nwallet';
 
 /** obsoleted --sky` */
 @Pipe({
-    name: 'assetToFullName'
+    name: 'walletToFullName'
 })
-export class AssetNamePipe implements PipeTransform {
+export class WalletToNamePipe implements PipeTransform {
     constructor(private translate: TranslateService) {}
     transform(item: NWAsset.Item) {
         return this.translate.get(item.getSymbol());

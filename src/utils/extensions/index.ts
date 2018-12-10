@@ -1,3 +1,3 @@
 import './implement/inventory';
-import './implement/asset';
+import './implement/wallet';
 // import './implement/modal';

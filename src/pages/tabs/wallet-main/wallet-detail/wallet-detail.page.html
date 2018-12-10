@@ -6,8 +6,8 @@
                     <ion-title>
                         {{asset.getSymbol() | translate}}
                     </ion-title>
-                    <div class="asset-amount">{{ asset | assetFormat}}</div>
-                    <div class="asset-price">{{ asset | assetToUSD | async}}</div>
+                    <div class="asset-amount">{{ asset | walletToFormat}}</div>
+                    <div class="asset-price">{{ asset | walletToUSD | async}}</div>
                 </div>
                 <div class="title-content-container">
                     <div class="buttons">

@@ -5,8 +5,7 @@ import { AppConfigService } from '../app/app.config.service';
 import { TitleCasePipe } from '@angular/common';
 import { LoggerService } from '../common/logger/logger.service';
 import { NWAsset } from '../../models/nwallet';
-import { AssetFormatPipe } from '../../pipes/asset/asset-format';
-import { AssetNamePipe } from '../../pipes/asset/asset-name';
+import { WalletToFormatPipe } from '../../pipes/wallet/wallet-to-format';
 import { TranslateService } from '@ngx-translate/core';
 import { PromiseCompletionSource } from '../../../common/models';
 
@@ -70,7 +69,7 @@ export class PopupService {
             cssClass: 'alert-base alert-radio-group button-center auto-stretch label-justify'
         });
 
-        const format = new AssetFormatPipe();
+        const format = new WalletToFormatPipe();
 
         assets.forEach(asset => {
             alert.addInput({

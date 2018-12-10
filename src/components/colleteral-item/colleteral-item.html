@@ -1,0 +1,41 @@
+<div class="colleteral-container">
+    <div class="wallet">
+        <div>
+            <div class="info">
+                <img src="assets/img/symbol_{{wallet | walletToSymbol | async}}.png" />
+                <div>{{wallet | walletToFullName | async}}</div>
+            </div>
+            <div>::Colleteral Progress Bar::</div>
+        </div>
+        <div>
+            <div>{{wallet | walletToFormat}}</div>
+            <div>{{wallet | walletToUSD | async}}</div>
+        </div>
+    </div>
+    <div class="colleteral">
+        <div>
+            <div>
+                LTV
+            </div>
+            <div class="content">
+                {{wallet.Colleteral.ltv}}%
+            </div>
+        </div>
+        <div>
+            <div>
+                Loaned
+            </div>
+            <div class="content">
+                ${{wallet.Colleteral.loan_sum}}
+            </div>
+        </div>
+        <div>
+            <div>
+                Available
+            </div>
+            <div class="content">
+                ${{wallet.Colleteral.available_loan_amout}}
+            </div>
+        </div>
+    </div>
+</div>

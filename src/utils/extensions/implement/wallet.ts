@@ -1,4 +1,4 @@
-import { Item, Data } from '../../../models/nwallet/asset';
+import { Item, Data } from '../../../models/nwallet/wallet';
 
 function processData(item: Item, data: Data): void {
 

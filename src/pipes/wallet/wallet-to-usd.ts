@@ -3,15 +3,10 @@ import { NWAsset } from '../../models/nwallet';
 import { CurrencyService } from '../../services/nwallet/currency.service';
 import { Debug } from '../../utils/helper/debug';
 
-/**
- * Generated class for the CurrencyFormatPipe pipe.
- *
- * See https://angular.io/api/core/Pipe for more info on Angular Pipes.
- */
 @Pipe({
-    name: 'assetToUSD'
+    name: 'walletToUSD'
 })
-export class AssetToUSDPipe implements PipeTransform {
+export class WalletToUSDPipe implements PipeTransform {
     constructor(private currency: CurrencyService) {}
 
     /**

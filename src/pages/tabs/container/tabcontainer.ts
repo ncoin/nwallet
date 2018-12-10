@@ -13,6 +13,7 @@ import { ReceivePage } from '../receive/receive.page';
 import { SendPage, SEND_PAGES } from '../send/send.page';
 import { EventService } from '../../../services/common/event/event.service';
 import { NWEvent } from '../../../interfaces/events';
+import { LoanPage } from '../loan/loan.page';
 export interface TabItemContext {
     // title: "Schedule",
     // name: "TabsPage",
@@ -49,7 +50,7 @@ export class TabcontainerPage {
             isEnable: true
         },
         {
-            component: SendPage,
+            component: LoanPage,
             icon: 'nwallet-loan',
             isEnable: true
         },

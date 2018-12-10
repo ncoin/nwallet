@@ -1,0 +1,28 @@
+page-loan {
+    .loan-summary {
+        display: flex;
+        justify-content: space-between;
+
+        .total-loaned {
+            :nth-child(1) {}
+
+            :nth-child(2) {
+                color: red;
+                text-align: center;
+
+            }
+        }
+
+        .total-available {
+            :nth-child(1) {}
+
+            :nth-child(2) {
+                color: green;
+                text-align: center;
+            }
+        }
+    }
+    .swiper-pagination {
+        bottom: 0px !important;
+    }
+}
