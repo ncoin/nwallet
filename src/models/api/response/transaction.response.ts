@@ -62,6 +62,20 @@ declare module '../../nwallet/transaction' {
         isChange?: boolean;
         isPayGo: boolean;
     }
+
+    interface Collateral {
+        id: number;
+        collateral_id: number;
+        type: string;
+        amount: number; // NCN amount
+        after_loan_sum: number;
+        market_price: number;
+        market_price_date: string;
+        instant_ltv: number;
+        repay_method: string;
+        created_date: string;
+        last_modified_date: string;
+    }
 }
 
 export { Transaction };

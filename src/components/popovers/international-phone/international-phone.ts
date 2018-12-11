@@ -3,16 +3,13 @@ import { ViewController } from 'ionic-angular';
 import { LocaleService, CountryService } from 'ng4-intl-phone';
 
 /**
- * oboleted -- sky^
+ * obsoleted -- sky^
  */
 @Component({
     template: `
-      <ion-list>
-        <button ion-item *ngFor="let country of countries" (click)="onCountryChanged(country)">
-        {{country.country}}
-        {{country.code}}
-        </button>
-      </ion-list>
+        <ion-list>
+            <button ion-item *ngFor="let country of countries" (click)="onCountryChanged(country)">{{ country.country }} {{ country.code }}</button>
+        </ion-list>
     `
 })
 export class InternationalPhoneComponent {
@@ -30,7 +27,3 @@ export class InternationalPhoneComponent {
         this.viewCtrl.dismiss(country);
     }
 }
-//       <ion-option *ngFor="let country of countries" [value]="country.code" (ionSelect)="onCountryChanged()">
-//       {{country.country}}
-//       {{country.code}}
-//   </ion-option>

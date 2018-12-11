@@ -13,19 +13,19 @@
                     <div class="loan-summary">
                         <div class="loaned">
                             <div>{{'Loaned' | translate}}</div>
-                            <div>${{wallet.Colleteral.Loaned}}</div>
+                            <div>${{wallet.Collateral.Loaned}}</div>
                         </div>
                         <div class="available">
                             <div>{{'Available' | translate}}</div>
-                            <div>${{wallet.Colleteral.Loaned}}</div>
+                            <div>${{wallet.Collateral.Loaned}}</div>
                         </div>
                         <div class="lock">
                             <div>{{'Lock' | translate}}</div>
-                            <div>{{wallet.Colleteral.Lock}} {{wallet | walletToSymbol | async}}</div>
+                            <div>{{wallet.Collateral.Lock}} {{wallet | walletToSymbol | async}}</div>
                         </div>
                     </div>
                     <div>
-                        ::COLLETERAL_PROGRESS_BAR::
+                        ::COLLATERAL_PROGRESS_BAR::
                     </div>
                     <div class="buttons">
                         <button ion-button (click)="onClick_Loan()">{{'Loan' | translate}}</button>
@@ -45,9 +45,9 @@
                     {{map.date | date: 'dd MMMM yyyy'}}
                 </ion-item-divider>
                 <button ion-item detail-none *ngFor="let transaction of map.transactions" (click)="onExploreTransaction(transaction)">
-                    <div item-start>{{transaction.transactionType}}</div>
-                    <div item-middle>{{transaction.date | date : 'yyyy/MM/dd hh:mm a'}}</div>
-                    <div item-end>{{transaction.amount}} {{wallet | walletToSymbol | async}}</div>
+                    <div item-start>{{transaction.Type}}</div>
+                    <div item-middle>{{transaction.CreationDate | date : 'yyyy/MM/dd hh:mm a'}}</div>
+                    <div item-end>${{transaction.Amount}}</div>
                 </button>
             </ion-item-group>
         </ion-list>

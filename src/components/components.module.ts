@@ -7,9 +7,9 @@ import { TranslateModule } from '@ngx-translate/core';
 import { NWalletDirectiveModule } from '../directives/directive.module';
 import { KeyPadComponent } from './key-pad/key-pad.component';
 import { InternationalPhoneComponent } from './popovers/international-phone/international-phone';
-import { ColleteralItemComponent } from './colleteral-item/colleteral-item';
+import { CollateralItemComponent } from './collateral-item/collateral-item';
 
-const COMPONENTS = [AssetItemComponent, ColleteralItemComponent, FaIconComponent, KeyPadComponent, InternationalPhoneComponent];
+const COMPONENTS = [AssetItemComponent, CollateralItemComponent, FaIconComponent, KeyPadComponent, InternationalPhoneComponent];
 @NgModule({
     declarations: COMPONENTS,
     imports: [TranslateModule.forChild(), NWalletPipesModule, NWalletDirectiveModule, IonicModule],

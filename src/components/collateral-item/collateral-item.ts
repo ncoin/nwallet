@@ -2,10 +2,10 @@ import { Component, Input } from '@angular/core';
 import { NWAsset } from '../../models/nwallet';
 
 @Component({
-    selector: 'nw-colleteral-item',
-    templateUrl: 'colleteral-item.html'
+    selector: 'nw-collateral-item',
+    templateUrl: 'collateral-item.html'
 })
-export class ColleteralItemComponent {
+export class CollateralItemComponent {
     @Input()
     wallet: NWAsset.Item;
 }

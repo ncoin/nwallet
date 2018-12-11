@@ -26,8 +26,8 @@ export interface LoanSlide {
     templateUrl: 'loan.page.html'
 })
 export class LoanPage {
-    public totalLoaned: number;
-    public totalAvailable: number;
+    public totalLoanedAmount: number;
+    public totalAvailableAmount: number;
 
     public slides: LoanSlide[] = [];
     private subscriptions: Subscription[] = [];
@@ -41,23 +41,23 @@ export class LoanPage {
     ) {}
 
     ionViewDidEnter() {
-        this.account.registerSubjects(accountCallback => this.subscriptions.push(accountCallback.assetChanged(this.onColleteralChanged())));
+        this.account.registerSubjects(accountCallback => this.subscriptions.push(accountCallback.assetChanged(this.onCollateralChanged())));
     }
 
     ionViewDidLeave() {
         this.subscriptions.forEach(s => s.unsubscribe());
     }
 
-    public onColleteralChanged() {
+    public onCollateralChanged() {
         return (assets: Asset.Item[]) => {
-            this.logger.debug('[loan-page] colleteral changed');
-            const colleterals = assets.filter(a => a.Colleteral);
+            this.logger.debug('[loan-page] collateral changed');
+            const collaterals = assets.filter(a => a.Collateral);
 
             // for development
-            colleterals.push(...colleterals, ...colleterals, ...colleterals);
-            this.totalLoaned = _.sumBy(colleterals, c => c.Colleteral.loan_sum);
-            this.totalAvailable = _.sumBy(colleterals, c => c.Colleteral.available_loan_amout);
-            this.slides = SlideHelper.getSlides(colleterals, 3);
+            collaterals.push(...collaterals, ...collaterals, ...collaterals);
+            this.totalLoanedAmount = _.sumBy(collaterals, c => c.Collateral.loan_sum);
+            this.totalAvailableAmount = _.sumBy(collaterals, c => c.Collateral.available_loan_amout);
+            this.slides = SlideHelper.getSlides(collaterals, 3);
         };
     }
 

@@ -13,20 +13,20 @@
             <div class="total-loaned">
                 <div>{{'TotalLoaned' | translate}}</div>
                 <div>
-                    ${{totalLoaned}}
+                    ${{totalLoanedAmount}}
                 </div>
             </div>
             <div class="total-available">
                 <div>{{'TotalAvailable' | translate}}</div>
                 <div>
-                    ${{totalAvailable}}
+                    ${{totalAvailableAmount}}
                 </div>
             </div>
         </div>
         <ion-slides pager>
             <ion-slide *ngFor="let slide of slides">
                 <ion-list>
-                    <nw-colleteral-item *ngFor="let item of slide.items" [wallet]="item" (click)="onClick_Wallet(item)"></nw-colleteral-item>
+                    <nw-collateral-item *ngFor="let item of slide.items" [wallet]="item" (click)="onClick_Wallet(item)"></nw-collateral-item>
                 </ion-list>
             </ion-slide>
         </ion-slides>

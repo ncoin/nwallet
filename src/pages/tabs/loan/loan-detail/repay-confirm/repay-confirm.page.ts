@@ -47,7 +47,7 @@ export class RepayConfirmPage {
         this.wallet = params.get('wallet');
     }
 
-    public onColleteralChanged() {}
+    public onCollateralChanged() {}
 
     async ionViewDidEnter() {
         // this.account.registerSubjects(account => this.subscriptions.push(account.assetTransactionsChanged(this.wallet.getWalletId(), this.arrange())));

@@ -1,24 +1,24 @@
-<div class="colleteral-container">
+<div class="collateral-container">
     <div class="wallet">
         <div>
             <div class="info">
                 <img src="assets/img/symbol_{{wallet | walletToSymbol | async}}.png" />
                 <div>{{wallet | walletToFullName | async}}</div>
             </div>
-            <div>::COLLETERAL_PROGRESS_BAR::</div>
+            <div>::COLLATERAL_PROGRESS_BAR::</div>
         </div>
         <div>
             <div>{{wallet | walletToFormat}}</div>
             <div>{{wallet | walletToUSD | async}}</div>
         </div>
     </div>
-    <div class="colleteral">
+    <div class="collateral">
         <div>
             <div>
                 LTV
             </div>
             <div class="content">
-                {{wallet.Colleteral.Ltv}}%
+                {{wallet.Collateral.Ltv}}%
             </div>
         </div>
         <div>
@@ -26,7 +26,7 @@
                 Loaned
             </div>
             <div class="content">
-                ${{wallet.Colleteral.Loaned}}
+                ${{wallet.Collateral.Loaned}}
             </div>
         </div>
         <div>
@@ -34,7 +34,7 @@
                 Available
             </div>
             <div class="content">
-                ${{wallet.Colleteral.Available}}
+                ${{wallet.Collateral.Available}}
             </div>
         </div>
     </div>

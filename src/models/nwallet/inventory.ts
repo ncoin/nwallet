@@ -66,17 +66,6 @@ export class Inventory {
         this.setItems(copy);
     }
 
-    // public addOrUpdateData(data: Asset.Data): void {
-    //     const assets = this._assets.getValue();
-    //     const target = assets.find(asset => asset.getWalletId() === data.id);
-    //     if (target) {
-    //         target.updateData(data);
-    //     } else {
-    //         const item = new NWAsset.Item(data);
-    //         this.addOrUpdateItems([item]);
-    //     }
-    // }
-
     public refresh(): void {
         this.setItems(this._assets.getValue().slice());
         this._assets.next(this._assets.getValue());

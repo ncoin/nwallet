@@ -12,3 +12,5 @@ export * from './wallet-create.protocol';
 export * from './user-available-wallet.protocol';
 export * from './user-wallet-align.protocol';
 export * from './user-wallet-list.protocol';
+export * from './collateral-execute.protocol';
+export * from './collateral-transaction.protocol';

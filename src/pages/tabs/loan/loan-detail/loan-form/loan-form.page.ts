@@ -2,12 +2,8 @@ import { Component } from '@angular/core';
 import { NavController, IonicPage, NavParams } from 'ionic-angular';
 import { NWAsset } from '../../../../../models/nwallet';
 import { Subscription } from 'rxjs';
-import { ModalNavPage } from '../../../../base/modal-nav.page';
+import { LoanConfirmPage } from '../loan-confirm/loan-confirm.page';
 import { LoggerService } from '../../../../../services/common/logger/logger.service';
-import { NWalletAppService } from '../../../../../services/app/app.service';
-import { AccountService } from '../../../../../services/account/account.service';
-import { ChannelService } from '../../../../../services/nwallet/channel.service';
-import { CurrencyService } from '../../../../../services/nwallet/currency.service';
 
 @IonicPage()
 @Component({
@@ -16,31 +12,24 @@ import { CurrencyService } from '../../../../../services/nwallet/currency.servic
 })
 export class LoanFormPage {
     public wallet: NWAsset.Item;
+    public amount: number;
     private subscriptions: Subscription[] = [];
 
     public isTermAgreed = false;
-    constructor(
-        navCtrl: NavController,
-        params: NavParams,
-        parent: ModalNavPage,
-        private logger: LoggerService,
-        private app: NWalletAppService,
-        private account: AccountService,
-        private channel: ChannelService,
-        private currency: CurrencyService
-    ) {
+    constructor(private navCtrl: NavController, params: NavParams, private logger: LoggerService) {
         this.wallet = params.get('wallet');
     }
 
-    public onColleteralChanged() {}
+    public onCollateralChanged() {}
 
-    async ionViewDidEnter() {
-        const data = await this.channel.getWalletDetails(this.wallet.getWalletId());
-    }
+    async ionViewDidEnter() {}
 
     ionViewDidLeave() {
         this.subscriptions.forEach(s => s.unsubscribe());
     }
 
-    public onClick_Loan(): void {}
+    public onClick_Loan(): void {
+        this.logger.debug('[loan-form-page] navate to :', LoanConfirmPage.name);
+        this.navCtrl.push(LoanConfirmPage, { wallet: this.wallet, amount: this.amount });
+    }
 }

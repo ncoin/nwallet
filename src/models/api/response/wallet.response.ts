@@ -38,7 +38,7 @@ declare module '../../nwallet/wallet' {
         available_loan_amout: number;
         created_date: string;
         expiry_date: string;
-        expiry_date_relative_time: string; // it is not 'TimeStamp'
+        expiry_date_relative_time: string; // it is not 'TimeStamp', ex) '6 hours after'
         id: number;
         last_modified_date: string;
         loan_sum: number;

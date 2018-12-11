@@ -20,7 +20,7 @@ export class Item {
             order: this.data.align_number
         };
 
-        if (this.hasColleteral()) {
+        if (this.hasCollateral()) {
             this.data.collateral = Object.assign(new NWAsset.Collateral(), this.data.collateral);
         }
     }
@@ -57,16 +57,19 @@ export class Item {
         return this.data.address;
     }
 
-    public hasColleteral(): boolean {
+    public hasCollateral(): boolean {
         return this.data.collateral !== undefined && this.data.collateral !== undefined;
     }
 
-    public get Colleteral(): NWAsset.Collateral {
+    public get Collateral(): NWAsset.Collateral {
         return this.data.collateral;
     }
 }
 
 export class Collateral {
+    public get Id(): number {
+        return this.id;
+    }
     public get Available(): number {
         return this.available_loan_amout;
     }
@@ -79,6 +82,18 @@ export class Collateral {
 
     public get Ltv(): number {
         return this.ltv;
+    }
+
+    public get Expiry(): string {
+        return this.expiry_date;
+    }
+
+    public get Interest(): number {
+        return 9999;
+    }
+
+    public get Fee(): number {
+        return 9999;
     }
 }
 

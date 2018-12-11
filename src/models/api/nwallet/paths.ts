@@ -13,13 +13,15 @@ export const WalletApiPaths = {
         // transactionDetail: (walletId: number) => api(`wallets/${walletId}/transactions`),
         availableWallets: (userId: number) => api(`users/${userId}/wallets/available`),
         ticker: () => api(`tickers`),
-        sendAssetFee: (userId: number, walletId: number) => api(`users/${userId}/wallets/${walletId}/send/fee`)
+        sendAssetFee: (userId: number, walletId: number) => api(`users/${userId}/wallets/${walletId}/send/fee`),
+        collateralTransactions: (collateralId: number) => api(`collaterals/${collateralId}/transactions`)
     },
 
     post: {
         createWallet: () => api(`wallets`),
         sendAsset: (walletId: number) => api(`wallets/${walletId}/withdrawals`),
-        createTrust: (walletId: number) => api(`wallets/${walletId}/trust`)
+        createTrust: (walletId: number) => api(`wallets/${walletId}/trust`),
+        collateralExecute: (collateralId: number) => api(`collaterals/${collateralId}/loans`)
     },
 
     put: {

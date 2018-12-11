@@ -28,9 +28,9 @@ export interface LoanSlide {
 })
 export class LoanDetailPage extends ModalBasePage {
     public wallet: NWAsset.Item;
-    public transactionMaps: Array<{ date: string; transactions: NWTransaction.Item[]; time: number }> = new Array<{
+    public transactionMaps: { date: string; transactions: NWTransaction.Collateral[]; time: number }[] = new Array<{
         date: string;
-        transactions: NWTransaction.Item[];
+        transactions: NWTransaction.Collateral[];
         time: number;
     }>();
 
@@ -51,12 +51,13 @@ export class LoanDetailPage extends ModalBasePage {
         this.wallet = params.get('wallet');
     }
 
-    public onColleteralChanged() {}
+    public onCollateralChanged() {}
 
     async ionViewDidEnter() {
-        this.account.registerSubjects(account => this.subscriptions.push(account.assetTransactionsChanged(this.wallet.getWalletId(), this.arrange())));
-        this.channel.getWalletTransactions(this.wallet.getWalletId(), 0, this.limit);
-        const data = await this.channel.getWalletDetails(this.wallet.getWalletId());
+        const list = await this.channel.getCollateralTransactions(this.wallet.Collateral.Id, 0, this.limit);
+        const a = this.arrange();
+
+        a(list);
     }
 
     ionViewDidLeave() {
@@ -64,15 +65,13 @@ export class LoanDetailPage extends ModalBasePage {
     }
 
     private arrange() {
-        return (transactions: NWTransaction.Item[]) => {
+        return (transactions: NWTransaction.Collateral[]) => {
             if (transactions.length < 1) {
                 return;
             }
 
-            const transactionGroups = _.groupBy(transactions, (t: NWTransaction.Item) => t.groupDate);
+            const transactionGroups = _.groupBy(transactions, (t: NWTransaction.Collateral) => t.GroupDate);
 
-            // fixme --sky`
-            // todo loaned & repay filter
             Object.keys(transactionGroups).forEach(date => {
                 const transfers = transactionGroups[date];
                 const transactionMap = this.transactionMaps.find(map => map.date === date);

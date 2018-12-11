@@ -27,14 +27,10 @@ export class ChannelService {
     //#region Service methods
     private async resolve<T extends NWalletProtocolBase>(func: (userId: number) => T): Promise<T> {
         const token = await this.auth.getToken();
-        let userId,
-            auth = '';
-        if (token) {
-            userId = token.getUserId();
-            auth = token.getAuth();
-        }
+        const userId = token.getUserId();
+        const auth = token.getAuth();
 
-        const request = func(userId);
+        const request = func.length > 0 ? func(userId) : func(undefined);
         request.header = {
             authorization: auth
         };
@@ -260,6 +256,23 @@ export class ChannelService {
                 return true;
             })
             .catch(this.onError(false));
+    }
+
+    public async getCollateralTransactions(collateralId: number, offset: number = 0, limit: number = 10, order?: 'ASC' | 'DESC'): Promise<NWTransaction.Collateral[]> {
+        return await this.nClient
+            .request(
+                this.resolve(() =>
+                    new NWProtocol.CollateralTransactions({ collateralId: collateralId }).setQuery({
+                        collateralId: collateralId,
+                        limit: limit,
+                        offset: offset,
+                        order: order
+                    })
+                )
+            )
+            .then(this.onSuccess())
+            .then(p => p.response)
+            .catch(this.onError([]));
     }
 
     public async setUserNotifications(isOn: boolean): Promise<boolean> {

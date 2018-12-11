@@ -9,7 +9,6 @@ export class Item {
         Debug.assert(this.data);
     }
 
-
     public get id(): number {
         return this.data.id;
     }
@@ -74,5 +73,25 @@ export class Detail {
 
     public get confirmation(): number {
         return !this.confirmations ? 0 : this.confirmations;
+    }
+}
+
+export class Collateral {
+    public readonly GroupDate: Date;
+    public readonly CreationDate: Date;
+
+    constructor(data: Collateral) {
+        Object.assign(this, data);
+
+        this.CreationDate = new Date(data.created_date);
+        this.GroupDate = new Date(this.CreationDate.getFullYear(), this.CreationDate.getMonth(), this.CreationDate.getDate());
+    }
+
+    public get Type(): string {
+        return this.type;
+    }
+
+    public get Amount(): number {
+        return this.amount;
     }
 }

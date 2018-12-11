@@ -5,12 +5,10 @@
         </ion-title>
     </ion-navbar>
 </ion-header>
-<ion-content>
+<ion-content padding>
     <div class="loan-form-container">
         <div>
-            <div>
-                {{'TermsAndConditions' | translate}}
-            </div>
+            {{'TermsAndConditions' | translate}}
             <ion-scroll scrollY="true">
                 Terms of service (also known as terms of use and terms and conditions, commonly abbreviated as TOS
                 or
@@ -43,13 +41,51 @@
                 <ion-checkbox [(ngModel)]="isTermAgreed"></ion-checkbox>
             </ion-item>
         </div>
+        <div class="loan-status">
+            {{'CurrentLoanStatus' | translate}}
+            <div class="loan-status-content">
+                <div>
+                    <div>{{'Loaned' | translate}}</div>
+                    <div>${{wallet.Collateral.Loaned}}</div>
+                </div>
+                <div>
+                    <div>{{'Collateral' | translate}}</div>
+                    <div>{{wallet.Collateral.Lock}} {{wallet | walletToSymbol | async}}</div>
+                </div>
+                <div>
+                    <div>{{'LTV' | translate}}</div>
+                    <div>{{wallet.Collateral.Ltv}}%</div>
+                </div>
+                <div>
+                    <div>{{'Expiry' | translate}}</div>
+                    <div>{{wallet.Collateral.Expiry}}</div>
+                </div>
+            </div>
+            {{'Loan' | translate}} {{'Available' | translate}}
+            <div class="loan-status-content">
+                <div>
+                    <div>{{'Available' | translate}}</div>
+                    <div>${{wallet.Collateral.Available}}</div>
+                </div>
+                <div>
+                    <div>{{'Interest' | translate}}</div>
+                    <div>{{wallet.Collateral.Interest}}%</div>
+                </div>
+                <div>
+                    <div>{{'Fee' | translate}}</div>
+                    <div>${{wallet.Collateral.Fee}}%</div>
+                </div>
+                <div class="empty-block"></div>
+            </div>
+        </div>
         <div>
             <div>
-
+                <div>{{'EnterLoanAmount'| translate}}</div>
+                <ion-input [(ngModel)]="amount" type="number"></ion-input>
             </div>
-            <div>
-                <button>{{'Loan'| translate}}</button>
-            </div>
+            <button ion-item class="nw-button center" (click)="onClick_Loan()" [disabled]="!(isTermAgreed && amount> 0)">
+                {{'Loan' | translate}}
+            </button>
         </div>
     </div>
 </ion-content>
