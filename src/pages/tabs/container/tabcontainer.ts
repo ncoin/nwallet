@@ -35,12 +35,12 @@ export class TabcontainerPage {
     selectedIndex: number;
     tabItems: TabItemContext[] = [
         {
-            component: TransferHistoryPage,
-            icon: 'nwallet-transfer',
+            component: ReceivePage,
+            icon: 'nwallet-receive',
             isEnable: true
         },
         {
-            component: ReceivePage,
+            component: TransferHistoryPage,
             icon: 'nwallet-buy',
             isEnable: true
         },
