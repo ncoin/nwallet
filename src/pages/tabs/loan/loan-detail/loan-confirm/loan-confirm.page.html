@@ -1,12 +1,12 @@
-<ion-header class="header">
-    <ion-navbar class="navBar">
+<ion-header>
+    <ion-navbar>
         <ion-title>
             {{wallet | walletToFullName | async}} {{'Loan' | translate}}
         </ion-title>
     </ion-navbar>
 </ion-header>
-<ion-content>
-    <div>
+<ion-content padding>
+    <div class="loan-confirm-content">
         <div>
             {{'Confirm'}}{{wallet | walletToFullName | async}}{{'Loan' | translate}}
         </div>
@@ -42,7 +42,10 @@
                 {{wallet.Collateral.Expiry}}
             </div>
         </div>
-        <button class="nw-button" (click)="onClick_Cancel()">{{'Cancel' | translate}}</button>
-        <button class="nw-button" (click)="onClick_Confirm()">{{'Confirm' | translate}}</button>
+        <div>
+            <button ion-item class="nw-button center" (click)="onClick_Cancel()">{{'Cancel' | translate}}</button>
+            <button ion-item class="nw-button center" (click)="onClick_Confirm()">{{'Confirm' | translate}}</button>
+        </div>
+
     </div>
 </ion-content>

@@ -21,7 +21,8 @@ export const WalletApiPaths = {
         createWallet: () => api(`wallets`),
         sendAsset: (walletId: number) => api(`wallets/${walletId}/withdrawals`),
         createTrust: (walletId: number) => api(`wallets/${walletId}/trust`),
-        collateralExecute: (collateralId: number) => api(`collaterals/${collateralId}/loans`)
+        collateralRepay: (collateralId: number) => api(`collaterals/${collateralId}/repay`),
+        collateralLoan: (collateralId: number) => api(`collaterals/${collateralId}/loans`)
     },
 
     put: {
@@ -29,6 +30,7 @@ export const WalletApiPaths = {
         walletAlign: (userId: number) => api(`users/${userId}/wallets`),
         walletVisibility: (userId: number, walletId: number) => api(`wallets/${walletId}`),
         sendAssetXdr: (walletId: number) => api(`wallets/${walletId}/withdrawals`),
-        executeTrust: (walletId: number) => api(`wallets/${walletId}/trust`)
+        executeTrust: (walletId: number) => api(`wallets/${walletId}/trust`),
+        collateralRepayExecute: (collateralId: number) => api(`collaterals/${collateralId}/repay`)
     }
 };

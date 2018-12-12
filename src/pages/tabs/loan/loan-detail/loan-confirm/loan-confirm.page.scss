@@ -1,1 +1,13 @@
-page-loan-confirm {}
+page-loan-confirm {
+    .loan-confirm-content {
+        >div {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        button {
+            width: 40%;
+        }
+
+    }
+}

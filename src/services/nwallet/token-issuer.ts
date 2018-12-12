@@ -37,7 +37,6 @@ export class TokenIssuer {
             this.isProcessing = true;
 
             if (this.tokenCache && !this.tokenCache.isExpired()) {
-                this.isProcessing = false;
                 this.logger.debug('[token-issuer] process result : cache token');
                 return this.tokenCache;
             }
@@ -48,6 +47,7 @@ export class TokenIssuer {
                     this.logger.debug('[token-issuer] process result : invalid token', token);
                 } else {
                     this.logger.debug('[token-issuer] process result : success');
+                    this.flush();
                     this.tokenCache = token;
                     this.tokenSource.setResult(this.tokenCache);
                 }

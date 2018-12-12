@@ -12,7 +12,7 @@ import { Debug } from '../../utils/helper/debug';
 @Injectable()
 export class ChannelService {
     private subscriptionMap = new Map<string, Subject<any>>();
-    constructor(private logger: LoggerService, private nClient: NetworkService, private auth: AuthorizationService, private notification: NotificationService) {}
+    constructor(private logger: LoggerService, private network: NetworkService, private auth: AuthorizationService, private notification: NotificationService) {}
 
     //#region prococol subscribe methopds
     private getOrAdd(key: string): Subject<any> {
@@ -72,7 +72,7 @@ export class ChannelService {
     //#endregion
 
     public async fetchTicker(): Promise<NWData.Ticker[]> {
-        return await this.nClient
+        return await this.network
             .request(this.resolve(() => new NWProtocol.GetTickers()))
             .then(this.onSuccess())
             .then(this.onBroadcast())
@@ -81,7 +81,7 @@ export class ChannelService {
     }
 
     public async fetchCurrencies(): Promise<NWData.Currency[]> {
-        return await this.nClient
+        return await this.network
             .request(this.resolve(userId => new NWProtocol.GetCurrency()))
             .then(this.onSuccess())
             .then(this.onBroadcast())
@@ -90,7 +90,7 @@ export class ChannelService {
     }
 
     public async getAssets(): Promise<NWAsset.Item[]> {
-        return await this.nClient
+        return await this.network
             .request(this.resolve(userId => new NWProtocol.GetWallets({ userId: userId })))
             .then(this.onSuccess())
             .then(this.onBroadcast())
@@ -99,7 +99,7 @@ export class ChannelService {
     }
 
     public async getWalletDetails(walletId: number): Promise<NWAsset.Data> {
-        return await this.nClient
+        return await this.network
             .request(this.resolve(userId => new NWProtocol.GetWalletDetail({ userId: userId, walletId: walletId })))
             .then(this.onSuccess())
             .then(this.onBroadcast())
@@ -108,7 +108,7 @@ export class ChannelService {
     }
 
     public async getWalletTransactions(walletId: number, offset: number, limit: number): Promise<NWTransaction.Item[]> {
-        return await this.nClient
+        return await this.network
             .request(
                 this.resolve(userId =>
                     new NWProtocol.GetWalletTransactions({ userId: userId, walletId: walletId }).setQuery(query => {
@@ -124,7 +124,7 @@ export class ChannelService {
     }
 
     public async getSendAssetFee(walletId: number): Promise<number> {
-        return await this.nClient
+        return await this.network
             .request(this.resolve(userId => new NWProtocol.GetSendAssetFee({ userId: userId, walletId: walletId })))
             .then(this.onSuccess())
             .then(p => p.response)
@@ -132,7 +132,7 @@ export class ChannelService {
     }
 
     public async sendAsset(walletId: number, address: string, amount: number): Promise<boolean> {
-        return await this.nClient
+        return await this.network
             .request(
                 this.resolve(u =>
                     new NWProtocol.SendAsset(walletId).setPayload(payload => {
@@ -151,7 +151,7 @@ export class ChannelService {
     }
 
     public async sendNCNAsset(walletId: number, address: string, amount: number): Promise<boolean> {
-        return await this.nClient
+        return await this.network
             .request(
                 this.resolve(u =>
                     new NWProtocol.SendAsset(walletId).setPayload(payload => {
@@ -166,7 +166,7 @@ export class ChannelService {
                 Debug.assert(protocol.isXdr());
                 // todo extract
                 const signed = this.auth.signXdr(protocol.response.xdr);
-                return await this.nClient
+                return await this.network
                     .request(
                         this.resolve(u =>
                             new NWProtocol.SendAssetXdr(walletId).setPayload({
@@ -184,7 +184,7 @@ export class ChannelService {
     }
 
     public async changeWalletOrder(align: number[]) {
-        return await this.nClient
+        return await this.network
             .request(
                 this.resolve(userId =>
                     new NWProtocol.SetWalletAlign({ userId: userId }).setPayload(payload => {
@@ -199,7 +199,7 @@ export class ChannelService {
     }
 
     public async changeWalletVisibility(walletId: number, isVisible: boolean): Promise<void> {
-        this.nClient
+        this.network
             .request(
                 this.resolve(userId =>
                     new NWProtocol.WalletOptionChange({ userId: userId, walletId: walletId }).setPayload(payload => {
@@ -213,7 +213,7 @@ export class ChannelService {
     }
 
     public async getAvailableWallets(): Promise<NWAsset.Available[]> {
-        return await this.nClient
+        return await this.network
             .request(this.resolve(userId => new NWProtocol.GetAvailableWallet({ userId: userId })))
             .then(this.onSuccess())
             .then(this.onBroadcast())
@@ -222,7 +222,7 @@ export class ChannelService {
     }
 
     public async createWallet(available: NWAsset.Available): Promise<boolean> {
-        return await this.nClient
+        return await this.network
             .request(this.resolve(userId => new NWProtocol.CreateWallet().setPayload({ userId: userId, currencyId: available.Id, bitgoWalletId: available.WalletId })))
             .then(this.onSuccess())
             .then(this.onBroadcast())
@@ -232,13 +232,13 @@ export class ChannelService {
 
     public async createNCNWallet(): Promise<boolean> {
         const address = this.auth.getNCNAddress();
-        return await this.nClient
+        return await this.network
             .request(this.resolve(userId => new NWProtocol.CreateNCNWallet().setPayload({ userId: userId, currencyId: NWConstants.NCN.currencyId, ncoinPublicKey: address })))
             .then(this.onSuccess())
             .then(this.onBroadcast())
             .then(async protocol => {
                 const walletId = protocol.response.id;
-                const xdr = await this.nClient
+                const xdr = await this.network
                     .request(this.resolve(() => new NWProtocol.CreateWalletTrust().setPayload({ walletId: walletId })))
                     .then(this.onSuccess())
                     .then(trustProtocol => trustProtocol.response.xdr)
@@ -247,7 +247,7 @@ export class ChannelService {
                 if (xdr !== '') {
                     const signedXdr = this.auth.signXdr(xdr);
 
-                    await this.nClient
+                    await this.network
                         .request(this.resolve(() => new NWProtocol.ExecuteWalletTrust().setPayload({ walletId: walletId, xdr: signedXdr })))
                         .then(this.onSuccess())
                         .catch(this.onError(''));
@@ -259,7 +259,7 @@ export class ChannelService {
     }
 
     public async getCollateralTransactions(collateralId: number, offset: number = 0, limit: number = 10, order?: 'ASC' | 'DESC'): Promise<NWTransaction.Collateral[]> {
-        return await this.nClient
+        return await this.network
             .request(
                 this.resolve(() =>
                     new NWProtocol.CollateralTransactions({ collateralId: collateralId }).setQuery({
@@ -271,12 +271,50 @@ export class ChannelService {
                 )
             )
             .then(this.onSuccess())
-            .then(p => p.response)
+            .then(p => p.data)
             .catch(this.onError([]));
     }
 
+    public async requestCollateralLoan(collateralId: number, amount: number): Promise<boolean> {
+        return await this.network
+            .request(
+                this.resolve(() =>
+                    new NWProtocol.CollateralLoan({ collateralId: collateralId }).setPayload({
+                        collateralId: collateralId,
+                        amount: amount
+                    })
+                )
+            )
+            .then(this.onSuccess())
+            .then(() => true)
+            .catch(this.onError(false));
+    }
+
+    public async requestCollateralRepay(collateralId: number, amount: number): Promise<boolean> {
+        return await this.network
+            .request(
+                this.resolve(() =>
+                    new NWProtocol.CreateCollateralRepay({ collateralId: collateralId }).setPayload({
+                        collateralId: collateralId,
+                        amount: amount
+                    })
+                )
+            )
+            .then(this.onSuccess())
+            .then(async protocol => {
+                Debug.assert(protocol.isXdr());
+                const signedXdr = this.auth.signXdr(protocol.response.xdr);
+                return await this.network
+                    .request(this.resolve(() => new NWProtocol.ExecuteCollateralRepay({ collateralId: collateralId }).setPayload({ collateralId: collateralId, xdr: signedXdr })))
+                    .then(this.onSuccess())
+                    .then(repayProtocol => repayProtocol.response.success)
+                    .catch(this.onError(false));
+            })
+            .catch(this.onError(false));
+    }
+
     public async setUserNotifications(isOn: boolean): Promise<boolean> {
-        return await this.nClient
+        return await this.network
             .request(
                 this.resolve(userId =>
                     new NWProtocol.SetConfigurations({ userId: userId }).setPayload({

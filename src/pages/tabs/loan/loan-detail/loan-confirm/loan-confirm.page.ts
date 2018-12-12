@@ -49,5 +49,6 @@ export class LoanConfirmPage implements OnDestroy {
     }
 
     public async onClick_Confirm(): Promise<void> {
+        this.channel.
     }
 }

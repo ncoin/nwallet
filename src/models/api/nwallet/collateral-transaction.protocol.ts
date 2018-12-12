@@ -8,6 +8,8 @@ export class CollateralTransactions extends NWalletProtocolBase<
     NoPayload,
     NWResponse.Transaction.Collateral[]
 > {
+    public data: NWTransaction.Collateral[];
+
     public method = MethodTypes.GET;
     constructor(private path: { collateralId: number }) {
         super();
@@ -25,7 +27,7 @@ export class CollateralTransactions extends NWalletProtocolBase<
     }
 
     public manufacture() {
-        this.response = this.response.map(c => new NWTransaction.Collateral(c));
+        this.data = this.response.map(c => new NWTransaction.Collateral(c));
     }
 
     public url: () => string = () => WalletApiPaths.get.collateralTransactions(this.path.collateralId);
