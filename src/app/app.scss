@@ -297,6 +297,18 @@ ion-tabs[name=conference] .tabbar a.tab-button:nth-child(5)[aria-selected=true] 
     font-weight: 500;
 }
 
+.btn.transparent {
+    background: transparent;
+    border: 1px #9f824e solid;
+}
+
+.btn.transparent h3,
+.btn.transparent ion-label,
+.btn.transparent span {
+    color: #b89e6e;
+    font-weight: 500;
+}
+
 
 // ionic buttons
 .bar-button-default-ios,

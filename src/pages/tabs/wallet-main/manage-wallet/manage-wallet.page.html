@@ -1,7 +1,7 @@
 <ion-header>
     <ion-navbar>
         <ion-title>
-            {{ 'ManageWallet' | translate}}
+            <img src="assets/img/title_manage_wallet.png" />
         </ion-title>
         <!-- <button class="refresh-button"><ion-icon name="md-refresh"></ion-icon></button> -->
     </ion-navbar>
@@ -25,5 +25,10 @@
     </div>
 </ion-content>
 <ion-footer>
-    <button class="btn default" ion-button block (click)="onClick_addWallets()">Add Wallets</button>
+    <button class="btn transparent" ion-button block (click)="onClick_addWallets()">
+        <ion-label>
+            <fa-icon name="plus"></fa-icon>
+            <span>Add Wallets</span>
+        </ion-label>
+    </button>
 </ion-footer>
