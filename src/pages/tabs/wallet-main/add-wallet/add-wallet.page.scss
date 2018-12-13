@@ -4,9 +4,9 @@ add-wallet {
         background-size: cover;
     }
     .search {
-        height: 30px;
+        height: 40px;
         display: grid;
-        grid-template-columns: 10% 80% 10%;
+        grid-template-columns: 0 100% 0;
 
         div {
             grid-column: 2;
@@ -16,42 +16,65 @@ add-wallet {
                 z-index: 1;
                 position: absolute;
                 padding : 9px 0 0 10px;
-                color : $color-secondary;
+                color : rgb(196, 187, 174);
+                font-size: 1.8em;
             }
             .input {
-                border-radius: 10px;
-                padding: 0 0 0 30px;
+                border-radius: 20px;
+                padding: 0 0 0 35px;
+                background: rgb(83, 76, 66);
                 display: block;
                 height: 100%;
-                color: black;
-                width: 100%
+                color: rgb(196, 187, 174);
+                border: 0;
+                width: 100%;
+                font-size: 1.8rem;
+            }
 
+            .input::placeholder,
+            .input::-webkit-input-placeholder,
+            .input::-moz-placeholder,
+            .input::-ms-input-placeholder,
+            .input:-ms-input-placeholder,
+            .input:-moz-placeholder {
+                color: rgba(196, 187, 174, 0.4);
             }
         }
     }
 
     .add-asset-list {
-        margin: 3% 0 0 0;
+        margin: 7% 0 0 0;
         .asset {
             height: 70px;
             display: grid;
             grid-template-columns: 70px 2fr 1fr;
-            background-color: $border-color-7a;
-            border : 1px solid $border-color;
+            margin: 0 0 20px 0;
             border-radius: 10px;
-            margin: 5px 0 0 0;
+            -moz-border-radius: 10px;
+            -webkit-border-radius: 10px;
+
             img {
-                margin: auto 0 auto 5px;
+                margin: auto 0 auto 12px;
                 grid-column: 1;
+                height: 65%;
             }
             div {
                 font-size: 2rem;
                 margin: auto 0 auto 5px;
                 grid-column: 2;
+                color: rgb(204, 204, 204);
             }
             button {
                 margin: auto 10px auto 0;
                 grid-column: 3;
+                background: rgb(67, 62, 54);
+                border: rgb(138, 113, 69) 2px solid;
+                border-radius: 5px;
+                -moz-border-radius: 5px;
+                -webkit-border-radius: 5px;
+                color: rgb(207, 174, 113);
+                padding: 12px 0;
+                font-size: 2rem;
             }
         }
     }

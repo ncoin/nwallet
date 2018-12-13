@@ -1,7 +1,7 @@
 <ion-header>
     <ion-navbar>
         <ion-title>
-            {{'AddWallet' | translate}}
+            <img src="assets/img/title_add_wallet.png" />
         </ion-title>
     </ion-navbar>
 </ion-header>
@@ -18,7 +18,7 @@
         <ion-list>
             <!-- inactive item preload -->
             <div *ngFor="let available of availables">
-                <div class="asset">
+                <div class="asset btn default">
                     <img src="assets/img/symbol_{{available.Symbol}}.png" />
                     <div>{{available.Symbol}}</div>
                     <button (click)="onClick_AddAsset(available)">Add</button>

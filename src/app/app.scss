@@ -7,9 +7,7 @@
         @media (max-width: $max) {
             @content;
         }
-    }
-
-    @else {
+    } @else {
         @content;
     }
 }
@@ -302,6 +300,13 @@ ion-tabs[name=conference] .tabbar a.tab-button:nth-child(5)[aria-selected=true] 
     border: 1px #9f824e solid;
 }
 
+.btn.transparent:hover,
+.btn.transparent:active,
+.btn.transparent:visited {
+    background: transparent;
+    border: 1px #9f824e solid;
+}
+
 .btn.transparent h3,
 .btn.transparent ion-label,
 .btn.transparent span {
@@ -327,12 +332,12 @@ ion-tabs[name=conference] .tabbar a.tab-button:nth-child(5)[aria-selected=true] 
 
 
 // ios list
-.list-ios>.item-block:first-child {
+.list-ios > .item-block:first-child {
     border-top: 0;
 }
 
-.list-ios>.item-block:last-child,
-.list-ios>.item-wrapper:last-child .item-block {
+.list-ios > .item-block:last-child,
+.list-ios > .item-wrapper:last-child .item-block {
     border-bottom: 0;
 }
 
@@ -656,7 +661,7 @@ $toggle-icon-background-on: #364231;
 
             padding: 8px 4px;
 
-            >button {
+            > button {
                 flex-grow: 1;
                 margin: 0px 4px;
             }
@@ -672,7 +677,7 @@ $toggle-icon-background-on: #364231;
             border-top: unset;
             border-bottom: unset;
 
-            >button {
+            > button {
                 .alert-radio-label {
                     color: $foreground-content;
                 }
@@ -716,24 +721,23 @@ $toggle-icon-background-on: #364231;
     .alert-message {
         max-height: unset;
 
-        &>div {
+        & > div {
             display: flex;
             flex-direction: column;
-            font-size: calc(2vw + 1.5vh);
-            ;
+            font-size: calc(2vw + 1.5vh);;
 
 
-            >div {
+            > div {
                 display: flex;
                 flex-direction: row;
                 justify-content: space-between;
                 flex-flow: wrap;
 
-                >div:nth-child(1) {
+                > div:nth-child(1) {
                     color: $foreground-header;
                 }
 
-                >div:nth-child(2) {
+                > div:nth-child(2) {
                     color: $foreground-content-lightgray;
                     text-align: right;
                 }
