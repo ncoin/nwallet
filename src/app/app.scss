@@ -338,7 +338,7 @@ ion-tabs[name=conference] .tabbar a.tab-button:nth-child(5)[aria-selected=true] 
 
 .list-md[inset] .item:first-child,
 .list-wp[inset] .item:first-child,
-.list-mp[inset] .item:last-child,
+.list-md[inset] .item:last-child,
 .list-wp[inset] .item:last-child {
     -webkit-border-radius: $basic-button-radius;
     -moz-border-radius: $basic-button-radius;

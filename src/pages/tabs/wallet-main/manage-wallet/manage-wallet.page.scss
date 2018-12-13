@@ -24,17 +24,25 @@ manage-wallet {
 
     .asset-ion-item {
         display: block;
-        background: $border-color-7a;
-        border: 1px solid $border-color;
+        background: $background-button-ncoin;
+        border: 0;
         border-radius: 10px;
         margin-bottom: 10px;
 
+        .item-inner {
+            height: 100%;
+
+            ion-label {
+                margin: 0;
+            }
+        }
+
         .asset-container {
             display: grid;
-            grid-template-columns: 25px 1fr 15px 50px;
+            grid-template-columns: 35px 1fr 15px 60px;
 
             .asset-item {
-                height: 100%;
+                height: auto;
                 margin: auto 0;
             }
 
@@ -44,22 +52,42 @@ manage-wallet {
 
             .symbol {
                 grid-column: 2;
+                padding-left: 10px;
             }
 
             .order {
                 grid-column: 3;
             }
 
-            .isShow {
+            .toggle {
                 grid-column: 4;
+                color: rgba(255, 255, 255, 0.4);
+                padding: 8px 0;
+                font-size: 1.5rem;
+                font-weight: 600;
+                background: transparent;
+                border: rgba(255, 255, 255, 0.4) 2px solid;
+                border-radius: 4px;
+                -moz-border-radius: 4px;
+                -webkit-border-radius: 4px;
             }
         }
+    }
+
+    .asset-ion-item.NCN {
+        background: $background-button-ncoin !important;
+    }
+    .asset-ion-item.isShow {
+        background: $background-button-asset-show;
+    }
+    .asset-ion-item.isHide {
+        background: $background-button-asset-hide;
     }
 
     .btn.default,
     .btn.transparent{
         width: 90%;
-        height: 3em;
+        height: 3.5em;
         margin: 0 auto 5% auto;
     }
 

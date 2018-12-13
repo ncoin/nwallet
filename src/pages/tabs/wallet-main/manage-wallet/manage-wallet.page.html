@@ -10,13 +10,14 @@
     <div *ngIf="assets && assets.length > 0">
         <ion-list reorder="true" (ionItemReorder)="reorderItems($event)">
             <!-- inactive item preload -->
-            <ion-item class="asset-ion-item" *ngFor="let asset of assets" >
+            <ion-item class="asset-ion-item btn default {{asset.getSymbol()}}" *ngFor="let asset of assets"
+                      [ngClass]="{'isShow': asset.option.isShow, 'isHide': !asset.option.isShow }" >
                 <div class="asset-container">
                     <img class="asset-item img" src="assets/img/symbol_{{asset.getSymbol()}}.png" />
                     <div class="asset-item symbol">
                         {{asset.getSymbol()}}
                     </div>
-                    <button class="asset-item isShow" (click)="onChangeVisibility(asset)">
+                    <button class="asset-item toggle" (click)="onChangeVisibility(asset)">
                         {{asset.option.isShow}}
                     </button>
                 </div>
