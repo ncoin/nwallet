@@ -1,13 +1,8 @@
-import { Component } from '@angular/core';
-import { NavController, ModalController, LoadingController, Loading, IonicPage, InfiniteScroll } from 'ionic-angular';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { NavController, IonicPage, InfiniteScroll } from 'ionic-angular';
 import _ from 'lodash';
 import { NWAsset, NWTransaction } from '../../../../models/nwallet';
 import { LoggerService } from '../../../../services/common/logger/logger.service';
-import { NWalletAppService } from '../../../../services/app/app.service';
-import { AccountService } from '../../../../services/account/account.service';
-import { CurrencyService } from '../../../../services/nwallet/currency.service';
-import { Asset } from '../../../../models/api/response';
-import { SlideHelper } from '../../../../tools/helper/slide.helper';
 import { Subscription } from 'rxjs/Subscription';
 import { ChannelService } from '../../../../services/nwallet/channel.service';
 import { ModalBasePage } from '../../../base/modal.page';
@@ -16,6 +11,8 @@ import { ModalNavPage } from '../../../base/modal-nav.page';
 import { WalletTransactionDetailPage } from '../../wallet-main/wallet-detail/wallet-transaction-detail.page';
 import { NWTransition } from '../../../../tools/extension/transition';
 import { LoanFormPage } from './loan-form/loan-form.page';
+import { RepayFormPage } from './repay-form/repay-form.page';
+import { AccountService } from '../../../../services/account/account.service';
 
 export interface LoanSlide {
     items: NWAsset.Item[];
@@ -26,7 +23,7 @@ export interface LoanSlide {
     selector: 'page-loan-detail',
     templateUrl: 'loan-detail.page.html'
 })
-export class LoanDetailPage extends ModalBasePage {
+export class LoanDetailPage extends ModalBasePage implements OnDestroy, OnInit {
     public wallet: NWAsset.Item;
     public transactionMaps: { date: string; transactions: NWTransaction.Collateral[]; time: number }[] = new Array<{
         date: string;
@@ -37,39 +34,38 @@ export class LoanDetailPage extends ModalBasePage {
     private subscriptions: Subscription[] = [];
     private skip = 0;
     private limit = 10;
-    constructor(
-        navCtrl: NavController,
-        params: NavParams,
-        parent: ModalNavPage,
-        private logger: LoggerService,
-        private app: NWalletAppService,
-        private account: AccountService,
-        private channel: ChannelService,
-        private currency: CurrencyService
-    ) {
+    constructor(navCtrl: NavController, params: NavParams, parent: ModalNavPage, private logger: LoggerService, private account: AccountService, private channel: ChannelService) {
         super(navCtrl, params, parent);
         this.wallet = params.get('wallet');
     }
 
-    public onCollateralChanged() {}
-
-    async ionViewDidEnter() {
-        const list = await this.channel.getCollateralTransactions(this.wallet.Collateral.Id, 0, this.limit);
-        const a = this.arrange();
-
-        a(list);
+    async ngOnInit(): Promise<void> {
+        this.account.registerSubjects(a => {
+            this.subscriptions.push(
+                a.assetChanged(assets => {
+                    const target = assets.find(asset => asset.getCurrencyId() === this.wallet.getCurrencyId());
+                    if (target) {
+                        this.wallet = target;
+                    }
+                })
+            );
+            this.subscriptions.push(a.collateralTransactionsChanged(this.wallet.Collateral.id, this.arrange()));
+        });
     }
 
-    ionViewDidLeave() {
+    ionViewDidEnter() {
+        this.channel.getCollateralTransactions(this.wallet.Collateral.Id, 0, this.limit);
+    }
+
+    ngOnDestroy(): void {
         this.subscriptions.forEach(s => s.unsubscribe());
     }
 
     private arrange() {
-        return (transactions: NWTransaction.Collateral[]) => {
+        return (transactions: NWTransaction.Collateral[]): void => {
             if (transactions.length < 1) {
                 return;
             }
-
             const transactionGroups = _.groupBy(transactions, (t: NWTransaction.Collateral) => t.GroupDate);
 
             Object.keys(transactionGroups).forEach(date => {
@@ -84,12 +80,12 @@ export class LoanDetailPage extends ModalBasePage {
                     this.transactionMaps.sort((map1, map2) => map2.time - map1.time);
                 }
             });
-            this.skip = transactions.length;
+            this.skip += transactions.length;
         };
     }
 
     public async doInfinite(infinite: InfiniteScroll): Promise<void> {
-        const transactions = await this.channel.getWalletTransactions(this.wallet.getWalletId(), this.skip, this.limit);
+        const transactions = await this.channel.getCollateralTransactions(this.wallet.Collateral.Id, this.skip, this.limit);
         if (transactions.length < 1) {
             this.logger.debug('[loan-detail-page] response transfers length =', transactions.length);
             infinite.enable(false);
@@ -107,5 +103,7 @@ export class LoanDetailPage extends ModalBasePage {
         this.navCtrl.push(LoanFormPage, { wallet: this.wallet });
     }
 
-    public onClick_Repay(): void {}
+    public onClick_Repay(): void {
+        this.navCtrl.push(RepayFormPage, { wallet: this.wallet });
+    }
 }

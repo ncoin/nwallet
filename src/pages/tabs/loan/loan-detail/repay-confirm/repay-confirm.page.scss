@@ -1,1 +1,8 @@
-page-repay-confirm {}
+page-repay-confirm {
+    .repay-confirm-container>div {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .buttons {}
+}

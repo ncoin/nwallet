@@ -1,0 +1,77 @@
+<ion-header>
+    <ion-navbar hideBackButton="true">
+        <ng-container [ngSwitch]="type">
+            <ion-title *ngSwitchCase="'repay'">
+                {{'Repay' | translate}}
+            </ion-title>
+            <ion-title *ngSwitchCase="'loan'">
+                {{'Loan' | translate}}
+            </ion-title>
+        </ng-container>
+    </ion-navbar>
+</ion-header>
+<ion-content>
+    <div>
+        <ng-container [ngSwitch]="type">
+            <div *ngSwitchCase="'repay'">
+                <!-- todo fixme (not enough time t.t) -->
+                <ng-container *ngIf="isSuccess">
+                    <div>{{'RepaySuccess' | translate}}</div>
+                    <div>
+                        {{'RepaidAmount' | translate}} : ${{amount}}
+                    </div>
+                    <div>
+                        {{'TotalLoanedAmount' | translate}} : ${{totalLoanedAmount}}
+                    </div>
+                    <div>
+                        {{'LTV' | translate}} : {{wallet.Collateral.Ltv}}%
+                    </div>
+                    <div>
+                        {{'Expiry' | translate}} : {{'LoanComplete' | translate}}
+                    </div>
+                </ng-container>
+                <ng-container *ngIf="!isSuccess">
+                    <div>{{'RepayFailed' | translate}}</div>
+                    <div>{{'RepayWasNotSuccessful' | translate}}</div>
+                    <div>{{'Reason' | translate}} : {{result.reason}}</div>
+                </ng-container>
+            </div>
+            <div *ngSwitchCase="'loan'">
+                <ng-container *ngIf="isSuccess">
+                    <div>{{'LoanSuccess' | translate}}</div>
+                    <div>
+                        {{'LoanedAmount' | translate}} : ${{amount}}
+                    </div>
+                    <div>
+                        {{'TotalLoanedAmount' | translate}} : ${{totalLoanedAmount}}
+                    </div>
+                    <div>
+                        {{'LTV' | translate}} : {{wallet.Collateral.Ltv}}%
+                    </div>
+                    <div>
+                        {{'Expiry' | translate}} : {{'LoanComplete' | translate}}
+                    </div>
+                </ng-container>
+                <ng-container *ngIf="!isSuccess">
+                    <div>{{'LoanFailed' | translate}}</div>
+                    <div>{{'LoanWasNotSuccessful' | translate}}</div>
+                    <div>{{'Reason' | translate}} : {{result.reason}}</div>
+                </ng-container>
+            </div>
+        </ng-container>
+
+
+        <button ion-item class="nw-button center" (click)="onClick_Again()">
+            <ng-container [ngSwitch]="type">
+                <ion-title *ngSwitchCase="'repay'">
+                    {{'RepayAgain' | translate}}
+                </ion-title>
+                <ion-title *ngSwitchCase="'loan'">
+                    {{'LoanAgain' | translate}}
+                </ion-title>
+            </ng-container>
+        </button> <button ion-item class="nw-button center" (click)="onClick_ViewHistory()">
+            {{'ViewHistory' | translate}}
+        </button>
+    </div>
+</ion-content>

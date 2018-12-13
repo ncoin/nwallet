@@ -5,11 +5,15 @@ import { NWTransaction, NWAsset } from '../nwallet';
 
 export class Inventory {
     private _assets: BehaviorSubject<Asset.Item[]>;
+    /** key : wallet Id */
     private _transactions: Map<number, BehaviorSubject<NWTransaction.Item[]>>;
+    /** key : collateral Id */
+    private _collaterals: Map<number, BehaviorSubject<NWTransaction.Collateral[]>>;
 
     constructor() {
         this._assets = new BehaviorSubject<Asset.Item[]>([]);
         this._transactions = new Map<number, BehaviorSubject<NWTransaction.Item[]>>();
+        this._collaterals = new Map<number, BehaviorSubject<NWTransaction.Collateral[]>>();
     }
 
     public init(data: Inventory): this {
@@ -31,19 +35,32 @@ export class Inventory {
         return this._transactions.get(walletId);
     }
 
+    public getCollateralTransaction(collateralId: number): BehaviorSubject<NWTransaction.Collateral[]> {
+        if (!this._collaterals.has(collateralId)) {
+            this._collaterals.set(collateralId, new BehaviorSubject<NWTransaction.Collateral[]>([]));
+        }
+
+        return this._collaterals.get(collateralId);
+    }
+
+    public insertCollateralTransaction(collateralId: number, collaterals: NWTransaction.Collateral[]): BehaviorSubject<NWTransaction.Collateral[]> {
+        const subject = this.getCollateralTransaction(collateralId);
+        const sources = subject.getValue();
+        const result = _.filter(collaterals, c => !sources.find(s => s.Id === c.Id));
+        sources.push(...result);
+        subject.next(sources);
+        return subject;
+    }
+
     public insertTransactions(walletId: number, items: NWTransaction.Item[]) {
         const transactions = this.getTransaction(walletId).getValue();
-        items.forEach(item => {
-            if (!_.find(transactions, t => t.id === item.id)) {
-                transactions.push(item);
-            }
-        });
-
+        const result = _.filter(items, c => !transactions.find(s => s.id === c.id));
+        transactions.push(...result);
         transactions.sort((t1, t2) => t2.id - t1.id);
-
         this.getTransaction(walletId).next(transactions);
     }
 
+    // todo
     public setItems(items: Asset.Item[]): void {
         const asset = this._assets.getValue();
         items.sort((item, item2) => item.option.order - item2.option.order);
@@ -51,19 +68,12 @@ export class Inventory {
         asset.push(...items);
     }
 
-    public addOrUpdateItems(...items: Asset.Item[]): void {
-        let copy = this._assets.getValue().slice();
-
-        copy = _.remove(copy, target => {
-            return (
-                items.findIndex(item => {
-                    return target.getCurrencyId() === item.getCurrencyId();
-                }) > -1
-            );
-        });
-
-        copy.push(...items);
-        this.setItems(copy);
+    // todo
+    public addOrUpdateItems(...updateItems: Asset.Item[]): void {
+        let source = this._assets.getValue();
+        source = _.remove(source, target => updateItems.find(item => target.getCurrencyId() === item.getCurrencyId()));
+        source.push(...updateItems);
+        this.setItems(source);
     }
 
     public refresh(): void {

@@ -14,7 +14,7 @@
     <ng-container [ngSwitch]="transaction.transactionType">
         <div class="container receive" *ngSwitchCase="'RECEIVE'">
             <div>
-                {{'TransactionDate' | translate }} >
+                {{'TransactionDate' | translate}} >
                 <div>{{transaction.date | date: 'yyyy/mm/dd HH:mm:ss'}}</div>
             </div>
             <div>
@@ -68,6 +68,6 @@
         </div>
         <div *ngSwitchDefault></div>
     </ng-container>
-    <button ion-item class="nw-button" (click)="onExploreTransaction()">{{'ViewOnBlockChain' |translate }}</button>
+    <button ion-item class="nw-button" (click)="onExploreTransaction()">{{'ViewOnBlockChain' |translate}}</button>
 
 </ion-content>

@@ -13,4 +13,8 @@ export class AccountSubject {
     public assetTransactionsChanged(walletId: number, expr: (asset: NWTransaction.Item[]) => void): Subscription {
         return this.account.inventory.getTransaction(walletId).subscribe(expr);
     }
+
+    public collateralTransactionsChanged(walletId: number, expr: (asset: NWTransaction.Collateral[]) => void): Subscription {
+        return this.account.inventory.getCollateralTransaction(walletId).subscribe(expr);
+    }
 }

@@ -7,6 +7,16 @@
     </ion-navbar>
 </ion-header>
 <ion-content padding>
+    <div>
+        <ion-item class="asset-ion-item">
+            <div class="asset-container">
+                <img class="asset-item img" src="assets/img/symbol_{{ncn.getSymbol()}}.png" />
+                <div class="asset-item symbol">
+                    {{ncn.getSymbol()}}
+                </div>
+            </div>
+        </ion-item>
+    </div>
     <div *ngIf="assets && assets.length > 0">
         <ion-list reorder="true" (ionItemReorder)="reorderItems($event)">
             <!-- inactive item preload -->

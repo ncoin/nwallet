@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NavController, ModalController, LoadingController, Loading, IonicPage, Navbar, NavParams } from 'ionic-angular';
 import { LoggerService } from '../../../../services/common/logger/logger.service';
 import { AccountService } from '../../../../services/account/account.service';
@@ -9,18 +9,19 @@ import { ModalNavPage } from '../../../base/modal-nav.page';
 import { ModalBasePage } from '../../../base/modal.page';
 import { Subscription } from 'rxjs';
 import { ChannelService } from '../../../../services/nwallet/channel.service';
+import { NWConstants } from '../../../../models/constants';
 
 @IonicPage()
 @Component({
     selector: 'manage-wallet',
     templateUrl: 'manage-wallet.page.html'
 })
-export class ManageWalletPage extends ModalBasePage implements OnDestroy {
-    public assets: Array<NWAsset.Item>;
-    private isReorderd: boolean;
-    private subscriptions: Subscription[] = [];
-    private previous: number[] = [];
+export class ManageWalletPage extends ModalBasePage implements OnDestroy, OnInit {
+    // fixme
+    public ncn: NWAsset.Item;
 
+    public assets: NWAsset.Item[];
+    private subscriptions: Subscription[] = [];
     constructor(
         public navCtrl: NavController,
         protected navParam: NavParams,
@@ -31,27 +32,22 @@ export class ManageWalletPage extends ModalBasePage implements OnDestroy {
     ) {
         super(navCtrl, navParam, parent);
         this.assets = new Array<NWAsset.Item>();
-        this.init();
     }
 
-    ionViewWillLeave() {
-        if (this.isReorderd) {
-            this.account.registerSubjects(account => {});
-        }
+    ngOnInit() {
+        this.account.registerSubjects(subjects =>
+            this.subscriptions.push(
+                subjects.assetChanged(assets => {
+                    this.ncn = assets.find(asset => asset.getCurrencyId() === NWConstants.NCN.currencyId);
+                    this.assets = assets.slice();
+                    this.assets.splice(this.assets.indexOf(this.ncn), 1);
+                })
+            )
+        );
     }
 
     ngOnDestroy() {
         this.subscriptions.forEach(s => s.unsubscribe());
-    }
-
-    async init(): Promise<void> {
-        this.account.registerSubjects(subjects => {
-            this.subscriptions.push(
-                subjects.assetChanged(assets => {
-                    this.assets = assets;
-                })
-            );
-        });
     }
 
     public async onChangeVisibility(asset: NWAsset.Item): Promise<void> {
@@ -75,8 +71,6 @@ export class ManageWalletPage extends ModalBasePage implements OnDestroy {
                 item.option.order = idx++;
             }
         });
-
-        this.isReorderd = true;
 
         this.channel.changeWalletOrder(this.assets.map(asset => asset.getWalletId()));
     }

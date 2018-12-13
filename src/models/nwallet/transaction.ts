@@ -87,6 +87,10 @@ export class Collateral {
         this.GroupDate = new Date(this.CreationDate.getFullYear(), this.CreationDate.getMonth(), this.CreationDate.getDate());
     }
 
+    public get Id(): number {
+        return this.id;
+    }
+
     public get Type(): string {
         return this.type;
     }

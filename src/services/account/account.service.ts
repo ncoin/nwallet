@@ -11,12 +11,16 @@ import { PromiseCompletionSource } from '../../../common/models';
 import { NWConstants } from '../../models/constants';
 import { env } from '../../environments/environment';
 import { AuthorizationService } from '../nwallet/authorization.service';
+import { Observable } from 'rxjs';
 
 @Injectable()
 export class AccountService {
     private accountSource: PromiseCompletionSource<NWAccount.Account>;
     private account: NWAccount.Account;
     private streams: AccountSubject;
+
+    // for develop... for a while..
+    private isPulling = false;
 
     constructor(
         private preference: PreferenceService,
@@ -63,6 +67,18 @@ export class AccountService {
         const ncn = assets.find(asset => asset.getCurrencyId() === NWConstants.NCN.currencyId);
         if (!ncn) {
             await this.channel.createNCNWallet();
+        }
+
+        if (!this.isPulling) {
+            this.isPulling = true;
+            Observable.timer(0, 10000).subscribe({
+                next: async () => {
+                    if (await this.isExistAccount()) {
+                        this.logger.debug('[account] pulling assets ...');
+                        await this.refreshAssets();
+                    }
+                }
+            });
         }
     }
 
@@ -138,6 +154,13 @@ export class AccountService {
             // todo fixme
             if (protocol.data && protocol.data.length > 0) {
                 this.account.inventory.insertTransactions(protocol.credential.walletId, protocol.data);
+            }
+        });
+
+        this.channel.register(NWProtocol.CollateralTransactions, async protocol => {
+            // todo fixme
+            if (protocol.data && protocol.data.length > 0) {
+                this.account.inventory.insertCollateralTransaction(protocol.path.collateralId, protocol.data);
             }
         });
 

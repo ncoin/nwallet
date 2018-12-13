@@ -1,9 +1,9 @@
-import { NoQuery, MethodTypes } from '../../http/protocol';
+import { NoQuery, MethodTypes, XDRResponse } from '../../http/protocol';
 import { NWalletProtocolBase } from './_impl';
 import { WalletApiPaths } from './paths';
 
 /** NCN Wallet create protocol - 1*/
-export class CreateWalletTrust extends NWalletProtocolBase<NoQuery, { walletId: number }, { xdr: string }> {
+export class CreateWalletTrust extends NWalletProtocolBase<NoQuery, { walletId: number }, XDRResponse> {
     public method = MethodTypes.POST;
     public url = () => WalletApiPaths.post.createTrust(this.payload.walletId);
 }

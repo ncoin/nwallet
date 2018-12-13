@@ -4,8 +4,12 @@ import { WalletApiPaths } from './paths';
 
 export class CollateralLoan extends NWalletProtocolBase<NoQuery, { collateralId: number; amount: number }, { success: boolean }> {
     public method = MethodTypes.POST;
+    errorMessages = {
+        400: 'InvalidFormat|InsufficientAmount'
+    };
+    public url: () => string = () => WalletApiPaths.post.collateralLoan(this.path.collateralId);
+
     constructor(private path: { collateralId: number }) {
         super();
     }
-    public url: () => string = () => WalletApiPaths.post.collateralLoan(this.path.collateralId);
 }

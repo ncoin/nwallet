@@ -7,9 +7,9 @@ import { NWAsset } from '../../nwallet';
 
 export class CreateWallet extends NWalletProtocolBase<NoQuery, { userId: number; currencyId: number; bitgoWalletId: number }, NWAsset.Data> {
     public method = MethodTypes.POST;
-    errorMessages: {
-        400: 'InvalidFormat';
-        406: 'WalletAlreadyCreated';
+    errorMessages = {
+        400: 'InvalidFormat',
+        406: 'WalletAlreadyCreated'
     };
 
     public url = () => WalletApiPaths.post.createWallet();
@@ -19,9 +19,9 @@ export class CreateWallet extends NWalletProtocolBase<NoQuery, { userId: number;
 
 export class CreateNCNWallet extends NWalletProtocolBase<NoQuery, { userId: number; currencyId: number; ncoinPublicKey: string }, NWAsset.Data> {
     public method = MethodTypes.POST;
-    errorMessages: {
-        400: 'InvalidFormat';
-        406: 'WalletAlreadyCreated';
+    errorMessages = {
+        400: 'InvalidFormat',
+        406: 'WalletAlreadyCreated'
     };
 
     public url = () => WalletApiPaths.post.createWallet();

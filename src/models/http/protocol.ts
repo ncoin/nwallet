@@ -10,6 +10,9 @@ export class NWHttpError extends Error {
 interface HttpParam {
     [param: string]: string | string[];
 }
+export interface XDRResponse {
+    xdr: string;
+}
 export interface NoQuery {}
 export interface NoResponseData {}
 export interface NoPayload {}
@@ -58,6 +61,6 @@ export abstract class HttpProtocol {
             return `[${this.error.status}] ${this.errorMessages[this.error.status]}`;
         }
 
-        return undefined;
+        return 'UNHANDLED';
     }
 }

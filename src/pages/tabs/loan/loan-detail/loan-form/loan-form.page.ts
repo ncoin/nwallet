@@ -30,6 +30,6 @@ export class LoanFormPage {
 
     public onClick_Loan(): void {
         this.logger.debug('[loan-form-page] navate to :', LoanConfirmPage.name);
-        this.navCtrl.push(LoanConfirmPage, { wallet: this.wallet, amount: this.amount });
+        this.navCtrl.push(LoanConfirmPage, { wallet: this.wallet, amount: Number.parseFloat(this.amount.toString()) });
     }
 }

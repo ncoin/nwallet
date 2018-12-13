@@ -8,6 +8,8 @@ import { Subject, Subscription } from 'rxjs';
 import { NWalletProtocolBase } from '../../models/api/nwallet/_impl';
 import { NWConstants } from '../../models/constants';
 import { Debug } from '../../utils/helper/debug';
+import { Result } from '../../models/api/response';
+import { ResultCode } from '../../interfaces/error';
 
 @Injectable()
 export class ChannelService {
@@ -271,11 +273,12 @@ export class ChannelService {
                 )
             )
             .then(this.onSuccess())
+            .then(this.onBroadcast())
             .then(p => p.data)
             .catch(this.onError([]));
     }
 
-    public async requestCollateralLoan(collateralId: number, amount: number): Promise<boolean> {
+    public async requestCollateralLoan(collateralId: number, amount: number): Promise<Result> {
         return await this.network
             .request(
                 this.resolve(() =>
@@ -286,11 +289,15 @@ export class ChannelService {
                 )
             )
             .then(this.onSuccess())
-            .then(() => true)
-            .catch(this.onError(false));
+            .then(Result.resolve())
+            .catch(p => {
+                // todo fixme
+                this.onError()(p);
+                return Result.resolve()(p);
+            });
     }
 
-    public async requestCollateralRepay(collateralId: number, amount: number): Promise<boolean> {
+    public async requestCollateralRepay(collateralId: number, amount: number): Promise<Result> {
         return await this.network
             .request(
                 this.resolve(() =>
@@ -302,15 +309,18 @@ export class ChannelService {
             )
             .then(this.onSuccess())
             .then(async protocol => {
-                Debug.assert(protocol.isXdr());
+                Debug.assert(protocol.isXdr(), 'xdr not found, response :', protocol.response);
                 const signedXdr = this.auth.signXdr(protocol.response.xdr);
                 return await this.network
                     .request(this.resolve(() => new NWProtocol.ExecuteCollateralRepay({ collateralId: collateralId }).setPayload({ collateralId: collateralId, xdr: signedXdr })))
-                    .then(this.onSuccess())
-                    .then(repayProtocol => repayProtocol.response.success)
-                    .catch(this.onError(false));
+                    .then(this.onSuccess());
             })
-            .catch(this.onError(false));
+            .then(Result.resolve())
+            .catch(p => {
+                // todo fixme
+                this.onError()(p);
+                return Result.resolve()(p);
+            });
     }
 
     public async setUserNotifications(isOn: boolean): Promise<boolean> {

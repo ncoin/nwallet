@@ -11,7 +11,7 @@ export class CollateralTransactions extends NWalletProtocolBase<
     public data: NWTransaction.Collateral[];
 
     public method = MethodTypes.GET;
-    constructor(private path: { collateralId: number }) {
+    constructor(public path: { collateralId: number }) {
         super();
     }
 

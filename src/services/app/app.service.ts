@@ -4,9 +4,8 @@ import { Injectable } from '@angular/core';
 import { PreferenceService, Preference } from '../common/preference/preference.service';
 import { LoggerService } from '../common/logger/logger.service';
 import { NWEvent } from '../../interfaces/events';
-import { ChannelService } from '../nwallet/channel.service';
 import { PromiseCompletionSource } from '../../../common/models';
-import { ErrorCode } from '../../interfaces/error';
+import { ResultCode } from '../../interfaces/error';
 
 @Injectable()
 export class NWalletAppService {
@@ -16,7 +15,7 @@ export class NWalletAppService {
         this.fetchJobs = new PromiseCompletionSource<boolean>();
 
         this.event.subscribe(NWEvent.App.error_occured, async context => {
-            if (context.reason === ErrorCode.UnAuth) {
+            if (context.reason === ResultCode.UnAuth) {
                 this.fetchJobs.trySetResult(false);
                 this.logout();
             }

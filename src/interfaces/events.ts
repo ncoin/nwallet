@@ -1,7 +1,7 @@
 import { GetWalletTransactions } from '../models/api/nwallet';
 import { StreamType, TickerStreamData, WalletStreamData } from './stream';
 import { Debug } from '../utils/helper/debug';
-import { ErrorCode } from './error';
+import { ResultCode } from './error';
 
 export class EventParameter<T> {
     static dic: Map<string, EventParameter<any>> = new Map<string, EventParameter<any>>();
@@ -28,7 +28,7 @@ export const NWEvent = {
         user_login: EventParameter.create<{ userName: string }>('app-user_login'),
         user_logout: EventParameter.create('app-user_logout'),
         change_tab: EventParameter.create<{ index: number; currencyId: number }>('app-change_tab'),
-        error_occured: EventParameter.create<{ reason: ErrorCode }>('error_occured')
+        error_occured: EventParameter.create<{ reason: ResultCode }>('error_occured')
     },
 
     NWallet: {},

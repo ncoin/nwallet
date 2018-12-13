@@ -1,4 +1,3 @@
-import { env } from '../../environments/environment';
 import { LoggerService } from '../common/logger/logger.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
@@ -13,12 +12,11 @@ import { AuthProtocolBase } from '../../models/api/auth/_impl';
 import { TokenIssuer } from './token-issuer';
 import { Signature } from '../../interfaces/signature';
 import { PreferenceService, Preference } from '../common/preference/preference.service';
-import { ErrorCode } from '../../interfaces/error';
 
 // for test (remove me) --sky`
 import { getNonceOnce } from '../../../common/models/nonce';
-import { NWConstants } from '../../models/constants';
 import { NWStellar } from '../../models/stellar/stellar';
+import { ResultCode } from '../../interfaces/error';
 
 @Injectable()
 export class AuthorizationService {
@@ -63,7 +61,7 @@ export class AuthorizationService {
             this.logger.debug(`[auth] token requested : use [${this.tokenIssuer.tokenType}] token`);
             const result = await this.issueToken();
             if (!result.isSuccess) {
-                this.event.publish(NWEvent.App.error_occured, { reason: ErrorCode.UnAuth });
+                this.event.publish(NWEvent.App.error_occured, { reason: ResultCode.UnAuth });
             }
 
             return result.token;

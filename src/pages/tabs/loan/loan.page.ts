@@ -15,6 +15,7 @@ import { LoanFormPage } from './loan-detail/loan-form/loan-form.page';
 import { LoanConfirmPage } from './loan-detail/loan-confirm/loan-confirm.page';
 import { RepayConfirmPage } from './loan-detail/repay-confirm/repay-confirm.page';
 import { RepayFormPage } from './loan-detail/repay-form/repay-form.page';
+import { LoanRepayResultPage } from './loan-detail/result/loan-repay-result.page';
 
 export interface LoanSlide {
     items: NWAsset.Item[];
@@ -53,8 +54,6 @@ export class LoanPage {
             this.logger.debug('[loan-page] collateral changed');
             const collaterals = assets.filter(a => a.Collateral);
 
-            // for development
-            collaterals.push(...collaterals, ...collaterals, ...collaterals);
             this.totalLoanedAmount = _.sumBy(collaterals, c => c.Collateral.loan_sum);
             this.totalAvailableAmount = _.sumBy(collaterals, c => c.Collateral.available_loan_amout);
             this.slides = SlideHelper.getSlides(collaterals, 3);
@@ -75,4 +74,4 @@ export class LoanPage {
     }
 }
 
-export const LOAN_PAGES = [LoanPage, LoanDetailPage, LoanFormPage, LoanConfirmPage, RepayFormPage, RepayConfirmPage];
+export const LOAN_PAGES = [LoanPage, LoanDetailPage, LoanFormPage, LoanConfirmPage, RepayFormPage, RepayConfirmPage, LoanRepayResultPage];
