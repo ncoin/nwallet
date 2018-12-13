@@ -8,7 +8,7 @@
 </ion-header>
 <ion-content padding>
     <div>
-        <ion-item class="asset-ion-item">
+        <ion-item class="asset-ion-item btn default {{ncn.getSymbol()}}" [ngClass]="{'isShow': ncn.option.isShow, 'isHide': !ncn.option.isShow }">
             <div class="asset-container">
                 <img class="asset-item img" src="assets/img/symbol_{{ncn.getSymbol()}}.png" />
                 <div class="asset-item symbol">
@@ -20,8 +20,7 @@
     <div *ngIf="assets && assets.length > 0">
         <ion-list reorder="true" (ionItemReorder)="reorderItems($event)">
             <!-- inactive item preload -->
-            <ion-item class="asset-ion-item btn default {{asset.getSymbol()}}" *ngFor="let asset of assets"
-                      [ngClass]="{'isShow': asset.option.isShow, 'isHide': !asset.option.isShow }" >
+            <ion-item class="asset-ion-item btn default {{asset.getSymbol()}}" *ngFor="let asset of assets" [ngClass]="{'isShow': asset.option.isShow, 'isHide': !asset.option.isShow }">
                 <div class="asset-container">
                     <img class="asset-item img" src="assets/img/symbol_{{asset.getSymbol()}}.png" />
                     <div class="asset-item symbol">
