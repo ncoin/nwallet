@@ -14,6 +14,43 @@ page-receive {
     .container {
         overflow-y: hidden;
 
+        .country-code-button {
+            display: grid;
+            width: 100%;
+            grid-template-columns: 40px 1fr 1fr 30px;
+            background: $background-button-default;
+            -webkit-border-radius: 5px;
+            -moz-border-radius: 5px;
+            border-radius: 5px;
+            padding: 10px;
+
+            .asset-logo {
+                grid-column: 1;
+                margin: auto;
+            }
+
+            .asset-name {
+                grid-column: 2;
+                font-size: $text-size-large;
+                color: $text-color-asset-name;
+                margin: auto 0 auto 10px;
+            }
+
+            .asset-balance {
+                grid-column: 3;
+                font-size: $text-size-large;
+                color: $text-color-asset-balance;
+                margin: auto 10px auto 0;
+                text-align: right;
+            }
+
+            fa-icon {
+                grid-column: 4;
+                font-size: 3rem;
+                color: rgb(171, 165, 157);
+                margin: auto;
+            }
+        }
     }
 
     .slide {
@@ -36,13 +73,13 @@ page-receive {
         }
 
         .button-left {
-            border-right: 0px;
-            border-radius: 5px 0px 0px 5px;
+            border-right: 0;
+            border-radius: 5px 0 0 5px;
         }
 
         .button-right {
-            border-left: 0px;
-            border-radius: 0px 5px 5px 0px;
+            border-left: 0;
+            border-radius: 0 5px 5px 0;
         }
 
         .selected-button {
@@ -52,10 +89,8 @@ page-receive {
     }
 
     .qrContainer {
-        border: 1px solid $border-color;
-        border-radius: 5px;
         margin: 5% 0 0 0;
-        padding: 20px 0px 20px 0;
+        padding: 20px 0 20px 0;
 
         .qrCard {
             width: 50vmin;
@@ -67,18 +102,18 @@ page-receive {
 
         .tab-copy-text {
             text-align: center;
-            font-style: italic;
-            margin: 10px 0 10px 0;
+            margin: 40px 0 10px 0;
 
             button {
                 background: transparent;
-                color: #7e7e7e;
+                color: $text-color-point;
+                font-size: $text-size-medium;
             }
         }
 
         .code-text {
             text-align: center;
-            font-size: 1.1em;
+            font-size: $text-size-large;
         }
     }
 
@@ -93,7 +128,7 @@ page-receive {
 
         .qrContainer {
             margin: 1% 0 0 0;
-            padding: 5px 0px 5px 0;
+            padding: 5px 0 5px 0;
         }
 
     }

@@ -17,7 +17,7 @@ add-wallet {
                 position: absolute;
                 padding : 9px 0 0 10px;
                 color : rgb(196, 187, 174);
-                font-size: 1.8em;
+                font-size: $text-size-large;
             }
             .input {
                 border-radius: 20px;
@@ -28,7 +28,7 @@ add-wallet {
                 color: rgb(196, 187, 174);
                 border: 0;
                 width: 100%;
-                font-size: 1.8rem;
+                font-size: $text-size-large;
             }
 
             .input::placeholder,
@@ -59,7 +59,7 @@ add-wallet {
                 height: 65%;
             }
             div {
-                font-size: 2rem;
+                font-size: $text-size-large;
                 margin: auto 0 auto 5px;
                 grid-column: 2;
                 color: rgb(204, 204, 204);
@@ -74,7 +74,7 @@ add-wallet {
                 -webkit-border-radius: 5px;
                 color: rgb(207, 174, 113);
                 padding: 12px 0;
-                font-size: 2rem;
+                font-size: $text-size-large;
             }
         }
     }

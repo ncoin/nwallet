@@ -616,7 +616,7 @@ $toggle-icon-background-on: #364231;
         border-width: 2px;
         border-color: rgb(79, 66, 44);
         border-style: solid;
-        background: rgba(23, 20, 15, 0.85);
+        background: rgba(23, 20, 15, 1);
         text-align: center;
 
     }
@@ -624,7 +624,7 @@ $toggle-icon-background-on: #364231;
     .alert-head {
         text-align: center;
         color: rgb(149, 124, 79);
-        padding: 17px 17px 0px;
+        padding: 17px 17px 0;
     }
 
     .alert-message {
@@ -663,7 +663,7 @@ $toggle-icon-background-on: #364231;
 
             > button {
                 flex-grow: 1;
-                margin: 0px 4px;
+                margin: 0 4px;
             }
 
             .button-inner {
