@@ -1,6 +1,8 @@
 $border-color: rgb(79, 66, 44);
 $border-color-7a :rgba(79, 66, 44, 0.7);
+$border-color-gold :rgb(110, 96, 71);
 
+$background-button-default: rgb(83, 76, 66);
 $background-button-ncoin: rgb(80, 76, 67);
 $background-button-asset-show: rgb(68, 114, 141);
 $background-button-asset-hide: rgb(77, 77, 77);
@@ -11,7 +13,7 @@ $foreground-header: rgb(149, 124, 79);
 $foreground-header-white: white;
 $foreground-header-gold: rgb(149, 124, 79);
 
-
+$foreground-button-ok-header: rgb(197, 176, 99);
 
 $foreground-content: rgb(116, 116, 76);
 $foreground-content-white: white;
@@ -22,8 +24,18 @@ $input-background: rgb(69, 65, 59);
 $input-border-color: rgba(255, 255, 255, 0.2);
 $input-foreground-placeholder : rgba(170, 170, 170, 1);
 
+$global-color-red: rgb(230, 55, 77);
+$global-color-green: rgb(78, 162, 97);
+$global-color-gold: rgb(159, 130, 78);
 
-$foreground-button-ok-header: rgb(197, 176, 99);
+$text-size-extra-large: 3rem;
+$text-size-large: 2rem;
+$text-size-medium: 1.5rem;
+
+$text-color-asset-name: rgb(195, 189, 184);
+$text-color-asset-balance: rgb(255, 255, 255);
+$text-color-point: rgb(232, 203, 135);
+
 .nw-button {
     background: rgb(69, 65, 59) !important;
     border-width: 1px 0.4px 1px 0.4px !important;

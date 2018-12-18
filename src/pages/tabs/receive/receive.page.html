@@ -11,18 +11,18 @@
 
     <div class="container">
         <div>
-            <button class="country-code-button" (click)="onClick_SelectAsset()">
-                <img src="assets/img/symbol_{{selectedAsset.getSymbol()}}.png" />
-                <div>{{selectedAsset | walletToFullName | async}}</div>
-                <div>{{selectedAsset | walletToFormat}}</div>
-                <ion-icon name="arrow-dropdown"></ion-icon>
-            </button>
+            <div class="country-code-button" (click)="onClick_SelectAsset()">
+                <img class="asset-logo" src="assets/img/symbol_{{selectedAsset.getSymbol()}}.png" />
+                <div class="asset-name">{{selectedAsset | walletToFullName | async}}</div>
+                <div class="asset-balance">{{selectedAsset | walletToFormat}}</div>
+                <fa-icon name="chevron-down"></fa-icon>
+            </div>
         </div>
         <div class="qrContainer">
             <ion-card class="qrCard" *ngIf="qrData">
                 <ngx-qrcode [(qrc-value)]="qrData"></ngx-qrcode>
             </ion-card>
-            <div class="tab-copy-text"><button (click)="onTabToCopyClicked()">Tab to Copy:</button></div>
+            <div class="tab-copy-text"><button (click)="onTabToCopyClicked()">Tab to Copy</button></div>
             <div class="code-text" (click)="onTabToCopyClicked()">{{ qrData }}</div>
         </div>
     </div>

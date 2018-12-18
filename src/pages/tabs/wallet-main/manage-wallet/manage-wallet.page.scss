@@ -9,7 +9,7 @@ manage-wallet {
         right: 4%;
         background: transparent;
         color: white;
-        font-size: 2rem;
+        font-size: $text-size-large;
     }
 
     .refresh-button:active {
@@ -63,7 +63,7 @@ manage-wallet {
                 grid-column: 4;
                 color: rgba(255, 255, 255, 0.4);
                 padding: 8px 0;
-                font-size: 1.5rem;
+                font-size: $text-size-medium;
                 font-weight: 600;
                 background: transparent;
                 border: rgba(255, 255, 255, 0.4) 2px solid;
