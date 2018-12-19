@@ -64,6 +64,10 @@ export class Item {
     public get Collateral(): NWAsset.Collateral {
         return this.data.collateral;
     }
+
+    public get CanLoan(): boolean {
+        return this.currency.can_loan;
+    }
 }
 
 export class Collateral {

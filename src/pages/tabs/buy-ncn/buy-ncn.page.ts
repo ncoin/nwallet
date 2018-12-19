@@ -10,6 +10,8 @@ import { LoggerService } from '../../../services/common/logger/logger.service';
 import { CurrencyService } from '../../../services/nwallet/currency.service';
 import { BuyNcnConfirmPage } from './buy-ncn-confirm/buy-ncn-confirm.page';
 import { BuyNcnResultPage } from './buy-ncn-result/buy-ncn-result.page';
+import { PopupService } from '../../../services/popup/popop.service';
+import { NWConstants } from '../../../models/constants';
 
 @IonicPage()
 @Component({
@@ -28,7 +30,8 @@ export class BuyNcnPage implements OnInit {
         private event: EventService,
         private account: AccountService,
         private logger: LoggerService,
-        private currency: CurrencyService
+        private currency: CurrencyService,
+        private popup: PopupService
     ) {}
 
     async ngOnInit() {
@@ -40,7 +43,8 @@ export class BuyNcnPage implements OnInit {
             if (context && context.index === 1) {
                 this.onSelectAsset(context.currencyId);
             } else {
-                this.selectedWallet = this.assets[1];
+                const wallets = this.assets.filter(asset => asset.getCurrencyId() !== NWConstants.NCN.currencyId);
+                this.selectedWallet = wallets[0];
             }
         });
     }
@@ -53,6 +57,11 @@ export class BuyNcnPage implements OnInit {
             .find(asset => asset.getCurrencyId() === currencyId);
 
         this.selectedWallet = targetWallet;
+    }
+
+    public async onClick_ChangeWallet() {
+        const task = await this.popup.selecteWallet(this.selectedWallet, this.assets.filter(asset => asset.getCurrencyId() !== NWConstants.NCN.currencyId));
+        this.selectedWallet = task;
     }
 
     public onClick_ShortCut(value: number) {

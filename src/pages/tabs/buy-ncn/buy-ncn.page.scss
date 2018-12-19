@@ -15,10 +15,27 @@ page-buy-ncn {
         height: 50px;
     }
 
+    .country-code-button {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        width: 30%;
+        align-items: center;
+        font-size: small;
+
+        >ion-icon {
+            margin: 0 0 0 5px;
+        }
+    }
+
     .buy-wallet-status {
         display: flex;
         flex-direction: row;
         justify-content: space-between;
+        text-align: center;
+        > div {
+            flex: 1;
+        }
     }
 
     .shortcuts {

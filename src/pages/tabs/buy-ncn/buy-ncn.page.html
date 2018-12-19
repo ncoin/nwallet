@@ -8,7 +8,11 @@
         <div>
             {{'SelecteWalletToPay' | translate}}
             <div>
-
+                <button class="country-code-button" (click)="onClick_ChangeWallet()">
+                    <img src='assets/img/symbol_{{selectedWallet.getSymbol()}}.png' />
+                    <div>{{selectedWallet | walletToFullName | async}}</div>
+                    <ion-icon name="arrow-dropdown"></ion-icon>
+                </button>
             </div>
         </div>
         <div class="buy-wallet-status">

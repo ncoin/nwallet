@@ -16,6 +16,7 @@ import { LoanConfirmPage } from './loan-detail/loan-confirm/loan-confirm.page';
 import { RepayConfirmPage } from './loan-detail/repay-confirm/repay-confirm.page';
 import { RepayFormPage } from './loan-detail/repay-form/repay-form.page';
 import { LoanRepayResultPage } from './loan-detail/result/loan-repay-result.page';
+import { NWConstants } from '../../../models/constants';
 
 export interface LoanSlide {
     items: NWAsset.Item[];
@@ -52,7 +53,7 @@ export class LoanPage {
     public onCollateralChanged() {
         return (assets: Asset.Item[]) => {
             this.logger.debug('[loan-page] collateral changed');
-            const collaterals = assets.filter(a => a.Collateral);
+            const collaterals = assets.filter(a => a.Collateral && a.CanLoan);
 
             this.totalLoanedAmount = _.sumBy(collaterals, c => c.Collateral.loan_sum);
             this.totalAvailableAmount = _.sumBy(collaterals, c => c.Collateral.available_loan_amout);

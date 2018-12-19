@@ -1,10 +1,10 @@
 import { Currency } from '../../nwallet/currency';
 declare module '../../nwallet/currency' {
     interface Currency {
-        activated: number;
+        activated: boolean;
         align_number: number;
         block_scan_url: string;
-        can_loan: number;
+        can_loan: boolean;
         created_by: string;
         created_date: string;
         decimal_number: number;
