@@ -98,9 +98,9 @@ export class WalletDetailPage extends ModalBasePage implements OnDestroy {
     }
 
     public onClick_Receive(): void {
-        this.event.publish(NWEvent.App.change_tab, { index: 1, currencyId: this.asset.getCurrencyId() });
+        this.event.publish(NWEvent.App.change_tab, { index: 0, currencyId: this.asset.getCurrencyId() });
         this.parent.close();
     }
 
-    public onClick_Loan(): void {}
+    public onClick_Send(): void {}
 }

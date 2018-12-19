@@ -15,11 +15,21 @@ import { PopupService } from '../../../services/popup/popop.service';
     selector: 'page-receive',
     templateUrl: 'receive.page.html'
 })
-export class ReceivePage implements OnDestroy {
+export class ReceivePage {
     qrData = null;
     scannedCode = null;
-    public selectedAsset: NWAsset.Item;
+    private _selectedAsset: NWAsset.Item;
     public assets: NWAsset.Item[] = [];
+
+    public get selectedAsset(): NWAsset.Item {
+        return this._selectedAsset;
+    }
+
+    public set selectedAsset(asset: NWAsset.Item) {
+        this.qrData = asset.getAddress();
+        this._selectedAsset = asset;
+    }
+
     constructor(
         private account: AccountService,
         private clipboard: Clipboard,
@@ -29,11 +39,11 @@ export class ReceivePage implements OnDestroy {
         private popup: PopupService
     ) {
         this.account.registerSubjects(stream => {
-            stream.assetChanged(this.onAssetChanged);
+            stream.assetChanged(this.onAssetChanged());
         });
 
         this.event.RxSubscribe(NWEvent.App.change_tab, context => {
-            if (context && context.index === 1) {
+            if (context && context.index === 0) {
                 this.onSelectAsset(context.currencyId);
             } else {
                 // reset;
@@ -43,22 +53,21 @@ export class ReceivePage implements OnDestroy {
         });
     }
 
-    ngOnDestroy(): void {
-        throw new Error('Method not implemented.');
+    public onAssetChanged() {
+        return (assets: NWAsset.Item[]) => {
+            if (assets.length > 0) {
+                this.logger.debug('[receive-page] on refresh assets');
+                this.assets = assets.slice();
+                this.selectedAsset = assets[0];
+            }
+        };
     }
-
-    onAssetChanged = (assets: NWAsset.Item[]): void => {
-        if (assets.length > 0) {
-            this.logger.debug('[receive-page] on refresh assets');
-            this.assets = assets.slice();
-            this.selectedAsset = assets[0];
-        }
-    };
 
     public async onClick_SelectAsset() {
         const target = await this.popup.selecteWallet(this.selectedAsset, this.assets);
         if (target) {
             this.selectedAsset = target;
+            this.qrData = target.getAddress();
         }
     }
 
