@@ -1,20 +1,25 @@
 <div class="collateral-container">
     <div class="wallet">
-        <div>
+        <div class="row">
             <div class="info">
                 <img src="assets/img/symbol_{{wallet | walletToSymbol | async}}.png" />
-                <div>{{wallet | walletToFullName | async}}</div>
+                <span>{{wallet | walletToFullName | async}}</span>
             </div>
-            <div>::COLLATERAL_PROGRESS_BAR::</div>
+            <div class="balance">{{wallet | walletToFormat}}</div>
         </div>
-        <div>
-            <div>{{wallet | walletToFormat}}</div>
-            <div>{{wallet | walletToUSD | async}}</div>
+        <div class="row">
+            <div class="progress-bar">
+                <div></div>
+                <div></div>
+                <div class="red" [ngStyle]="{width: wallet.Collateral.Ltv + '%'}"></div>
+                <div class="green"></div>
+            </div>
+            <div class="price-usd">{{wallet | walletToUSD | async}}</div>
         </div>
     </div>
     <div class="collateral">
         <div>
-            <div>
+            <div class="columns">
                 LTV
             </div>
             <div class="content">
@@ -22,7 +27,7 @@
             </div>
         </div>
         <div>
-            <div>
+            <div class="columns">
                 Loaned
             </div>
             <div class="content">
@@ -30,12 +35,16 @@
             </div>
         </div>
         <div>
-            <div>
+            <div class="columns">
                 Available
             </div>
             <div class="content">
                 ${{wallet.Collateral.Available}}
             </div>
         </div>
+    </div>
+    <div class="notification">
+        <fa-icon name="exclamation-circle"></fa-icon>
+        <span>::NOTIFICATION_MESSAGE::</span>
     </div>
 </div>

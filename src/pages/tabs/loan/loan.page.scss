@@ -1,28 +1,40 @@
 page-loan {
     .loan-summary {
-        display: flex;
-        justify-content: space-between;
+        display: grid;
+        grid-template-columns: 50% 50%;
+        margin-bottom: 2rem;
 
         .total-loaned {
-            :nth-child(1) {}
+            text-align: center;
+
+            :nth-child(1) {
+                color: $global-color-gold;
+                font-size: $text-size-large;
+            }
 
             :nth-child(2) {
-                color: red;
-                text-align: center;
-
+                color: $global-color-red;
+                font-size: $text-size-large;
+                margin-top: 1rem;
             }
         }
 
         .total-available {
-            :nth-child(1) {}
+            text-align: center;
+
+            :nth-child(1) {
+                color: $global-color-gold;
+                font-size: $text-size-large;
+            }
 
             :nth-child(2) {
-                color: green;
-                text-align: center;
+                color: $global-color-green;
+                font-size: $text-size-large;
+                margin-top: 1rem;
             }
         }
     }
     .swiper-pagination {
-        bottom: 0px !important;
+        bottom: 0 !important;
     }
 }
