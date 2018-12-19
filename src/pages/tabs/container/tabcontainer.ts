@@ -14,6 +14,7 @@ import { SendPage, SEND_PAGES } from '../send/send.page';
 import { EventService } from '../../../services/common/event/event.service';
 import { NWEvent } from '../../../interfaces/events';
 import { LoanPage } from '../loan/loan.page';
+import { BuyNcnPage, BUY_NCN_PAGES } from '../buy-ncn/buy-ncn.page';
 export interface TabItemContext {
     // title: "Schedule",
     // name: "TabsPage",
@@ -40,7 +41,7 @@ export class TabcontainerPage {
             isEnable: true
         },
         {
-            component: TransferHistoryPage,
+            component: BuyNcnPage,
             icon: 'nwallet-buy',
             isEnable: true
         },
@@ -73,4 +74,4 @@ export class TabcontainerPage {
     public changeTransition(event) {}
 }
 
-export const NWalletTabPages = [TabcontainerPage, TransferHistoryPage, ReceivePage, AccountPage, ...SEND_PAGES, ...WalletTabPages, ...MY_INFO_PAGES];
+export const NWalletTabPages = [TabcontainerPage, TransferHistoryPage, ReceivePage, AccountPage, ...BUY_NCN_PAGES, ...SEND_PAGES, ...WalletTabPages, ...MY_INFO_PAGES];

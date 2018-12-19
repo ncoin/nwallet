@@ -5,8 +5,10 @@ import { WalletToFullNamePipe } from './wallet/wallet-to-name';
 import { StringToDatePipe } from './date/string-to-date';
 import { WalletToSymbolPipe } from './wallet/wallet-to-symbol';
 import { CurrencyIdToSymbolPipe } from './currency/currencyId-to-symbol';
+import { WalletPerPricePipe } from './wallet/wallet-per-price';
+import { WalletToTotalPricePipe } from './wallet/wallet-to-totalprice.usd';
 
-const PIPES = [WalletToUSDPipe, WalletToFullNamePipe, WalletToFormatPipe, WalletToSymbolPipe, StringToDatePipe, CurrencyIdToSymbolPipe];
+const PIPES = [WalletToUSDPipe, WalletPerPricePipe, WalletToFullNamePipe, WalletToTotalPricePipe, WalletToFormatPipe, WalletToSymbolPipe, StringToDatePipe, CurrencyIdToSymbolPipe];
 @NgModule({
     declarations: PIPES,
     imports: [],

@@ -15,3 +15,4 @@ export * from './user-wallet-list.protocol';
 export * from './collateral-loan.protocol';
 export * from './collateral-repay.protocol';
 export * from './collateral-transaction.protocol';
+export * from './buy-ncn.protocol';

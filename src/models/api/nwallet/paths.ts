@@ -22,7 +22,8 @@ export const WalletApiPaths = {
         sendAsset: (walletId: number) => api(`wallets/${walletId}/withdrawals`),
         createTrust: (walletId: number) => api(`wallets/${walletId}/trust`),
         collateralRepay: (collateralId: number) => api(`collaterals/${collateralId}/repay`),
-        collateralLoan: (collateralId: number) => api(`collaterals/${collateralId}/loans`)
+        collateralLoan: (collateralId: number) => api(`collaterals/${collateralId}/loans`),
+        buyNcn: (walletId: number) => api(`wallets/${walletId}/buy`)
     },
 
     put: {

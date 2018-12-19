@@ -1,0 +1,40 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title>{{'Buy' | translate}} {{'NCN' | translate}}</ion-title>
+    </ion-navbar>
+</ion-header>
+<ion-content padding>
+    <div>
+        <div>
+            {{'SelecteWalletToPay' | translate}}
+            <div>
+
+            </div>
+        </div>
+        <div class="buy-wallet-status">
+            <div>
+                <div>{{'Available' | translate}}</div>
+                <div>{{selectedWallet.getAmount()}}</div>
+            </div>
+            <div>
+                <div>USD/{{selectedWallet | walletToSymbol | async}}</div>
+                <div>{{selectedWallet | walletPerPrice}}</div>
+            </div>
+            <div>
+                <div>{{'Max' | translate}}{{'Buy' | translate}}</div>
+                <div>{{selectedWallet | walletToTotalPrice | async}}</div>
+            </div>
+        </div>
+        <div>
+            {{'EnterBuyAmount' | translate}}
+            <input type="number" placeholder="${{'5'}}~${{'10k'}}" [(ngModel)]="buyNcnAmount">
+        </div>
+        <div class="shortcuts">
+            <button ion-item class="shortcut" (click)="onClick_ShortCut(10)">$10</button>
+            <button ion-item class="shortcut" (click)="onClick_ShortCut(100)">$100</button>
+            <button ion-item class="shortcut" (click)="onClick_ShortCut(1000)">$1,000</button>
+            <button ion-item class="shortcut" (click)="onClick_ShortCut()">{{'Max' | translate}}</button>
+        </div>
+        <button ion-item class="nw-button btn default center" (click)="onClick_Buy()">{{'Buy' | translate}}</button>
+    </div>
+</ion-content>

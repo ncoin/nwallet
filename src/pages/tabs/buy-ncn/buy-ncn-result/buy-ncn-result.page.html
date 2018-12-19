@@ -1,0 +1,34 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title>{{'Buy' | translate}} {{'NCN' | translate}}</ion-title>
+    </ion-navbar>
+</ion-header>
+<ion-content padding>
+    <div *ngIf="isSuccess;then success else failed">here is ignored</div>
+    <ng-template #success>
+        <div class="ha">
+            <div>
+                <div>{{'BuySuccess' | translate}}</div>
+            </div>
+
+        </div>
+    </ng-template>
+    <ng-template #failed>
+        <div class="ho">
+            <div>
+                <div>{{'BuyFailed' | translate}}</div>
+                (X)
+            </div>
+            <div>
+                {{'BuyWasNotSuccessful' | translate}}
+            </div>
+            <div>
+                {{'Reason'}} : {{reason | translate}}
+            </div>
+        </div>
+    </ng-template>
+    <div>
+        <button>{{'BuyAgain' | translate }}</button>
+        <button>{{'ViewHistory' | translate }}</button>
+    </div>
+</ion-content>

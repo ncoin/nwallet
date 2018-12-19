@@ -323,6 +323,25 @@ export class ChannelService {
             });
     }
 
+    public async buyNcn(walletId: number, amount: number): Promise<Result> {
+        return await this.network
+            .request(
+                this.resolve(userId =>
+                    new NWProtocol.BuyNcn({ walletId: walletId }).setPayload({
+                        amount: amount,
+                        walletId: walletId,
+                        userId: userId
+                    })
+                )
+            )
+            .then(this.onSuccess())
+            .then(Result.resolve())
+            .catch(p => {
+                this.onError()(p);
+                return Result.resolve()(p);
+            });
+    }
+
     public async setUserNotifications(isOn: boolean): Promise<boolean> {
         return await this.network
             .request(
