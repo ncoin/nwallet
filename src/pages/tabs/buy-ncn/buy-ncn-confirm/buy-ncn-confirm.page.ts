@@ -15,7 +15,7 @@ import { BuyNcnResultPage } from '../buy-ncn-result/buy-ncn-result.page';
 export class BuyNcnConfirmPage implements OnInit {
     public selectedWallet: NWAsset.Item;
     public assets: NWAsset.Item[];
-    public buyNcnAMount: number;
+    public buyNcnAmount: number;
     public walletAmount: number;
 
     constructor(
@@ -27,12 +27,12 @@ export class BuyNcnConfirmPage implements OnInit {
         private loading: LoadingController
     ) {
         this.selectedWallet = navParams.get('wallet');
-        this.buyNcnAMount = navParams.get('buyNcnAmount');
+        this.buyNcnAmount = navParams.get('buyNcnAmount');
     }
 
     async ngOnInit() {
         const ncn = this.currency.get(NWConstants.NCN.currencyId).getValue();
-        this.walletAmount = this.buyNcnAMount / this.currency.getPrice(this.selectedWallet.getCurrencyId());
+        this.walletAmount = this.buyNcnAmount / this.currency.getPrice(this.selectedWallet.getCurrencyId());
     }
 
     public onClick_Cancel(): void {
@@ -46,11 +46,12 @@ export class BuyNcnConfirmPage implements OnInit {
             dismissOnPageChange: true
         });
         loading.present();
-        const result = await this.channel.buyNcn(this.selectedWallet.getWalletId(), this.buyNcnAMount);
+        const result = await this.channel.buyNcn(this.selectedWallet.getWalletId(), this.buyNcnAmount);
         if (result.code === ResultCode.Success) {
             this.navCtrl.push(BuyNcnResultPage, {
                 isSuccess: true,
                 wallet: this.selectedWallet,
+                buyNcnAmount: this.buyNcnAmount,
                 usedAmount: this.walletAmount,
                 afterAmount: this.selectedWallet.getAmount() - this.walletAmount
             });

@@ -6,29 +6,41 @@
 <ion-content padding>
     <div *ngIf="isSuccess;then success else failed">here is ignored</div>
     <ng-template #success>
-        <div class="ha">
-            <div>
-                <div>{{'BuySuccess' | translate}}</div>
+        <div class="success">
+            <div class="sub-title">{{'BuySuccess' | translate}}</div>
+            <div class="result-icon">
+                <fa-icon name="check-circle-o"></fa-icon>
             </div>
-
+            <div class="result-table">
+                <div class="rows">
+                    <div class="column">{{'BuyAmount' | translate}}</div>
+                    <div class="amount-ncoin">{{buyNcnAmount}}</div>
+                </div>
+                <div class="rows">
+                    <div class="column">{{'BitcoinUsed' | translate}}</div>
+                    <div class="amount-used">{{usedAmount}} {{selectedWallet.getSymbol()}}</div>
+                </div>
+                <div class="rows">
+                    <div class="column">{{'BitcoinAfterPurchase' | translate}}</div>
+                    <div class="amount-balance">{{afterAmount}} {{selectedWallet.getSymbol()}}</div>
+                </div>
+            </div>
         </div>
     </ng-template>
     <ng-template #failed>
-        <div class="ho">
-            <div>
-                <div>{{'BuyFailed' | translate}}</div>
-                (X)
+        <div class="failed">
+            <div class="sub-title">{{'BuyFailed' | translate}}</div>
+            <div class="result-icon">
+                <fa-icon name="times-circle-o"></fa-icon>
             </div>
-            <div>
-                {{'BuyWasNotSuccessful' | translate}}
-            </div>
-            <div>
-                {{'Reason'}} : {{reason | translate}}
+            <div class="message">
+                <p>{{'BuyWasNotSuccessful' | translate}}</p>
+                <p>{{'Reason'}} : <span>{{reason | translate}}</span></p>
             </div>
         </div>
     </ng-template>
-    <div>
-        <button>{{'BuyAgain' | translate }}</button>
-        <button>{{'ViewHistory' | translate }}</button>
+    <div class="buttons">
+        <button ion-item class="btn confirm">{{'BuyAgain' | translate }}</button>
+        <button ion-item class="btn confirm">{{'ViewHistory' | translate }}</button>
     </div>
 </ion-content>

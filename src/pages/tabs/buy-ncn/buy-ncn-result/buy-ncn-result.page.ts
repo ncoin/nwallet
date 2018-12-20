@@ -13,14 +13,17 @@ export class BuyNcnResultPage implements OnInit {
 
     public selectedWallet: NWAsset.Item;
     public assets: NWAsset.Item[];
-    public buyNcnAMount: number;
-    public walletAmount: number;
+    public buyNcnAmount: number;
+    public usedAmount: number;
+    public afterAmount: number;
     public isSuccess: boolean;
     public reason: string;
 
     constructor(public navCtrl: NavController, public navParams: NavParams, private logger: LoggerService, private currency: CurrencyService) {
         this.selectedWallet = navParams.get('wallet');
-        this.buyNcnAMount = navParams.get('buyNcnAmount');
+        this.buyNcnAmount = navParams.get('buyNcnAmount');
+        this.usedAmount = navParams.get('usedAmount');
+        this.afterAmount = navParams.get('afterAmount');
         this.isSuccess = navParams.get('isSuccess');
 
         if (this.isSuccess) {

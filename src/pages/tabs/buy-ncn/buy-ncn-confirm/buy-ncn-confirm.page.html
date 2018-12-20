@@ -17,7 +17,7 @@
                     {{selectedWallet | walletToFullName | async}}
                 </div>
                 <div class="asset-amount">
-                    {{walletAmount}}
+                    {{walletAmount}} {{selectedWallet.getSymbol()}}
                 </div>
             </div>
             <div class="to">
@@ -25,13 +25,13 @@
                     {{'NCN' | translate }}
                 </div>
                 <div class="asset-amount">
-                    {{buyNcnAMount}}
+                    {{buyNcnAmount}}
                 </div>
             </div>
         </div>
         <div class="buttons">
-            <button ion-item class="btn cancel center" (click)="onClick_Cancel()">{{'Cancel' | translate}}</button>
-            <button ion-item class="btn confirm center" (click)="onClick_Confirm()">{{'Confirm' | translate}}</button>
+            <button ion-item class="btn cancel" (click)="onClick_Cancel()">{{'Cancel' | translate}}</button>
+            <button ion-item class="btn confirm" (click)="onClick_Confirm()">{{'Confirm' | translate}}</button>
         </div>
 
     </div>

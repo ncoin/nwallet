@@ -1,16 +1,103 @@
 page-buy-ncn-result {
-    .logo {
+    $message-icon-size: 15rem;
+
+    .sub-title {
+        border-left: 5px $text-color-sub-title solid;
+        font-size: $text-size-large;
+        line-height: $text-size-large;
+        padding-left: 5px;
+        margin-bottom: $text-size-medium;
+        color: $text-color-sub-title;
+    }
+
+    .result-icon {
         text-align: center;
     }
 
-    .transfer {
-        display: flex;
-        justify-content: space-around;
+    .success {
+        fa-icon {
+            font-size: $message-icon-size;
+            color: rgb(217, 167, 87);
+            margin: 20px auto 30px;
+            text-shadow: rgba(251, 155, 62, 0.4) 0 0 4rem;
+        }
+
+        .result-table {
+            border-top: 2px $border-color-divide-line solid;
+            border-bottom: 2px $border-color-divide-line solid;
+            padding: 15px 0;
+            margin-bottom: 30px;
+
+            .rows {
+                display: grid;
+                grid-template-columns: 60% 40%;
+                justify-content: space-around;
+
+                div {
+                    padding: 15px 10px;
+                }
+
+                .column {
+                    grid-column: 1;
+                    text-align: left;
+                    color: $text-color-asset-name;
+                    font-size: $text-size-large;
+                }
+
+                .amount-ncoin,
+                .amount-used,
+                .amount-balance {
+                    grid-column: 2;
+                    text-align: right;
+                    font-size: $text-size-large;
+                    font-weight: 600;
+                }
+
+                .amount-ncoin {
+                    color: $text-color-content-green;
+                }
+
+                .amount-used {
+                    color: $text-color-content-red;
+                }
+
+                .amount-balance {
+                    color: $text-color-content-white;
+                }
+            }
+        }
+    }
+
+    .failed {
+        fa-icon {
+            font-size: $message-icon-size;
+            color: rgb(163, 128, 72);
+            margin: 20px auto 30px;
+        }
+
+        .message {
+            color: $foreground-content-normal;
+            font-size: $text-size-large;
+            text-align: center;
+            margin-bottom: 5rem;
+
+            p {
+                line-height: 2rem;
+
+                span {
+                    color: $text-color-content-white;
+                }
+            }
+        }
     }
 
     .buttons {
         display: flex;
         justify-content: space-around;
+
+        button {
+            margin: 0 15px;
+        }
     }
 
 }
