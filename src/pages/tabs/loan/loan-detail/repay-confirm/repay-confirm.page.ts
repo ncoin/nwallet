@@ -23,7 +23,7 @@ export class RepayConfirmPage {
         this.wallet = this.params.get('wallet');
         this.amount = this.params.get('amount');
         this.totalLoanedAmount = this.wallet.Collateral.Loaned - this.amount;
-        this.account.registerSubjects(accountCallback => this.subscriptions.push(accountCallback.assetChanged(this.onAssetChanged())));
+        this.account.registerSubjects(accountCallback => this.subscriptions.push(accountCallback.walletChanged(this.onAssetChanged())));
     }
 
     ionViewDidLeave() {

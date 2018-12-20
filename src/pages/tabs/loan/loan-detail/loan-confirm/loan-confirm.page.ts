@@ -38,7 +38,7 @@ export class LoanConfirmPage implements OnDestroy {
     ) {
         this.wallet = params.get('wallet');
         this.amount = params.get('amount');
-        this.account.registerSubjects(accountCallback => this.subscriptions.push(accountCallback.assetChanged(this.onAssetChanged())));
+        this.account.registerSubjects(accountCallback => this.subscriptions.push(accountCallback.walletChanged(this.onAssetChanged())));
     }
 
     public onAssetChanged(): (assets: NWAsset.Item[]) => void {

@@ -1,15 +1,15 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavParams, NavController, AlertController, LoadingController } from 'ionic-angular';
 
-import { LoggerService } from '../../../services/common/logger/logger.service';
-import { ModalNavPage } from '../../base/modal-nav.page';
-import { ModalBasePage } from '../../base/modal.page';
-import { NWAsset } from '../../../models/nwallet';
-import { CurrencyService } from '../../../services/nwallet/currency.service';
-import { Debug } from '../../../utils/helper/debug';
-import { TranslateService } from '@ngx-translate/core';
-import { ChannelService } from '../../../services/nwallet/channel.service';
 import { SendConfirmPinPage } from './send.confirm.pin.page';
+import { ModalBasePage } from '../base/modal.page';
+import { NWAsset } from '../../models/nwallet';
+import { ModalNavPage } from '../base/modal-nav.page';
+import { LoggerService } from '../../services/common/logger/logger.service';
+import { CurrencyService } from '../../services/nwallet/currency.service';
+import { TranslateService } from '@ngx-translate/core';
+import { ChannelService } from '../../services/nwallet/channel.service';
+import { Debug } from '../../utils/helper/debug';
 
 const messageTemplate = (symbol: string, amount: number, fee: number, address: string, lang: any): string => {
     return `
@@ -49,53 +49,51 @@ const messageTemplate = (symbol: string, amount: number, fee: number, address: s
     selector: 'page-send-confirm',
     templateUrl: 'send.confirm.page.html'
 })
-export class SendConfirmPage extends ModalBasePage {
+export class SendConfirmPage {
     public canBack: boolean;
-    public asset: NWAsset.Item;
+    public wallet: NWAsset.Item;
     public recipientAddress: string;
 
-    private _sendAssetAmount = 0.0;
+    private _sendWalletAmount = 0.0;
     public sendUSDAmount = 0.0;
 
-    public set sendAssetAmount(input: number) {
-        this._sendAssetAmount = input;
-        this.sendUSDAmount = input * this.currency.getPrice(this.asset.getCurrencyId());
+    public set sendWalletAmount(input: number) {
+        this._sendWalletAmount = input;
+        this.sendUSDAmount = input * this.currency.getPrice(this.wallet.getCurrencyId());
     }
 
-    public get sendAssetAmount(): number {
-        return this._sendAssetAmount;
+    public get sendWalletAmount(): number {
+        return this._sendWalletAmount;
     }
 
     constructor(
-        navCtrl: NavController,
-        navParam: NavParams,
-        parent: ModalNavPage,
+        private navCtrl: NavController,
+        private navParam: NavParams,
         private alert: AlertController,
         private logger: LoggerService,
         private currency: CurrencyService,
         private translate: TranslateService,
-        private channel: ChannelService,
+        private channel: ChannelService
     ) {
-        super(navCtrl, navParam, parent);
-        this.asset = navParam.get('asset');
-        this.recipientAddress = navParam.get('recipientAddress');
-        Debug.assert(this.asset);
-        this.logger.debug('[send-confirm-page] send asset: ', this.asset);
+        this.wallet = this.navParam.get('wallet');
+        this.recipientAddress = this.navParam.get('recipientAddress');
+        Debug.assert(this.wallet);
+        this.logger.debug('[send-confirm-page] send asset: ', this.wallet);
     }
 
     public onClick_Max(): void {
-        this.sendAssetAmount = this.asset.getAmount();
+        this.sendWalletAmount = this.wallet.getAmount();
     }
 
     public async onClick_Next(): Promise<void> {
         const langs = this.translate.instant(['SendConfirmation', 'Amount', 'TransactionFee', 'RecipientAddress', 'Cancel', 'Confirm']);
-        const fee = await this.channel.getSendAssetFee(this.asset.getWalletId());
+        const fee = await this.channel.getSendAssetFee(this.wallet.getWalletId());
 
         const sendConfirm = this.alert.create({
             enableBackdropDismiss: true,
             title: langs['SendConfirmation'],
             cssClass: 'alert-base title-underline button-center alert-send-confirm',
-            message: messageTemplate(this.asset.getSymbol(), this.sendAssetAmount, fee, this.recipientAddress, langs),
+            message: messageTemplate(this.wallet.getSymbol(), this.sendWalletAmount, fee, this.recipientAddress, langs),
             buttons: [
                 {
                     role: 'cancel',
@@ -110,8 +108,8 @@ export class SendConfirmPage extends ModalBasePage {
                         this.navCtrl.push(
                             SendConfirmPinPage,
                             {
-                                asset: this.asset,
-                                amount: this.sendAssetAmount,
+                                asset: this.wallet,
+                                amount: this.sendWalletAmount,
                                 recipientAddress: this.recipientAddress
                             },
                             {

@@ -1,11 +1,8 @@
+import { IonicPage, Navbar, NavController, NavParams, LoadingController, ToastController } from 'ionic-angular';
 import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController, Navbar, NavParams, LoadingController, ToastController } from 'ionic-angular';
-import { NWAsset } from '../../../models/nwallet';
-import { ChannelService } from '../../../services/nwallet/channel.service';
-import { LoggerService } from '../../../services/common/logger/logger.service';
+import { NWAsset } from '../../models/nwallet';
+import { LoggerService } from '../../services/common/logger/logger.service';
 import { SendConfirmSuccessPage } from './send.confirm.success.page';
-import { ViewController } from 'ionic-angular/navigation/view-controller';
-import { SendPage } from './send.page';
 
 @IonicPage()
 @Component({
@@ -40,8 +37,6 @@ export class SendConfirmPinPage {
                 animate: false
             });
         };
-
-
     }
 
     public async onInput(input: any): Promise<void> {
@@ -55,7 +50,7 @@ export class SendConfirmPinPage {
         if (this.pinCode.length > 5) {
             const loading = this.loading.create({
                 spinner: 'circles',
-                cssClass : 'loading-base',
+                cssClass: 'loading-base',
                 dismissOnPageChange: true
             });
 
@@ -77,7 +72,7 @@ export class SendConfirmPinPage {
                 const toast = this.toast.create({
                     message: 'faild to send.',
                     duration: 3000,
-                    position : 'middle'
+                    position: 'middle'
                 });
 
                 toast.present();

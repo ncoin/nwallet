@@ -8,20 +8,22 @@
 <ion-content padding>
     <div class="container">
         <div class="asset">
-            <img src="assets/img/symbol_{{asset.getSymbol()}}.png" />
-            <div>{{asset | walletToFullName | async}}</div>
+            <img src="assets/img/symbol_{{wallet.getSymbol()}}.png" />
+            <div>{{wallet | walletToFullName | async}}</div>
         </div>
-        <div >
+        <div>
             <div class="input-wrap">
-                <input [(ngModel)]="sendAssetAmount" type="number">
+                <input [(ngModel)]="sendWalletAmount" type="number">
                 <div>
-                    {{asset.getSymbol()}}
+                    {{wallet.getSymbol()}}
                 </div>
             </div>
             <div class="input-foot">
-                {{'Available' | translate}} : {{asset | walletToFormat}} / {{asset | walletToUSD | async }}
+                {{'Available' | translate}} : {{wallet | walletToFormat}} / {{wallet | walletToUSD | async }}
             </div>
-            <button class="button-max" (click)="onClick_Max()"><div class="label">{{'Button_Max' | translate | uppercase}}</div></button>
+            <button class="button-max" (click)="onClick_Max()">
+                <div class="label">{{'Button_Max' | translate | uppercase}}</div>
+            </button>
         </div>
         <div>
             <div class="input-wrap">

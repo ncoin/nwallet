@@ -1,16 +1,10 @@
 import { MY_INFO_PAGES } from './../account/my-info/my-info.page';
-import { AccountService } from '../../../services/account/account.service';
-import { NWalletAppService } from '../../../services/app/app.service';
 import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams, Tabs } from 'ionic-angular';
 
-import { LoggerService } from '../../../services/common/logger/logger.service';
-
-import { TransferHistoryPage } from '../transfer-history/transfer-history.page';
 import { WalletTabPages, WalletMainPage } from '../wallet-main/wallet-main.page';
 import { AccountPage } from '../account/account.page';
 import { ReceivePage } from '../receive/receive.page';
-import { SendPage, SEND_PAGES } from '../send/send.page';
 import { EventService } from '../../../services/common/event/event.service';
 import { NWEvent } from '../../../interfaces/events';
 import { LoanPage } from '../loan/loan.page';
@@ -74,4 +68,4 @@ export class TabcontainerPage {
     public changeTransition(event) {}
 }
 
-export const NWalletTabPages = [TabcontainerPage, TransferHistoryPage, ReceivePage, AccountPage, ...BUY_NCN_PAGES, ...SEND_PAGES, ...WalletTabPages, ...MY_INFO_PAGES];
+export const NWalletTabPages = [TabcontainerPage, ReceivePage, AccountPage, ...BUY_NCN_PAGES, ...WalletTabPages, ...MY_INFO_PAGES];

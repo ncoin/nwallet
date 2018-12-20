@@ -1,7 +1,5 @@
-import { LoggerService } from './../../services/common/logger/logger.service';
 import { NavController, ViewController, Navbar, ModalOptions } from 'ionic-angular';
 import { Component, ViewChild, ReflectiveInjector } from '@angular/core';
-import { IonicPage } from 'ionic-angular/navigation/ionic-page';
 import { NavParams } from 'ionic-angular/navigation/nav-params';
 import { ModalBasePage } from './modal.page';
 import { NavOptions, TransitionDoneFn } from 'ionic-angular/navigation/nav-util';
@@ -38,7 +36,7 @@ export class ModalNavPage {
         };
     }
 
-    public constructor(protected navCtrl: NavController, protected logger: LoggerService, param: NavParams, private viewCtrl: ViewController) {
+    public constructor(protected navCtrl: NavController, param: NavParams, private viewCtrl: ViewController) {
         this.rootPage = param.get('page');
         this.params = param.get('params');
 

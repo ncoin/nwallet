@@ -13,6 +13,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { QRScanPage } from './qrscan/qrscan.page';
 import { ModalNavPage } from './base/modal-nav.page';
 import { VERIFY_PHONE_PAGES } from './entrance/verify-phone/verify-phone.page';
+import { SEND_PAGES } from './send/send.page';
 
 
 @NgModule({
@@ -26,7 +27,8 @@ import { VERIFY_PHONE_PAGES } from './entrance/verify-phone/verify-phone.page';
         QRScanPage,
         ModalNavPage,
         ...NWalletTabPages,
-        ...VERIFY_PHONE_PAGES
+        ...VERIFY_PHONE_PAGES,
+        ...SEND_PAGES
     ],
     imports: [
         NWalletSharedModule,
@@ -42,6 +44,7 @@ import { VERIFY_PHONE_PAGES } from './entrance/verify-phone/verify-phone.page';
         IonicPageModule.forChild(QRScanPage),
         IonicPageModule.forChild(VERIFY_PHONE_PAGES),
         IonicPageModule.forChild(ModalNavPage),
+        IonicPageModule.forChild(SEND_PAGES),
     ],
     entryComponents: [TutorialPage, EntrancePage, ...NWalletTabPages, ModalNavPage]
 })

@@ -42,7 +42,7 @@ export class LoanDetailPage extends ModalBasePage implements OnDestroy, OnInit {
     async ngOnInit(): Promise<void> {
         this.account.registerSubjects(a => {
             this.subscriptions.push(
-                a.assetChanged(assets => {
+                a.walletChanged(assets => {
                     const target = assets.find(asset => asset.getCurrencyId() === this.wallet.getCurrencyId());
                     if (target) {
                         this.wallet = target;

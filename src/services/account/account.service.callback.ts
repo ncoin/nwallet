@@ -7,7 +7,7 @@ export class AccountSubject {
         Debug.assert(account.inventory);
     }
 
-    public assetChanged(expr: (asset: NWAsset.Item[]) => void): Subscription {
+    public walletChanged(expr: (asset: NWAsset.Item[]) => void): Subscription {
         return this.account.inventory.getAssetItems().subscribe(expr);
     }
     public assetTransactionsChanged(walletId: number, expr: (asset: NWTransaction.Item[]) => void): Subscription {

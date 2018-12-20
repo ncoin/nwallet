@@ -36,7 +36,7 @@ export class BuyNcnPage implements OnInit {
 
     async ngOnInit() {
         this.account.registerSubjects(account => {
-            this.subsciptions.push(account.assetChanged(assets => (this.assets = assets)));
+            this.subsciptions.push(account.walletChanged(assets => (this.assets = assets)));
         });
 
         this.event.RxSubscribe(NWEvent.App.change_tab, context => {

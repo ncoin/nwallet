@@ -58,7 +58,7 @@ export class WalletMainPage implements OnDestroy {
         await this.app.waitFetch();
 
         this.account.registerSubjects(account => {
-            this.subscriptions.push(account.assetChanged(this.onAssetChanged));
+            this.subscriptions.push(account.walletChanged(this.onAssetChanged));
         });
 
         this.currency.currencyChanged.subscribe(this.calculateTotalPrice);
@@ -95,7 +95,7 @@ export class WalletMainPage implements OnDestroy {
             ModalNavPage.resolveModal(WalletDetailPage, param => {
                 param.headerType = 'none';
                 param.canBack = true;
-                param.asset = wallet;
+                param.wallet = wallet;
             })
         );
         await modal.present();

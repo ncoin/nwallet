@@ -37,7 +37,7 @@ export class ManageWalletPage extends ModalBasePage implements OnDestroy, OnInit
     ngOnInit() {
         this.account.registerSubjects(subjects =>
             this.subscriptions.push(
-                subjects.assetChanged(assets => {
+                subjects.walletChanged(assets => {
                     this.ncn = assets.find(asset => asset.getCurrencyId() === NWConstants.NCN.currencyId);
                     this.assets = assets.slice();
                     this.assets.splice(this.assets.indexOf(this.ncn), 1);

@@ -43,7 +43,7 @@ export class LoanPage {
     ) {}
 
     ionViewDidEnter() {
-        this.account.registerSubjects(accountCallback => this.subscriptions.push(accountCallback.assetChanged(this.onCollateralChanged())));
+        this.account.registerSubjects(accountCallback => this.subscriptions.push(accountCallback.walletChanged(this.onCollateralChanged())));
     }
 
     ionViewDidLeave() {

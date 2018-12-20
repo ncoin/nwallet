@@ -39,7 +39,7 @@ export class ReceivePage {
         private popup: PopupService
     ) {
         this.account.registerSubjects(stream => {
-            stream.assetChanged(this.onAssetChanged());
+            stream.walletChanged(this.onAssetChanged());
         });
 
         this.event.RxSubscribe(NWEvent.App.change_tab, context => {

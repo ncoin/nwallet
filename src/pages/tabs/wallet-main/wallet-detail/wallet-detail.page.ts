@@ -1,6 +1,6 @@
 import { LoggerService } from '../../../../services/common/logger/logger.service';
 import { Component, ViewChild, OnDestroy } from '@angular/core';
-import { IonicPage, Navbar, InfiniteScroll, NavParams, NavController } from 'ionic-angular';
+import { IonicPage, Navbar, InfiniteScroll, NavParams, NavController, ModalController } from 'ionic-angular';
 import * as _ from 'lodash';
 import { NWTransaction, NWAsset } from '../../../../models/nwallet';
 import { ModalBasePage } from '../../../base/modal.page';
@@ -12,6 +12,7 @@ import { ChannelService } from '../../../../services/nwallet/channel.service';
 import { NWEvent } from '../../../../interfaces/events';
 import { WalletTransactionDetailPage } from './wallet-transaction-detail.page';
 import { NWTransition } from '../../../../tools/extension/transition';
+import { SendPage } from '../../../send/send.page';
 
 @IonicPage()
 @Component({
@@ -26,7 +27,7 @@ export class WalletDetailPage extends ModalBasePage implements OnDestroy {
     }>();
     private skip = 0;
     private limit = 10;
-    public asset: NWAsset.Item;
+    public wallet: NWAsset.Item;
     private subscriptions: Subscription[] = [];
     constructor(
         navCtrl: NavController,
@@ -35,20 +36,21 @@ export class WalletDetailPage extends ModalBasePage implements OnDestroy {
         private logger: LoggerService,
         private account: AccountService,
         private event: EventService,
-        private channel: ChannelService
+        private channel: ChannelService,
+        private modal: ModalController
     ) {
         super(navCtrl, params, parent);
-        this.asset = params.get('asset');
+        this.wallet = params.get('wallet');
         this.init();
     }
 
     private async init(): Promise<void> {
         this.account.registerSubjects(account => {
-            this.subscriptions.push(account.assetTransactionsChanged(this.asset.getWalletId(), this.arrange));
+            this.subscriptions.push(account.assetTransactionsChanged(this.wallet.getWalletId(), this.arrange));
         });
 
-        this.channel.getWalletTransactions(this.asset.getWalletId(), 0, this.limit);
-        const data = await this.channel.getWalletDetails(this.asset.getWalletId());
+        this.channel.getWalletTransactions(this.wallet.getWalletId(), 0, this.limit);
+        const data = await this.channel.getWalletDetails(this.wallet.getWalletId());
     }
 
     ngOnDestroy() {
@@ -77,13 +79,13 @@ export class WalletDetailPage extends ModalBasePage implements OnDestroy {
         });
         this.skip = transactions.length;
 
-        const a = this.asset;
-        this.asset = undefined;
-        this.asset = a;
+        const a = this.wallet;
+        this.wallet = undefined;
+        this.wallet = a;
     };
 
     public async doInfinite(infinite: InfiniteScroll): Promise<void> {
-        const transactions = await this.channel.getWalletTransactions(this.asset.getWalletId(), this.skip, this.limit);
+        const transactions = await this.channel.getWalletTransactions(this.wallet.getWalletId(), this.skip, this.limit);
         if (transactions.length < 1) {
             this.logger.debug('[transfer-tab-page] response transfers length =', transactions.length);
             infinite.enable(false);
@@ -98,9 +100,20 @@ export class WalletDetailPage extends ModalBasePage implements OnDestroy {
     }
 
     public onClick_Receive(): void {
-        this.event.publish(NWEvent.App.change_tab, { index: 0, currencyId: this.asset.getCurrencyId() });
+        this.event.publish(NWEvent.App.change_tab, { index: 0, currencyId: this.wallet.getCurrencyId() });
         this.parent.close();
     }
 
-    public onClick_Send(): void {}
+    public onClick_Send(): void {
+        const page = this.modal.create(
+            ModalNavPage,
+            ModalNavPage.resolveModal(SendPage, param => {
+                param.canBack = true;
+                param.headerType = 'bar';
+                param.selectedWallet = this.wallet;
+            })
+        );
+
+        page.present();
+    }
 }

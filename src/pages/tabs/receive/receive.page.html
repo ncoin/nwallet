@@ -11,7 +11,7 @@
 
     <div class="container">
         <div>
-            <div class="country-code-button" (click)="onClick_SelectAsset()">
+            <div class="asset_change_button" (click)="onClick_SelectAsset()">
                 <img class="asset-logo" src="assets/img/symbol_{{selectedAsset.getSymbol()}}.png" />
                 <div class="asset-name">{{selectedAsset | walletToFullName | async}}</div>
                 <div class="asset-balance">{{selectedAsset | walletToFormat}}</div>

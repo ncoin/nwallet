@@ -8,38 +8,41 @@ page-send {
     .container {
         flex-grow: 1;
 
-        .slide {
-            display: flex;
-            justify-content: center;
+        .asset_change_button {
+            display: grid;
+            width: 100%;
+            grid-template-columns: 40px 1fr 1fr 30px;
+            background: $background-button-default;
+            -webkit-border-radius: 5px;
+            -moz-border-radius: 5px;
+            border-radius: 5px;
+            padding: 10px;
 
-            >button {
-                width: 25%;
-                height: 50px;
-                border: 1px solid $border-color;
-                background: transparent;
-                color: $foreground-header-gold;
-                display: flex;
-                justify-content: space-evenly;
-                align-items: center;
-
-                img {
-                    height: 25px;
-                }
+            .asset-logo {
+                grid-column: 1;
+                margin: auto;
             }
 
-            .button-left {
-                border-right: 0px;
-                border-radius: 5px 0px 0px 5px;
+            .asset-name {
+                grid-column: 2;
+                font-size: $text-size-large;
+                color: $text-color-asset-name;
+                margin: auto 0 auto 10px;
             }
 
-            .button-right {
-                border-left: 0px;
-                border-radius: 0px 5px 5px 0px;
+            .asset-balance {
+                grid-column: 3;
+                font-size: $text-size-large;
+                color: $text-color-asset-balance;
+                margin: auto 10px auto 0;
+                text-align: right;
             }
 
-            .selected-button {
-                color: $foreground-header-white;
-                background: $border-color-7a;
+            fa-icon {
+                grid-column: 4;
+                font-size: 3rem;
+                color: rgb(171, 165, 157);
+                margin: auto;
             }
         }
 
@@ -91,7 +94,7 @@ page-send {
     }
 
     .next {
-        text-align : center;
+        text-align: center;
         font-size: 4vmin;
     }
 
