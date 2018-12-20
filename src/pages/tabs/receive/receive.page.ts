@@ -38,9 +38,7 @@ export class ReceivePage {
         private event: EventService,
         private popup: PopupService
     ) {
-        this.account.registerSubjects(stream => {
-            stream.walletChanged(this.onAssetChanged());
-        });
+        this.account.registerSubjects(stream => stream.walletChanged(this.onAssetChanged()));
 
         this.event.RxSubscribe(NWEvent.App.change_tab, context => {
             if (context && context.index === 0) {
@@ -58,7 +56,9 @@ export class ReceivePage {
             if (assets.length > 0) {
                 this.logger.debug('[receive-page] on refresh assets');
                 this.assets = assets.slice();
-                this.selectedAsset = assets[0];
+                if (!this.selectedAsset) {
+                    this.selectedAsset = assets[0];
+                }
             }
         };
     }

@@ -7,6 +7,8 @@ import { NWConstants } from '../../../../models/constants';
 import { ChannelService } from '../../../../services/nwallet/channel.service';
 import { ResultCode } from '../../../../interfaces/error';
 import { BuyNcnResultPage } from '../buy-ncn-result/buy-ncn-result.page';
+import { AccountService } from '../../../../services/account/account.service';
+import { Observable } from 'rxjs';
 @IonicPage()
 @Component({
     selector: 'page-buy-ncn-confirm',
@@ -14,6 +16,7 @@ import { BuyNcnResultPage } from '../buy-ncn-result/buy-ncn-result.page';
 })
 export class BuyNcnConfirmPage implements OnInit {
     public selectedWallet: NWAsset.Item;
+    public ncn: NWAsset.Item;
     public assets: NWAsset.Item[];
     public buyNcnAmount: number;
     public walletAmount: number;
@@ -24,15 +27,22 @@ export class BuyNcnConfirmPage implements OnInit {
         private channel: ChannelService,
         private logger: LoggerService,
         private currency: CurrencyService,
-        private loading: LoadingController
+        private loading: LoadingController,
+        private account: AccountService
     ) {
         this.selectedWallet = navParams.get('wallet');
         this.buyNcnAmount = navParams.get('buyNcnAmount');
     }
 
     async ngOnInit() {
-        const ncn = this.currency.get(NWConstants.NCN.currencyId).getValue();
         this.walletAmount = this.buyNcnAmount / this.currency.getPrice(this.selectedWallet.getCurrencyId());
+
+        this.ncn = await this.account.detail().then(a =>
+            a.inventory
+                .getAssetItems()
+                .getValue()
+                .find(wallet => wallet.getCurrencyId() === NWConstants.NCN.currencyId)
+        );
     }
 
     public onClick_Cancel(): void {

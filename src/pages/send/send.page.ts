@@ -1,5 +1,5 @@
 import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component, ViewEncapsulation, OnDestroy, OnInit } from '@angular/core';
 import { ModalBasePage } from '../base/modal.page';
 import { NWAsset } from '../../models/nwallet';
 import { ModalNavPage } from '../base/modal-nav.page';
@@ -11,17 +11,39 @@ import { NWModalTransition } from '../../tools/extension/transition';
 import { SendConfirmPinPage } from './send.confirm.pin.page';
 import { SendConfirmSuccessPage } from './send.confirm.success.page';
 import { PopupService } from '../../services/popup/popop.service';
+import { Subscription } from 'rxjs';
+import { CurrencyService } from '../../services/nwallet/currency.service';
 
 @IonicPage()
 @Component({
     selector: 'page-send',
-    templateUrl: 'send.page.html',
+    templateUrl: 'send.page.html'
 })
-export class SendPage extends ModalBasePage {
+export class SendPage extends ModalBasePage implements OnInit, OnDestroy {
+    private subscriptions: Subscription[] = [];
+
+    public usdFormat = true;
     public recipientAddress = '';
-    public sendAmount: string;
     public selectedWallet: NWAsset.Item;
     public wallets: NWAsset.Item[];
+    public priceAmount = 0;
+    public walletAmount = 0;
+
+    public get sendAmount(): number {
+        return this.usdFormat ? this.priceAmount : this.walletAmount;
+    }
+
+    public set sendAmount(value: number) {
+        const price = this.currency.getPrice(this.selectedWallet.getCurrencyId());
+        if (this.usdFormat) {
+            this.priceAmount = value;
+            this.walletAmount = price / value;
+        } else {
+            this.walletAmount = value;
+            this.priceAmount = value / price;
+        }
+    }
+
     constructor(
         navCtrl: NavController,
         navParam: NavParams,
@@ -29,11 +51,20 @@ export class SendPage extends ModalBasePage {
         private modalCtrl: ModalController,
         private logger: LoggerService,
         private account: AccountService,
-        private popup: PopupService
+        private popup: PopupService,
+        private currency: CurrencyService
+
     ) {
         super(navCtrl, navParam, parent);
         this.selectedWallet = navParam.get('selectedWallet');
-        this.account.registerSubjects(stream => stream.walletChanged(this.onWalletChanged()));
+    }
+
+    ngOnInit() {
+        this.account.registerSubjects(stream => this.subscriptions.push(stream.walletChanged(this.onWalletChanged())));
+    }
+
+    ngOnDestroy() {
+        this.subscriptions.forEach(s => s.unsubscribe());
     }
 
     public onWalletChanged() {
@@ -43,6 +74,10 @@ export class SendPage extends ModalBasePage {
                 this.wallets = wallets.slice();
             }
         };
+    }
+
+    public onClick_SwapFormat() {
+        this.usdFormat = !this.usdFormat;
     }
 
     public async onClick_Wallet(): Promise<void> {

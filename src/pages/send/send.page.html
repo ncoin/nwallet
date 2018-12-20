@@ -31,9 +31,36 @@
             <div class="label">
                 {{'EnterAmount' | translate | uppercase}}
             </div>
-            <div class="qr-code">
-                <input class="input" [(ngModel)]="sendAmount" type="number" [placeholder]="'enter or scan the qr code' | translate">
+            <div class="enter-amount">
+                <div>
+                    <div class="input-buttons">
+                        <div (click)="onClick_SwapFormat()">
+                            ↕
+                        </div>
+                    </div>
+                    <div>
+                        <div *ngIf="usdFormat; then usd else crypto"></div>
+                        <ng-template #usd>
+                            <div>
+                                <input class="input" [(ngModel)]="sendAmount" type="number" [placeholder]="0">
+                                <span>USD</span>
+                            </div>
+                            <div>
+                                {{walletAmount}} {{selectedWallet.getSymbol()}}
+                            </div>
+                        </ng-template>
+                        <ng-template #crypto>
+                            <div>
+                                <input class="input" [(ngModel)]="sendAmount" type="number" [placeholder]="0">
+                                <span>{{selectedWallet.getSymbol()}}</span>
+                            </div>
+                            <div>
+                                {{priceAmount}} USD
+                            </div>
+                        </ng-template>
 
+                    </div>
+                </div>
             </div>
         </div>
     </div>

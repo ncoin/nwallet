@@ -22,7 +22,7 @@ export class BuyNcnPage implements OnInit {
     private subsciptions: Subscription[] = [];
     public selectedWallet: NWAsset.Item;
     public assets: NWAsset.Item[];
-    public buyNcnAmount: number;
+    public buyNcnAmount = 0;
 
     constructor(
         public navCtrl: NavController,
@@ -67,7 +67,8 @@ export class BuyNcnPage implements OnInit {
     public onClick_ShortCut(value: number) {
         const maxAmount = this.currency.getPrice(this.selectedWallet.getCurrencyId()) * this.selectedWallet.getAmount();
         if (value) {
-            this.buyNcnAmount = Math.min(value, maxAmount);
+            const accumAmount = this.buyNcnAmount + value;
+            this.buyNcnAmount = Math.min(accumAmount, maxAmount);
         } else {
             this.buyNcnAmount = maxAmount;
         }

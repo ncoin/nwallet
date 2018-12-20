@@ -71,7 +71,7 @@ page-send {
                 display: flex;
                 justify-content: space-around;
 
-                >input {
+                .input {
                     background: transparent;
                     margin: 0 10px 0 0;
                     border: 0px;
@@ -83,6 +83,35 @@ page-send {
                 >div {
                     margin: auto 2% auto 0;
                     font-size: 3.5rem;
+                }
+            }
+
+            >.enter-amount {
+                padding: 1%;
+                border-radius: 5px;
+                border: 1px soild $input-border-color;
+                background: $input-background;
+                display: flex;
+                justify-content: space-between;
+
+                .input {
+                    text-align: right;
+                    background: transparent;
+                    margin: 0;
+                    border: 0px;
+                    padding: 0 0 0 10px;
+                    font-size: 3.4vw;
+                }
+
+                >div {
+                    display: flex;
+                    flex: 1;
+                    font-size: 20px;
+                    flex-direction: row-reverse;
+
+                    .input-buttons {
+                        margin: 0 0 0 5px;
+                    }
                 }
             }
         }

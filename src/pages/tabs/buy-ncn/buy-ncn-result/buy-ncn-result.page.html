@@ -1,6 +1,8 @@
 <ion-header>
-    <ion-navbar>
-        <ion-title>{{'Buy' | translate}} {{'NCN' | translate}}</ion-title>
+    <ion-navbar hideBackButton="true">
+        <ion-title>
+            <img src="assets/img/title_buy_ncoin.png" />
+        </ion-title>
     </ion-navbar>
 </ion-header>
 <ion-content padding>
@@ -12,9 +14,9 @@
                 <fa-icon name="check-circle-o"></fa-icon>
             </div>
             <div class="result-table">
-                <div class="rows">
+                <div class="rows" *ngIf="ncn">
                     <div class="column">{{'BuyAmount' | translate}}</div>
-                    <div class="amount-ncoin">{{buyNcnAmount}}</div>
+                    <div class="amount-ncoin">{{buyNcnAmount}} {{ncn.getSymbol()}}</div>
                 </div>
                 <div class="rows">
                     <div class="column">{{'BitcoinUsed' | translate}}</div>
@@ -40,7 +42,7 @@
         </div>
     </ng-template>
     <div class="buttons">
-        <button ion-item class="btn confirm">{{'BuyAgain' | translate }}</button>
+        <button ion-item class="btn confirm" (click)="onClick_BuyAgain()">{{'BuyAgain' | translate }}</button>
         <button ion-item class="btn confirm">{{'ViewHistory' | translate }}</button>
     </div>
 </ion-content>

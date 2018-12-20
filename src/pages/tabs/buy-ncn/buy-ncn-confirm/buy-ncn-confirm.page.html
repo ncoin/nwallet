@@ -1,6 +1,8 @@
 <ion-header>
     <ion-navbar>
-        <ion-title>{{'Buy' | translate}} {{'NCN' | translate}}</ion-title>
+        <ion-title>
+            <img src="assets/img/title_buy_ncoin.png" />
+        </ion-title>
     </ion-navbar>
 </ion-header>
 <ion-content padding>
@@ -24,8 +26,8 @@
                 <div class="asset-name">
                     {{'NCN' | translate }}
                 </div>
-                <div class="asset-amount">
-                    {{buyNcnAmount}}
+                <div class="asset-amount" *ngIf="ncn">
+                    {{buyNcnAmount}} {{ncn.getSymbol()}}
                 </div>
             </div>
         </div>
