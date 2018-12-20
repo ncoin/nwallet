@@ -314,6 +314,54 @@ ion-tabs[name=conference] .tabbar a.tab-button:nth-child(5)[aria-selected=true] 
     font-weight: 500;
 }
 
+.btn.action {
+    background: $background-button-action;
+    -webkit-box-shadow: $basic-button-default-shadow 0 1px 0 inset;
+    -moz-box-shadow: $basic-button-default-shadow 0 1px 0 inset;
+    box-shadow: $basic-button-default-shadow 0 1px 0 inset;
+    text-align: center;
+    font-size: $text-size-extra-large;
+}
+
+.btn.action h3,
+.btn.action ion-label,
+.btn.action span {
+    color: rgb(250, 250, 250);
+    font-weight: 500;
+}
+
+.btn.confirm {
+    background: $background-button-action;
+    -webkit-box-shadow: $basic-button-default-shadow 0 1px 0 inset;
+    -moz-box-shadow: $basic-button-default-shadow 0 1px 0 inset;
+    box-shadow: $basic-button-default-shadow 0 1px 0 inset;
+    text-align: center;
+    font-size: $text-size-large;
+}
+
+.btn.confirm h3,
+.btn.confirm ion-label,
+.btn.confirm span {
+    color: rgb(250, 250, 250);
+    font-weight: 500;
+}
+
+.btn.cancel {
+    background: $basic-button-default-background;
+    -webkit-box-shadow: $basic-button-default-shadow 0 1px 0 inset;
+    -moz-box-shadow: $basic-button-default-shadow 0 1px 0 inset;
+    box-shadow: $basic-button-default-shadow 0 1px 0 inset;
+    text-align: center;
+    font-size: $text-size-large;
+}
+
+.btn.cancel h3,
+.btn.cancel ion-label,
+.btn.cancel span {
+    color: #838383;
+    font-weight: 500;
+}
+
 
 // ionic buttons
 .bar-button-default-ios,

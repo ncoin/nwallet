@@ -1,6 +1,8 @@
 $border-color: rgb(79, 66, 44);
 $border-color-7a :rgba(79, 66, 44, 0.7);
 $border-color-gold :rgb(110, 96, 71);
+$border-color-translate-button :rgb(92, 77, 48);
+$border-color-divide-line :rgb(66, 58, 42);
 
 $background-button-default: rgb(83, 76, 66);
 $background-button-ncoin: rgb(80, 76, 67);
@@ -8,6 +10,7 @@ $background-button-asset-show: rgb(68, 114, 141);
 $background-button-asset-hide: rgb(77, 77, 77);
 $background-button-ok: rgb(124, 95, 56);
 $background-button-ok-bright: rgb(114, 95, 56);
+$background-button-action: rgb(128, 96, 53);
 
 $foreground-header: rgb(149, 124, 79);
 $foreground-header-white: white;
@@ -35,6 +38,11 @@ $text-size-medium: 1.5rem;
 $text-color-asset-name: rgb(195, 189, 184);
 $text-color-asset-balance: rgb(255, 255, 255);
 $text-color-point: rgb(232, 203, 135);
+$text-color-sub-title: rgb(139, 130, 78);
+$text-color-content-red: rgb(244, 52, 78);
+$text-color-content-orange: rgb(239, 157, 50);
+$text-color-content-green: rgb(78, 162, 97);
+$text-color-content-white: rgb(255, 255, 255);
 
 .nw-button {
     background: rgb(69, 65, 59) !important;

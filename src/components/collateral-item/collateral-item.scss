@@ -5,9 +5,6 @@ nw-collateral-item {
     $progress-border-color: rgb(110, 96, 72);
     $progress-background-red: rgb(231, 55, 77);
     $progress-background-green: rgb(40, 143, 64);
-    $content-text-red: rgb(244, 52, 78);
-    $content-text-orange: rgb(239, 157, 50);
-    $content-text-green: rgb(78, 162, 97);
 
     .collateral-container {
         position: relative;
@@ -131,20 +128,20 @@ nw-collateral-item {
                 grid-column: 1;
 
                 .content.red {
-                    color: $content-text-red;
+                    color: $text-color-content-red;
                 }
                 .content.orange {
-                    color: $content-text-orange;
+                    color: $text-color-content-orange;
                 }
                 .content.green {
-                    color: $content-text-green;
+                    color: $text-color-content-green;
                 }
             }
             div:nth-child(2) {
                 grid-column: 2;
 
                 .content {
-                    color: $content-text-red;
+                    color: $text-color-content-red;
                 }
             }
             div:nth-child(3) {
@@ -152,7 +149,7 @@ nw-collateral-item {
                 text-align: right;
 
                 .content {
-                    color: $content-text-green;
+                    color: $text-color-content-green;
                 }
             }
         }
@@ -165,8 +162,8 @@ nw-collateral-item {
             fa-icon {
                 float: left;
                 font-size: $text-size-extra-large;
-                color: $content-text-orange;
-                background: rgb(255, 255, 255);
+                color: $text-color-content-orange;
+                background: $text-color-content-white;
                 border-radius: 50%;
                 line-height: 80%;
             }

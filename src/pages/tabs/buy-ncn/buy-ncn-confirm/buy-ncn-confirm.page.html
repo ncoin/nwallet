@@ -5,36 +5,33 @@
 </ion-header>
 <ion-content padding>
     <div>
-        <div>
+        <div class="sub-title">
             {{'ConfirmBuyNCN' | translate}}
-            <div class="logo">
-                <img src="assets/img/symbol_NCN.png" />
-            </div>
+        </div>
+        <div class="logo">
+            <img src="assets/img/symbol_NCN_big.png" />
         </div>
         <div class="transfer">
             <div class="from">
-                <div>
+                <div class="asset-name">
                     {{selectedWallet | walletToFullName | async}}
                 </div>
-                <div>
+                <div class="asset-amount">
                     {{walletAmount}}
                 </div>
             </div>
-            <div>
-                ====>
-            </div>
             <div class="to">
-                <div>
+                <div class="asset-name">
                     {{'NCN' | translate }}
                 </div>
-                <div>
+                <div class="asset-amount">
                     {{buyNcnAMount}}
                 </div>
             </div>
         </div>
         <div class="buttons">
-            <button ion-item class="nw-button center" (click)="onClick_Cancel()">{{'Cancel' | translate}}</button>
-            <button ion-item class="nw-button center" (click)="onClick_Confirm()">{{'Confirm' | translate}}</button>
+            <button ion-item class="btn cancel center" (click)="onClick_Cancel()">{{'Cancel' | translate}}</button>
+            <button ion-item class="btn confirm center" (click)="onClick_Confirm()">{{'Confirm' | translate}}</button>
         </div>
 
     </div>

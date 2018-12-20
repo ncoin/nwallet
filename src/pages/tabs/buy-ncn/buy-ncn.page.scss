@@ -1,6 +1,16 @@
 page-buy-ncn {
+
     div {
         color: $foreground-header;
+    }
+
+    .sub-title {
+        border-left: 5px $text-color-sub-title solid;
+        font-size: $text-size-large;
+        line-height: $text-size-large;
+        padding-left: 5px;
+        margin-bottom: $text-size-medium;
+        color: $text-color-sub-title;
     }
 
     input {
@@ -13,18 +23,45 @@ page-buy-ncn {
         font-size: 1.8rem;
         width: 100%;
         height: 50px;
+        margin-bottom: 10px;
     }
 
     .country-code-button {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-around;
-        width: 30%;
-        align-items: center;
-        font-size: small;
+        display: grid;
+        width: 100%;
+        grid-template-columns: 40px 1fr 1fr 30px;
+        background: $background-button-default;
+        -webkit-border-radius: 5px;
+        -moz-border-radius: 5px;
+        border-radius: 5px;
+        padding: 10px;
+        margin-bottom: 20px;
 
-        >ion-icon {
-            margin: 0 0 0 5px;
+        .asset-logo {
+            grid-column: 1;
+            margin: auto;
+        }
+
+        .asset-name {
+            grid-column: 2;
+            font-size: $text-size-large;
+            color: $text-color-asset-name;
+            margin: auto 0 auto 10px;
+        }
+
+        .asset-balance {
+            grid-column: 3;
+            font-size: $text-size-large;
+            color: $text-color-asset-balance;
+            margin: auto 10px auto 0;
+            text-align: right;
+        }
+
+        fa-icon {
+            grid-column: 4;
+            font-size: 3rem;
+            color: rgb(171, 165, 157);
+            margin: auto;
         }
     }
 
@@ -33,19 +70,59 @@ page-buy-ncn {
         flex-direction: row;
         justify-content: space-between;
         text-align: center;
+        margin-bottom: 30px;
+
         > div {
             flex: 1;
+            font-size: $text-size-large;
+        }
+
+        .row > div {
+            display: block;
+            width: 100%;
+            margin-bottom: 5px;
+        }
+        .row > .amount {
+            font-weight: 600;
+        }
+        .row:nth-child(1) {
+            text-align: left;
+
+            .amount {
+                color: $text-color-content-green;
+            }
+        }
+        .row:nth-child(2) {
+            text-align: center;
+
+            .amount {
+                color: $text-color-content-white;
+            }
+        }
+        .row:nth-child(3) {
+            text-align: right;
+
+            .amount {
+                color: $text-color-content-white;
+            }
         }
     }
 
     .shortcuts {
         display: flex;
         flex-direction: row;
+        margin-bottom: 40px;
 
         .shortcut {
             text-align: center;
-            border: $border-color 1px solid;
+            border: $border-color-translate-button 2px solid;
             border-radius: 6px;
+            margin-right: 10px;
+            font-size: $text-size-large;
+            color: $global-color-gold;
+        }
+        .shortcut:last-child {
+            margin-right: 0;
         }
     }
 }
