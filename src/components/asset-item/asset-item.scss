@@ -3,6 +3,8 @@ $nwallet-card-border-radius: 1rem 1rem 0 0;
 $nwallet-card-margin: 0 0.4rem -1rem 0.4rem;
 $nwallet-card-shadow: rgba(0, 0, 0, 0.75) 0 -2px 6px -1px;
 $nwallet-card-bevel: rgba(255, 255, 255, 0.3) 0 1px 0 inset;
+$nwallet-card-light-start: rgba(255, 255, 255, 0.7);
+$nwallet-card-light-end: rgba(255, 255, 255, 0);
 
 $ncash-border-start: #2f2c2a;
 $ncash-border-mid: #c8c6c5;
@@ -144,6 +146,18 @@ nw-asset-item.basic div.card{
     -webkit-box-shadow: $nwallet-card-bevel, $nwallet-card-shadow;
     -moz-box-shadow: $nwallet-card-bevel, $nwallet-card-shadow;
     box-shadow: $nwallet-card-bevel, $nwallet-card-shadow;
+}
+nw-asset-item.basic div.card::after {
+    position: absolute;
+    top: 0;
+    left: 25%;
+    height: 1px;
+    width: 50%;
+    z-index: 1;
+    background: -moz-linear-gradient(right, $nwallet-card-light-end 0%, $nwallet-card-light-start 50%, $nwallet-card-light-end 100%);
+    background: -webkit-linear-gradient(right, $nwallet-card-light-end 0%, $nwallet-card-light-start 50%, $nwallet-card-light-end 100%);
+    background: linear-gradient(to right, $nwallet-card-light-end 0%, $nwallet-card-light-start 50%, $nwallet-card-light-end 100%);
+    content: '';
 }
 nw-asset-item.basic:nth-child(1) div.card {
     background: #504c43;
