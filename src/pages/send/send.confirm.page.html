@@ -1,43 +1,46 @@
 <ion-header>
     <ion-navbar>
         <ion-title>
-            <img src="assets/img/title_send.png">
+            <img src="assets/img/title_send.png" />
         </ion-title>
     </ion-navbar>
 </ion-header>
 <ion-content padding>
-    <div class="container">
-        <div class="asset">
-            <img src="assets/img/symbol_{{wallet.getSymbol()}}.png" />
-            <div>{{wallet | walletToFullName | async}}</div>
-        </div>
-        <div>
-            <div class="input-wrap">
-                <input [(ngModel)]="sendWalletAmount" type="number">
-                <div>
-                    {{wallet.getSymbol()}}
-                </div>
-            </div>
-            <div class="input-foot">
-                {{'Available' | translate}} : {{wallet | walletToFormat}} / {{wallet | walletToUSD | async }}
-            </div>
-            <button class="button-max" (click)="onClick_Max()">
-                <div class="label">{{'Button_Max' | translate | uppercase}}</div>
-            </button>
-        </div>
-        <div>
-            <div class="input-wrap">
-                <input [(ngModel)]="sendUSDAmount" type="number" readonly="true" [placeholder]="0.0">
-                <div>
-                    USD
-                </div>
-            </div>
-            <div class="input-foot">
-                <!-- Fee : 1111 / -->
-            </div>
-        </div>
-    </div>
     <div>
-        <button ion-item class="nw-button next" (click)="onClick_Next()">{{'Next' | translate}}</button>
+        <div class="sub-title">
+            {{'ConfirmSend' | translate}} {{wallet | walletToFullName | async}}
+        </div>
+        <div class="logo">
+            <img src="assets/img/symbol_{{wallet.getSymbol()}}.png" />
+        </div>
+        <div class="transfer">
+            <div class="send amount">
+                <div>
+                    {{'Amount' | translate}}
+                </div>
+                <div>
+                    <div>{{priceAmount}} USD</div>
+                    <div>{{walletAmount}} {{wallet.getSymbol()}}</div>
+                </div>
+            </div>
+            <div class="send fee">
+                <div>
+                    {{'Fee' | translate}}
+                </div>
+                <div>
+                    {{fee}} {{wallet.getSymbol()}}
+                </div>
+            </div>
+            <div>
+                <div>{{'Address' | translate}}</div>
+                <div>{{recipientAddress}}</div>
+            </div>
+
+        </div>
+        <div class="buttons">
+            <button ion-item class="btn cancel" (click)="onClick_Cancel()">{{'Cancel' | translate}}</button>
+            <button ion-item class="btn confirm" (click)="onClick_Confirm()">{{'Confirm' | translate}}</button>
+        </div>
+
     </div>
 </ion-content>

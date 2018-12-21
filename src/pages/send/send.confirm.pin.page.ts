@@ -3,6 +3,7 @@ import { Component, ViewChild } from '@angular/core';
 import { NWAsset } from '../../models/nwallet';
 import { LoggerService } from '../../services/common/logger/logger.service';
 import { SendConfirmSuccessPage } from './send.confirm.success.page';
+import { ModalNavPage } from '../base/modal-nav.page';
 
 @IonicPage()
 @Component({
@@ -24,7 +25,8 @@ export class SendConfirmPinPage {
         private navParams: NavParams,
         private loading: LoadingController,
         private toast: ToastController,
-        private logger: LoggerService
+        private logger: LoggerService,
+        private parent: ModalNavPage
     ) {
         this.amount = navParams.get('amount');
         this.asset = navParams.get('asset');
@@ -66,7 +68,13 @@ export class SendConfirmPinPage {
                 {}
             );
             if (result) {
-                this.logger.debug('[send-confirm-pin-page] send confirmed');
+                const toast = this.toast.create({
+                    message: 'send success',
+                    duration: 3000,
+                    position: 'middle'
+                });
+
+                toast.present();
             } else {
                 loading.dismiss();
                 const toast = this.toast.create({
@@ -75,6 +83,9 @@ export class SendConfirmPinPage {
                     position: 'middle'
                 });
 
+                toast.onDidDismiss((data: any, role: string) => {
+                    this.parent.close();
+                });
                 toast.present();
             }
 

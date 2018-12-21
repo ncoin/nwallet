@@ -68,6 +68,10 @@ export class Item {
     public get CanLoan(): boolean {
         return this.currency.can_loan;
     }
+
+    public get WithdrawFee(): number {
+        return this.currency.fee;
+    }
 }
 
 export class Collateral {

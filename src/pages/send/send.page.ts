@@ -34,13 +34,13 @@ export class SendPage extends ModalBasePage implements OnInit, OnDestroy {
     }
 
     public set sendAmount(value: number) {
-        const price = this.currency.getPrice(this.selectedWallet.getCurrencyId());
+        const targetPrice = this.currency.getPrice(this.selectedWallet.getCurrencyId());
         if (this.usdFormat) {
             this.priceAmount = value;
-            this.walletAmount = price / value;
+            this.walletAmount = value / targetPrice;
         } else {
+            this.priceAmount = value * targetPrice;
             this.walletAmount = value;
-            this.priceAmount = value / price;
         }
     }
 
@@ -53,7 +53,6 @@ export class SendPage extends ModalBasePage implements OnInit, OnDestroy {
         private account: AccountService,
         private popup: PopupService,
         private currency: CurrencyService
-
     ) {
         super(navCtrl, navParam, parent);
         this.selectedWallet = navParam.get('selectedWallet');
@@ -84,12 +83,15 @@ export class SendPage extends ModalBasePage implements OnInit, OnDestroy {
         const target = await this.popup.selecteWallet(this.selectedWallet, this.wallets);
         if (target) {
             this.selectedWallet = target;
+            this.sendAmount = this.sendAmount;
         }
     }
 
     public async onClick_Next(): Promise<void> {
         this.navCtrl.push(SendConfirmPage, {
             wallet: this.selectedWallet,
+            walletAmount: this.walletAmount,
+            priceAmount: this.priceAmount,
             recipientAddress: this.recipientAddress
         });
     }

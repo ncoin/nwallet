@@ -12,6 +12,6 @@ export class GetWalletTransactions extends NWalletProtocolBase<{ offset: number;
     public url = () => WalletApiPaths.get.walletTransactions(this.credential.userId, this.credential.walletId);
 
     public manufacture() {
-        this.data = this.response.map(data => new NWTransaction.Item(data));
+        this.data = this.response.filter(data => data.succeed).map(data => new NWTransaction.Item(data));
     }
 }

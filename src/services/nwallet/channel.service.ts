@@ -125,14 +125,6 @@ export class ChannelService {
             .catch(this.onError([]));
     }
 
-    public async getSendAssetFee(walletId: number): Promise<number> {
-        return await this.network
-            .request(this.resolve(userId => new NWProtocol.GetSendAssetFee({ userId: userId, walletId: walletId })))
-            .then(this.onSuccess())
-            .then(p => p.response)
-            .catch(this.onError(-1));
-    }
-
     public async sendAsset(walletId: number, address: string, amount: number): Promise<boolean> {
         return await this.network
             .request(
@@ -145,42 +137,26 @@ export class ChannelService {
                 )
             )
             .then(this.onSuccess())
-            .then(protocol => {
-                Debug.assert(!protocol.isXdr());
-                return true;
-            })
-            .catch(this.onError(false));
-    }
-
-    public async sendNCNAsset(walletId: number, address: string, amount: number): Promise<boolean> {
-        return await this.network
-            .request(
-                this.resolve(u =>
-                    new NWProtocol.SendAsset(walletId).setPayload(payload => {
-                        payload.amount = amount;
-                        payload.recipientAddress = address;
-                        payload.walletId = walletId;
-                    })
-                )
-            )
-            .then(this.onSuccess())
             .then(async protocol => {
-                Debug.assert(protocol.isXdr());
-                // todo extract
-                const signed = this.auth.signXdr(protocol.response.xdr);
-                return await this.network
-                    .request(
-                        this.resolve(u =>
-                            new NWProtocol.SendAssetXdr(walletId).setPayload({
-                                transactionId: protocol.response.id,
-                                walletId: walletId,
-                                xdr: signed
-                            })
+                let result = false;
+                result = protocol.isSuccess();
+                if (protocol.isXdr()) {
+                    const signedXdr = this.auth.signXdr(protocol.response.xdr);
+                    result = await this.network
+                        .request(
+                            this.resolve(u =>
+                                new NWProtocol.SendAssetXdr(walletId).setPayload({
+                                    transactionId: protocol.response.id,
+                                    walletId: walletId,
+                                    xdr: signedXdr
+                                })
+                            )
                         )
-                    )
-                    .then(this.onSuccess())
-                    .then(() => true)
-                    .catch(this.onError(false));
+                        .then(this.onSuccess())
+                        .then(() => true)
+                        .catch(this.onError(false));
+                }
+                return result;
             })
             .catch(this.onError(false));
     }

@@ -33,12 +33,10 @@
             </div>
             <div class="enter-amount">
                 <div>
-                    <div class="input-buttons">
-                        <div (click)="onClick_SwapFormat()">
-                            ↕
-                        </div>
+                    <div class="swap-button" (click)="onClick_SwapFormat()">
+                        ↕
                     </div>
-                    <div>
+                    <div class="swap-content">
                         <div *ngIf="usdFormat; then usd else crypto"></div>
                         <ng-template #usd>
                             <div>

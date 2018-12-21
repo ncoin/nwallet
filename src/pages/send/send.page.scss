@@ -108,9 +108,15 @@ page-send {
                     flex: 1;
                     font-size: 20px;
                     flex-direction: row-reverse;
+                    text-align: right;
 
-                    .input-buttons {
-                        margin: 0 0 0 5px;
+                    .swap-button {
+                        margin: auto 0;
+                        line-height: 25px;
+                    }
+
+                    .swap-content {
+
                     }
                 }
             }
