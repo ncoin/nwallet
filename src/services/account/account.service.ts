@@ -71,7 +71,7 @@ export class AccountService {
 
         if (!this.isPulling) {
             this.isPulling = true;
-            Observable.timer(0, 1000000000).subscribe({
+            Observable.timer(0, 10000).subscribe({
                 next: async () => {
                     if (await this.isExistAccount()) {
                         this.logger.debug('[account] pulling assets ...');
