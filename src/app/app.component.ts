@@ -63,6 +63,7 @@ export class NWalletApp implements OnDestroy {
     private async onPlatformReady(): Promise<void> {
         this.subscribeEvents();
         await Promise.all([this.appConfig.loadAll(), this.preparePage()]);
+        this.event.publish(NWEvent.App.on_ready);
         this.prepareSecurity();
         this.logger.debug('[app-page] platform on ready');
         this.splashScreen.hide();

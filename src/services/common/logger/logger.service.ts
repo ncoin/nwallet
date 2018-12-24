@@ -83,6 +83,7 @@ export class LoggerService {
         );
     }
 
+    /**verbose */
     public log(message?: any, ...optionalParams: any[]): void {
         let msg = this.timeStamp(`[verbose] ${_.isString(message) ? message : JSON.stringify(message)}`);
         if (isDevMode() && !this.isFilteredLevel('verbose') && !this.isFilteredText(message)) {

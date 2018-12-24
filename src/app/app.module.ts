@@ -20,6 +20,8 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { QRScanner } from '@ionic-native/qr-scanner';
 import { NWPageTransitions } from '../transitions';
 import { NWStellar } from '../models/stellar/stellar';
+import { Push } from '@ionic-native/push';
+import { BackgroundMode } from '@ionic-native/background-mode';
 BootStrap();
 export class MissingHandler implements MissingTranslationHandler {
     handle(params: MissingTranslationHandlerParams) {
@@ -27,6 +29,7 @@ export class MissingHandler implements MissingTranslationHandler {
     }
 }
 
+const NATIVE_PLUGINS = [InAppBrowser, SplashScreen, FingerprintAIO, StatusBar, Vibration, Device, Clipboard, QRScanner, ScreenOrientation, Push, BackgroundMode];
 @NgModule({
     declarations: [NWalletApp],
     imports: [
@@ -76,7 +79,7 @@ export class MissingHandler implements MissingTranslationHandler {
     providers: [
         { provide: ErrorHandler, useClass: IonicErrorHandler },
         // native plugins
-        ...[InAppBrowser, SplashScreen, FingerprintAIO, StatusBar, Vibration, Device, Clipboard, QRScanner, ScreenOrientation]
+        ...NATIVE_PLUGINS
     ]
 })
 export class AppModule {
