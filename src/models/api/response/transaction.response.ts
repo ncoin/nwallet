@@ -4,16 +4,15 @@ declare module '../../nwallet/transaction' {
     interface Data {
         amount: number;
         bc_status_type: string;
-        bc_transaction_id: number;
+        bc_transaction_id: string;
         created_by: string;
         created_date: string;
         fee: number;
-        from_address: string;
+        address: string;
         id: number;
         last_modified_by: string;
         last_modified_date: string;
         succeed: boolean;
-        to_address: string;
         transaction_type: string;
         transfer_id: number;
         user_wallet_id: number;

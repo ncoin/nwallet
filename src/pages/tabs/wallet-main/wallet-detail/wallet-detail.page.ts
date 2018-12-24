@@ -29,6 +29,7 @@ export class WalletDetailPage extends ModalBasePage implements OnDestroy {
     private limit = 10;
     public wallet: NWAsset.Item;
     private subscriptions: Subscription[] = [];
+
     constructor(
         navCtrl: NavController,
         params: NavParams,
@@ -42,6 +43,10 @@ export class WalletDetailPage extends ModalBasePage implements OnDestroy {
         super(navCtrl, params, parent);
         this.wallet = params.get('wallet');
         this.init();
+    }
+
+    public classAmount(type: string): string {
+        return (['BUY', 'RECEIVE', 'LOAN'].indexOf(type) > -1) ? 'white' : 'red';
     }
 
     private async init(): Promise<void> {
@@ -96,7 +101,9 @@ export class WalletDetailPage extends ModalBasePage implements OnDestroy {
     }
 
     public onExploreTransaction(transaction: NWTransaction.Item): void {
-        this.navCtrl.push(WalletTransactionDetailPage, { transaction: transaction }, NWTransition.Slide('left'));
+        if (transaction.transactionType === 'SEND' || transaction.transactionType === 'RECEIVE') {
+            this.navCtrl.push(WalletTransactionDetailPage, { transaction: transaction }, NWTransition.Slide('left'));
+        }
     }
 
     public onClick_Receive(): void {

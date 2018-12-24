@@ -1,43 +1,127 @@
 wallet-transaction-detail {
+    $header-height: 154px;
 
-    .container {
-        >div {
-            font-size: 2.5rem;
-            color: $foreground-header;
+    .header {
+        max-height: $header-height;
+        height: $header-height;
+    }
+    .header-wp {
+        max-height: calc(#{$header-height} + 21px);
+        height: calc(#{$header-height} + 21px);
+    }
+    .header-md {
+        max-height: calc(#{$header-height} + 8px);
+        height: calc(#{$header-height} + 8px);
+    }
+    .header-ios {
+        max-height: calc(#{$header-height} + 11px);
+        height: calc(#{$header-height} + 11px);
+    }
 
-            >div {
-                font-size: 2rem;
-                color: $foreground-content;
-                margin: 8px 0 18px 20px;
+    .navBar-container {
+        padding: 30px 16px 16px;
+        width: 100%;
+        height: 100%;
+        position: absolute;
+
+        .toolbar-ios {
+            .back-button {
+                margin-top: 7px;
             }
+
+            ion-title {
+                position: relative;
+                padding: 0;
+            }
+        }
+
+        .toolbar-md {
+            .back-button {
+                margin: 7px 0 0 -8px;
+                padding: 0;
+            }
+        }
+
+        .toolbar-wp {
+            .back-button {
+                margin: 9px 0 0 -12px;
+                padding: 0;
+            }
+        }
+
+        ion-navbar.navBar {
+            display: block;
         }
     }
 
-    .container.receive {}
+    .toolbar-content {
+        border-top: $border-color-divide-line 1px solid;
+        border-bottom: $border-color-divide-line 1px solid;
+        padding: 10px;
+    }
 
-    .nw-button {
-        margin: 10px auto;
-        text-align: center;
-        width: 60%;
-        color: $foreground-button-ok-header;
+    .title-header-container {
+        .toolbar-title-md,
+        .toolbar-title-wp,
+        .toolbar-title-ios {
+            color: $header-detail-page-title-sub;
+            font-size: $text-size-large;
+        }
+
+        .asset-amount,
+        .asset-price {
+            text-align: left;
+            padding: 0;
+        }
+
+        .asset-amount {
+            padding-top: 12px;
+            font-size: $text-size-extra-large;
+        }
+        .asset-price {
+            font-size: $text-size-large;
+        }
+    }
+
+    .title-header-container.receive {
+        .asset-amount{
+            color: $header-detail-page-balance;
+        }
+        .asset-price {
+            color: $header-detail-page-price;
+        }
+    }
+    .title-header-container.send {
+        .asset-amount,
+        .asset-price {
+            color: $text-color-content-red;
+        }
+    }
+
+    .container {
+        .sub-title {
+            border-left: 5px $text-color-sub-title solid;
+            font-size: $text-size-large;
+            line-height: $text-size-large;
+            padding-left: 5px;
+            margin-bottom: $text-size-medium;
+            color: $text-color-sub-title;
+        }
+
+        .content {
+            font-size: $text-size-medium;
+            color: $text-color-transaction-type;
+            background: transparent;
+            padding: 0 12px;
+        }
     }
 
     // static small
-    @media screen and (min-width:768px) and (min-height:600px) and (max-height:768px) {
+    @media screen and (min-width: 768px) and (min-height: 600px) and (max-height: 768px) {
         .container {
-            >div {
-                font-size: 2rem;
-
-                >div {
-                    font-size: 1.7rem;
-                }
-            }
-        }
-
-        .container.send {
-            >div {
-                >div {
-                    margin: 5px 0 10px 20px;
+            > div {
+                > div {
+                    margin: 5px 0 20px 10px;
                 }
             }
         }
@@ -45,15 +129,11 @@ wallet-transaction-detail {
 
     // dynamic state
     @media screen and (max-width: 768px),
-    screen and (max-height:600px) {
+    screen and (max-height: 600px) {
         .container {
-            >div {
-                font-size: 5vmin;
-
-                >div {
-                    font-size: 3.9vmin;
-                    margin: 8px 0 18px 25px;
-
+            > div {
+                > div {
+                    margin: 8px 0 30px 10px;
                 }
             }
         }

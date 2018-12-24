@@ -4,6 +4,14 @@ $border-color-gold :rgb(110, 96, 71);
 $border-color-translate-button :rgb(92, 77, 48);
 $border-color-divide-line :rgb(66, 58, 42);
 
+$header-detail-page-border: 2px rgb(66, 60, 50) solid;
+$header-detail-page-border-radius: 10px;
+$header-detail-page-background: rgba(60, 50, 35, 0.25);
+$header-detail-page-title: rgb(232, 224, 207);
+$header-detail-page-title-sub: rgb(197, 166, 110);
+$header-detail-page-balance: rgb(255, 255, 255);
+$header-detail-page-price: rgb(204, 204, 204);
+
 $background-button-default: rgb(83, 76, 66);
 $background-button-ncoin: rgb(80, 76, 67);
 $background-button-asset-show: rgb(68, 114, 141);
@@ -38,8 +46,10 @@ $text-size-medium: 1.5rem;
 
 $text-color-asset-name: rgb(195, 189, 184);
 $text-color-asset-balance: rgb(255, 255, 255);
+$text-color-transaction-type: rgb(196, 187, 174);
+$text-color-transaction-date: rgb(131, 124, 115);
 $text-color-point: rgb(232, 203, 135);
-$text-color-sub-title: rgb(139, 130, 78);
+$text-color-sub-title: rgb(159, 130, 78);
 $text-color-content-red: rgb(244, 52, 78);
 $text-color-content-orange: rgb(239, 157, 50);
 $text-color-content-green: rgb(78, 162, 97);

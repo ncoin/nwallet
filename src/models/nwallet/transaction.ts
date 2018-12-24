@@ -21,12 +21,8 @@ export class Item {
         return this.data.creationDate;
     }
 
-    public get addressFrom(): string {
-        return this.data.from_address;
-    }
-
-    public get addressTo(): string {
-        return this.data.to_address;
+    public get address(): string {
+        return this.data.address;
     }
 
     public get fee() {
@@ -34,7 +30,7 @@ export class Item {
     }
 
     public get transactionId(): string {
-        return this.data.id.toString();
+        return this.data.bc_transaction_id;
     }
 
     public get confirmation(): number {
