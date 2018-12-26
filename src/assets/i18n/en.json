@@ -67,5 +67,5 @@
   "MobileNumberSetting": "Mobile number setting",
   "EmailAddressSetting": "Email address setting",
   "PinSetting": "PIN setting",
-  "SendCaution": "* please do not send a fund to participate in a <span style=\"color:yellow !important\">crowdsale or ICO</span> in NWallet. it is not recommended and the token will not be credited to your account."
+  "SendCaution": "* please <i>do not send</i> a fund to participate in a <b>crowd sale or ICO</b> in NWallet. it is not recommended and the token will not be credited to your account."
 }
