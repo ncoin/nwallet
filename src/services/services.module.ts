@@ -13,6 +13,8 @@ import { ChannelService } from './nwallet/channel.service';
 import { CurrencyService } from './nwallet/currency.service';
 import { NotificationService } from './nwallet/notification.service';
 import { PopupService } from './popup/popop.service';
+import { PushServiceBase } from './common/push/push.service';
+import { FirebasePushService } from './common/push/firebase.push.service';
 
 @NgModule({
     providers: [
@@ -29,7 +31,11 @@ import { PopupService } from './popup/popop.service';
         ChannelService,
         CurrencyService,
         NotificationService,
-        PopupService
+        PopupService,
+        {
+            useClass: FirebasePushService,
+            provide: PushServiceBase
+        }
     ]
 })
 export class NWalletProvidersModule {}

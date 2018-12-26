@@ -1,0 +1,36 @@
+{
+    "project_info": {
+        "project_number": "648550254266",
+        "firebase_url": "https://ncoin-f09eb.firebaseio.com",
+        "project_id": "ncoin-f09eb",
+        "storage_bucket": "ncoin-f09eb.appspot.com"
+    },
+    "client": [{
+        "client_info": {
+            "mobilesdk_app_id": "1:648550254266:android:c45f1da83c5b5b25",
+            "android_client_info": {
+                "package_name": "com.ncoin.nwallet"
+            }
+        },
+        "oauth_client": [{
+            "client_id": "648550254266-l3brre6s33i0l2deih3hr07q4a6ogfv8.apps.googleusercontent.com",
+            "client_type": 3
+        }],
+        "api_key": [{
+            "current_key": "AIzaSyAilQelP7NkpD8tK7ermHJxeO2tDFI7UxU"
+        }],
+        "services": {
+            "analytics_service": {
+                "status": 1
+            },
+            "appinvite_service": {
+                "status": 1,
+                "other_platform_oauth_client": []
+            },
+            "ads_service": {
+                "status": 2
+            }
+        }
+    }],
+    "configuration_version": "1"
+}

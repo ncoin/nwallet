@@ -6,13 +6,17 @@ import { NWEvent, EventParameter } from '../../interfaces/events';
 import { LoggerService } from '../common/logger/logger.service';
 import { StreamType } from '../../interfaces/stream';
 import { NWalletStream, NOTIFICATIONS } from '../../models/api/stream';
+import { PushServiceBase } from '../common/push/push.service';
 
 @Injectable()
 export class NotificationService {
     private sources: NWalletStream[] = [];
     private streams = NOTIFICATIONS;
 
-    constructor(private auth: AuthorizationService, private event: EventService, private logger: LoggerService) {
+    constructor(private auth: AuthorizationService, private appPush: PushServiceBase, private event: EventService, private logger: LoggerService) {
+
+        const asd = this.appPush;
+
         this.event.subscribe(NWEvent.App.user_login, () => {
             this.openStream();
         });

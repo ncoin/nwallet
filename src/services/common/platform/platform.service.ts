@@ -5,14 +5,12 @@ import { debug } from 'util';
 import { read } from 'fs';
 import { ScreenOrientation } from '@ionic-native/screen-orientation';
 import { env } from '../../../environments/environment';
-
-
+import { Device } from '@ionic-native/device';
 // move location
 function wrap(logger: LoggerService, orientation: ScreenOrientation) {
     const lock = orientation.lock;
     const unlock = orientation.unlock;
     if (isDevMode()) {
-
         orientation['devType'] = orientation.type;
         orientation.lock = async (o: string): Promise<any> => {
             logger.debug('[screen-orientaton] lock orientation :', o);
@@ -31,29 +29,29 @@ export class PlatformService {
     public isIOS: boolean;
     public isSafari: boolean;
     public isCordova: boolean;
-    public isNW: boolean;
+    public isElectron: boolean;
     public ua: string;
     public isMobile: boolean;
     public isDevel: boolean;
 
-    constructor(private platform: Platform, private logger: LoggerService, public orientation: ScreenOrientation) {
-        let userAgent = navigator ? navigator.userAgent : null;
+    constructor(private platform: Platform, private logger: LoggerService, private device: Device, public orientation: ScreenOrientation) {
+        let ua = navigator ? navigator.userAgent : null;
 
-        if (!userAgent) {
+        if (!ua) {
             this.logger.info('Could not determine navigator. Using fixed string');
-            userAgent = 'dummy user-agent';
+            ua = 'dummy user-agent';
         }
 
         // Fixes IOS WebKit UA
-        userAgent = userAgent.replace(/\(\d+\)$/, '');
+        ua = ua.replace(/\(\d+\)$/, '');
 
         this.isAndroid = this.platform.is('android');
         this.isIOS = this.platform.is('ios');
-        this.ua = userAgent;
+        this.ua = ua;
         this.isCordova = this.platform.is('cordova');
-        this.isNW = this.isNodeWebkit();
+        this.isElectron = this.isElectronPlatform();
         this.isMobile = this.platform.is('mobile');
-        this.isDevel = !this.isMobile && !this.isNW;
+        this.isDevel = !this.isMobile && !this.isElectron;
 
         this.platform.ready().then(ready => {
             wrap(this.logger, this.orientation);
@@ -78,15 +76,51 @@ export class PlatformService {
         return 'unknown';
     }
 
-    public isNodeWebkit(): boolean {
-        const isNode = typeof process !== 'undefined' && typeof require !== 'undefined';
-        if (isNode) {
-            try {
-                return typeof (window as any).require('nw.gui') !== 'undefined';
-            } catch (e) {
-                return false;
+    public isElectronPlatform(): boolean {
+        const userAgent = navigator && navigator.userAgent ? navigator.userAgent.toLowerCase() : null;
+        if (userAgent && userAgent.indexOf('electron/') > -1) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public getOS() {
+        const OS = {
+            OSName: '',
+            extension: ''
+        };
+
+        if (this.isElectron) {
+            if (navigator.appVersion.indexOf('Win') !== -1) {
+                OS.OSName = 'Windows';
+                OS.extension = '.exe';
+            }
+            if (navigator.appVersion.indexOf('Mac') !== -1) {
+                OS.OSName = 'MacOS';
+                OS.extension = '.dmg';
+            }
+            if (navigator.appVersion.indexOf('Linux') !== -1) {
+                OS.OSName = 'Linux';
+                OS.extension = '-linux.zip';
             }
         }
-        return false;
+
+        return OS;
+    }
+
+    public getDeviceInfo(): string {
+        let info: string;
+
+        if (this.isElectron) {
+            info = ' (' + navigator.appVersion + ')';
+        } else {
+            info =
+                this.device.platform === null && this.device.version === null && this.device.model === null
+                    ? undefined
+                    : ` (${this.device.platform} ${this.device.version} - ${this.device.model})`;
+        }
+
+        return info;
     }
 }
