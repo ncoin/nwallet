@@ -6,6 +6,7 @@ import { read } from 'fs';
 import { ScreenOrientation } from '@ionic-native/screen-orientation';
 import { env } from '../../../environments/environment';
 import { Device } from '@ionic-native/device';
+import { PromiseCompletionSource } from '../../../../common/models';
 // move location
 function wrap(logger: LoggerService, orientation: ScreenOrientation) {
     const lock = orientation.lock;
@@ -33,6 +34,7 @@ export class PlatformService {
     public ua: string;
     public isMobile: boolean;
     public isDevel: boolean;
+    private platformReady: PromiseCompletionSource<boolean>;
 
     constructor(private platform: Platform, private logger: LoggerService, private device: Device, public orientation: ScreenOrientation) {
         let ua = navigator ? navigator.userAgent : null;
@@ -52,10 +54,22 @@ export class PlatformService {
         this.isElectron = this.isElectronPlatform();
         this.isMobile = this.platform.is('mobile');
         this.isDevel = !this.isMobile && !this.isElectron;
+        this.platformReady = new PromiseCompletionSource<boolean>();
 
-        this.platform.ready().then(ready => {
-            wrap(this.logger, this.orientation);
-        });
+        this.platform
+            .ready()
+            .then(ready => {
+                wrap(this.logger, this.orientation);
+                this.platformReady.setResult(true);
+            })
+            .catch(error => {
+                this.logger.warn('[platform] platform ready failed', error);
+                this.platformReady.setResult(false);
+            });
+    }
+
+    public waitReady(): Promise<boolean> {
+        return this.platformReady.getResultAsync();
     }
 
     public getBrowserName(): string {

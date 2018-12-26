@@ -22,7 +22,6 @@ import { NWPageTransitions } from '../transitions';
 import { NWStellar } from '../models/stellar/stellar';
 import { Push } from '@ionic-native/push';
 import { BackgroundMode } from '@ionic-native/background-mode';
-import { Firebase } from '@ionic-native/firebase';
 BootStrap();
 export class MissingHandler implements MissingTranslationHandler {
     handle(params: MissingTranslationHandlerParams) {
@@ -30,7 +29,7 @@ export class MissingHandler implements MissingTranslationHandler {
     }
 }
 
-const NATIVE_PLUGINS = [InAppBrowser, SplashScreen, FingerprintAIO, StatusBar, Vibration, Device, Clipboard, QRScanner, ScreenOrientation, Push, BackgroundMode, Firebase];
+const NATIVE_PLUGINS = [InAppBrowser, SplashScreen, FingerprintAIO, StatusBar, Vibration, Device, Clipboard, QRScanner, ScreenOrientation, Push, BackgroundMode];
 @NgModule({
     declarations: [NWalletApp],
     imports: [

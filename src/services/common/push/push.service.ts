@@ -9,7 +9,8 @@ export abstract class PushServiceBase {
         this.init();
     }
 
-    private init(): void {
+    private async init(): Promise<void> {
+        await this.platform.waitReady();
         if (this.platform.getDeviceInfo()) {
             this.logger.debug('[push] begin activate');
             this.event.subscribe(NWEvent.App.on_ready, () => {
