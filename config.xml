@@ -120,4 +120,5 @@
     <plugin name="cordova-plugin-background-mode" spec="^0.7.2" />
     <engine name="android" spec="7.1.1" />
     <engine name="ios" spec="git+https://github.com/jrryhrtn/cordova-ios.git" />
+    <plugin name="cordova-plugin-firebase" spec="^2.0.5" />
 </widget>
