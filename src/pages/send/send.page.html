@@ -10,7 +10,7 @@
     <div class="container">
         <div>
             <div class="asset_change_button" (click)="onClick_Wallet()">
-                <img class="asset-logo" src="assets/img/symbol_{{selectedWallet.getSymbol()}}.png" />
+                <img class="asset-logo" src="assets/img/symbol_{{selectedWallet.getSymbol()}}.png"/>
                 <div class="asset-name">{{selectedWallet | walletToFullName | async}}</div>
                 <div class="asset-balance">{{selectedWallet | walletToFormat}}</div>
                 <fa-icon name="chevron-down"></fa-icon>
@@ -21,7 +21,8 @@
                 {{'EnterAddress' | translate | uppercase}}
             </div>
             <div class="qr-code">
-                <input class="input" [(ngModel)]="recipientAddress" type="text" [placeholder]="'enter or scan the qr code' | translate">
+                <input class="input" [(ngModel)]="recipientAddress" type="text"
+                       [placeholder]="'enter or scan the qr code' | translate">
                 <div>
                     <fa-icon class="image" name="qrcode" (click)="onScanClick()"></fa-icon>
                 </div>
@@ -34,7 +35,7 @@
             <div class="enter-amount">
                 <div>
                     <div class="swap-button" (click)="onClick_SwapFormat()">
-                        ↕
+                        <fa-icon name="arrows-v"></fa-icon>
                     </div>
                     <div class="swap-content">
                         <div *ngIf="usdFormat; then usd else crypto"></div>
@@ -43,7 +44,7 @@
                                 <input class="input" [(ngModel)]="sendAmount" type="number" [placeholder]="0">
                                 <span>USD</span>
                             </div>
-                            <div>
+                            <div class="swap-currency">
                                 {{walletAmount}} {{selectedWallet.getSymbol()}}
                             </div>
                         </ng-template>
@@ -52,7 +53,7 @@
                                 <input class="input" [(ngModel)]="sendAmount" type="number" [placeholder]="0">
                                 <span>{{selectedWallet.getSymbol()}}</span>
                             </div>
-                            <div>
+                            <div class="swap-currency">
                                 {{priceAmount}} USD
                             </div>
                         </ng-template>
@@ -64,9 +65,8 @@
     </div>
     <div class="caution">
         <div [innerHTML]="'SendCaution' | translate"></div>
-        <div style="color: red">AA</div>
     </div>
     <div>
-        <button ion-item class="nw-button next" (click)="onClick_Next()">{{'Next'| translate}}</button>
+        <button ion-item class="btn confirm" (click)="onClick_Next()">{{'Next'| translate}}</button>
     </div>
 </ion-content>

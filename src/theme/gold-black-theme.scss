@@ -32,7 +32,7 @@ $foreground-content-white: white;
 $foreground-content-lightgray: lightgray;
 $foreground-content-dark: rgb(110, 110, 110);
 
-$input-background: rgb(69, 65, 59);
+$input-background: rgb(83, 76, 66);
 $input-border-color: rgba(255, 255, 255, 0.2);
 $input-foreground-placeholder : rgba(170, 170, 170, 1);
 
@@ -45,6 +45,7 @@ $global-color-orange: rgb(247, 147, 26);
 $text-size-extra-large: 3rem;
 $text-size-large: 2rem;
 $text-size-medium: 1.5rem;
+$text-size-default: 1.2rem;
 
 $text-color-asset-name: rgb(195, 189, 184);
 $text-color-asset-balance: rgb(255, 255, 255);
@@ -56,6 +57,9 @@ $text-color-content-red: rgb(244, 52, 78);
 $text-color-content-orange: rgb(239, 157, 50);
 $text-color-content-green: rgb(78, 162, 97);
 $text-color-content-white: rgb(255, 255, 255);
+$text-color-warning: rgb(184, 158, 110);
+$text-color-warning-point1: rgb(255, 206, 116);
+$text-color-warning-point2: rgb(86, 169, 216);
 
 .nw-button {
     background: rgb(69, 65, 59) !important;

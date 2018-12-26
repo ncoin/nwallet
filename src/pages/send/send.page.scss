@@ -6,8 +6,6 @@ page-send {
     }
 
     .container {
-        flex-grow: 1;
-
         .asset_change_button {
             display: grid;
             width: 100%;
@@ -47,26 +45,22 @@ page-send {
         }
 
         .recipient-address {
-            margin: 5% 0 5% 0;
-            padding: 5%;
-            border: 1px solid $border-color;
-            border-radius: 5px;
+            margin: 0;
+            padding: 5% 0;
 
-            >.label {
-                margin: 0 0 5% 0;
-                border-width: 0 0 1px 5px;
-                border-style: solid;
-                border-color: $border-color;
-                color: $foreground-header;
-                font-size: 2rem;
-                letter-spacing: -1px;
-                padding: 0 0 0 10px;
+            > .label {
+                border-left: 5px $text-color-sub-title solid;
+                font-size: $text-size-large;
+                line-height: $text-size-large;
+                padding-left: 5px;
+                margin-bottom: $text-size-medium;
+                color: $text-color-sub-title;
             }
 
-            >.qr-code {
-                padding: 1%;
+            > .qr-code {
+                padding: 2%;
                 border-radius: 5px;
-                border: 1px soild $input-border-color;
+                border: none;
                 background: $input-background;
                 display: flex;
                 justify-content: space-around;
@@ -74,22 +68,28 @@ page-send {
                 .input {
                     background: transparent;
                     margin: 0 10px 0 0;
-                    border: 0px;
-                    padding: 0 0 0 10px;
-                    font-size: 3.4vw;
+                    border: 0;
+                    padding: 5px 0 5px 10px;
+                    font-size: $text-size-medium;
+                    color: $text-color-transaction-type;
                     width: 100%
                 }
 
-                >div {
-                    margin: auto 2% auto 0;
-                    font-size: 3.5rem;
+                > div {
+                    background: rgb(255, 255, 255);
+                    color: rgb(0, 0, 0);
+                    text-align: center;
+                    border-radius: 4px;
+                    padding: 3px 5px 0;
+                    font-size: 3rem;
+                    line-height: 3rem;
                 }
             }
 
-            >.enter-amount {
-                padding: 1%;
+            > .enter-amount {
+                padding: 2%;
                 border-radius: 5px;
-                border: 1px soild $input-border-color;
+                border: none;
                 background: $input-background;
                 display: flex;
                 justify-content: space-between;
@@ -98,25 +98,29 @@ page-send {
                     text-align: right;
                     background: transparent;
                     margin: 0;
-                    border: 0px;
+                    border: 0;
                     padding: 0 0 0 10px;
-                    font-size: 3.4vw;
+                    font-size: $text-size-medium;
+                    color: $text-color-content-white;
                 }
 
-                >div {
+                > div {
                     display: flex;
                     flex: 1;
-                    font-size: 20px;
                     flex-direction: row-reverse;
                     text-align: right;
+                    font-size: $text-size-medium;
+                    color: $text-color-content-white;
 
                     .swap-button {
                         margin: auto 0;
+                        padding: 0 6px;
                         line-height: 25px;
                     }
 
-                    .swap-content {
-
+                    .swap-currency {
+                        font-size: $text-size-default;
+                        color: $header-detail-page-price;
                     }
                 }
             }
@@ -124,19 +128,24 @@ page-send {
     }
 
     .caution {
-        font-size: 2rem;
-        margin: 0 0 3% 0;
-    }
+        font-size: $text-size-large;
+        color: $text-color-warning;
+        margin: 5% 0 10%;
+        text-align: justify;
 
-    .next {
-        text-align: center;
-        font-size: 4vmin;
+        i {
+            color: $text-color-warning-point1;
+        }
+
+        b {
+            color: $text-color-warning-point2;
+        }
     }
 
 
     @media screen and (max-height: 400px) {
         .slide {
-            >button {
+            > button {
                 height: 30px;
             }
         }
