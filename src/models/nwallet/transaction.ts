@@ -57,7 +57,7 @@ export class Data {
         Object.assign(this, raw);
 
         this.creationDate = new Date(raw.created_date);
-        this.groupDate = new Date(this.creationDate.getFullYear(), this.creationDate.getMonth(), this.creationDate.getDate());
+        this.groupDate = new Date(this.creationDate.getFullYear(), this.creationDate.getMonth());
 
         Debug.Validate(this);
         // Debug.Validate(this.detail);
@@ -80,7 +80,7 @@ export class Collateral {
         Object.assign(this, data);
 
         this.CreationDate = new Date(data.created_date);
-        this.GroupDate = new Date(this.CreationDate.getFullYear(), this.CreationDate.getMonth(), this.CreationDate.getDate());
+        this.GroupDate = new Date(this.CreationDate.getFullYear(), this.CreationDate.getMonth());
     }
 
     public get Id(): number {
