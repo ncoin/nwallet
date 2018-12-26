@@ -61,6 +61,10 @@ export class LoanDetailPage extends ModalBasePage implements OnDestroy, OnInit {
         this.subscriptions.forEach(s => s.unsubscribe());
     }
 
+    public classAmount(type: string): string {
+        return (type === 'REPAY') ? 'white' : 'red';
+    }
+
     private arrange() {
         return (transactions: NWTransaction.Collateral[]): void => {
             if (transactions.length < 1) {

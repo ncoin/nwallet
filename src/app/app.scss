@@ -443,6 +443,10 @@ ion-tabs[name=conference] .tabbar a.tab-button:nth-child(5)[aria-selected=true] 
     left: 5px;
 }
 
+.button-ios {
+    height: 3.6rem;
+}
+
 
 // ios list
 .list-ios > .item-block:first-child {
@@ -476,12 +480,21 @@ ion-tabs[name=conference] .tabbar a.tab-button:nth-child(5)[aria-selected=true] 
 .item-md,
 .item-wp {
     background: transparent;
+    padding: 0 1.1rem;
+}
+
+.item-ios[detail-push] .item-inner,
+button.item-ios:not([detail-none]) .item-inner,
+a.item-ios:not([detail-none]) .item-inner {
+    background: none;
+    padding: 0;
 }
 
 .item-ios.item-block .item-inner,
 .item-md.item-block .item-inner,
 .item-wp.item-block .item-inner {
     border: 0;
+    padding: 0;
 }
 
 // form element

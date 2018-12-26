@@ -1,10 +1,11 @@
 <ion-header class="header">
     <div class="navBar-container">
-        <div>
+        <div class="header-detail-page">
             <ion-navbar class="navBar">
                 <div class="title-header-container">
                     <ion-title>
-                        {{wallet | walletToSymbol | async}}
+                        <img class="asset-logo" src="assets/img/symbol_{{wallet.getSymbol()}}.png" />
+                        <span class="asset-name">{{wallet.getSymbol() | translate}}</span>
                     </ion-title>
                     <div class="asset-amount">{{ wallet | walletToFormat}}</div>
                     <div class="asset-price">{{ wallet | walletToUSD | async}}</div>
@@ -12,24 +13,39 @@
                 <div class="title-content-container">
                     <div class="loan-summary">
                         <div class="loaned">
-                            <div>{{'Loaned' | translate}}</div>
-                            <div>${{wallet.Collateral.Loaned}}</div>
+                            <div class="column">{{'Loaned' | translate}}</div>
+                            <div class="value">${{wallet.Collateral.Loaned}}</div>
                         </div>
                         <div class="available">
-                            <div>{{'Available' | translate}}</div>
-                            <div>${{wallet.Collateral.Available}}</div>
+                            <div class="column">{{'Available' | translate}}</div>
+                            <div class="value">${{wallet.Collateral.Available}}</div>
                         </div>
                         <div class="lock">
-                            <div>{{'Lock' | translate}}</div>
-                            <div>{{wallet.Collateral.Lock}} {{wallet | walletToSymbol | async}}</div>
+                            <div class="column">{{'Lock' | translate}}</div>
+                            <div class="value">{{wallet.Collateral.Lock}} {{wallet | walletToSymbol | async}}</div>
                         </div>
                     </div>
-                    <div>
-                        ::COLLATERAL_PROGRESS_BAR::
+                    <div class="progress-label">
+                        <div>LTV</div>
+                        <div>MAX</div>
+                        <div>Liquidation</div>
+                    </div>
+                    <div class="progress-bar">
+                        <div></div>
+                        <div></div>
+                        <div class="red" [ngStyle]="{width: wallet.Collateral.Ltv + '%'}">
+                            <span *ngIf="wallet.Collateral.Ltv > 0">{{wallet.Collateral.Ltv}}%</span>
+                        </div>
+                        <div class="green"></div>
+                    </div>
+                    <div class="progress-rate">
+                        <div>50%</div>
+                        <div>90%</div>
                     </div>
                     <div class="buttons">
-                        <button ion-button (click)="onClick_Loan()">{{'Loan' | translate}}</button>
-                        <button ion-button (click)="onClick_Repay()">{{'Repay' | translate}}</button>
+                        <button ion-button class="btn confirm" (click)="onClick_Loan()">{{'Loan' | translate}}</button>
+                        <button ion-button class="btn confirm"
+                                (click)="onClick_Repay()">{{'Repay' | translate}}</button>
                     </div>
                 </div>
             </ion-navbar>
@@ -45,9 +61,16 @@
                     {{map.date | date: 'MMMM yyyy'}}
                 </ion-item-divider>
                 <button ion-item detail-none *ngFor="let transaction of map.transactions" (click)="onExploreTransaction(transaction)">
-                    <div item-start>{{transaction.Type}}</div>
-                    <div item-middle>{{transaction.CreationDate | date : 'yyyy/MM/dd hh:mm a'}}</div>
-                    <div item-end>${{transaction.Amount}}</div>
+                    <div item-start>
+                        <img src="assets/img/icon_{{transaction.type.toLowerCase()}}.png" />
+                    </div>
+                    <div item-middle>
+                        <span class="transaction-type">{{transaction.type}}</span>
+                        <span class="transaction-date">{{transaction.CreationDate | date : 'MMM dd, yyyy'}}</span>
+                    </div>
+                    <div item-end [className]="classAmount(transaction.type)">
+                        ${{transaction.Amount}}
+                    </div>
                 </button>
             </ion-item-group>
         </ion-list>
