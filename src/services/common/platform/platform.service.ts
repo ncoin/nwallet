@@ -137,4 +137,9 @@ export class PlatformService {
 
         return info;
     }
+
+    public async getDeviceId(): Promise<string> {
+        await this.platformReady.getResultAsync();
+        return this.device.uuid;
+    }
 }

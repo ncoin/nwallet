@@ -7,4 +7,4 @@ import * as NWResponse from './api/response';
 import * as NWData from './nwallet/data';
 
 import '../utils/extensions';
-export { NWAsset, NWAccount, NWTransaction, NWProtocol, NWAuthProtocol, NWResponse, NWData };
+export { NWAsset, NWAccount, NWTransaction, NWProtocol, NWAuthProtocol, NWData,  NWResponse };

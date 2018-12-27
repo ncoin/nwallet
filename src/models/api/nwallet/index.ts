@@ -1,4 +1,3 @@
-export * from './configuration.protocol';
 export * from './send.protocol';
 export * from './ticker.protocol';
 export * from './wallet-transaction.protocol';
@@ -16,3 +15,4 @@ export * from './collateral-loan.protocol';
 export * from './collateral-repay.protocol';
 export * from './collateral-transaction.protocol';
 export * from './buy-ncn.protocol';
+export * from './user-notification.protocol';

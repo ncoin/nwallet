@@ -8,8 +8,7 @@ import { Debug } from '../../utils/helper/debug';
 export class NetworkService {
     constructor(private logger: LoggerService, private http: HttpClient) {}
 
-    public async request<T extends HttpProtocol>(promise: Promise<T>): Promise<T> {
-        const protocol = await promise;
+    public async request<T extends HttpProtocol>(protocol: T): Promise<T> {
         this.logger.debug(`[network] protocol execute : ${protocol.name}`);
         Debug.assert(protocol.method !== MethodTypes.INVALID);
         // todo extract

@@ -14,7 +14,6 @@ export class NotificationService {
     private streams = NOTIFICATIONS;
 
     constructor(private auth: AuthorizationService, private appPush: PushServiceBase, private event: EventService, private logger: LoggerService) {
-
         const asd = this.appPush;
 
         this.event.subscribe(NWEvent.App.user_login, () => {
@@ -23,6 +22,10 @@ export class NotificationService {
         this.event.subscribe(NWEvent.App.user_logout, () => {
             this.closeStream();
         });
+    }
+
+    public getPushToken(): Promise<string> {
+        return this.appPush.getDeviceTokenAsync();
     }
 
     private onEvent = (streamType: StreamType, event: MessageEvent, data: any): void => {

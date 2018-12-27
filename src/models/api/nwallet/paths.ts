@@ -13,7 +13,8 @@ export const WalletApiPaths = {
         // transactionDetail: (walletId: number) => api(`wallets/${walletId}/transactions`),
         availableWallets: (userId: number) => api(`users/${userId}/wallets/available`),
         ticker: () => api(`tickers`),
-        collateralTransactions: (collateralId: number) => api(`collaterals/${collateralId}/transactions`)
+        collateralTransactions: (collateralId: number) => api(`collaterals/${collateralId}/transactions`),
+        checkPush: (userId: number) => api(`users/${userId}/notification`),
     },
 
     post: {
@@ -22,15 +23,16 @@ export const WalletApiPaths = {
         createTrust: (walletId: number) => api(`wallets/${walletId}/trust`),
         collateralRepay: (collateralId: number) => api(`collaterals/${collateralId}/repay`),
         collateralLoan: (collateralId: number) => api(`collaterals/${collateralId}/loans`),
-        buyNcn: (walletId: number) => api(`wallets/${walletId}/buy`)
+        buyNcn: (walletId: number) => api(`wallets/${walletId}/buy`),
+        registerPush: (userId: number) => api(`users/${userId}/notification`),
     },
 
     put: {
-        configuraton: (userId: number) => api(`users/${userId}/cofiguration/push`),
         walletAlign: (userId: number) => api(`users/${userId}/wallets`),
         walletVisibility: (userId: number, walletId: number) => api(`wallets/${walletId}`),
         sendAssetXdr: (walletId: number) => api(`wallets/${walletId}/withdrawals`),
         executeTrust: (walletId: number) => api(`wallets/${walletId}/trust`),
-        collateralRepayExecute: (collateralId: number) => api(`collaterals/${collateralId}/repay`)
+        collateralRepayExecute: (collateralId: number) => api(`collaterals/${collateralId}/repay`),
+        changePush: (userId: number) => api(`users/${userId}/notification`),
     }
 };

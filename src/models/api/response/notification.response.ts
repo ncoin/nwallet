@@ -1,5 +1,5 @@
-import { Notification } from '../../nwallet/currency';
-declare module '../../nwallet/currency' {
+import { Notification } from '../../nwallet/notification';
+declare module '../../nwallet/notification' {
     interface Notification {
         /** Wallet ID */
         id: number;
@@ -13,7 +13,7 @@ declare module '../../nwallet/currency' {
         /** Firebase Device Token */
         firebase_device_token: string;
 
-        /** Currency ID */
+        /** Currency ID */ // <-- currency id? ask
         is_push: number;
 
         /** creator name */
@@ -28,6 +28,7 @@ declare module '../../nwallet/currency' {
         /** last modified time */
         last_modified_date: DateTimeStamp;
     }
+
 }
 
 export { Notification };

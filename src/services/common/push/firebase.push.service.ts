@@ -51,6 +51,7 @@ export class FirebasePushService extends PushServiceBase {
 
         this.pushObject.on('registration').subscribe(registration => {
             this.logger.debug('[push-firebase] device registered token :', registration.registrationId);
+            this.tokenTask.setResult(registration.registrationId);
             this.logger.debug('[push-firebase] device registered type :', (<any>registration).registrationType);
         });
 

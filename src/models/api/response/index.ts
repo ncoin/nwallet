@@ -7,6 +7,7 @@ export * from './transaction.response';
 export * from './wallet.response';
 export * from './currency.response';
 export * from './token.response';
+export * from './notification.response';
 
 export class Result<T = any> {
     code: ResultCode;

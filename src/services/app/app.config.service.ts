@@ -85,9 +85,11 @@ export class AppConfigService {
     }
 
     public async setPushNotification(isEnable: boolean): Promise<boolean> {
-        const result = await this.channel.setUserNotifications(isEnable);
-        if (result) {
-            await this.preference.set(Preference.App.notification, isEnable);
+        let result = await this.channel.checkUserNotification();
+        if (result === null) {
+            result = await this.channel.registerUserNotification();
+        } else {
+            result = await this.channel.changeUserNotification(isEnable);
         }
 
         return result;
