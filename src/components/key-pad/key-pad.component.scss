@@ -14,10 +14,12 @@ nw-key-pad {
         flex-grow: 1;
         cursor: pointer;
         display: flex;
-        font-size: 4vmin;
+
         .col {
             text-align: center;
             color: #9b9b9b;
+            font-size: 3rem;
+            padding: 2rem 1rem;
         }
     }
 }

@@ -21,7 +21,7 @@ page-send-confirm {
     .transfer {
         border-top: 2px $border-color-divide-line solid;
         border-bottom: 2px $border-color-divide-line solid;
-        padding: 15px 0;
+        padding: 5px 0;
         margin-bottom: 30px;
 
         .send {
@@ -29,18 +29,34 @@ page-send-confirm {
             justify-content: space-between;
         }
 
+        .send,
+        .address {
+            padding: 10px 0;
+        }
 
-        .from {
-            text-align: left;
-            padding: 10px;
+        .column {
+            color: $foreground-content-normal;
+            font-size: $text-size-medium;
+        }
 
-            .asset-amount {
-                color: $text-color-content-red;
-                font-size: $text-size-large;
+        .content {
+            font-size: $text-size-medium;
+            background: transparent;
+            text-align: right;
+            font-weight: 600;
+
+            .crypto {
+                font-size: $text-size-default;
+                color: $header-detail-page-price;
+                font-weight: normal;
             }
         }
 
-
+        .address .content {
+            text-align: left;
+            color: $header-detail-page-price;
+            font-weight: normal;
+        }
     }
 
     .buttons {

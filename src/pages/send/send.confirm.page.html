@@ -15,27 +15,26 @@
         </div>
         <div class="transfer">
             <div class="send amount">
-                <div>
+                <div class="column">
                     {{'Amount' | translate}}
                 </div>
-                <div>
+                <div class="content">
                     <div>{{priceAmount}} USD</div>
-                    <div>{{walletAmount}} {{wallet.getSymbol()}}</div>
+                    <div class="crypto">{{walletAmount}} {{wallet.getSymbol()}}</div>
                 </div>
             </div>
             <div class="send fee">
-                <div>
+                <div class="column">
                     {{'Fee' | translate}}
                 </div>
-                <div>
+                <div class="content">
                     {{fee}} {{wallet.getSymbol()}}
                 </div>
             </div>
-            <div>
-                <div>{{'Address' | translate}}</div>
-                <div>{{recipientAddress}}</div>
+            <div class="address">
+                <div class="column">{{'Address' | translate}}</div>
+                <div class="content">{{recipientAddress}}</div>
             </div>
-
         </div>
         <div class="buttons">
             <button ion-item class="btn cancel" (click)="onClick_Cancel()">{{'Cancel' | translate}}</button>
