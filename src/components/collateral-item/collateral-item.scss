@@ -40,7 +40,7 @@ nw-collateral-item {
                         float: left;
                         text-align: left;
                         padding: 0 0 0 5px;
-                        font-size: $text-size-large;
+                        @include fluid-type($text-size-large-min, $text-size-large-max);
                         line-height: 35px;
                     }
                 }
@@ -49,7 +49,7 @@ nw-collateral-item {
                     grid-column: 2;
                     text-align: right;
                     line-height: 35px;
-                    font-size: $text-size-large;
+                    @include fluid-type($text-size-large-min, $text-size-large-max);
                     font-weight: 600;
                     padding-left: 5px;
                 }
@@ -108,18 +108,20 @@ nw-collateral-item {
 
         .collateral {
             display: grid;
-            grid-template-columns: 20% 30% 50%;
+            grid-template-columns: 24% 38% 38%;
             margin-top: 20px;
 
             > div {
                 text-align: left;
 
                 .columns {
+                    @include fluid-type($text-size-medium-min, $text-size-medium-max);
                     margin-bottom: 5px;
                     color: rgb(159, 139, 78);
                 }
 
                 .content {
+                    @include fluid-type($text-size-medium-min, $text-size-medium-max);
                     font-weight: 600;
                 }
             }
@@ -156,12 +158,13 @@ nw-collateral-item {
 
         .notification {
             text-align: left;
-            font-size: $text-size-large;
+            @include fluid-type($text-size-large-min, $text-size-large-max);
             padding-top: 20px;
 
             fa-icon {
+                position: relative;
                 float: left;
-                font-size: $text-size-extra-large;
+                @include fluid-type($text-size-extra-large-min, $text-size-extra-large-max);
                 color: $text-color-content-orange;
                 background: $text-color-content-white;
                 border-radius: 50%;
@@ -169,10 +172,17 @@ nw-collateral-item {
             }
 
             span {
+                position: relative;
+                float: left;
                 font-weight: 600;
-                line-height: 2rem;
+                line-height: 2.4rem;
                 padding: 0 8px;
             }
+        }
+        .notification::after {
+            content: '';
+            clear: both;
+            display: block;
         }
     }
 

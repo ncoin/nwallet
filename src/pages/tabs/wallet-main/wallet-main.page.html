@@ -7,20 +7,19 @@
 </ion-header>
 
 <ion-content padding>
-    <ion-grid no-padding>
+    <ion-grid no-padding class="total">
+        <ion-row>
+            <ion-col class="label">
+                <span translate>Total</span>
+                <span>:</span>
+            </ion-col>
+        </ion-row>
         <ion-row align-items-center>
-            <ion-col float-left class="total">
-                <ion-row class="label">
-                    <span translate>Total</span>
-                    <span>:</span>
-                </ion-row>
-                <ion-row class="price">
-                    <span>$</span>
-                    <span>{{totalPrice}}</span>
-                </ion-row>
+            <ion-col float-left col-10 class="price">
+                <span>{{totalPrice}}</span>
             </ion-col>
 
-            <ion-col class="total-btn">
+            <ion-col float-end col-2 class="total-btn">
                 <fa-icon name="bars" (click)="onClick_ManageWallet()"></fa-icon>
             </ion-col>
         </ion-row>

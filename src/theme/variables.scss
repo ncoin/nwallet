@@ -62,6 +62,59 @@ $colors: (
     facebook: #3b5998
 );
 
+@function strip-unit($value) {
+    @return $value / ($value * 0 + 1);
+}
+
+@mixin fluid-type($min-font-size, $max-font-size) {
+    $min-vw: 320px;
+    $max-vw: 1200px;
+
+    $u1: unit($min-vw);
+    $u2: unit($max-vw);
+    $u3: unit($min-font-size);
+    $u4: unit($max-font-size);
+
+    @if $u1 == $u2 and $u1 == $u3 and $u1 == $u4 {
+        & {
+            font-size: $min-font-size;
+            @media screen and (min-width: $min-vw) {
+                font-size: calc(#{$min-font-size} + #{strip-unit($max-font-size - $min-font-size)} * ((100vw - #{$min-vw}) / #{strip-unit($max-vw - $min-vw)}));
+            }
+            @media screen and (min-width: $max-vw) {
+                font-size: $max-font-size;
+            }
+        }
+    }
+}
+
+/*
+ font size
+ */
+$min_font: 14px;
+$max_font: 18px;
+
+$text-size-small-min: 12px;
+$text-size-small-max: 14px;
+$text-size-default-min: 14px;
+$text-size-default-max: 16px;
+$text-size-medium-min: 16px;
+$text-size-medium-max: 18px;
+$text-size-large-min: 18px;
+$text-size-large-max: 20px;
+$text-size-extra-large-min: 20px;
+$text-size-extra-large-max: 24px;
+
+
+/*
+ margin/padding
+ */
+$space-size-small: 1rem;
+$space-size-default: 1.2rem;
+$space-size-medium: 1.5rem;
+$space-size-large: 2rem;
+$space-size-extra-large: 3rem;
+
 // App iOS Variables
 // --------------------------------------------------
 // iOS only Sass variables can go here
@@ -96,11 +149,13 @@ $toolbar-md-active-color: #fff;
 // font awesome
 $fa-font-path: $font-path;
 @import "font-awesome";
+
 // Overriding Ionic Sass Variables
 // START
 // Global
 $background-color: transparent;
 $content-ios-transition-background: $background-color;
+
 // Toolbar
 $toolbar-padding: 0;
 $toolbar-ios-padding: $toolbar-padding;
@@ -108,6 +163,7 @@ $toolbar-md-padding: $toolbar-padding;
 $toolbar-wp-padding: $toolbar-padding;
 $toolbar-background: transparent;
 $toolbar-md-background: $toolbar-background;
+
 // Tab
 $tabs-tab-min-height: 70px;
 $tabs-ios-tab-min-height: $tabs-tab-min-height;
@@ -123,6 +179,7 @@ $tabs-wp-border-color: transparent;
 $tabs-wp-tab-border: 0;
 $tabs-background: transparent url("../assets/img/tabs_bg.png") repeat-x bottom;
 $tabs-md-tab-icon-transform-y-active: 0;
+
 // card
 $card-ios-background-color: $background-color;
 $card-ios-box-shadow: none;
@@ -133,10 +190,12 @@ $card-md-box-shadow-color: $background-color;
 $card-wp-background-color: $background-color;
 $card-wp-box-shadow: none;
 $card-wp-box-shadow-color: $background-color;
+
 // buttons
 $basic-button-radius: 0.5rem;
 $basic-button-default-background: #49413a;
 $basic-button-default-shadow: rgba(255, 255, 255, 0.2);
+
 // select
 $select-wp-border-width: 0;
 $select-wp-margin: 0;
@@ -146,6 +205,7 @@ $select-wp-margin-left: $select-wp-margin;
 $select-wp-margin-right: $select-wp-margin;
 $select-wp-margin-start: $select-wp-margin;
 $select-wp-margin-top: $select-wp-margin;
+
 // popover
 $popover-background: #8b785f;
 $popover-radius: 10px;

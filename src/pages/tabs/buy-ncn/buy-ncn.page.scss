@@ -6,10 +6,10 @@ page-buy-ncn {
 
     .sub-title {
         border-left: 5px $text-color-sub-title solid;
-        font-size: $text-size-large;
-        line-height: $text-size-large;
+        @include fluid-type($text-size-large-min, $text-size-large-max);
+        //line-height: $text-size-large;
         padding-left: 5px;
-        margin-bottom: $text-size-medium;
+        margin-bottom: $space-size-medium;
         color: $text-color-sub-title;
     }
 
@@ -44,14 +44,14 @@ page-buy-ncn {
 
         .asset-name {
             grid-column: 2;
-            font-size: $text-size-large;
+            @include fluid-type($text-size-large-min, $text-size-large-max);
             color: $text-color-asset-name;
             margin: auto 0 auto 10px;
         }
 
         .asset-balance {
             grid-column: 3;
-            font-size: $text-size-large;
+            @include fluid-type($text-size-large-min, $text-size-large-max);
             color: $text-color-asset-balance;
             margin: auto 10px auto 0;
             text-align: right;
@@ -74,7 +74,7 @@ page-buy-ncn {
 
         > div {
             flex: 1;
-            font-size: $text-size-large;
+            @include fluid-type($text-size-large-min, $text-size-large-max);
         }
 
         .row > div {
@@ -118,7 +118,7 @@ page-buy-ncn {
             border: $border-color-translate-button 2px solid;
             border-radius: 6px;
             margin-right: 10px;
-            font-size: $text-size-large;
+            @include fluid-type($text-size-large-min, $text-size-large-max);
             color: $global-color-gold;
         }
         .shortcut:last-child {

@@ -15,8 +15,8 @@ wallet-detail {
         height: calc(#{$header-height} + 8px);
     }
     .header-ios {
-        max-height: calc(#{$header-height} + 11px);
-        height: calc(#{$header-height} + 11px);
+        max-height: calc(#{$header-height} + 10px);
+        height: calc(#{$header-height} + 10px);
     }
 
     .navBar-container {
@@ -32,7 +32,7 @@ wallet-detail {
                 margin-bottom: 10px;
 
                 div {
-                    font-size: $text-size-large;
+                    @include fluid-type($text-size-large-min, $text-size-large-max);
                 }
 
                 .column {
@@ -119,7 +119,7 @@ wallet-detail {
         ion-item-group.content-history ion-item-divider.content-history-date .item-inner .label-md,
         ion-item-group.content-history ion-item-divider.content-history-date .item-inner .label-wp {
             border-left: $text-color-sub-title 5px solid;
-            font-size: $text-size-medium;
+            @include fluid-type($text-size-medium-min, $text-size-medium-max);
             margin: 20px 0 8px;
             padding-left: 10px;
             font-weight: 600;
@@ -161,7 +161,7 @@ wallet-detail {
         ion-item-group.content-history .item-wp [item-middle] {
             span {
                 display: block;
-                font-size: $text-size-medium;
+                @include fluid-type($text-size-medium-min, $text-size-medium-max);
             }
             span.transaction-type {
                 color: $text-color-transaction-type;
@@ -175,14 +175,14 @@ wallet-detail {
         ion-item-group.content-history .item-md [item-end].white,
         ion-item-group.content-history .item-wp [item-end].white {
             color: $text-color-content-white;
-            font-size: $text-size-medium;
+            @include fluid-type($text-size-medium-min, $text-size-medium-max);
             font-weight: 600;
         }
         ion-item-group.content-history .item-ios [item-end].red,
         ion-item-group.content-history .item-md [item-end].red,
         ion-item-group.content-history .item-wp [item-end].red {
             color: $text-color-content-red;
-            font-size: $text-size-medium;
+            @include fluid-type($text-size-medium-min, $text-size-medium-max);
             font-weight: 600;
         }
     }

@@ -1,10 +1,10 @@
 page-send-confirm {
     .sub-title {
         border-left: 5px $text-color-sub-title solid;
-        font-size: $text-size-large;
-        line-height: $text-size-large;
+        @include fluid-type($text-size-large-min, $text-size-large-max);
+        //line-height: $text-size-large;
         padding-left: 5px;
-        margin-bottom: $text-size-medium;
+        margin-bottom: $space-size-medium;
         color: $text-color-sub-title;
     }
 
@@ -36,17 +36,17 @@ page-send-confirm {
 
         .column {
             color: $foreground-content-normal;
-            font-size: $text-size-medium;
+            @include fluid-type($text-size-medium-min, $text-size-medium-max);
         }
 
         .content {
-            font-size: $text-size-medium;
+            @include fluid-type($text-size-medium-min, $text-size-medium-max);
             background: transparent;
             text-align: right;
             font-weight: 600;
 
             .crypto {
-                font-size: $text-size-default;
+                @include fluid-type($text-size-default-min, $text-size-default-max);
                 color: $header-detail-page-price;
                 font-weight: normal;
             }

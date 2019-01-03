@@ -65,7 +65,7 @@ wallet-transaction-detail {
         .toolbar-title-wp,
         .toolbar-title-ios {
             color: $header-detail-page-title-sub;
-            font-size: $text-size-large;
+            @include fluid-type($text-size-large-min, $text-size-large-max);
         }
 
         .asset-amount,
@@ -76,10 +76,10 @@ wallet-transaction-detail {
 
         .asset-amount {
             padding-top: 12px;
-            font-size: $text-size-extra-large;
+            @include fluid-type($text-size-extra-large-min, $text-size-extra-large-max);
         }
         .asset-price {
-            font-size: $text-size-large;
+            @include fluid-type($text-size-large-min, $text-size-large-max);
         }
     }
 
@@ -101,15 +101,15 @@ wallet-transaction-detail {
     .container {
         .sub-title {
             border-left: 5px $text-color-sub-title solid;
-            font-size: $text-size-large;
-            line-height: $text-size-large;
+            @include fluid-type($text-size-large-min, $text-size-large-max);
+            //line-height: $text-size-large;
             padding-left: 5px;
-            margin-bottom: $text-size-medium;
+            margin-bottom: $space-size-medium;
             color: $text-color-sub-title;
         }
 
         .content {
-            font-size: $text-size-medium;
+            @include fluid-type($text-size-medium-min, $text-size-medium-max);
             color: $text-color-transaction-type;
             background: transparent;
             padding: 0 12px;

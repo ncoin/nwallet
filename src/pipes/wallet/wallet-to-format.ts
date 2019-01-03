@@ -1,4 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
+import * as _ from 'lodash';
 import { NWAsset } from '../../models/nwallet';
 
 @Pipe({
@@ -7,7 +8,8 @@ import { NWAsset } from '../../models/nwallet';
 export class WalletToFormatPipe implements PipeTransform {
     transform(assetItem: NWAsset.Item) {
         const value = assetItem.getAmount();
-        const floor = Math.floor(value * 1000) / 1000;
-        return `${floor} ${assetItem.getSymbol()}`;
+        const floor = _.floor(value, 3);
+        const formattedValue = floor.toLocaleString('en-US');
+        return `${formattedValue} ${assetItem.getSymbol()}`;
     }
 }

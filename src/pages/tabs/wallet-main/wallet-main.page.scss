@@ -1,22 +1,18 @@
 page-wallet-main {
     .total .label {
-        color: #b89e6e;
-        font-size: 16px;
-        font-weight: 600;
-        padding-right: 15px;
-        padding-bottom: 5px;
+        color: #faf2e4;
+        @include fluid-type($text-size-default-min, $text-size-default-max);
     }
     .total .price {
         color: #ffcd83;
-        font-size: 24px;
+        @include fluid-type($text-size-extra-large-min, $text-size-extra-large-max);
         font-weight: 800;
-        padding-right: 15px;
     }
 
     .total-btn {
         fa-icon {
             color: #b89e6e;
-            font-size: 24px;
+            @include fluid-type($text-size-extra-large-min, $text-size-extra-large-max);
             float: right;
             margin-right: 5px;
         }

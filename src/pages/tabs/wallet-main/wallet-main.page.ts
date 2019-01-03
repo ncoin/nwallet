@@ -83,9 +83,8 @@ export class WalletMainPage implements OnDestroy {
     };
 
     private calculateTotalPrice = () => {
-        this.totalPrice = _.sumBy(this.assetSlides, slide => _.sumBy(slide.assets, asset => asset.getAmount() * this.currency.getPrice(asset.getCurrencyId())))
-            .toFixed(2)
-            .toString();
+        this.totalPrice = '$' + _.floor(_.sumBy(this.assetSlides, slide => _.sumBy(slide.assets, asset => asset.getAmount() * this.currency.getPrice(asset.getCurrencyId()))), 2)
+            .toLocaleString('en-US');
         this.logger.debug('[wallet-main-tab] total price update :', this.totalPrice);
     };
 

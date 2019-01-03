@@ -35,7 +35,7 @@ page-loan-detail {
                 margin-bottom: 10px;
 
                 div {
-                    font-size: $text-size-large;
+                    @include fluid-type($text-size-large-min, $text-size-large-max);
                 }
 
                 .column {
@@ -80,7 +80,7 @@ page-loan-detail {
 
                 > div {
                     color: $global-color-label;
-                    font-size: $text-size-medium;
+                    @include fluid-type($text-size-medium-min, $text-size-medium-max);
                     text-align: right;
                 }
 
@@ -129,11 +129,18 @@ page-loan-detail {
                     top: 0;
                     text-align: right;
                     color: $text-color-content-white;
-                    font-size: $text-size-medium;
+                    @include fluid-type($text-size-medium-min, $text-size-medium-max);
                 }
                 .red {
                     background: $progress-background-red;
                     z-index: 4;
+
+                    span {
+                        width: 100%;
+                        line-height: 30px;
+                        border: 0;
+                        padding-right: 8px;
+                    }
                 }
                 .green {
                     width: calc(50% - 1px);
@@ -149,7 +156,7 @@ page-loan-detail {
                 grid-template-columns: 50% 40% 10%;
 
                 > div {
-                    font-size: $text-size-medium;
+                    @include fluid-type($text-size-medium-min, $text-size-medium-max);
                     text-align: right;
                 }
 
@@ -199,7 +206,7 @@ page-loan-detail {
         ion-item-group.content-history ion-item-divider.content-history-date .item-inner .label-md,
         ion-item-group.content-history ion-item-divider.content-history-date .item-inner .label-wp {
             border-left: $text-color-sub-title 5px solid;
-            font-size: $text-size-medium;
+            @include fluid-type($text-size-medium-min, $text-size-medium-max);
             margin: 20px 0 8px;
             padding-left: 10px;
             font-weight: 600;
@@ -241,7 +248,7 @@ page-loan-detail {
         ion-item-group.content-history .item-wp [item-middle] {
             span {
                 display: block;
-                font-size: $text-size-medium;
+                @include fluid-type($text-size-medium-min, $text-size-medium-max);
             }
             span.transaction-type {
                 color: $text-color-transaction-type;
@@ -255,14 +262,14 @@ page-loan-detail {
         ion-item-group.content-history .item-md [item-end].white,
         ion-item-group.content-history .item-wp [item-end].white {
             color: $text-color-content-white;
-            font-size: $text-size-medium;
+            @include fluid-type($text-size-medium-min, $text-size-medium-max);
             font-weight: 600;
         }
         ion-item-group.content-history .item-ios [item-end].red,
         ion-item-group.content-history .item-md [item-end].red,
         ion-item-group.content-history .item-wp [item-end].red {
             color: $text-color-content-red;
-            font-size: $text-size-medium;
+            @include fluid-type($text-size-medium-min, $text-size-medium-max);
             font-weight: 600;
         }
     }

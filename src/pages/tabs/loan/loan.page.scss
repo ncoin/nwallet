@@ -9,12 +9,12 @@ page-loan {
 
             :nth-child(1) {
                 color: $global-color-gold;
-                font-size: $text-size-large;
+                @include fluid-type($text-size-large-min, $text-size-large-max);
             }
 
             :nth-child(2) {
                 color: $global-color-red;
-                font-size: $text-size-large;
+                @include fluid-type($text-size-large-min, $text-size-large-max);
                 margin-top: 1rem;
             }
         }
@@ -24,12 +24,12 @@ page-loan {
 
             :nth-child(1) {
                 color: $global-color-gold;
-                font-size: $text-size-large;
+                @include fluid-type($text-size-large-min, $text-size-large-max);
             }
 
             :nth-child(2) {
                 color: $global-color-green;
-                font-size: $text-size-large;
+                @include fluid-type($text-size-large-min, $text-size-large-max);
                 margin-top: 1rem;
             }
         }

@@ -79,7 +79,7 @@ export class Collateral {
         return this.id;
     }
     public get Available(): number {
-        return this.available_loan_amout;
+        return this.available_loan_amount;
     }
     public get Loaned(): number {
         return this.loan_sum;

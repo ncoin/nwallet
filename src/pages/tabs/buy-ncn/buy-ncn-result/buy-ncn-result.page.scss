@@ -3,10 +3,10 @@ page-buy-ncn-result {
 
     .sub-title {
         border-left: 5px $text-color-sub-title solid;
-        font-size: $text-size-large;
-        line-height: $text-size-large;
+        @include fluid-type($text-size-large-min, $text-size-large-max);
+        //line-height: $text-size-large;
         padding-left: 5px;
-        margin-bottom: $text-size-medium;
+        margin-bottom: $space-size-medium;
         color: $text-color-sub-title;
     }
 
@@ -41,7 +41,7 @@ page-buy-ncn-result {
                     grid-column: 1;
                     text-align: left;
                     color: $text-color-asset-name;
-                    font-size: $text-size-large;
+                    @include fluid-type($text-size-large-min, $text-size-large-max);
                 }
 
                 .amount-ncoin,
@@ -49,7 +49,7 @@ page-buy-ncn-result {
                 .amount-balance {
                     grid-column: 2;
                     text-align: right;
-                    font-size: $text-size-large;
+                    @include fluid-type($text-size-large-min, $text-size-large-max);
                     font-weight: 600;
                 }
 
@@ -77,7 +77,7 @@ page-buy-ncn-result {
 
         .message {
             color: $foreground-content-normal;
-            font-size: $text-size-large;
+            @include fluid-type($text-size-large-min, $text-size-large-max);
             text-align: center;
             margin-bottom: 5rem;
 

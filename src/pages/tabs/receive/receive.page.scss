@@ -31,14 +31,14 @@ page-receive {
 
             .asset-name {
                 grid-column: 2;
-                font-size: $text-size-large;
+                @include fluid-type($text-size-large-min, $text-size-large-max);
                 color: $text-color-asset-name;
                 margin: auto 0 auto 10px;
             }
 
             .asset-balance {
                 grid-column: 3;
-                font-size: $text-size-large;
+                @include fluid-type($text-size-large-min, $text-size-large-max);
                 color: $text-color-asset-balance;
                 margin: auto 10px auto 0;
                 text-align: right;
@@ -107,13 +107,13 @@ page-receive {
             button {
                 background: transparent;
                 color: $text-color-point;
-                font-size: $text-size-medium;
+                @include fluid-type($text-size-medium-min, $text-size-medium-max);
             }
         }
 
         .code-text {
             text-align: center;
-            font-size: $text-size-large;
+            @include fluid-type($text-size-large-min, $text-size-large-max);
         }
     }
 

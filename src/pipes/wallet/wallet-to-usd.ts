@@ -1,4 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
+import * as _ from 'lodash';
 import { NWAsset } from '../../models/nwallet';
 import { CurrencyService } from '../../services/nwallet/currency.service';
 import { Debug } from '../../utils/helper/debug';
@@ -17,8 +18,9 @@ export class WalletToUSDPipe implements PipeTransform {
             Debug.assert(assetItem.getCurrencyId() === currency.currencyId);
 
             const value = assetItem.getAmount() * currency.price;
-            const floor = value.toFixed(2);
-            return `$${floor}`;
+            const floor = _.floor(value, 2);
+            const formattedValue = floor.toLocaleString('en-US');
+            return `$${formattedValue}`;
         });
     }
 }

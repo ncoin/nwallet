@@ -35,7 +35,7 @@ declare module '../../nwallet/wallet' {
     }
 
     interface Collateral {
-        available_loan_amout: number;
+        available_loan_amount: number;
         created_date: string;
         expiry_date: string;
         expiry_date_relative_time: string; // it is not 'TimeStamp', ex) '6 hours after'

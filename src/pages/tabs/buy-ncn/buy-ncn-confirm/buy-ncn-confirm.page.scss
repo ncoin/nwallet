@@ -1,10 +1,10 @@
 page-buy-ncn-confirm {
     .sub-title {
         border-left: 5px $text-color-sub-title solid;
-        font-size: $text-size-large;
-        line-height: $text-size-large;
+        @include fluid-type($text-size-large-min, $text-size-large-max);
+        //line-height: $text-size-large;
         padding-left: 5px;
-        margin-bottom: $text-size-medium;
+        margin-bottom: $space-size-medium;
         color: $text-color-sub-title;
     }
 
@@ -36,7 +36,7 @@ page-buy-ncn-confirm {
 
             .asset-amount {
                 color: $text-color-content-red;
-                font-size: $text-size-large;
+                @include fluid-type($text-size-large-min, $text-size-large-max);
                 font-weight: 600;
             }
         }
@@ -48,14 +48,14 @@ page-buy-ncn-confirm {
 
             .asset-amount {
                 color: $text-color-content-green;
-                font-size: $text-size-large;
+                @include fluid-type($text-size-large-min, $text-size-large-max);
                 font-weight: 600;
             }
         }
 
         .asset-name {
             color: $text-color-asset-name;
-            font-size: $text-size-large;
+            @include fluid-type($text-size-large-min, $text-size-large-max);
             margin-bottom: 15px;
         }
     }

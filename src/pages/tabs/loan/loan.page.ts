@@ -56,7 +56,7 @@ export class LoanPage {
             const collaterals = assets.filter(a => a.Collateral && a.CanLoan);
 
             this.totalLoanedAmount = _.sumBy(collaterals, c => c.Collateral.loan_sum);
-            this.totalAvailableAmount = _.sumBy(collaterals, c => c.Collateral.available_loan_amout);
+            this.totalAvailableAmount = _.sumBy(collaterals, c => c.Collateral.available_loan_amount);
             this.slides = SlideHelper.getSlides(collaterals, 3);
         };
     }
