@@ -2,14 +2,16 @@ page-receive {
     .content {
     }
 
-    .test {}
+    .test {
+    }
 
     ngx-qrcode .qrcode {
         width: 100%;
         height: 100%;
     }
 
-    ngx-qrcode .img {}
+    ngx-qrcode .img {
+    }
 
     .container {
         overflow-y: hidden;
@@ -17,7 +19,7 @@ page-receive {
         .asset_change_button {
             display: grid;
             width: 100%;
-            grid-template-columns: 40px 1fr 1fr 30px;
+            grid-template-columns: 30px 1fr 2fr 30px;
             background: $background-button-default;
             -webkit-border-radius: 5px;
             -moz-border-radius: 5px;
@@ -31,14 +33,14 @@ page-receive {
 
             .asset-name {
                 grid-column: 2;
-                @include fluid-type($text-size-large-min, $text-size-large-max);
+                @include fluid-type($text-size-medium-min, $text-size-medium-max);
                 color: $text-color-asset-name;
                 margin: auto 0 auto 10px;
             }
 
             .asset-balance {
                 grid-column: 3;
-                @include fluid-type($text-size-large-min, $text-size-large-max);
+                @include fluid-type($text-size-medium-min, $text-size-medium-max);
                 color: $text-color-asset-balance;
                 margin: auto 10px auto 0;
                 text-align: right;
@@ -57,12 +59,12 @@ page-receive {
         display: flex;
         justify-content: center;
 
-        >button {
+        > button {
             width: 25%;
             height: 50px;
             border: 1px solid $border-color;
             background: transparent;
-            color : $foreground-header-gold;
+            color: $foreground-header-gold;
             display: flex;
             justify-content: space-evenly;
             align-items: center;
@@ -93,8 +95,10 @@ page-receive {
         padding: 20px 0 20px 0;
 
         .qrCard {
-            width: 50vmin;
+            width: 50%;
+            max-width: 200px;
             margin: auto;
+
             > ngx-qrcode > div > img {
                 border-radius: 10px;
             }
@@ -121,7 +125,7 @@ page-receive {
     //orientation landscape
     @media screen and (max-height: 400px) {
         .slide {
-            >button {
+            > button {
                 height: 30px;
             }
         }

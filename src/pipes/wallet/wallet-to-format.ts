@@ -7,8 +7,9 @@ import { NWAsset } from '../../models/nwallet';
 })
 export class WalletToFormatPipe implements PipeTransform {
     transform(assetItem: NWAsset.Item) {
+        const digits = (assetItem.currency.decimal_number > 2) ? 3 : assetItem.currency.decimal_number;
         const value = assetItem.getAmount();
-        const floor = _.floor(value, 3);
+        const floor = _.floor(value, digits);
         const formattedValue = floor.toLocaleString('en-US');
         return `${formattedValue} ${assetItem.getSymbol()}`;
     }

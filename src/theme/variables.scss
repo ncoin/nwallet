@@ -62,6 +62,10 @@ $colors: (
     facebook: #3b5998
 );
 
+$width-xs: 320px;
+$width-md: 720px;
+$width-ls: 1200px;
+
 @function strip-unit($value) {
     @return $value / ($value * 0 + 1);
 }
