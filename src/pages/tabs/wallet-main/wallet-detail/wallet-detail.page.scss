@@ -1,38 +1,40 @@
 // todo rearrange --sky
 wallet-detail {
-    $header-height: 310px;
+    $header-height: 295px;
 
     .header {
         max-height: $header-height;
         height: $header-height;
     }
+
     .header-wp {
-        max-height: calc(#{$header-height} + 30px);
-        height: calc(#{$header-height} + 30px);
+        max-height: calc(#{$header-height} + 21px);
+        height: calc(#{$header-height} + 21px);
     }
+
+    .header-ios,
     .header-md {
         max-height: calc(#{$header-height} + 8px);
         height: calc(#{$header-height} + 8px);
     }
-    .header-ios {
-        max-height: calc(#{$header-height} + 10px);
-        height: calc(#{$header-height} + 10px);
-    }
 
     .navBar-container {
-        padding: 30px 16px 16px;
+        padding: $space-fixed-size-30 $space-fixed-size-16 $space-fixed-size-16;
         width: 100%;
         height: 100%;
         position: absolute;
 
         .title-content-container {
+            padding: 0 5px;
+
             .loan-summary {
                 display: grid;
                 grid-template-columns: 33% 34% 33%;
                 margin-bottom: 10px;
 
                 div {
-                    @include fluid-type($text-size-large-min, $text-size-large-max);
+                    @include fluid-type($text-size-medium-min, $text-size-medium-max);
+                    text-align: center;
                 }
 
                 .column {
@@ -66,7 +68,8 @@ wallet-detail {
 
             .buttons {
                 display: grid;
-                grid-template-columns: 20% 20% 60%;
+                grid-template-columns: 30% 30% 40%;
+                margin-bottom: $space-size-medium;
 
                 button {
                     width: 100%;
@@ -74,9 +77,9 @@ wallet-detail {
                     position: relative;
                     text-align: center;
                     margin: 0;
-                    padding: 10px 0;
+                    padding: 0;
                     border: 0;
-                    font-size: 6rem;
+                    font-size: 7rem;
                     color: transparent;
                     background: -webkit-linear-gradient(#c4c4c4, #797979);
                     -webkit-background-clip: text;
@@ -95,7 +98,15 @@ wallet-detail {
 
                 .graph {
                     grid-column: 3;
-                    color: $text-color-content-white;
+
+                    > div {
+                        background: $background-color url('../assets/img/graph_sample.png') no-repeat bottom center;
+                        background-size: cover;
+                        border-left: #776f62 2px solid;
+                        border-bottom: #776f62 2px solid;
+                        width: 100%;
+                        height: 100%;
+                    }
                 }
             }
         }
@@ -163,9 +174,11 @@ wallet-detail {
                 display: block;
                 @include fluid-type($text-size-medium-min, $text-size-medium-max);
             }
+
             span.transaction-type {
                 color: $text-color-transaction-type;
             }
+
             span.transaction-date {
                 color: $text-color-transaction-date;
             }
@@ -178,6 +191,7 @@ wallet-detail {
             @include fluid-type($text-size-medium-min, $text-size-medium-max);
             font-weight: 600;
         }
+
         ion-item-group.content-history .item-ios [item-end].red,
         ion-item-group.content-history .item-md [item-end].red,
         ion-item-group.content-history .item-wp [item-end].red {
@@ -190,8 +204,8 @@ wallet-detail {
 
     // dynamic state
     @media screen and (max-width: 768px),
-    screen and (max-height:600px) {
-        .navBar-container>div {
+    screen and (max-height: 600px) {
+        .navBar-container > div {
             // background: $border-color-7a;
         }
     }
@@ -199,20 +213,20 @@ wallet-detail {
     // orientation landscape
     @media screen and (max-height: 400px) {
 
-        .toolbar-content {
-            display: flex;
-            justify-content: center;
+        //.toolbar-content {
+        //    display: flex;
+        //    justify-content: center;
+        //
+        //    .title-header-container {
+        //        flex: 1
+        //    }
+        //
+        //    .title-content-container {
+        //        flex: 1
+        //    }
+        //}
 
-            .title-header-container {
-                flex: 1
-            }
-
-            .title-content-container {
-                flex: 1
-            }
-        }
-
-        .navBar-container>div {
+        .navBar-container > div {
             // background: border-color-7a;
         }
 

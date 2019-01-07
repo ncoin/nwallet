@@ -7,6 +7,7 @@ import { WalletPerPricePipe } from './wallet/wallet-per-price';
 import { WalletToTotalPricePipe } from './wallet/wallet-to-totalprice.usd';
 import { StringToDatePipe } from './date/string-to-date';
 import { CurrencyIdToSymbolPipe } from './currency/currencyId-to-symbol';
+import { NumberToUsdPipe } from './number/number-to-usd';
 
 const PIPES = [
     WalletToUSDPipe,
@@ -16,7 +17,8 @@ const PIPES = [
     WalletToFormatPipe,
     WalletToSymbolPipe,
     StringToDatePipe,
-    CurrencyIdToSymbolPipe
+    CurrencyIdToSymbolPipe,
+    NumberToUsdPipe,
 ];
 @NgModule({
     declarations: PIPES,

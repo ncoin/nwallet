@@ -19,7 +19,10 @@ export class WalletToUSDPipe implements PipeTransform {
 
             const value = assetItem.getAmount() * currency.price;
             const floor = _.floor(value, 2);
-            const formattedValue = floor.toLocaleString('en-US');
+            const formattedValue = floor.toLocaleString('en-US', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
             return `$${formattedValue}`;
         });
     }

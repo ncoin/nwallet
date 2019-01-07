@@ -4,7 +4,7 @@
             <ion-navbar class="navBar">
                 <div class="title-header-container">
                     <ion-title>
-                        <img class="asset-logo" src="assets/img/symbol_{{wallet.getSymbol()}}.png" />
+                        <img class="asset-logo" src="assets/img/symbol_{{wallet.getSymbol()}}.png"/>
                         <span class="asset-name">{{wallet.getSymbol() | translate}}</span>
                     </ion-title>
                     <div class="asset-amount">{{ wallet | walletToFormat}}</div>
@@ -14,15 +14,15 @@
                     <div class="loan-summary">
                         <div class="ltv">
                             <div class="column">LTV</div>
-                            <div class="value">? %</div>
+                            <div class="value">{{wallet.Collateral.Ltv}}%</div>
                         </div>
                         <div class="loaned">
                             <div class="column">Loaned</div>
-                            <div class="value">$ ?</div>
+                            <div class="value">${{wallet.Collateral.Loaned | number}}</div>
                         </div>
                         <div class="available">
                             <div class="column">Available</div>
-                            <div class="value">$ ?</div>
+                            <div class="value">${{wallet.Collateral.Available}}</div>
                         </div>
                     </div>
                     <div class="buttons">
@@ -32,7 +32,9 @@
                         <button ion-button (click)="onClick_Send()">
                             <fa-icon name="arrow-circle-o-up"></fa-icon>
                         </button>
-                        <div class="graph">::GRAPH_AREA::</div>
+                        <div class="graph">
+                            <div></div>
+                        </div>
                     </div>
                 </div>
             </ion-navbar>
@@ -47,9 +49,10 @@
                 <ion-item-divider class="content-history-date" sticky>
                     {{map.date | date: 'MMMM yyyy'}}
                 </ion-item-divider>
-                <button ion-item detail-none *ngFor="let transaction of map.transactions" (click)="onExploreTransaction(transaction)">
+                <button ion-item detail-none *ngFor="let transaction of map.transactions"
+                        (click)="onExploreTransaction(transaction)">
                     <div item-start>
-                        <img src="assets/img/icon_{{transaction.transactionType.toLowerCase()}}.png" />
+                        <img src="assets/img/icon_{{transaction.transactionType.toLowerCase()}}.png"/>
                     </div>
                     <div item-middle>
                         <span class="transaction-type">{{transaction.transactionType}}</span>
@@ -62,7 +65,8 @@
             </ion-item-group>
         </ion-list>
         <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
-            <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="more Transactions ..."></ion-infinite-scroll-content>
+            <ion-infinite-scroll-content loadingSpinner="bubbles"
+                                         loadingText="more Transactions ..."></ion-infinite-scroll-content>
         </ion-infinite-scroll>
     </div>
 </ion-content>

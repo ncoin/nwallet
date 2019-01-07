@@ -10,7 +10,10 @@ export class WalletToFormatPipe implements PipeTransform {
         const digits = (assetItem.currency.decimal_number > 2) ? 3 : assetItem.currency.decimal_number;
         const value = assetItem.getAmount();
         const floor = _.floor(value, digits);
-        const formattedValue = floor.toLocaleString('en-US');
+        const formattedValue = floor.toLocaleString('en-US', {
+            minimumFractionDigits: digits,
+            maximumFractionDigits: digits
+        });
         return `${formattedValue} ${assetItem.getSymbol()}`;
     }
 }

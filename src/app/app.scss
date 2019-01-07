@@ -19,6 +19,10 @@ ion-app {
     top: 0;
 }
 
+.alert-wp ion-backdrop {
+    background: rgb(0, 0, 0);
+}
+
 // fonts
 
 .toolbar-md {
@@ -107,16 +111,11 @@ ion-header.header-ios {
 
     .title-header-container {
         margin-bottom: 20px;
+        text-align: center;
 
         ion-title {
             margin-bottom: 10px;
             padding: 0;
-
-            .asset-name {
-                color: $header-detail-page-title;
-                @include fluid-type($text-size-extra-large-min, $text-size-extra-large-max);
-                position: relative;
-            }
 
             .asset-logo {
                 width: auto;
@@ -124,6 +123,14 @@ ion-header.header-ios {
                 height: 35px;
                 margin: 0;
                 vertical-align: bottom;
+            }
+
+            .asset-name {
+                color: $header-detail-page-title;
+                @include fluid-type($text-size-extra-large-min, $text-size-extra-large-max);
+                position: relative;
+                line-height: 35px;
+                display: inline-block;
             }
         }
 
@@ -139,6 +146,17 @@ ion-header.header-ios {
             position: relative;
         }
     }
+}
+
+page-modal-nav .canBack ion-header ion-navbar .back-button {
+    z-index: 1;
+}
+
+.header-md::after,
+.tabs-md[tabsPlacement="top"] > .tabbar::after,
+.footer-md::before,
+.tabs-md[tabsPlacement="bottom"] > .tabbar::before {
+    background: transparent;
 }
 
 // Tabs

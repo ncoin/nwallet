@@ -24,7 +24,7 @@ export interface AssetSlide {
 })
 export class WalletMainPage implements OnDestroy {
     public assetSlides: AssetSlide[] = [];
-    public totalPrice: string;
+    public totalPrice: number;
     private subscriptions: Subscription[] = [];
     private loading: Loading;
 
@@ -83,8 +83,7 @@ export class WalletMainPage implements OnDestroy {
     };
 
     private calculateTotalPrice = () => {
-        this.totalPrice = '$' + _.floor(_.sumBy(this.assetSlides, slide => _.sumBy(slide.assets, asset => asset.getAmount() * this.currency.getPrice(asset.getCurrencyId()))), 2)
-            .toLocaleString('en-US');
+        this.totalPrice = _.floor(_.sumBy(this.assetSlides, slide => _.sumBy(slide.assets, asset => asset.getAmount() * this.currency.getPrice(asset.getCurrencyId()))), 2);
         this.logger.debug('[wallet-main-tab] total price update :', this.totalPrice);
     };
 
