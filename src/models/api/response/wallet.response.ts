@@ -5,6 +5,7 @@ declare module '../../nwallet/wallet' {
         address: string;
         align_number: number;
         balance: number;
+        available_withdrawal_balance: number;
         bitgo_wallet_id: number;
         created_date: string;
         currency_id: number;

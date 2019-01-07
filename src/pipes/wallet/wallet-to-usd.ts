@@ -17,11 +17,12 @@ export class WalletToUSDPipe implements PipeTransform {
         return this.currency.get(assetItem.data.currency_id).map(currency => {
             Debug.assert(assetItem.getCurrencyId() === currency.currencyId);
 
+            const digits = 2;
             const value = assetItem.getAmount() * currency.price;
-            const floor = _.floor(value, 2);
+            const floor = _.floor(value, digits);
             const formattedValue = floor.toLocaleString('en-US', {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2
+                minimumFractionDigits: digits,
+                maximumFractionDigits: digits
             });
             return `$${formattedValue}`;
         });

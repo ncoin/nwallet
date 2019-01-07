@@ -92,6 +92,31 @@ $width-ls: 1200px;
     }
 }
 
+@mixin fluid-type-line($min-font-size, $max-font-size) {
+    $min-vw: 320px;
+    $max-vw: 1200px;
+
+    $u1: unit($min-vw);
+    $u2: unit($max-vw);
+    $u3: unit($min-font-size);
+    $u4: unit($max-font-size);
+
+    @if $u1 == $u2 and $u1 == $u3 and $u1 == $u4 {
+        & {
+            font-size: $min-font-size;
+            @media screen and (min-width: $min-vw) {
+                $calcSize: calc(#{$min-font-size} + #{strip-unit($max-font-size - $min-font-size)} * ((100vw - #{$min-vw}) / #{strip-unit($max-vw - $min-vw)}));
+                font-size: $calcSize;
+                line-height: $calcSize;
+            }
+            @media screen and (min-width: $max-vw) {
+                font-size: $max-font-size;
+                line-height: $max-font-size;
+            }
+        }
+    }
+}
+
 /*
  font size
  */
@@ -113,12 +138,6 @@ $text-size-extra-large-max: 24px;
 /*
  margin/padding
  */
-$space-size-small: 1rem;
-$space-size-default: 1.2rem;
-$space-size-medium: 1.5rem;
-$space-size-large: 2rem;
-$space-size-extra-large: 3rem;
-
 $space-fixed-size-5: 5px;
 $space-fixed-size-10: 10px;
 $space-fixed-size-15: 15px;

@@ -10,7 +10,16 @@ class CurrencyInfo {
     data: NWData.Currency;
     ticker: NWData.Ticker;
 
-    constructor(public currencyId: number) {}
+    constructor(public currencyId: number) {
+    }
+
+    public get decimalNumber(): number {
+        if (this.data) {
+            return this.data.decimal_number;
+        }
+        return 0;
+    }
+
     public get price(): number {
         if (this.ticker) {
             return this.ticker.price;
@@ -84,5 +93,9 @@ export class CurrencyService {
 
     public getPrice(currencyId: number): number {
         return this.get(currencyId).getValue().price;
+    }
+
+    public getDecimalNumber(currencyId: number): number {
+        return this.get(currencyId).getValue().decimalNumber;
     }
 }

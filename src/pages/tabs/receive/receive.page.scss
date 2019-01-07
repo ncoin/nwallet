@@ -42,13 +42,13 @@ page-receive {
                 grid-column: 3;
                 @include fluid-type($text-size-default-min, $text-size-default-max);
                 color: $text-color-asset-balance;
-                margin: auto 10px auto 0;
+                margin: auto 0;
                 text-align: right;
             }
 
             fa-icon {
                 grid-column: 4;
-                font-size: 3rem;
+                @include fluid-type($text-size-default-min, $text-size-default-max);
                 color: rgb(171, 165, 157);
                 margin: auto;
             }

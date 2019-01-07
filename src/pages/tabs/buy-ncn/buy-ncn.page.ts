@@ -19,10 +19,10 @@ import { NWConstants } from '../../../models/constants';
     templateUrl: 'buy-ncn.page.html'
 })
 export class BuyNcnPage implements OnInit {
-    private subsciptions: Subscription[] = [];
+    private subscriptions: Subscription[] = [];
     public selectedWallet: NWAsset.Item;
     public assets: NWAsset.Item[];
-    public buyNcnAmount = 0;
+    public buyNcnAmount: number;
 
     constructor(
         public navCtrl: NavController,
@@ -32,11 +32,12 @@ export class BuyNcnPage implements OnInit {
         private logger: LoggerService,
         private currency: CurrencyService,
         private popup: PopupService
-    ) {}
+    ) {
+    }
 
     async ngOnInit() {
         this.account.registerSubjects(account => {
-            this.subsciptions.push(account.walletChanged(assets => (this.assets = assets)));
+            this.subscriptions.push(account.walletChanged(assets => (this.assets = assets)));
         });
 
         this.event.RxSubscribe(NWEvent.App.change_tab, context => {
@@ -60,8 +61,11 @@ export class BuyNcnPage implements OnInit {
     }
 
     public async onClick_ChangeWallet() {
-        const task = await this.popup.selecteWallet(this.selectedWallet, this.assets.filter(asset => asset.getCurrencyId() !== NWConstants.NCN.currencyId));
-        this.selectedWallet = task;
+        const target = await this.popup.selecteWallet(this.selectedWallet, this.assets.filter(asset => asset.getCurrencyId() !== NWConstants.NCN.currencyId));
+
+        if (target) {
+            this.selectedWallet = target;
+        }
     }
 
     public onClick_ShortCut(value: number) {

@@ -41,6 +41,11 @@ export class Item {
         return this.data.balance;
     }
 
+    public getAvailableAmount(): number {
+        Debug.assert(this.data);
+        return this.data.available_withdrawal_balance;
+    }
+
     /** symbol id */
     public getCurrencyId(): number {
         Debug.assert(this.data);
@@ -58,7 +63,7 @@ export class Item {
     }
 
     public hasCollateral(): boolean {
-        return this.data.collateral !== undefined && this.data.collateral !== undefined;
+        return this.data.collateral !== undefined;
     }
 
     public get Collateral(): NWAsset.Collateral {

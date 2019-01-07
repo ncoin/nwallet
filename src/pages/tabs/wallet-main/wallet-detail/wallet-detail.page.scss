@@ -69,7 +69,7 @@ wallet-detail {
             .buttons {
                 display: grid;
                 grid-template-columns: 30% 30% 40%;
-                margin-bottom: $space-size-medium;
+                margin-bottom: $space-fixed-size-15;
 
                 button {
                     width: 100%;

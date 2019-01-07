@@ -5,25 +5,22 @@ import { CurrencyService } from '../../services/nwallet/currency.service';
 import { Debug } from '../../utils/helper/debug';
 
 @Pipe({
-    name: 'walletToTotalPrice'
+    name: 'walletToAvailablePrice'
 })
-export class WalletToTotalPricePipe implements PipeTransform {
+export class WalletToAvailablePricePipe implements PipeTransform {
     constructor(private currency: CurrencyService) {}
 
-    /**
-     * Takes a value and makes it lowercase.
-     */
     transform(assetItem: NWAsset.Item) {
+        const digits = 2;
         return this.currency.get(assetItem.data.currency_id).map(currency => {
-            Debug.assert(assetItem.getCurrencyId() === currency.currencyId);
-
-            const digits = 2;
-            const value = assetItem.getAmount() * currency.price;
-            const floor = _.floor(value, digits);
+            const price = currency.price;
+            const availableBalance = assetItem.data.available_withdrawal_balance;
+            const floor = _.floor((availableBalance * price), digits);
             const formattedValue = floor.toLocaleString('en-US', {
                 minimumFractionDigits: digits,
                 maximumFractionDigits: digits
             });
+
             return `$${formattedValue}`;
         });
     }

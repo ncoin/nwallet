@@ -4,7 +4,7 @@ page-send-confirm {
         @include fluid-type($text-size-large-min, $text-size-large-max);
         //line-height: $text-size-large;
         padding-left: 5px;
-        margin-bottom: $space-size-medium;
+        margin-bottom: $space-fixed-size-15;
         color: $text-color-sub-title;
     }
 
