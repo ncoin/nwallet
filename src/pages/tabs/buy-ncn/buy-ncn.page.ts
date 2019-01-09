@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import * as _ from 'lodash';
 import { NWAsset } from '../../../models/nwallet';
 import { EventService } from '../../../services/common/event/event.service';
 import { NWEvent } from '../../../interfaces/events';
@@ -61,21 +62,24 @@ export class BuyNcnPage implements OnInit {
     }
 
     public async onClick_ChangeWallet() {
-        const target = await this.popup.selecteWallet(this.selectedWallet, this.assets.filter(asset => asset.getCurrencyId() !== NWConstants.NCN.currencyId));
+        const target = await this.popup.selectWallet(this.selectedWallet, this.assets.filter(asset => asset.getCurrencyId() !== NWConstants.NCN.currencyId));
 
         if (target) {
             this.selectedWallet = target;
         }
     }
 
-    public onClick_ShortCut(value: number) {
-        const maxAmount = this.currency.getPrice(this.selectedWallet.getCurrencyId()) * this.selectedWallet.getAmount();
+    public onClick_ShortCut(value?: number) {
+        const maxAmount = this.currency.getPrice(this.selectedWallet.getCurrencyId()) * this.selectedWallet.getAvailableAmount();
+        const digits = 2;
+        let amount = 0;
         if (value) {
             const accumAmount = this.buyNcnAmount + value;
-            this.buyNcnAmount = Math.min(accumAmount, maxAmount);
+            amount = _.min([accumAmount, maxAmount]);
         } else {
-            this.buyNcnAmount = maxAmount;
+            amount = maxAmount;
         }
+        this.buyNcnAmount = _.floor(amount, digits);
     }
 
     public onClick_Buy(): void {

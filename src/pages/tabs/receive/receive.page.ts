@@ -64,7 +64,7 @@ export class ReceivePage {
     }
 
     public async onClick_SelectAsset() {
-        const target = await this.popup.selecteWallet(this.selectedAsset, this.assets);
+        const target = await this.popup.selectWallet(this.selectedAsset, this.assets);
         if (target) {
             this.selectedAsset = target;
             this.qrData = target.getAddress();

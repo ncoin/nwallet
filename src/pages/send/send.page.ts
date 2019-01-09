@@ -80,7 +80,7 @@ export class SendPage extends ModalBasePage implements OnInit, OnDestroy {
     }
 
     public async onClick_Wallet(): Promise<void> {
-        const target = await this.popup.selecteWallet(this.selectedWallet, this.wallets);
+        const target = await this.popup.selectWallet(this.selectedWallet, this.wallets);
         if (target) {
             this.selectedWallet = target;
             this.sendAmount = this.sendAmount;

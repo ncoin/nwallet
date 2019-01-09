@@ -19,9 +19,6 @@ ion-app {
     top: 0;
 }
 
-.alert-wp ion-backdrop {
-    background: rgb(0, 0, 0);
-}
 
 // fonts
 
@@ -352,7 +349,7 @@ ion-tabs[name=conference] .tabbar a.tab-button:nth-child(5)[aria-selected=true] 
     -moz-box-shadow: $basic-button-default-shadow 0 1px 0 inset;
     box-shadow: $basic-button-default-shadow 0 1px 0 inset;
     text-align: center;
-    @include fluid-type($text-size-extra-large-min, $text-size-extra-large-max);
+    @include fluid-type($text-size-large-min, $text-size-large-max);
 }
 
 .btn.action h3,
@@ -868,10 +865,30 @@ $toggle-icon-background-on: #364231;
 
     .button-cancel {
         grid-column: 1;
+        border: none !important;
+        -webkit-border-radius: $basic-button-radius !important;
+        -moz-border-radius: $basic-button-radius !important;
+        border-radius: $basic-button-radius !important;
+        background-color: $basic-button-default-background !important;
+        -webkit-box-shadow: $basic-button-default-shadow 0 1px 0 inset;
+        -moz-box-shadow: $basic-button-default-shadow 0 1px 0 inset;
+        box-shadow: $basic-button-default-shadow 0 1px 0 inset;
+        text-align: center;
+        @include fluid-type($text-size-medium-min, $text-size-medium-max);
     }
 
     .button-ok {
         grid-column: 2;
+        border: none !important;
+        -webkit-border-radius: $basic-button-radius !important;
+        -moz-border-radius: $basic-button-radius !important;
+        border-radius: $basic-button-radius !important;
+        background-color: $background-button-action !important;
+        -webkit-box-shadow: $basic-button-default-shadow 0 1px 0 inset;
+        -moz-box-shadow: $basic-button-default-shadow 0 1px 0 inset;
+        box-shadow: $basic-button-default-shadow 0 1px 0 inset;
+        text-align: center;
+        @include fluid-type($text-size-medium-min, $text-size-medium-max);
     }
 
     .button-inner {
@@ -879,20 +896,16 @@ $toggle-icon-background-on: #364231;
     }
 }
 
-.button-cancel {
-    background: rgb(69, 65, 59) !important;
-    border-width: 1px 0.4px 1px 0.4px;
-    border-color: rgba(255, 255, 255, 0.2);
-    border-style: outset;
-    border-radius: 5px !important;
+.alert-wp ion-backdrop {
+    background: rgb(0, 0, 0);
 }
 
-.button-ok {
-    background: rgb(124, 95, 56) !important;
-    border-width: 1px 0.4px 1px 0.4px;
-    border-color: rgba(255, 255, 255, 0.2);
-    border-style: outset;
-    border-radius: 5px !important;
+ion-alert.select-wallet {
+    .alert-head,
+    .alert-message,
+    .alert-button-group {
+        display: none !important;
+    }
 }
 
 .loading-base {

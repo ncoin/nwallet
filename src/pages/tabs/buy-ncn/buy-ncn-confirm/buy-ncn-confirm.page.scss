@@ -1,16 +1,15 @@
 page-buy-ncn-confirm {
     .sub-title {
         border-left: 5px $text-color-sub-title solid;
-        @include fluid-type($text-size-large-min, $text-size-large-max);
-        //line-height: $text-size-large;
+        @include fluid-type-line($text-size-large-min, $text-size-large-max);
         padding-left: 5px;
-        margin-bottom: $space-fixed-size-15;
+        margin-bottom: $space-fixed-size-10;
         color: $text-color-sub-title;
     }
 
     .logo {
         text-align: center;
-        padding: 20px 0;
+        padding: $space-fixed-size-20 0;
 
         img {
             width: 30%;
@@ -24,19 +23,19 @@ page-buy-ncn-confirm {
         justify-content: space-around;
         background: url("../assets/img/bg_arrow.png") no-repeat center center;
         background-size: 14%;
-        border-top: 2px $border-color-divide-line solid;
-        border-bottom: 2px $border-color-divide-line solid;
-        padding: 15px 0;
-        margin-bottom: 30px;
+        border-top: $space-fixed-size-2 $border-color-divide-line solid;
+        border-bottom: $space-fixed-size-2 $border-color-divide-line solid;
+        padding: $space-fixed-size-10 0;
+        margin-bottom: $space-fixed-size-20;
 
         .from {
             grid-column: 1;
             text-align: left;
-            padding: 10px;
+            padding: 0 $space-fixed-size-10;
 
             .asset-amount {
                 color: $text-color-content-red;
-                @include fluid-type($text-size-large-min, $text-size-large-max);
+                @include fluid-type($text-size-medium-min, $text-size-medium-max);
                 font-weight: 600;
             }
         }
@@ -44,11 +43,11 @@ page-buy-ncn-confirm {
         .to {
             grid-column: 3;
             text-align: right;
-            padding: 10px;
+            padding: 0 $space-fixed-size-10;
 
             .asset-amount {
                 color: $text-color-content-green;
-                @include fluid-type($text-size-large-min, $text-size-large-max);
+                @include fluid-type($text-size-medium-min, $text-size-medium-max);
                 font-weight: 600;
             }
         }
@@ -56,7 +55,7 @@ page-buy-ncn-confirm {
         .asset-name {
             color: $text-color-asset-name;
             @include fluid-type($text-size-large-min, $text-size-large-max);
-            margin-bottom: 15px;
+            margin-bottom: $space-fixed-size-10;
         }
     }
 

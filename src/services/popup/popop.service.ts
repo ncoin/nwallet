@@ -60,13 +60,13 @@ export class PopupService {
         return wait.getResultAsync();
     }
 
-    public async selecteWallet(selectedAsset: NWAsset.Item, assets: NWAsset.Item[]) {
+    public async selectWallet(selectedAsset: NWAsset.Item, assets: NWAsset.Item[]) {
         if (!assets || assets.length < 1) {
             return;
         }
         const wait = new PromiseCompletionSource<NWAsset.Item>();
         const alert = this.alert.create({
-            cssClass: 'alert-base alert-radio-group button-center auto-stretch label-justify'
+            cssClass: 'alert-base alert-radio-group button-center auto-stretch label-justify select-wallet'
         });
 
         const format = new WalletToFormatPipe();
