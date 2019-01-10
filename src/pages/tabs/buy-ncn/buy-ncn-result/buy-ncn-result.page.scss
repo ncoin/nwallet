@@ -1,5 +1,5 @@
 page-buy-ncn-result {
-    $message-icon-size: 13rem;
+    $message-icon-size: 10rem;
 
     .sub-title {
         border-left: 5px $text-color-sub-title solid;
@@ -70,18 +70,19 @@ page-buy-ncn-result {
     .failed {
         fa-icon {
             font-size: $message-icon-size;
-            color: rgb(163, 128, 72);
-            margin: 20px auto 30px;
+            color: $icon-color-failed;
+            margin: $space-fixed-size-20 auto;
         }
 
         .message {
             color: $foreground-content-normal;
-            @include fluid-type($text-size-large-min, $text-size-large-max);
             text-align: center;
-            margin-bottom: 5rem;
+            margin-bottom: $space-fixed-size-20;
 
             p {
+                @include fluid-type($text-size-medium-min, $text-size-medium-max);
                 line-height: 2rem;
+                margin: 0;
 
                 span {
                     color: $text-color-content-white;
@@ -94,8 +95,9 @@ page-buy-ncn-result {
         display: flex;
         justify-content: space-around;
 
-        button {
+        button.confirm {
             margin: 0 $space-fixed-size-10;
+            @include fluid-type($text-size-default-min, $text-size-default-max);
         }
     }
 
