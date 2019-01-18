@@ -82,7 +82,7 @@ page-buy-ncn-result {
             p {
                 @include fluid-type($text-size-medium-min, $text-size-medium-max);
                 line-height: 2rem;
-                margin: 0;
+                margin: 0 0 $space-fixed-size-10;
 
                 span {
                     color: $text-color-content-white;

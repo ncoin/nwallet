@@ -6,15 +6,16 @@
                     <ion-title>
                         {{'Sent' | translate}}
                     </ion-title>
-                    <div class="asset-amount">{{ transaction.amount }}</div>
-                    <div class="asset-price">{{ transaction.amount }}</div>
+                    <div class="asset-amount">{{ transaction.amount | numberToCryptoFull: wallet.getCurrencyId() }}
+                        {{wallet.getSymbol()}}</div>
+                    <div class="asset-price">{{ currentPrice() }}</div>
                 </div>
                 <div class="title-header-container receive" *ngSwitchCase="'RECEIVE'">
                     <ion-title>
                         {{'Received' | translate}}
                     </ion-title>
-                    <div class="asset-amount">{{ transaction.amount }}</div>
-                    <div class="asset-price">{{ transaction.amount }}</div>
+                    <div class="asset-amount">{{ transaction.amount | numberToCryptoFull: wallet.getCurrencyId() }} {{wallet.getSymbol()}}</div>
+                    <div class="asset-price">{{ currentPrice() }}</div>
                 </div>
             </ng-container>
         </ion-navbar>

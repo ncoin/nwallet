@@ -10,6 +10,7 @@ import { StringToDatePipe } from './date/string-to-date';
 import { CurrencyIdToSymbolPipe } from './currency/currencyId-to-symbol';
 import { NumberToUsdPipe } from './number/number-to-usd';
 import { NumberToCryptoPipe } from './number/number-to-crypto';
+import { NumberToCryptoFullPipe } from './number/number-to-crypto-full';
 
 const PIPES = [
     WalletToUSDPipe,
@@ -23,6 +24,7 @@ const PIPES = [
     CurrencyIdToSymbolPipe,
     NumberToUsdPipe,
     NumberToCryptoPipe,
+    NumberToCryptoFullPipe,
 ];
 @NgModule({
     declarations: PIPES,

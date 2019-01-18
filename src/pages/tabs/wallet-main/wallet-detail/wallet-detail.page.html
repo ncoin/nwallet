@@ -1,4 +1,4 @@
-<ion-header class="header">
+<ion-header class="header" [ngClass]="{'has-loan': wallet.ShowLoan}">
     <div class="navBar-container">
         <div class="header-detail-page">
             <ion-navbar class="navBar">
@@ -11,7 +11,7 @@
                     <div class="asset-price">{{ wallet | walletToUSD | async}}</div>
                 </div>
                 <div class="title-content-container">
-                    <div class="loan-summary">
+                    <div class="loan-summary" *ngIf="wallet.ShowLoan">
                         <div class="ltv">
                             <div class="column">LTV</div>
                             <div class="value">{{wallet.Collateral.Ltv}}%</div>
@@ -51,15 +51,18 @@
                 </ion-item-divider>
                 <button ion-item detail-none *ngFor="let transaction of map.transactions"
                         (click)="onExploreTransaction(transaction)">
-                    <div item-start>
-                        <img src="assets/img/icon_{{transaction.transactionType.toLowerCase()}}.png"/>
+                    <div item-start *ngIf="isNCN()">
+                        <img src="assets/img/icon_ncn_{{transaction.transactionType.toLowerCase()}}.png"/>
+                    </div>
+                    <div item-start *ngIf="!isNCN()">
+                        <img src="assets/img/icon_crypto_{{transaction.transactionType.toLowerCase()}}.png"/>
                     </div>
                     <div item-middle>
                         <span class="transaction-type">{{transaction.transactionType}}</span>
                         <span class="transaction-date">{{transaction.date | date : 'MMM dd, yyyy'}}</span>
                     </div>
                     <div item-end [className]="classAmount(transaction.transactionType)">
-                        {{transaction.amount}} {{wallet.getSymbol()}}
+                        {{transaction.amount | numberToCrypto: wallet.getCurrencyId()}} {{wallet.getSymbol()}}
                     </div>
                 </button>
             </ion-item-group>

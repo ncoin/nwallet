@@ -1,6 +1,7 @@
 // todo rearrange --sky
 wallet-detail {
-    $header-height: 295px;
+    $header-height-loan: 275px;
+    $header-height: 228px;
 
     .header {
         max-height: $header-height;
@@ -16,6 +17,17 @@ wallet-detail {
     .header-md {
         max-height: calc(#{$header-height} + 8px);
         height: calc(#{$header-height} + 8px);
+    }
+
+    .header-wp.has-loan {
+        max-height: calc(#{$header-height-loan} + 21px);
+        height: calc(#{$header-height-loan} + 21px);
+    }
+
+    .header-ios.has-loan,
+    .header-md.has-loan {
+        max-height: calc(#{$header-height-loan} + 8px);
+        height: calc(#{$header-height-loan} + 8px);
     }
 
     .navBar-container {
@@ -68,7 +80,7 @@ wallet-detail {
 
             .buttons {
                 display: grid;
-                grid-template-columns: 30% 30% 40%;
+                grid-template-columns: 25% 25% 50%;
                 margin-bottom: $space-fixed-size-15;
 
                 button {
@@ -79,7 +91,7 @@ wallet-detail {
                     margin: 0;
                     padding: 0;
                     border: 0;
-                    font-size: 7rem;
+                    font-size: 5rem;
                     color: transparent;
                     background: -webkit-linear-gradient(#c4c4c4, #797979);
                     -webkit-background-clip: text;
@@ -100,8 +112,8 @@ wallet-detail {
                     grid-column: 3;
 
                     > div {
-                        background: $background-color url('../assets/img/graph_sample.png') no-repeat bottom center;
-                        background-size: cover;
+                        background: $background-color url('../assets/img/graph_sample.png') repeat-x bottom left;
+                        background-size: contain;
                         border-left: #776f62 2px solid;
                         border-bottom: #776f62 2px solid;
                         width: 100%;
@@ -172,7 +184,7 @@ wallet-detail {
         ion-item-group.content-history .item-wp [item-middle] {
             span {
                 display: block;
-                @include fluid-type($text-size-medium-min, $text-size-medium-max);
+                @include fluid-type($text-size-default-min, $text-size-default-max);
             }
 
             span.transaction-type {
@@ -188,7 +200,7 @@ wallet-detail {
         ion-item-group.content-history .item-md [item-end].white,
         ion-item-group.content-history .item-wp [item-end].white {
             color: $text-color-content-white;
-            @include fluid-type($text-size-medium-min, $text-size-medium-max);
+            @include fluid-type($text-size-default-min, $text-size-default-max);
             font-weight: 600;
         }
 
@@ -196,47 +208,8 @@ wallet-detail {
         ion-item-group.content-history .item-md [item-end].red,
         ion-item-group.content-history .item-wp [item-end].red {
             color: $text-color-content-red;
-            @include fluid-type($text-size-medium-min, $text-size-medium-max);
+            @include fluid-type($text-size-default-min, $text-size-default-max);
             font-weight: 600;
-        }
-    }
-
-
-    // dynamic state
-    @media screen and (max-width: 768px),
-    screen and (max-height: 600px) {
-        .navBar-container > div {
-            // background: $border-color-7a;
-        }
-    }
-
-    // orientation landscape
-    @media screen and (max-height: 400px) {
-
-        //.toolbar-content {
-        //    display: flex;
-        //    justify-content: center;
-        //
-        //    .title-header-container {
-        //        flex: 1
-        //    }
-        //
-        //    .title-content-container {
-        //        flex: 1
-        //    }
-        //}
-
-        .navBar-container > div {
-            // background: border-color-7a;
-        }
-
-        .header {
-            //max-height: 135px;
-            //height: 135px;
-        }
-
-        .scroll-content {
-            //margin-top: 120px !important;
         }
     }
 }

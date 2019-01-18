@@ -13,6 +13,7 @@ import { NWEvent } from '../../../../interfaces/events';
 import { WalletTransactionDetailPage } from './wallet-transaction-detail.page';
 import { NWTransition } from '../../../../tools/extension/transition';
 import { SendPage } from '../../../send/send.page';
+import { NWConstants } from '../../../../models/constants';
 
 @IonicPage()
 @Component({
@@ -45,8 +46,16 @@ export class WalletDetailPage extends ModalBasePage implements OnDestroy {
         this.init();
     }
 
+    public isNCN(): boolean {
+        return this.wallet.getCurrencyId() === NWConstants.NCN.currencyId;
+    }
+
     public classAmount(type: string): string {
-        return (['BUY', 'RECEIVE', 'LOAN'].indexOf(type) > -1) ? 'white' : 'red';
+        if (this.isNCN()) {
+            return (['BUY', 'RECEIVE', 'LOAN'].indexOf(type) > -1) ? 'white' : 'red';
+        } else {
+            return (type === 'RECEIVE') ? 'white' : 'red';
+        }
     }
 
     private async init(): Promise<void> {
@@ -102,7 +111,10 @@ export class WalletDetailPage extends ModalBasePage implements OnDestroy {
 
     public onExploreTransaction(transaction: NWTransaction.Item): void {
         if (transaction.transactionType === 'SEND' || transaction.transactionType === 'RECEIVE') {
-            this.navCtrl.push(WalletTransactionDetailPage, { transaction: transaction }, NWTransition.Slide('left'));
+            this.navCtrl.push(WalletTransactionDetailPage, {
+                transaction: transaction,
+                wallet: this.wallet
+            }, NWTransition.Slide('left'));
         }
     }
 

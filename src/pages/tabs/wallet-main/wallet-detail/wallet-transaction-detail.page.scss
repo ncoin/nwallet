@@ -1,5 +1,5 @@
 wallet-transaction-detail {
-    $header-height: 154px;
+    $header-height: 132px;
 
     .header {
         max-height: $header-height;
@@ -76,10 +76,10 @@ wallet-transaction-detail {
 
         .asset-amount {
             padding-top: 12px;
-            @include fluid-type($text-size-extra-large-min, $text-size-extra-large-max);
+            @include fluid-type($text-size-large-min, $text-size-large-max);
         }
         .asset-price {
-            @include fluid-type($text-size-large-min, $text-size-large-max);
+            @include fluid-type($text-size-medium-min, $text-size-medium-max);
         }
     }
 
@@ -101,15 +101,16 @@ wallet-transaction-detail {
     .container {
         .sub-title {
             border-left: 5px $text-color-sub-title solid;
-            @include fluid-type($text-size-large-min, $text-size-large-max);
-            //line-height: $text-size-large;
+            @include fluid-type($text-size-medium-min, $text-size-medium-max);
+            @include fluid-type-line($text-size-medium-min, $text-size-medium-max);
             padding-left: 5px;
             margin-bottom: $space-fixed-size-15;
+            margin-top: 0;
             color: $text-color-sub-title;
         }
 
         .content {
-            @include fluid-type($text-size-medium-min, $text-size-medium-max);
+            @include fluid-type($text-size-default-min, $text-size-default-max);
             color: $text-color-transaction-type;
             background: transparent;
             padding: 0 12px;

@@ -74,12 +74,21 @@ export class Item {
         return this.currency.can_loan;
     }
 
+    public get ShowLoan(): boolean {
+        return this.CanLoan && this.Collateral.Status === this.Collateral.enumStatus.ACTIVE;
+    }
+
     public get WithdrawFee(): number {
         return this.currency.fee;
     }
 }
 
 export class Collateral {
+    enumStatus = {
+       ACTIVE: 'ACTIVE',
+       CLOSED: 'CLOSED'
+    };
+
     public get Id(): number {
         return this.id;
     }
@@ -99,6 +108,10 @@ export class Collateral {
 
     public get Expiry(): string {
         return this.expiry_date;
+    }
+
+    public get Status(): string {
+        return this.status;
     }
 
     public get Interest(): number {
